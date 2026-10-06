@@ -88,6 +88,8 @@ npx skills update gamecaden --global
 
 ## 不需要npm的完整目录安装
 
+OpenCode、Antigravity CLI（agy）和Cursor也可使用以上完整包方式，分别选择`--agent opencode`、`--agent antigravity-cli`和`--agent cursor`。最低兼容检查和未做的行为验证见[通用安装兼容](compatibility.md)；安装兼容不要求逐宿主运行完整游戏项目。
+
 克隆公开仓库，把`plugins/gamecaden`完整目录复制到当前宿主的Skill位置，保留所有共同资源。用户级示例位置：Codex为`~/.agents/skills/gamecaden`，Claude Code为`~/.claude/skills/gamecaden`；项目级使用项目下对应路径。
 
 ```sh

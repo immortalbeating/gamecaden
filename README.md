@@ -24,6 +24,8 @@ claude plugin install gamecaden@gamecaden --scope user
 
 还可通过`npx skills`安装完整包或手动复制为独立Skill；具体命令、范围、更新及固定tag切换见[安装说明](docs/installation.md)。
 
+通用安装目标还包括OpenCode、Antigravity CLI（agy）和Cursor。安装、原生解析/发现与完整项目行为的覆盖分别记录，见[兼容范围](docs/compatibility.md)。
+
 ## 开始使用
 
 直接在当前项目向 Codex 描述目标即可，例如：
