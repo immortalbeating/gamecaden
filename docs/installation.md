@@ -86,6 +86,12 @@ npx skills update gamecaden --global
 
 项目级使用`npx skills update gamecaden --project`。以安装器的实际结果和宿主发现为准；其他宿主的目录选择由该CLI支持范围决定。本轮不宣称所有宿主都已实跑。
 
+### Pi与oh my pi（OMP）
+
+Pi使用同一完整包，将以上agent参数换为`--agent pi`：用户级写入`~/.pi/agent/skills/gamecaden`，项目级写入`.pi/skills/gamecaden`。OMP使用完整目录复制到`~/.omp/agent/skills/gamecaden`或项目`.omp/skills/gamecaden`；没有已确认的`oh-my-pi`安装器参数。
+
+两者通过总入口读取八职责及共同资源，技能命令启用时可调用`/skill:gamecaden`；本轮原生目录加载器只注册总入口，未运行模型或完整项目。安装命令、OMP的PowerShell复制示例、更新和项目信任说明见[通用安装兼容](compatibility.md#pi-omp)。
+
 ## 不需要npm的完整目录安装
 
 OpenCode、Antigravity CLI（agy）和Cursor也可使用以上完整包方式，分别选择`--agent opencode`、`--agent antigravity-cli`和`--agent cursor`。最低兼容检查和未做的行为验证见[通用安装兼容](compatibility.md)；安装兼容不要求逐宿主运行完整游戏项目。
