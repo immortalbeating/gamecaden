@@ -1,0 +1,20 @@
+{
+  "name": "gamecaden",
+  "interface": {
+    "displayName": "Gamecaden"
+  },
+  "plugins": [
+    {
+      "name": "gamecaden",
+      "source": {
+        "source": "local",
+        "path": "./plugins/gamecaden"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_USE"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

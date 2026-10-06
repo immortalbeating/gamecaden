@@ -1,0 +1,8 @@
+{
+  "fixture": true,
+  "engine": "example-fixture",
+  "consumers": [
+    "battle-a",
+    "battle-b"
+  ]
+}

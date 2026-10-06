@@ -1,0 +1,33 @@
+schema_version: 1
+assets:
+- id: A-001
+  title: 受击闪光
+  purpose: 战斗反馈
+  candidates:
+  - id: C-001
+    manifest:
+      path: ../../assets/flash/manifest.json
+    version:
+      kind: sha256
+      value: d75ed2bb31f932592aaa4f974fc7e643536ea68a02e8c6e9ed090bcbc998a34b
+  selected_uses:
+  - use_id: use-a
+    purpose: hit-feedback
+    runtime_id: game
+    consumer: battle-a
+    baseline: example-build-r1
+    candidate_id: C-001
+    decision_refs:
+    - id: D-001
+      fragment: e1
+    evidence_refs:
+    - id: EV-002
+  - use_id: use-b
+    purpose: hit-feedback
+    runtime_id: game
+    consumer: battle-b
+    baseline: example-build-r1
+    candidate_id: C-001
+    decision_refs:
+    - id: D-001
+      fragment: e1

@@ -1,0 +1,83 @@
+{
+  "protocol_version": 1,
+  "request_id": "example-list",
+  "operation": "record.list",
+  "status": "ok",
+  "writes": [],
+  "errors": [],
+  "data": {
+    "items": [
+      {
+        "ref": {
+          "id": "T-001"
+        },
+        "path": "C:/ExampleGame/game-workflow/tasks/T-001-copy.md",
+        "reference_base": "C:/ExampleGame/game-workflow/tasks",
+        "revision": "sha256:934075fc5b099c4cfd959c119992b186a86c19ed58437e7ef113372e68699f74",
+        "record_type": "task",
+        "metadata": {
+          "id": "T-001",
+          "title": "示例词条修正",
+          "mode": "quick",
+          "kind": "bug",
+          "status": "closed",
+          "epic": null
+        },
+        "diagnostics": []
+      },
+      {
+        "ref": {
+          "id": "T-002"
+        },
+        "path": "C:/ExampleGame/game-workflow/tasks/T-002-feedback.md",
+        "reference_base": "C:/ExampleGame/game-workflow/tasks",
+        "revision": "sha256:5920228e99703c960bdd9493b82f1ea69e0adf2f5c0e02f4742b5e7b53e49eb1",
+        "record_type": "task",
+        "metadata": {
+          "id": "T-002",
+          "title": "A/B 受击反馈接入",
+          "mode": "standard",
+          "kind": "asset",
+          "status": "active",
+          "epic": "E-001",
+          "depends_on": [
+            {
+              "target": {
+                "id": "T-001"
+              },
+              "requires": "相关词条结果可用；不以 closed 作为唯一条件",
+              "evidence_refs": [
+                {
+                  "id": "EV-001"
+                }
+              ]
+            }
+          ]
+        },
+        "diagnostics": []
+      }
+    ],
+    "next_cursor": null,
+    "complete": false,
+    "source_revisions": [
+      {
+        "ref": {
+          "path": "C:/ExampleGame/game-workflow/tasks/T-001-copy.md"
+        },
+        "revision": "sha256:934075fc5b099c4cfd959c119992b186a86c19ed58437e7ef113372e68699f74"
+      },
+      {
+        "ref": {
+          "path": "C:/ExampleGame/game-workflow/tasks/T-002-feedback.md"
+        },
+        "revision": "sha256:5920228e99703c960bdd9493b82f1ea69e0adf2f5c0e02f4742b5e7b53e49eb1"
+      }
+    ],
+    "diagnostics": [
+      {
+        "code": "unsupported_format",
+        "message": "示例只完整读取原生任务；映射的旧格式没有结构适配，不能声称已列出全部任务。"
+      }
+    ]
+  }
+}

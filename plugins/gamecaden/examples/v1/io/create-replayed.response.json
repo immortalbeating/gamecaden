@@ -1,0 +1,42 @@
+{
+  "protocol_version": 1,
+  "request_id": "example-create-task",
+  "operation": "record.create",
+  "status": "ok",
+  "writes": [
+    {
+      "target": {
+        "id": "T-003"
+      },
+      "status": "written",
+      "before_revision": null,
+      "after_revision": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  ],
+  "errors": [],
+  "receipt": {
+    "request_id": "example-create-task",
+    "operation": "record.create",
+    "scope_id": "example-project-write-scope",
+    "request_digest": "sha256:fc4b264c208f2a89cef42dddb90e52fbd05c11c91a3c0d48af6a21b05d6d83ab",
+    "phase": "settled",
+    "outcome": "ok",
+    "allocations": [
+      {
+        "ref": {
+          "id": "T-003"
+        },
+        "path": "C:/ExampleGame/game-workflow/tasks/T-003-example.md",
+        "record_type": "task"
+      }
+    ],
+    "recovery_actions": []
+  },
+  "replayed": true,
+  "data": {
+    "fixture": true,
+    "ref": {
+      "id": "T-003"
+    }
+  }
+}

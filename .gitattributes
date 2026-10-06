@@ -1,0 +1,7 @@
+# Record and package manifests identify exact bytes across platforms.
+* -text
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary

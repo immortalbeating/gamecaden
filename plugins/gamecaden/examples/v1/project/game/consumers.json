@@ -1,0 +1,8 @@
+{
+  "fixture": true,
+  "battle-a": {
+    "asset_id": "A-001",
+    "candidate_id": "C-001"
+  },
+  "battle-b": null
+}

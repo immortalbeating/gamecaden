@@ -1,0 +1,46 @@
+{
+  "protocol_version": 1,
+  "request_id": "example-select",
+  "operation": "asset.select",
+  "context": {
+    "project_root": "C:/ExampleGame",
+    "workspace": "C:/ExampleGame/game-workflow/workspace.yaml",
+    "base_dir": "C:/ExampleGame/game-workflow"
+  },
+  "preconditions": [
+    {
+      "target": {
+        "path": "assets/ledger.yaml"
+      },
+      "expected_revision": "sha256:55fd123670fef83735e841e67a5dfdf20488ab670f2dc7b4f4eb5b45d050eed8"
+    }
+  ],
+  "payload": {
+    "ledger": {
+      "path": "assets/ledger.yaml"
+    },
+    "asset_id": "A-001",
+    "reason": "仅演示指定关系操作，不改变示例项目。",
+    "basis": [
+      {
+        "id": "D-001",
+        "fragment": "e1"
+      }
+    ],
+    "action": "set",
+    "use": {
+      "use_id": "use-b",
+      "purpose": "hit-feedback",
+      "runtime_id": "game",
+      "consumer": "battle-b",
+      "baseline": "example-build-r1",
+      "candidate_id": "C-001",
+      "decision_refs": [
+        {
+          "id": "D-001",
+          "fragment": "e1"
+        }
+      ]
+    }
+  }
+}

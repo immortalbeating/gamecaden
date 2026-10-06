@@ -1,0 +1,84 @@
+schema_version: 1
+project:
+  id: example-game
+  name: 虚构工作流样例
+  root: ..
+runtime_roots:
+- id: game
+  path: ../game
+  engine: example-fixture
+  marker: ../game/runtime.example.json
+sources:
+- id: vision
+  role: vision
+  kind: file
+  path: vision.md
+  owner: project
+  format: native-markdown-v1
+- id: spec
+  role: spec
+  kind: collection
+  path: spec
+  owner: project
+  format: native-markdown-v1
+- id: roadmap
+  role: roadmap
+  kind: file
+  path: roadmap.md
+  owner: project
+  format: native-markdown-v1
+- id: tasks
+  role: task
+  kind: collection
+  path: tasks
+  owner: flow
+  format: native-markdown-v1
+- id: epics
+  role: epic
+  kind: collection
+  path: epics
+  owner: flow
+  format: native-markdown-v1
+- id: evidence
+  role: evidence
+  kind: collection
+  path: evidence
+  owner: project
+  format: native-markdown-v1
+- id: decisions
+  role: decision
+  kind: collection
+  path: decisions
+  owner: project
+  format: native-markdown-v1
+- id: assets
+  role: asset-ledger
+  kind: file
+  path: assets/ledger.yaml
+  owner: project
+  format: native-yaml-v1
+- id: notes
+  role: notes
+  kind: collection
+  path: notes
+  owner: project
+  format: native-markdown-v1
+- id: parking
+  role: parking-lot
+  kind: file
+  path: parking-lot.md
+  owner: project
+  format: native-markdown-v1
+- id: legacy-trellis
+  role: task
+  kind: collection
+  path: ../legacy/.trellis/tasks
+  owner: trellis
+  scope: read-only legacy example
+  format: external
+default_task_source: tasks
+default_epic_source: epics
+rule_sources:
+- id: git
+  path: rules/git.md
+  scope: 仅示例项目

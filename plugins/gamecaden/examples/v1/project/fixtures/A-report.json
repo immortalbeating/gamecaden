@@ -1,0 +1,7 @@
+{
+  "fixture": true,
+  "consumer": "battle-a",
+  "candidate": "C-001",
+  "result": "passed",
+  "coverage": "illustrative observation only; B not tested"
+}

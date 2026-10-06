@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "default_project_id": "my-game",
+  "projects": [
+    {
+      "id": "my-game",
+      "name": "我的游戏",
+      "root": "C:/Games/MyGame",
+      "workspace": "game-workflow/workspace.yaml",
+      "write": {
+        "task_body": false,
+        "decisions": false,
+        "asset_selection": false
+      },
+      "reviewer": null,
+      "identity_source": "read-only"
+    },
+    {
+      "id": "legacy-game",
+      "name": "旧项目原文",
+      "root": "C:/Games/LegacyGame",
+      "external_sources": [
+        {
+          "id": "vision",
+          "label": "原有北极星",
+          "role": "vision",
+          "path": "docs/north-star.md"
+        }
+      ]
+    }
+  ]
+}
+

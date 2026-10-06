@@ -1,0 +1,13 @@
+{
+  "protocol_version": 1,
+  "request_id": "example-create-task",
+  "operation": "record.create",
+  "status": "conflict",
+  "writes": [],
+  "errors": [
+    {
+      "code": "request_id_conflict",
+      "message": "同一请求ID对应不同载荷；本次没有写入。原操作结果需通过 operation.status 查询。"
+    }
+  ]
+}

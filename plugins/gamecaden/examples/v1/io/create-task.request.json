@@ -1,0 +1,22 @@
+{
+  "protocol_version": 1,
+  "request_id": "example-create-task",
+  "operation": "record.create",
+  "context": {
+    "project_root": "C:/ExampleGame",
+    "workspace": "C:/ExampleGame/game-workflow/workspace.yaml",
+    "base_dir": "C:/ExampleGame/game-workflow"
+  },
+  "preconditions": [],
+  "payload": {
+    "record_type": "task",
+    "metadata": {
+      "title": "演示新交付",
+      "mode": "standard",
+      "kind": "feature",
+      "status": "planned",
+      "epic": null
+    },
+    "body": "这只是协议示例。由服务端在创建前分配ID，不执行实际项目工作。"
+  }
+}

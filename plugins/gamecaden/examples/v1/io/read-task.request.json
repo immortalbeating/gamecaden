@@ -1,0 +1,14 @@
+{
+  "protocol_version": 1,
+  "request_id": "example-read-1",
+  "operation": "record.read",
+  "context": {
+    "project_root": "C:/ExampleGame",
+    "workspace": "C:/ExampleGame/game-workflow/workspace.yaml"
+  },
+  "payload": {
+    "target": {
+      "id": "T-002"
+    }
+  }
+}

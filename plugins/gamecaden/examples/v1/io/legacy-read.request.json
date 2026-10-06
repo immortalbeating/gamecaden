@@ -1,0 +1,14 @@
+{
+  "protocol_version": 1,
+  "request_id": "example-legacy-read",
+  "operation": "record.read",
+  "context": {
+    "project_root": "C:/ExampleGame"
+  },
+  "payload": {
+    "target": {
+      "path": "legacy/.trellis/tasks/04-21-old/task.json",
+      "source": "legacy-trellis"
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "protocol_version": 1,
+  "request_id": "example-extract",
+  "operation": "record.extract",
+  "context": {
+    "project_root": "C:/ExampleGame",
+    "workspace": "C:/ExampleGame/game-workflow/workspace.yaml",
+    "base_dir": "C:/ExampleGame/game-workflow"
+  },
+  "preconditions": [
+    {
+      "target": {
+        "path": "tasks/T-001-copy.md"
+      },
+      "expected_revision": "sha256:934075fc5b099c4cfd959c119992b186a86c19ed58437e7ef113372e68699f74"
+    },
+    {
+      "target": {
+        "path": "evidence/EV-001.md"
+      },
+      "expected_revision": null
+    }
+  ],
+  "payload": {
+    "target": {
+      "id": "EV-001"
+    },
+    "destination": "evidence/EV-001.md"
+  }
+}

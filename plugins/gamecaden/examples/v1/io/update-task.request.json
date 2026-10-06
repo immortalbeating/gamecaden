@@ -1,0 +1,24 @@
+{
+  "protocol_version": 1,
+  "request_id": "example-update-1",
+  "operation": "record.update",
+  "context": {
+    "project_root": "C:/ExampleGame",
+    "workspace": "C:/ExampleGame/game-workflow/workspace.yaml"
+  },
+  "preconditions": [
+    {
+      "target": {
+        "id": "T-002"
+      },
+      "expected_revision": "sha256:5920228e99703c960bdd9493b82f1ea69e0adf2f5c0e02f4742b5e7b53e49eb1"
+    }
+  ],
+  "payload": {
+    "target": {
+      "id": "T-002"
+    },
+    "reason": "示例：更新已核对的续接说明",
+    "body": "示例新的完整正文；实际调用必须保留其他必要内容。"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "protocol_version": 1,
+  "request_id": "example-list",
+  "operation": "record.list",
+  "context": {
+    "project_root": "C:/ExampleGame",
+    "workspace": "C:/ExampleGame/game-workflow/workspace.yaml"
+  },
+  "payload": {
+    "types": [
+      "task"
+    ],
+    "limit": 10
+  }
+}

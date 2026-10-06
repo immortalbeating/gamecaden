@@ -1,0 +1,13 @@
+{
+  "protocol_version": 1,
+  "request_id": "example-query-extract",
+  "operation": "operation.status",
+  "context": {
+    "project_root": "C:/ExampleGame",
+    "workspace": "C:/ExampleGame/game-workflow/workspace.yaml",
+    "base_dir": "C:/ExampleGame/game-workflow"
+  },
+  "payload": {
+    "request_id": "example-extract"
+  }
+}

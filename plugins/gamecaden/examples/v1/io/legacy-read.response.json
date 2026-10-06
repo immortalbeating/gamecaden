@@ -1,0 +1,34 @@
+{
+  "protocol_version": 1,
+  "request_id": "example-legacy-read",
+  "operation": "record.read",
+  "status": "ok",
+  "writes": [],
+  "errors": [],
+  "data": {
+    "ref": {
+      "path": "C:/ExampleGame/legacy/.trellis/tasks/04-21-old/task.json",
+      "source": "legacy-trellis"
+    },
+    "path": "C:/ExampleGame/legacy/.trellis/tasks/04-21-old/task.json",
+    "format": "external",
+    "interpretation": "raw",
+    "revision": "sha256:c557bfc3600890950cef9c0aacc3aaec58570d8ae79ee114b3f66a090fc0eb10",
+    "metadata": null,
+    "body": "{\n  \"id\": \"04-21-old\",\n  \"status\": \"in_progress\",\n  \"name\": \"Legacy example, unchanged format\"\n}\n",
+    "capabilities": [
+      "record.read"
+    ],
+    "diagnostics": [
+      {
+        "code": "unsupported_write",
+        "message": "示例：没有旧格式写入适配器，原文保留。",
+        "target": {
+          "path": "C:/ExampleGame/legacy/.trellis/tasks/04-21-old/task.json",
+          "source": "legacy-trellis"
+        }
+      }
+    ],
+    "reference_base": null
+  }
+}

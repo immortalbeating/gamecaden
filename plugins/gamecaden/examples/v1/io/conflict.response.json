@@ -1,0 +1,19 @@
+{
+  "protocol_version": 1,
+  "request_id": "example-update-1",
+  "operation": "record.update",
+  "status": "conflict",
+  "writes": [],
+  "errors": [
+    {
+      "code": "revision_conflict",
+      "message": "示例：源已被其他编辑更新，未执行覆盖。",
+      "target": {
+        "id": "T-002"
+      }
+    }
+  ],
+  "data": {
+    "fixture": true
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "protocol_version": 1,
+  "request_id": "example-extract",
+  "operation": "record.extract",
+  "status": "partial",
+  "writes": [
+    {
+      "target": {
+        "path": "C:/ExampleGame/game-workflow/evidence/EV-001.md"
+      },
+      "status": "written",
+      "before_revision": null,
+      "after_revision": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    },
+    {
+      "target": {
+        "path": "C:/ExampleGame/game-workflow/tasks/T-001-copy.md"
+      },
+      "status": "not_attempted",
+      "before_revision": "sha256:934075fc5b099c4cfd959c119992b186a86c19ed58437e7ef113372e68699f74"
+    }
+  ],
+  "errors": [
+    {
+      "code": "partial_write",
+      "message": "只用于演示恢复形态；样例源实际没有执行提取。"
+    }
+  ],
+  "receipt": {
+    "request_id": "example-extract",
+    "operation": "record.extract",
+    "scope_id": "example-project-write-scope",
+    "request_digest": "sha256:e97c897126e07d49e2bf19026b3d3ff64842babf85662c49a059142bb0a85ac1",
+    "phase": "applying",
+    "outcome": "partial",
+    "allocations": [],
+    "recovery_actions": [
+      {
+        "action": "finish_extract",
+        "targets": [
+          {
+            "path": "C:/ExampleGame/game-workflow/tasks/T-001-copy.md"
+          },
+          {
+            "path": "C:/ExampleGame/game-workflow/evidence/EV-001.md"
+          }
+        ],
+        "reason": "模拟：目标已写并回读，源尚未改为转向；先核对双方再完成源切换。"
+      }
+    ]
+  }
+}

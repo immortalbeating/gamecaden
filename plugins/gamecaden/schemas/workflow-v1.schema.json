@@ -1,0 +1,2593 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:game-workflow:format:v1",
+  "title": "Game workflow native records and I/O v1 candidate",
+  "description": "Candidate contract. Validate Markdown frontmatter against its role definition. Semantic checks and authorization are specified in shared/formats-v1.md and shared/io-v1.md.",
+  "$ref": "#/$defs/Artifact",
+  "$defs": {
+    "Ref": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "project_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fragment": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "required": [
+            "id"
+          ],
+          "not": {
+            "required": [
+              "path"
+            ]
+          }
+        },
+        {
+          "required": [
+            "path"
+          ],
+          "not": {
+            "required": [
+              "id"
+            ]
+          }
+        }
+      ]
+    },
+    "Actor": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "user",
+            "agent",
+            "tool"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "origin": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "kind",
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "Version": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "sha256",
+            "git-commit",
+            "git-tree",
+            "build",
+            "named"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1
+        },
+        "proof": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "kind",
+        "value"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "sha256"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "git-commit",
+                  "git-tree"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "pattern": "^(?:[a-f0-9]{40}|[a-f0-9]{64})$"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "named",
+                  "build"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "proof"
+            ]
+          }
+        }
+      ]
+    },
+    "Subject": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "version": {
+          "$ref": "#/$defs/Version"
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "candidate_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "use": {
+          "$ref": "#/$defs/UseScope"
+        }
+      },
+      "required": [
+        "ref",
+        "scope"
+      ],
+      "additionalProperties": false
+    },
+    "Dependency": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "$ref": "#/$defs/Ref"
+        },
+        "requires": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "target",
+        "requires"
+      ],
+      "additionalProperties": false
+    },
+    "Source": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "enum": [
+            "vision",
+            "spec",
+            "roadmap",
+            "task",
+            "epic",
+            "asset-ledger",
+            "evidence",
+            "decision",
+            "notes",
+            "parking-lot"
+          ]
+        },
+        "kind": {
+          "enum": [
+            "file",
+            "collection"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "format": {
+          "enum": [
+            "native-markdown-v1",
+            "native-yaml-v1",
+            "native-json-v1",
+            "external"
+          ]
+        },
+        "adapter": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "role",
+        "kind",
+        "path",
+        "owner"
+      ],
+      "additionalProperties": false
+    },
+    "RuleSource": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "path",
+        "scope"
+      ],
+      "additionalProperties": false
+    },
+    "RuntimeRoot": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "engine": {
+          "type": "string",
+          "minLength": 1
+        },
+        "marker": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "path",
+        "engine"
+      ],
+      "additionalProperties": false
+    },
+    "Workspace": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "project": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "root": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "root"
+          ],
+          "additionalProperties": false
+        },
+        "runtime_roots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RuntimeRoot"
+          },
+          "minItems": 0
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Source"
+          },
+          "minItems": 0
+        },
+        "default_task_source": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "default_epic_source": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "rule_sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RuleSource"
+          },
+          "minItems": 0
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Namespaced project data; cannot override core field meanings."
+        }
+      },
+      "required": [
+        "schema_version",
+        "project",
+        "runtime_roots",
+        "sources",
+        "default_task_source",
+        "default_epic_source",
+        "rule_sources"
+      ],
+      "additionalProperties": false
+    },
+    "Task": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^T-[0-9]+$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mode": {
+          "enum": [
+            "quick",
+            "standard"
+          ]
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "planned",
+            "active",
+            "closed",
+            "cancelled"
+          ]
+        },
+        "epic": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^E-[0-9]+$"
+            }
+          ]
+        },
+        "depends_on": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Dependency"
+          },
+          "minItems": 0
+        },
+        "related": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Namespaced project data; cannot override core field meanings."
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "mode",
+        "kind",
+        "status",
+        "epic"
+      ],
+      "additionalProperties": false
+    },
+    "Epic": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^E-[0-9]+$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "planned",
+            "active",
+            "closed",
+            "cancelled"
+          ]
+        },
+        "related": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Namespaced project data; cannot override core field meanings."
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "Evidence": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^EV-[0-9]+$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "actor": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Actor"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Subject"
+          },
+          "minItems": 1
+        },
+        "result": {
+          "enum": [
+            "passed",
+            "failed",
+            "inconclusive",
+            "not_run",
+            "not_applicable"
+          ]
+        },
+        "coverage": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0
+        },
+        "report_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "corrects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Namespaced project data; cannot override core field meanings."
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "observed_at",
+        "actor",
+        "subjects",
+        "result",
+        "coverage"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "result": {
+                "const": "passed"
+              }
+            },
+            "required": [
+              "result"
+            ]
+          },
+          "then": {
+            "properties": {
+              "coverage": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "DecisionEvent": {
+      "type": "object",
+      "properties": {
+        "event_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$"
+        },
+        "actor": {
+          "$ref": "#/$defs/Actor"
+        },
+        "action": {
+          "enum": [
+            "choose",
+            "accept",
+            "reject",
+            "revise",
+            "defer",
+            "waive",
+            "withdraw",
+            "supersede"
+          ]
+        },
+        "subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Subject"
+          },
+          "minItems": 1
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "conclusion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "basis": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "replaces": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "decided_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recorded_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "event_id",
+        "actor",
+        "action",
+        "subjects",
+        "scope",
+        "conclusion",
+        "decided_at",
+        "recorded_at"
+      ],
+      "additionalProperties": false
+    },
+    "Decision": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^D-[0-9]+$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DecisionEvent"
+          },
+          "minItems": 1
+        },
+        "related": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Namespaced project data; cannot override core field meanings."
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "events"
+      ],
+      "additionalProperties": false
+    },
+    "AssetCandidate": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "manifest": {
+          "$ref": "#/$defs/Ref"
+        },
+        "version": {
+          "$ref": "#/$defs/Version"
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "id",
+        "manifest",
+        "version"
+      ],
+      "additionalProperties": false
+    },
+    "AssetUse": {
+      "type": "object",
+      "properties": {
+        "use_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1
+        },
+        "runtime_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "consumer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "baseline": {
+          "type": "string",
+          "minLength": 1
+        },
+        "candidate_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "decision_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "use_id",
+        "purpose",
+        "runtime_id",
+        "consumer",
+        "candidate_id"
+      ],
+      "additionalProperties": false
+    },
+    "Asset": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^A-[0-9]+$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "candidates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AssetCandidate"
+          },
+          "minItems": 0
+        },
+        "selected_uses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AssetUse"
+          },
+          "minItems": 0
+        },
+        "replaces": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Namespaced project data; cannot override core field meanings."
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "purpose",
+        "candidates",
+        "selected_uses"
+      ],
+      "additionalProperties": false
+    },
+    "AssetLedger": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "assets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Asset"
+          },
+          "minItems": 0
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Namespaced project data; cannot override core field meanings."
+        }
+      },
+      "required": [
+        "schema_version",
+        "assets"
+      ],
+      "additionalProperties": false
+    },
+    "ManifestFile": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "technical": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "role"
+      ],
+      "additionalProperties": false
+    },
+    "Manifest": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "asset_id": {
+          "type": "string",
+          "pattern": "^A-[0-9]+$"
+        },
+        "candidate_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ManifestFile"
+          },
+          "minItems": 1
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "producer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parameters": {
+          "type": "object"
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Namespaced project data; cannot override core field meanings."
+        }
+      },
+      "required": [
+        "schema_version",
+        "asset_id",
+        "candidate_id",
+        "files"
+      ],
+      "additionalProperties": false
+    },
+    "Forward": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "to": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "id",
+        "to"
+      ],
+      "additionalProperties": false
+    },
+    "Revision": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "Precondition": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "$ref": "#/$defs/Ref"
+        },
+        "expected_revision": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Revision"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "target",
+        "expected_revision"
+      ],
+      "additionalProperties": false
+    },
+    "Context": {
+      "type": "object",
+      "properties": {
+        "project_root": {
+          "type": "string",
+          "minLength": 1
+        },
+        "workspace": {
+          "type": "string",
+          "minLength": 1
+        },
+        "base_dir": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "project_root"
+      ],
+      "additionalProperties": false
+    },
+    "DocumentInput": {
+      "type": "object",
+      "properties": {
+        "record_type": {
+          "enum": [
+            "vision",
+            "spec",
+            "roadmap",
+            "task",
+            "epic",
+            "evidence",
+            "notes",
+            "parking-lot",
+            "index",
+            "rule",
+            "design",
+            "plan",
+            "history",
+            "handoff"
+          ]
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "body": {
+          "type": "string"
+        },
+        "storage": {
+          "enum": [
+            "standalone",
+            "embedded"
+          ]
+        },
+        "container": {
+          "$ref": "#/$defs/Ref"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "owner": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "record_type",
+        "body"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "record_type": {
+                "enum": [
+                  "design",
+                  "plan",
+                  "history"
+                ]
+              }
+            },
+            "required": [
+              "record_type"
+            ]
+          },
+          "then": {
+            "required": [
+              "owner"
+            ]
+          }
+        }
+      ]
+    },
+    "Request": {
+      "type": "object",
+      "properties": {
+        "protocol_version": {
+          "const": 1
+        },
+        "request_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operation": {
+          "enum": [
+            "workspace.inspect",
+            "workspace.configure",
+            "record.list",
+            "record.read",
+            "record.resolve",
+            "record.create",
+            "record.update",
+            "record.transition",
+            "record.extract",
+            "decision.record",
+            "asset.upsert",
+            "asset.select",
+            "view.build",
+            "operation.status"
+          ]
+        },
+        "context": {
+          "$ref": "#/$defs/Context"
+        },
+        "preconditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Precondition"
+          },
+          "minItems": 0
+        },
+        "expected_subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Subject"
+          },
+          "minItems": 0
+        },
+        "payload": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "protocol_version",
+        "request_id",
+        "operation",
+        "context",
+        "payload"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "workspace.inspect"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "workspace.configure"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "type": "object",
+                "properties": {
+                  "document": {
+                    "$ref": "#/$defs/Workspace"
+                  }
+                },
+                "required": [
+                  "document"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "record.list"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "type": "object",
+                "properties": {
+                  "types": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "minItems": 0,
+                    "uniqueItems": true
+                  },
+                  "status": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "minItems": 0,
+                    "uniqueItems": true
+                  },
+                  "text": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "cursor": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "record.read"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "$ref": "#/$defs/Ref"
+                  },
+                  "include_body": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "target"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "record.resolve"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "$ref": "#/$defs/Ref"
+                  }
+                },
+                "required": [
+                  "target"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "record.create"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/DocumentInput",
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "record_type": {
+                          "enum": [
+                            "task",
+                            "epic",
+                            "evidence"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "record_type"
+                      ]
+                    },
+                    "then": {
+                      "required": [
+                        "metadata"
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "record.update"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "$ref": "#/$defs/Ref"
+                  },
+                  "set_fields": {
+                    "type": "object"
+                  },
+                  "body": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "target",
+                  "reason"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "record.transition"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "$ref": "#/$defs/Ref"
+                  },
+                  "to": {
+                    "enum": [
+                      "planned",
+                      "active",
+                      "closed",
+                      "cancelled"
+                    ]
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "body": {
+                    "type": "string"
+                  },
+                  "evidence_refs": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/Ref"
+                    },
+                    "minItems": 0
+                  },
+                  "decision_refs": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/Ref"
+                    },
+                    "minItems": 0
+                  }
+                },
+                "required": [
+                  "target",
+                  "to",
+                  "reason"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "record.extract"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "$ref": "#/$defs/Ref"
+                  },
+                  "destination": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "recovery_of": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Original settled partial extraction request_id; requires current source and destination revisions."
+                  }
+                },
+                "required": [
+                  "target",
+                  "destination"
+                ],
+                "additionalProperties": false
+              },
+              "preconditions": {
+                "minItems": 2
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "decision.record"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "$ref": "#/$defs/Ref"
+                  },
+                  "title": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "event": {
+                    "$ref": "#/$defs/DecisionEvent"
+                  },
+                  "storage": {
+                    "enum": [
+                      "standalone",
+                      "embedded"
+                    ]
+                  },
+                  "container": {
+                    "$ref": "#/$defs/Ref"
+                  },
+                  "path": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "event"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "asset.upsert"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "type": "object",
+                "properties": {
+                  "ledger": {
+                    "$ref": "#/$defs/Ref"
+                  },
+                  "mode": {
+                    "enum": [
+                      "create",
+                      "update"
+                    ]
+                  },
+                  "asset": {
+                    "$ref": "#/$defs/AssetDraft"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "ledger",
+                  "mode",
+                  "asset",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "mode": {
+                          "const": "update"
+                        }
+                      },
+                      "required": [
+                        "mode"
+                      ]
+                    },
+                    "then": {
+                      "properties": {
+                        "asset": {
+                          "required": [
+                            "id"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "if": {
+                      "properties": {
+                        "mode": {
+                          "const": "create"
+                        }
+                      },
+                      "required": [
+                        "mode"
+                      ]
+                    },
+                    "then": {
+                      "properties": {
+                        "asset": {
+                          "properties": {
+                            "selected_uses": {
+                              "maxItems": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "asset.select"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "type": "object",
+                "properties": {
+                  "ledger": {
+                    "$ref": "#/$defs/Ref"
+                  },
+                  "asset_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "use": {
+                    "$ref": "#/$defs/AssetUse"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "action": {
+                    "enum": [
+                      "set",
+                      "clear"
+                    ]
+                  },
+                  "use_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "basis": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/Ref"
+                    }
+                  }
+                },
+                "required": [
+                  "ledger",
+                  "asset_id",
+                  "action",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "oneOf": [
+                  {
+                    "properties": {
+                      "action": {
+                        "const": "set"
+                      }
+                    },
+                    "required": [
+                      "use"
+                    ],
+                    "not": {
+                      "required": [
+                        "use_id"
+                      ]
+                    }
+                  },
+                  {
+                    "properties": {
+                      "action": {
+                        "const": "clear"
+                      }
+                    },
+                    "required": [
+                      "use_id"
+                    ],
+                    "not": {
+                      "required": [
+                        "use"
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "view.build"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "type": "object",
+                "properties": {
+                  "view": {
+                    "enum": [
+                      "progress",
+                      "timeline",
+                      "assets"
+                    ]
+                  },
+                  "scope_refs": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/Ref"
+                    },
+                    "minItems": 0
+                  },
+                  "output_path": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "view"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "operation.status"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "type": "object",
+                "properties": {
+                  "request_id": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "request_id"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "not": {
+                  "enum": [
+                    "workspace.inspect",
+                    "record.list",
+                    "record.read",
+                    "record.resolve",
+                    "operation.status"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "required": [
+              "preconditions"
+            ]
+          }
+        }
+      ]
+    },
+    "WriteResult": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "$ref": "#/$defs/Ref"
+        },
+        "status": {
+          "enum": [
+            "written",
+            "unchanged",
+            "failed",
+            "not_attempted"
+          ]
+        },
+        "before_revision": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Revision"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "after_revision": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Revision"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error": {
+          "type": "string",
+          "minLength": 1
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "target",
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "additionalProperties": false
+    },
+    "Response": {
+      "type": "object",
+      "properties": {
+        "protocol_version": {
+          "const": 1
+        },
+        "request_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operation": {
+          "enum": [
+            "workspace.inspect",
+            "workspace.configure",
+            "record.list",
+            "record.read",
+            "record.resolve",
+            "record.create",
+            "record.update",
+            "record.transition",
+            "record.extract",
+            "decision.record",
+            "asset.upsert",
+            "asset.select",
+            "view.build",
+            "operation.status"
+          ]
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "conflict",
+            "rejected",
+            "partial",
+            "indeterminate"
+          ]
+        },
+        "data": {},
+        "writes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/WriteResult"
+          },
+          "minItems": 0
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Error"
+          },
+          "minItems": 0
+        },
+        "replayed": {
+          "type": "boolean"
+        },
+        "receipt": {
+          "$ref": "#/$defs/OperationReceipt"
+        }
+      },
+      "required": [
+        "protocol_version",
+        "request_id",
+        "operation",
+        "status",
+        "writes",
+        "errors"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "enum": [
+                  "record.read",
+                  "record.resolve"
+                ]
+              },
+              "status": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "operation",
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "$ref": "#/$defs/RecordRead"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "record.list"
+              },
+              "status": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "operation",
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "$ref": "#/$defs/RecordList"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "enum": [
+                  "workspace.configure",
+                  "record.create",
+                  "record.update",
+                  "record.transition",
+                  "record.extract",
+                  "decision.record",
+                  "asset.upsert",
+                  "asset.select"
+                ]
+              },
+              "status": {
+                "enum": [
+                  "ok",
+                  "partial"
+                ]
+              }
+            },
+            "required": [
+              "operation",
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "receipt"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "operation.status"
+              },
+              "status": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "operation",
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "receipt"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "errors": {
+                "contains": {
+                  "properties": {
+                    "code": {
+                      "const": "request_id_conflict"
+                    }
+                  },
+                  "required": [
+                    "code"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "errors"
+            ]
+          },
+          "then": {
+            "not": {
+              "required": [
+                "receipt"
+              ]
+            },
+            "properties": {
+              "status": {
+                "const": "conflict"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "view.build"
+              },
+              "status": {
+                "enum": [
+                  "ok",
+                  "partial"
+                ]
+              },
+              "writes": {
+                "minItems": 1
+              }
+            },
+            "required": [
+              "operation",
+              "status",
+              "writes"
+            ]
+          },
+          "then": {
+            "required": [
+              "receipt"
+            ]
+          }
+        }
+      ]
+    },
+    "Artifact": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/Workspace"
+        },
+        {
+          "$ref": "#/$defs/Task"
+        },
+        {
+          "$ref": "#/$defs/Epic"
+        },
+        {
+          "$ref": "#/$defs/Evidence"
+        },
+        {
+          "$ref": "#/$defs/Decision"
+        },
+        {
+          "$ref": "#/$defs/AssetLedger"
+        },
+        {
+          "$ref": "#/$defs/Manifest"
+        },
+        {
+          "$ref": "#/$defs/Request"
+        },
+        {
+          "$ref": "#/$defs/Response"
+        }
+      ]
+    },
+    "UseScope": {
+      "type": "object",
+      "properties": {
+        "runtime_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "consumer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1
+        },
+        "baseline": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "runtime_id",
+        "consumer",
+        "purpose"
+      ],
+      "additionalProperties": false
+    },
+    "RecordRead": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "format": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "interpretation": {
+          "enum": [
+            "native",
+            "adapter",
+            "raw"
+          ]
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "metadata": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "body": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Error"
+          }
+        },
+        "reference_base": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "ref",
+        "path",
+        "format",
+        "interpretation",
+        "revision",
+        "metadata",
+        "body",
+        "capabilities",
+        "diagnostics",
+        "reference_base"
+      ],
+      "additionalProperties": false
+    },
+    "RecordSummary": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "record_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "metadata": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Error"
+          }
+        },
+        "reference_base": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "ref",
+        "path",
+        "revision",
+        "record_type",
+        "metadata",
+        "diagnostics",
+        "reference_base"
+      ],
+      "additionalProperties": false
+    },
+    "SourceRevision": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        }
+      },
+      "required": [
+        "ref",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "RecordList": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RecordSummary"
+          }
+        },
+        "next_cursor": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "complete": {
+          "type": "boolean"
+        },
+        "source_revisions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SourceRevision"
+          }
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Error"
+          }
+        }
+      },
+      "required": [
+        "items",
+        "next_cursor",
+        "complete",
+        "source_revisions",
+        "diagnostics"
+      ],
+      "additionalProperties": false
+    },
+    "AssetDraft": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^A-[0-9]+$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "candidates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AssetCandidate"
+          },
+          "minItems": 0
+        },
+        "selected_uses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AssetUse"
+          },
+          "minItems": 0
+        },
+        "replaces": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Namespaced project data; cannot override core field meanings."
+        }
+      },
+      "required": [
+        "title",
+        "purpose",
+        "candidates",
+        "selected_uses"
+      ],
+      "additionalProperties": false
+    },
+    "Allocation": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "enum": [
+            "task",
+            "epic",
+            "evidence",
+            "decision",
+            "asset"
+          ]
+        }
+      },
+      "required": [
+        "ref",
+        "path",
+        "record_type"
+      ],
+      "additionalProperties": false
+    },
+    "RecoveryAction": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "enum": [
+            "read_back",
+            "retry_same_request",
+            "finish_extract",
+            "resolve_conflict",
+            "manual_inspect"
+          ]
+        },
+        "targets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "action",
+        "targets",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "OperationReceipt": {
+      "type": "object",
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operation": {
+          "enum": [
+            "workspace.inspect",
+            "workspace.configure",
+            "record.list",
+            "record.read",
+            "record.resolve",
+            "record.create",
+            "record.update",
+            "record.transition",
+            "record.extract",
+            "decision.record",
+            "asset.upsert",
+            "asset.select",
+            "view.build",
+            "operation.status"
+          ]
+        },
+        "scope_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "request_digest": {
+          "$ref": "#/$defs/Revision"
+        },
+        "phase": {
+          "enum": [
+            "prepared",
+            "applying",
+            "settled"
+          ]
+        },
+        "outcome": {
+          "enum": [
+            null,
+            "ok",
+            "conflict",
+            "rejected",
+            "partial",
+            "indeterminate"
+          ]
+        },
+        "allocations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Allocation"
+          }
+        },
+        "recovery_actions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RecoveryAction"
+          }
+        }
+      },
+      "required": [
+        "request_id",
+        "operation",
+        "scope_id",
+        "request_digest",
+        "phase",
+        "outcome",
+        "allocations",
+        "recovery_actions"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
