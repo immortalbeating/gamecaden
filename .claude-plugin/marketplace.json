@@ -1,0 +1,12 @@
+{
+  "name": "gamecaden",
+  "description": "Gamecaden游戏开发工作流",
+  "owner": { "name": "immortalbeating2" },
+  "plugins": [
+    {
+      "name": "gamecaden",
+      "source": "./plugins/gamecaden",
+      "description": "游戏设计、开发、资产、验证与跨会话续接"
+    }
+  ]
+}

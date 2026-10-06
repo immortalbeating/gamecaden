@@ -1,19 +1,28 @@
 # Gamecaden
 
-Gamecaden 是面向 Codex 的游戏开发工作流插件：从已有目标和项目记录继续工作，把设计、实现、资产、验证和收尾接回真实来源。
+Gamecaden 是面向 Codex、Claude Code及兼容Skill宿主的游戏开发工作流：从已有目标和项目记录继续工作，把设计、实现、资产、验证和收尾接回真实来源。
 
-A local-first game development workflow plugin for Codex, with eight focused skills and an optional local panel.
+A local-first game development workflow for Codex and Claude Code, with eight focused skills, a standalone skill entry and an optional local panel.
 
-## 安装 v0.1.0
+## 安装与更新
 
 在支持插件的 Codex CLI 中执行：
 
 ```sh
-codex plugin marketplace add immortalbeating2/gamecaden --ref v0.1.0
+codex plugin marketplace add immortalbeating2/gamecaden
 codex plugin add gamecaden@gamecaden --json
 ```
 
-安装后开启新会话，核对技能列表中的实际路径和版本。安装使插件在用户级可发现；已有会话是否热加载需要另行确认。安装方式依据 [Codex 插件文档](https://developers.openai.com/plugins/build/plugins)。
+Claude Code终端安装：
+
+```sh
+claude plugin marketplace add immortalbeating2/gamecaden
+claude plugin install gamecaden@gamecaden --scope user
+```
+
+普通安装跟踪默认分支，更新时无需修改版本号。固定tag可选；Codex更新使用`marketplace upgrade`后`plugin add`，Claude使用`marketplace update`后`plugin update`。安装后开启新会话核对实际路径和版本。
+
+还可通过`npx skills`安装完整包或手动复制为独立Skill；具体命令、范围、更新及固定tag切换见[安装说明](docs/installation.md)。
 
 ## 开始使用
 

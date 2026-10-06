@@ -1,15 +1,39 @@
 # 安装、升级与回滚
 
-本包是 Gamecaden 0.1.0，自有代码和文档按[MIT](LICENSE)提供；第三方许可见[声明](THIRD_PARTY_NOTICES.md)。技能名称保留 flow / init / brainstorm / design / develop / assets / verify / close，插件宿主使用 Gamecaden 命名空间；实际名称由宿主技能列表回读。工作流记录仍使用已接入项目自己的位置，默认 `game-workflow/`、schema v1。
+本包是 Gamecaden 0.1.1，自有代码和文档按[MIT](LICENSE)提供；第三方许可见[声明](THIRD_PARTY_NOTICES.md)。插件提供 flow / init / brainstorm / design / develop / assets / verify / close 八个职责；独立Skill使用包根的[gamecaden入口](SKILL.md)读取这些职责。实际名称由宿主回读。工作流记录仍使用已接入项目自己的位置，默认 `game-workflow/`、schema v1。
 
-## 从GitHub安装
+## Codex插件安装与更新
 
 ```powershell
-codex plugin marketplace add immortalbeating2/gamecaden --ref v0.1.0
+codex plugin marketplace add immortalbeating2/gamecaden
 codex plugin add "gamecaden@gamecaden" --json
 ```
 
-安装后新开会话，核对实际可用的八个gamecaden职责及版本。安装使技能可被用户级发现；项目通过明确的Gamecaden调用或有效项目指引采用，通常以gamecaden:init完成接入。只调用一次职责不自动迁移整个项目。具体使用见[公开README](https://github.com/immortalbeating2/gamecaden/blob/v0.1.0/README.md)。
+普通安装跟踪仓库默认main分支。更新时执行 `codex plugin marketplace upgrade gamecaden`，再执行 `codex plugin add gamecaden@gamecaden --json`；无需填写新版本号，也不表示后台自动更新。
+
+固定版本时可选 `--ref v0.1.1`；固定tag的更新仍读取该tag。已有固定来源改用默认分支，先明确移除原gamecaden marketplace登记再按上面命令添加；其他本地演练来源独立处理。完整步骤见[公开安装说明](https://github.com/immortalbeating2/gamecaden/blob/main/docs/installation.md)。
+
+## Claude Code插件
+
+```sh
+claude plugin marketplace add immortalbeating2/gamecaden
+claude plugin install gamecaden@gamecaden --scope user
+```
+
+更新执行 `claude plugin marketplace update gamecaden`，再执行 `claude plugin update gamecaden@gamecaden --scope user`。交互会话也可用 `/plugin marketplace add`、`/plugin install`，安装后新开会话或 `/reload-plugins`。项目级按实际选择使用 `--scope project`。
+
+## 独立Skill与完整目录
+
+通过Vercel的通用Skills CLI安装完整包，以下示例为用户级Codex；Claude Code把agent换成claude-code，省略global则为当前项目：
+
+```sh
+npx skills add https://github.com/immortalbeating2/gamecaden/tree/main/plugins/gamecaden --skill gamecaden --agent codex --global
+npx skills update gamecaden --global
+```
+
+这是npm提供的安装器，不是Gamecaden自有npm注册表包。也可Git克隆并完整复制本目录到宿主的Skill目录；单独复制八个职责目录会丢失共同文档和工具。安装范围、复制模式和手动更新见[公开安装说明](https://github.com/immortalbeating2/gamecaden/blob/main/docs/installation.md)。
+
+安装后新开会话核对入口与实际版本。项目通过明确的Gamecaden调用或有效项目指引采用，通常以init完成接入；只调用一次职责按本次范围处理。Codex项目指引使用AGENTS.md，Claude Code使用CLAUDE.md。读取Skill不需要Python，可选工具依赖单独安装。
 
 ## 构建与准备安装源
 
@@ -21,7 +45,7 @@ codex plugin add "gamecaden@gamecaden" --json
 & $python "$bundle/scripts/gamecaden.py" stage --package "$releaseRoot/plugins/gamecaden" --target-root $installRoot
 ```
 
-stage 返回 marketplace_name 与 current.source_path；它只准备安装源，没有执行宿主缓存安装。目录为 `plugins/gamecaden/<内容摘要>`，相同版本只允许相同内容。运行状态不放在插件内。
+build生成Codex和Claude catalog；stage返回marketplace_name与current.source_path，只管理Codex安装源，不执行宿主缓存安装。目录为 `plugins/gamecaden/<内容摘要>`，相同版本只允许相同内容。运行状态不放在插件内。
 
 ## 宿主安装与发现
 

@@ -94,6 +94,64 @@ class DistributionTests(unittest.TestCase):
             self.assertIn("gamecaden/panels/night/vendor/ELK-LICENSE.md", archive.namelist())
         self.command("verify", "--package", package)
 
+    def test_three_host_manifests_and_catalogs_share_package(self):
+        package = Path(self.release1["plugin_root"])
+        for rel in ("plugin.json", ".codex-plugin/plugin.json", ".claude-plugin/plugin.json"):
+            manifest = json.loads((package / rel).read_text(encoding="utf-8"))
+            self.assertEqual(manifest["name"], "gamecaden")
+            self.assertEqual(manifest["version"], self.release1["version"])
+        self.assertNotIn("skills", json.loads((package / ".claude-plugin/plugin.json").read_text(encoding="utf-8")))
+        output = self.suite / "rc1"
+        codex = json.loads((output / ".agents/plugins/marketplace.json").read_text(encoding="utf-8"))
+        claude = json.loads((output / ".claude-plugin/marketplace.json").read_text(encoding="utf-8"))
+        self.assertEqual(claude["name"], "gamecaden-local")
+        self.assertEqual(claude["owner"]["name"], "immortalbeating2")
+        self.assertEqual(claude["plugins"], [{"name": "gamecaden", "source": "./plugins/gamecaden"}])
+        self.assertEqual(codex["plugins"][0]["source"]["path"], claude["plugins"][0]["source"])
+        self.assertEqual((output / claude["plugins"][0]["source"]).resolve(), package.resolve())
+
+    def test_standalone_and_shared_dependencies_retained_in_archive(self):
+        package = Path(self.release1["plugin_root"])
+        required = ["SKILL.md", ".claude-plugin/plugin.json"]
+        required += [p.relative_to(BUNDLE).as_posix() for p in (BUNDLE / "shared").rglob("*") if p.is_file()]
+        self.assertGreater(len(required), 2)
+        with zipfile.ZipFile(self.release1["archive"]) as archive:
+            for rel in required:
+                if rel != ".claude-plugin/plugin.json":
+                    self.assertEqual((package / rel).read_bytes(), (BUNDLE / rel).read_bytes())
+                self.assertEqual(archive.read("gamecaden/" + rel), (package / rel).read_bytes())
+
+    def test_legacy_package_build_verify_stage_and_rollback(self):
+        source = self.case / "legacy"
+        shutil.copytree(self.source, source)
+        (source / ".claude-plugin/plugin.json").unlink()
+        (source / ".claude-plugin").rmdir()
+        (source / "SKILL.md").unlink()
+        (source / "INSTALL.md").write_text("# Legacy installation fixture\n", encoding="utf-8")
+        legacy = self.build(source, self.case / "legacy-output", "0.1.0")
+        self.assertFalse((self.case / "legacy-output/.claude-plugin/marketplace.json").exists())
+        self.command("verify", "--package", legacy["plugin_root"])
+        self.assertEqual(self.stage(legacy)["current"]["digest"], legacy["digest"])
+        self.stage(self.release2)
+        restored = self.command("rollback", "--target-root", self.target)
+        self.assertEqual(restored["current"]["digest"], legacy["digest"])
+
+    def test_invalid_claude_or_standalone_identity_rejected(self):
+        for kind in ("name", "version", "skills", "standalone"):
+            with self.subTest(kind=kind):
+                source = self.case / kind
+                shutil.copytree(self.source, source)
+                if kind == "standalone":
+                    path = source / "SKILL.md"
+                    path.write_text(path.read_text(encoding="utf-8").replace("name: gamecaden", "name: other"), encoding="utf-8")
+                else:
+                    path = source / ".claude-plugin/plugin.json"
+                    manifest = json.loads(path.read_text(encoding="utf-8"))
+                    manifest[kind] = {"name": "other", "version": "9.0.0", "skills": "./other-skills/"}[kind]
+                    path.write_text(json.dumps(manifest), encoding="utf-8")
+                result = self.command("build", "--source", source, "--output", self.case / (kind + "-output"), ok=False)
+                self.assertEqual(result["errors"][0]["code"], "invalid_skills" if kind == "standalone" else "invalid_identity")
+
     def test_tampered_and_extra_files_rejected(self):
         for kind in ("tampered", "extra"):
             package = self.case / kind

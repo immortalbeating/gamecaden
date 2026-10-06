@@ -1,17 +1,25 @@
 {
-  "digest": "d0b2dd5ec5901def55b073807b0464e5635690cff47d13ee45cd3c343ac38221",
+  "digest": "89762d4c098cd59afb4e990655e6bc3ae3e7dfd9b7dd6f1f1ec825e64f7adba2",
   "files": {
+    ".claude-plugin/plugin.json": {
+      "sha256": "8ff4e2930971d449ef2cae719add19fe9bddfc024a857e8cfeaea2541ccc0284",
+      "size": 297
+    },
     ".codex-plugin/plugin.json": {
-      "sha256": "1507a79813ce62dc4b66f2d3896e4461e24775647ee8fc13abfbe1c19e48b50e",
+      "sha256": "fcdfb222c57c6f47b73054f0721f6dc7f5b1941508a69fb588ee488353b76622",
       "size": 366
     },
     "INSTALL.md": {
-      "sha256": "709ac534a67aed925b376772d8f535c75e3e0178ba4c2e828972bfc09fa80395",
-      "size": 4513
+      "sha256": "74ba08b460c4e144364bbcc81153ec7a07c717cd55195660b4fea3ed338c909b",
+      "size": 6229
     },
     "LICENSE": {
       "sha256": "487a41972c5305e2a9c34cc0f70f706c50269952b80c2a05e88b58892eed22df",
       "size": 1073
+    },
+    "SKILL.md": {
+      "sha256": "30f750e5e357bee20e4968eeb107d4eae51775e6b266a7dd887f9d3f6fa4fc22",
+      "size": 1171
     },
     "THIRD_PARTY_NOTICES.md": {
       "sha256": "4fc22bb516478596bcd1115f6f05bbd31542abe92e45ea0461a05c80be4cb9d8",
@@ -238,7 +246,7 @@
       "size": 1609707
     },
     "plugin.json": {
-      "sha256": "8c3e162b858fd18f45d5ed14cfb2dda44f9ccce82e4a8dccb6b38a6d05f20e54",
+      "sha256": "8eb545bf8c1583676a0eb97dc3b7fcf57db9339aa91c9486b2169d7baf99ec69",
       "size": 308
     },
     "profiles/README.md": {
@@ -326,8 +334,8 @@
       "size": 21652
     },
     "scripts/gamecaden.py": {
-      "sha256": "35fdc3d53576a921e6de0174d4d7e8e2764db593074594a6ac2f62d8fb259f1b",
-      "size": 19538
+      "sha256": "7eca2868f9b58f9e55bcbc8f88fc094fae3bc8683e81b5e5168ba232e5783745",
+      "size": 20793
     },
     "scripts/requirements.txt": {
       "sha256": "11b2a74047560f68ffd8dbb229e654b6363c38b88222b3fbed499c2397395164",
@@ -426,8 +434,8 @@
       "size": 5846
     },
     "shared/workspace.md": {
-      "sha256": "58a95e5d52530ce89f4200e58cca0b559b4f31baa646f65afb2d70fa17e8725b",
-      "size": 10477
+      "sha256": "f5a7c0c959d9f3df77e950b1a38b9bbf493b2f12aed966b10151ace32c5cb381",
+      "size": 10574
     },
     "skills/assets/SKILL.md": {
       "sha256": "cecf5ba6fb51efd7f1f75d73eddd6cb79c7881936243dffd9ce8c2506d6f951e",
@@ -490,12 +498,12 @@
       "size": 5295
     },
     "skills/init/SKILL.md": {
-      "sha256": "705f653dc226b3f0b8ba162f15263c7ea93db512b0c83ceb552ca2f63a714d05",
-      "size": 8169
+      "sha256": "378f3fd50352fda405993b8d3e098ee7495d45db9a75a3941c2aa19f054ca9d0",
+      "size": 8258
     },
     "skills/init/references/adoption.md": {
-      "sha256": "a882a23119fa0a19d9793821a04ae38a8bc98b0271b79bbbb0905265e7bfe495",
-      "size": 4076
+      "sha256": "df1fc75928e14fc0eb444141099a4a3593ac0d3f63a710756eb5502ab47c38e7",
+      "size": 4155
     },
     "skills/verify/SKILL.md": {
       "sha256": "f36586bdd2c98cc685175b59d751a57a77cf8dc2a13f5505b586e526ff549db7",
@@ -596,5 +604,5 @@
   },
   "format_version": 1,
   "name": "gamecaden",
-  "version": "0.1.0"
+  "version": "0.1.1"
 }

@@ -16,8 +16,8 @@ import zipfile
 
 NAME = "gamecaden"
 SKILLS = {"flow", "init", "brainstorm", "design", "develop", "assets", "verify", "close"}
-DIRECTORIES = {"skills", "shared", "profiles", "templates", "schemas", "scripts", "examples", "panels", ".codex-plugin"}
-ROOT_FILES = {"plugin.json", "INSTALL.md", "THIRD_PARTY_NOTICES.md", "LICENSE"}
+DIRECTORIES = {"skills", "shared", "profiles", "templates", "schemas", "scripts", "examples", "panels", ".codex-plugin", ".claude-plugin"}
+ROOT_FILES = {"plugin.json", "SKILL.md", "INSTALL.md", "THIRD_PARTY_NOTICES.md", "LICENSE"}
 MANIFEST = ".gamecaden-package.json"
 SEMVER = r"(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?"
 LINK = re.compile(r"!?\[[^\]]*\]\(([^\n)]+)\)")
@@ -125,11 +125,22 @@ def files(root, source=False):
 def package_checks(root):
     portable = decode((root / "plugin.json").read_bytes())
     compat = decode((root / ".codex-plugin/plugin.json").read_bytes())
+    claude_path = root / ".claude-plugin/plugin.json"
+    claude = decode(claude_path.read_bytes()) if claude_path.exists() else None
     require(portable.get("name") == compat.get("name") == NAME and
             portable.get("version") == compat.get("version") and
             isinstance(portable.get("version"), str) and re.fullmatch(SEMVER, portable["version"]),
             "invalid_identity", "Manifest identity/version mismatch")
     require(compat.get("skills") == "./skills/", "invalid_identity", "Skills must use the shared package root")
+    if claude is not None:
+        require(claude.get("name") == NAME and claude.get("version") == portable["version"] and
+                "skills" not in claude, "invalid_identity", "Claude identity/version or default skills directory differs")
+    if (root / "SKILL.md").exists():
+        standalone = (root / "SKILL.md").read_text(encoding="utf-8-sig")
+        frontmatter = standalone.split("---\n", 2)
+        require(standalone.startswith("---\n") and len(frontmatter) == 3 and
+                re.search(r"(?m)^name: gamecaden$", frontmatter[1]),
+                "invalid_skills", "Invalid standalone skill identity")
     actual = {p.name for p in (root / "skills").iterdir() if p.is_dir()}
     require(actual == SKILLS, "invalid_skills", "Expected the eight Gamecaden skills")
     for skill in SKILLS:
@@ -169,6 +180,11 @@ def plugin_entry(path):
             "policy": {"installation": "AVAILABLE", "authentication": "ON_USE"}, "category": "Developer Tools"}
 
 
+def claude_marketplace():
+    return {"name": "gamecaden-local", "owner": {"name": "immortalbeating2"},
+            "plugins": [{"name": NAME, "source": "./plugins/gamecaden"}]}
+
+
 def build(source, output, version=None):
     source, output = safe_path(source), safe_path(output)
     separate(source, output)
@@ -184,7 +200,9 @@ def build(source, output, version=None):
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source / rel, target)
     if version:
-        for rel in ("plugin.json", ".codex-plugin/plugin.json"):
+        for rel in ("plugin.json", ".codex-plugin/plugin.json", ".claude-plugin/plugin.json"):
+            if rel == ".claude-plugin/plugin.json" and not (package / rel).exists():
+                continue
             data = decode((package / rel).read_bytes())
             data["version"] = version
             atomic(package / rel, encode(data))
@@ -194,6 +212,8 @@ def build(source, output, version=None):
     atomic(package / MANIFEST, encode({"format_version": 1, "name": NAME, "version": current_version,
                                      "digest": digest, "files": inventory}))
     atomic(output / ".agents/plugins/marketplace.json", encode(marketplace(plugin_entry("./plugins/gamecaden"))))
+    if (package / ".claude-plugin/plugin.json").exists():
+        atomic(output / ".claude-plugin/marketplace.json", encode(claude_marketplace()))
     archive = output / f"gamecaden-{current_version}.zip"
     with zipfile.ZipFile(archive, "w", compression=zipfile.ZIP_DEFLATED) as writer:
         for path in sorted(p for p in package.rglob("*") if p.is_file()):

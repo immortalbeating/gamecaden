@@ -19,6 +19,14 @@ python scripts/check.py --suite distribution
 
 具体检查集合以入口的实现和 `--help` 为准。合同检查核对包内接口与文件关系；核心回归核对 I/O、治理及面板模型；分发检查核对构建、完整性和安装恢复行为。发行前执行完整集合，保存环境、命令、真实结果与未覆盖项。
 
+## v0.1.1安装兼容检查
+
+2026-10-07，Windows公开布局完整执行 `python -B -X utf8 scripts/check.py --suite all`，退出0：108核心通过，26分发/恢复完成（25通过、1文件symlink不可用跳过），13JavaScript通过；合同检查与重复构建通过。新增回归覆盖三manifest与两catalog同源、独立完整资源、错误身份拒绝及历史包构建/校验/安装/回滚。
+
+在新隔离环境中，Codex插件安装并由新app-server发现八职责；Claude Code 2.1.288官方validator、安装、list和details确认0.1.1及八职责。两种插件缓存与150资源的候选逐字节一致。Skills CLI 1.7.0复制到两个宿主的项目目录，也与候选一致；Codex独立目录实际发现总入口及八职责共九入口，均为repo scope、pluginId为空。安装器显示的一个包不能当成宿主一个入口，初次探针的数量假设失败已保留并按实际结果修正。
+
+Claude独立目录通过文件/相对依赖核对；`plugin details gamecaden@skills-dir`不是普通Skill发现接口，其未找到结果保留，未据此声称原生Skill列表已验证。本轮没有发送模型请求、复制登录或改写真实游戏/用户安装；真实试点继续rc.8。远端发布消费及提交级CI结果以GitHub对应版本/运行记录为准。
+
 ## v0.1.0发行检查
 
 2026-10-06，在Windows的独立公开仓库布局中，使用Python 3.14.5和Node.js执行 `python -B -X utf8 scripts/check.py --suite all`，最终退出码0：
