@@ -59,13 +59,13 @@ requires 是单键表达式，可递归组合：
 
 节点详情显示职责、归属、章节、前提、证明、定义及引用此结果的后续动作；汇总关系可逐项回读每条原始关系。原文按钮仅用于已登记可读来源，按正文 heading 或治理 id 精确定位，未登记、缺失或同名多处时保留位置与核对提示。窄屏使用领域/文档/步骤列表及完整详情。没有 navigation 的已读来源、未分类资料与孤立文档仍保留，不要求项目为界面补齐标注。
 
-回到前台时使用 `GET /api/projects/<id>/revisions` 检查已登记物理来源版本；未变化不加载完整数据，变化时合并刷新，成功写回按受影响记录更新。编辑、对话框或 busy 时延后，不改草稿基准和冻结请求；缺失或读取期间变化不判为未变化。轻量检查不是门禁或工程同步，具体边界见[面板衔接](panel-workflow.md)。当前范围见[阅读器与刷新设计](https://github.com/immortalbeating2/gamecaden/blob/v0.1.0/docs/panel.md)及[核验](https://github.com/immortalbeating2/gamecaden/blob/v0.1.0/docs/validation.md)。
+回到前台时使用 `GET /api/projects/<id>/revisions` 检查已登记物理来源版本；未变化不加载完整数据，变化时合并刷新，成功写回按受影响记录更新。编辑、对话框或 busy 时延后，不改草稿基准和冻结请求；缺失或读取期间变化不判为未变化。轻量检查不是门禁或工程同步，具体边界见[面板衔接](panel-workflow.md)。当前范围见[阅读器与刷新设计](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/panel.md)及[核验](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/validation.md)。
 
 GET governance 与命令行继续使用同一只读模型，兼容增加 flows、relationships，条件增加 expected_check 说明判断类型。步骤的 condition_keys、predecessor_keys、affected_keys 是本轮引用结果；affected_keys 不表示那些动作必定受阻。
 
 嵌入 EV/Decision 的定义由实际嵌入记录拥有，外层不重复解释。局部 ID 冲突、读取期间来源变化和无效限定继续报错或保留未知，不靠读取顺序覆盖。
 
-字段由 [schema](../schemas/governance-v1.schema.json)拥有，实现见[派生模块](../scripts/workflow_relations.py)。本轮范围与结果见[设计](https://github.com/immortalbeating2/gamecaden/blob/v0.1.0/docs/panel.md)及[核验](https://github.com/immortalbeating2/gamecaden/blob/v0.1.0/docs/validation.md)。
+字段由 [schema](../schemas/governance-v1.schema.json)拥有，实现见[派生模块](../scripts/workflow_relations.py)。本轮范围与结果见[设计](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/panel.md)及[核验](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/validation.md)。
 
 ## 只读文档导航合同
 
@@ -93,4 +93,4 @@ GET governance 与命令行继续使用同一只读模型，兼容增加 flows�
 <!-- workflow:endgovernance -->
 ````
 
-上例只表达阅读收录关系。正文标题由 headings 派生；原治理条目可用 `{"path":"./level-design.md","fragment":"route-check"}` 回读 id 为 route-check 的定义，fragment 不作为第二份状态。parent 须解析到 document，本例不把规则条目当作父文档。已存在的 rules、conditions、flows 等继续保留在同一块中，不另建重复治理块或状态记录。当前入口见[领域设计](https://github.com/immortalbeating2/gamecaden/blob/v0.1.0/docs/panel.md)与[本轮核验](https://github.com/immortalbeating2/gamecaden/blob/v0.1.0/docs/validation.md)。
+上例只表达阅读收录关系。正文标题由 headings 派生；原治理条目可用 `{"path":"./level-design.md","fragment":"route-check"}` 回读 id 为 route-check 的定义，fragment 不作为第二份状态。parent 须解析到 document，本例不把规则条目当作父文档。已存在的 rules、conditions、flows 等继续保留在同一块中，不另建重复治理块或状态记录。当前入口见[领域设计](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/panel.md)与[本轮核验](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/validation.md)。

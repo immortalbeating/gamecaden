@@ -1,6 +1,6 @@
 # Gamecaden 面板与本地宿主
 
-工作流名称为 **Gamecaden**，当前界面采用用户选择的“墨夜放映室”方向。它是共享面板，不是第九个职责 Skill；插件入口为 `gamecaden:flow` 等八个职责，安装与版本恢复见 [安装说明](../INSTALL.md)。维护背景见[项目 README](https://github.com/immortalbeating2/gamecaden/blob/v0.1.0/README.md)。
+工作流名称为 **Gamecaden**，当前界面采用用户选择的“墨夜放映室”方向。它是共享面板，不是第九个职责 Skill；插件入口为 `gamecaden:flow` 等八个职责，安装与版本恢复见 [安装说明](../INSTALL.md)。维护背景见[项目 README](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/README.md)。
 
 ## 启动
 
@@ -32,7 +32,7 @@ Task/Epic 的状态来自原记录。任意 Markdown 正文不被推断成完成
 
 关系区使用原来源的可选 flows / relationships 定义，语义见[关系视图](../shared/relation-views.md)。规范来源默认打开“项目领域”：先看折叠的领域概览，展开领域和文档收录内容后阅读真实来源。“来源与影响”沿用同一批原节点与关系，两种来源视角均可切换横纵排版。进入领域默认打开文档树阅读器（用户所说的领域内部工作树）：左侧是真实文档收录树，右侧是所选文档实际章节正文，可切换焦点关系图查看所选来源的直接关系。原文、治理 id 与原始关系逐项跳转继续保留。点击领域可聚焦，保留直接相连的一跳外部端点；返回恢复该项目同一页面会话的视角、展开、缩放与画布位置。侧栏展示职责、章节目录、原治理条目及原始关系逐项，原文按钮定位正文标题或治理 id；同名多处或当前版本缺失时提示核对。
 
-没有 navigation 时仍保留已读来源、未分类资料和孤立文档，不强制补满标注；没有声明流程时明确提示缺口。原文入口只使用已登记来源，窄屏改为领域/文档/步骤列表并保留完整详情。登记范围不代表全部项目完整性。当前阅读器与刷新范围见[设计](https://github.com/immortalbeating2/gamecaden/blob/v0.1.0/docs/panel.md)与[核验](https://github.com/immortalbeating2/gamecaden/blob/v0.1.0/docs/validation.md)；[领域概览设计](https://github.com/immortalbeating2/gamecaden/blob/v0.1.0/docs/panel.md)与[领域核验](https://github.com/immortalbeating2/gamecaden/blob/v0.1.0/docs/validation.md)、早前[关系设计](https://github.com/immortalbeating2/gamecaden/blob/v0.1.0/docs/panel.md)与[验证](https://github.com/immortalbeating2/gamecaden/blob/v0.1.0/docs/validation.md)保留历史范围。
+没有 navigation 时仍保留已读来源、未分类资料和孤立文档，不强制补满标注；没有声明流程时明确提示缺口。原文入口只使用已登记来源，窄屏改为领域/文档/步骤列表并保留完整详情。登记范围不代表全部项目完整性。当前阅读器与刷新范围见[设计](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/panel.md)与[核验](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/validation.md)；[领域概览设计](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/panel.md)与[领域核验](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/validation.md)、早前[关系设计](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/panel.md)与[验证](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/validation.md)保留历史范围。
 
 总览的 `GET /api/projects/<id>/governance?focus=T-003` 是只读派生视图；命令行可用 `scripts/workflow_governance.py --project-root ... [--workspace ...] --focus T-003` 读取同一模型。材料 `located` 只表示已定位来源；条件状态和证明不能替代语义核验或授权。旧来源未识别治理定义时明确显示缺口，不推断全部通过。详情见[治理合同](../shared/governance.md)、[材料职责](../shared/material-requirements.md)与[面板续接](../shared/panel-workflow.md)。
 
@@ -40,7 +40,7 @@ Task/Epic 的状态来自原记录。任意 Markdown 正文不被推断成完成
 
 资产的技术检查、决定、用途指定和实际运行采用仍各有归属。换候选时，旧用途的决定/证据引用不自动沿用。预览是静态参考或媒体播放，不能代替引擎内效果和玩法验收。当前没有帧编辑、地图生成器或模型编辑器。
 
-总览先提供当前工作入口，资料页可进入同一来源的章节阅读器。候选比较可选择任一已登记备选；预览读取失败提供就地重试。审阅的完整候选版本与账本 Revision 收在“版本依据”中，队列缩略图仅复用两者均与草稿相符的已读缓存；选择成员仍重新读取当前候选，来源变化不自动升级草稿基准。延期只保留本地草稿，不准备写回；窄屏“填写意见”直接定位表单。本轮范围与验证见[Gemini 评估及修复](https://github.com/immortalbeating2/gamecaden/blob/v0.1.0/docs/validation.md)。
+总览先提供当前工作入口，资料页可进入同一来源的章节阅读器。候选比较可选择任一已登记备选；预览读取失败提供就地重试。审阅的完整候选版本与账本 Revision 收在“版本依据”中，队列缩略图仅复用两者均与草稿相符的已读缓存；选择成员仍重新读取当前候选，来源变化不自动升级草稿基准。延期只保留本地草稿，不准备写回；窄屏“填写意见”直接定位表单。本轮范围与验证见[Gemini 评估及修复](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/validation.md)。
 
 ## 来源更新与阅读恢复
 
@@ -64,4 +64,4 @@ Task/Epic 的状态来自原记录。任意 Markdown 正文不被推断成完成
 
 state-dir/private 的新目录在 Windows 限当前账户、SYSTEM 与管理员访问；POSIX 使用 0700。连接文件由私有临时文件替换，口令不写日志。仍要求 state-dir 属于可信启动方，不能复用他人预置的签名密钥或共享状态目录。该宿主是本机工具，没有远程多人账号系统。
 
-详情：[桥接合同](../shared/panel-bridge-v1.md) · [本地 I/O 与恢复](../shared/local-io.md) · [第十四步桥接验证](https://github.com/immortalbeating2/gamecaden/blob/v0.1.0/docs/validation.md) · [第十五步衔接](https://github.com/immortalbeating2/gamecaden/blob/v0.1.0/docs/panel.md) · [治理验证](https://github.com/immortalbeating2/gamecaden/blob/v0.1.0/docs/validation.md)。第十四步的历史结果只覆盖当时的桥接读写，不代表完整治理界面已通过浏览器验收。
+详情：[桥接合同](../shared/panel-bridge-v1.md) · [本地 I/O 与恢复](../shared/local-io.md) · [第十四步桥接验证](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/validation.md) · [第十五步衔接](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/panel.md) · [治理验证](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/validation.md)。第十四步的历史结果只覆盖当时的桥接读写，不代表完整治理界面已通过浏览器验收。

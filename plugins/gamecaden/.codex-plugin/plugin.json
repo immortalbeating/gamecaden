@@ -1,6 +1,6 @@
 {
   "name": "gamecaden",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "按需组织游戏设计、开发、资产、验证与续接，沿用项目的唯一事实来源。",
   "skills": "./skills/",
   "interface": {

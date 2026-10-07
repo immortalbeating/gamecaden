@@ -1,5 +1,7 @@
 # Gamecaden
 
+维护与公开发行已统一到 [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden)。当前迁移版为0.1.2；旧0.1.0/0.1.1保持原内容。原账号地址仅保留GitHub兼容跳转。
+
 Gamecaden 是面向 Codex、Claude Code及兼容Skill宿主的游戏开发工作流：从已有目标和项目记录继续工作，把设计、实现、资产、验证和收尾接回真实来源。
 
 A local-first game development workflow for Codex and Claude Code, with eight focused skills, a standalone skill entry and an optional local panel.
@@ -9,14 +11,14 @@ A local-first game development workflow for Codex and Claude Code, with eight fo
 在支持插件的 Codex CLI 中执行：
 
 ```sh
-codex plugin marketplace add immortalbeating2/gamecaden
+codex plugin marketplace add immortalbeating/gamecaden
 codex plugin add gamecaden@gamecaden --json
 ```
 
 Claude Code终端安装：
 
 ```sh
-claude plugin marketplace add immortalbeating2/gamecaden
+claude plugin marketplace add immortalbeating/gamecaden
 claude plugin install gamecaden@gamecaden --scope user
 ```
 
@@ -66,4 +68,4 @@ python scripts/check.py --suite all
 
 ## 许可
 
-本项目采用 [MIT](LICENSE)。随包保留的 ELK.js 0.12.0 使用原 EPL-2.0 许可；第三方声明与许可随对应文件保留。仓库：https://github.com/immortalbeating2/gamecaden
+本项目采用 [MIT](LICENSE)。随包保留的 ELK.js 0.12.0 使用原 EPL-2.0 许可；第三方声明与许可随对应文件保留。仓库：https://github.com/immortalbeating/gamecaden

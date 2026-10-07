@@ -1,5 +1,7 @@
 # 通用安装兼容与验证范围
 
+维护与公开发行已统一到 [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden)。当前迁移版为0.1.2；旧0.1.0/0.1.1保持原内容。原账号地址仅保留GitHub兼容跳转。
+
 Gamecaden的通用入口是包含SKILL.md、八个职责及共同文档/工具的完整包。Codex和Claude Code另有原生插件入口；支持标准Agent Skills的其他宿主可使用完整目录安装。
 
 ## 当前安装目标
@@ -31,7 +33,7 @@ Pi与OMP的2026-10-07补测分别使用Pi1.0.4和已有OMP18.2.11，仍为同一
 以OpenCode用户级安装为例：
 
 ```sh
-npx skills add https://github.com/immortalbeating2/gamecaden/tree/main/plugins/gamecaden --skill gamecaden --agent opencode --global
+npx skills add https://github.com/immortalbeating/gamecaden/tree/main/plugins/gamecaden --skill gamecaden --agent opencode --global
 ```
 
 agy改为`--agent antigravity-cli`，Cursor改为`--agent cursor`。省略global安装到当前项目；本轮实际安装检查采用项目级Copy模式，全局目的路径按安装器的当前配置解析。可添加`--copy`使用完整目录复制。
@@ -47,7 +49,7 @@ agy改为`--agent antigravity-cli`，Cursor改为`--agent cursor`。省略global
 Pi可使用Skills CLI的`pi`目标：
 
 ```sh
-npx skills add https://github.com/immortalbeating2/gamecaden/tree/main/plugins/gamecaden --skill gamecaden --agent pi --global
+npx skills add https://github.com/immortalbeating/gamecaden/tree/main/plugins/gamecaden --skill gamecaden --agent pi --global
 ```
 
 用户级目录为`~/.pi/agent/skills/gamecaden`；省略`--global`写入当前项目的`.pi/skills/gamecaden`。Pi也支持标准`.agents/skills`位置。项目技能加载遵循Pi自身的项目信任设置；不要同时安装多个相同入口副本。

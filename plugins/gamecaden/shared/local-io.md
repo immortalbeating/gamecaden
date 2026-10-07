@@ -93,4 +93,4 @@ settled 回执说明原操作当时的结果；需要现在的内容时另读原
 
 JSON views 保留来源、原文、时间和诊断。raw 源无法完整枚举结构化记录时 complete=false；重复 ID 和未结算操作是另外的诊断，不一概改变扫描完整性。分页是否还有内容看 next_cursor。Timeline 当前提供带来源的记录/事件材料，正文中的任意历史叙述不伪造为精确时间线。
 
-工具不执行引擎、素材生成或 Git 交付，也不替代 verify/close 的实际判断。开发测试见维护仓库的 [test_workflow_io.py](https://github.com/immortalbeating2/gamecaden/blob/v0.1.0/tests/test_workflow_io.py)；包内纯合同检查为 [check_contracts.py](../scripts/check_contracts.py)。
+工具不执行引擎、素材生成或 Git 交付，也不替代 verify/close 的实际判断。开发测试见维护仓库的 [test_workflow_io.py](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/tests/test_workflow_io.py)；包内纯合同检查为 [check_contracts.py](../scripts/check_contracts.py)。

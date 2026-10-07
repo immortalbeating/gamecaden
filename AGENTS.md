@@ -10,3 +10,5 @@
 - 公共材料仅使用匿名示例；连接凭据、本机路径、私有日志和业务项目资料留在公共包外。
 
 维护本工具包不自动授权运行游戏、修改外部项目、提交、推送或发布。
+
+The sole active repository is immortalbeating/gamecaden. Preserve archived private history locally; never push private history refs or internal evidence into this public repository.

@@ -1,7 +1,7 @@
 {
   "name": "gamecaden",
   "description": "Gamecaden游戏开发工作流",
-  "owner": { "name": "immortalbeating2" },
+  "owner": { "name": "immortalbeating" },
   "plugins": [
     {
       "name": "gamecaden",

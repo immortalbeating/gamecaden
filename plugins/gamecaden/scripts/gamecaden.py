@@ -181,7 +181,7 @@ def plugin_entry(path):
 
 
 def claude_marketplace():
-    return {"name": "gamecaden-local", "owner": {"name": "immortalbeating2"},
+    return {"name": "gamecaden-local", "owner": {"name": "immortalbeating"},
             "plugins": [{"name": NAME, "source": "./plugins/gamecaden"}]}
 
 

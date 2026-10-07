@@ -105,7 +105,7 @@ class DistributionTests(unittest.TestCase):
         codex = json.loads((output / ".agents/plugins/marketplace.json").read_text(encoding="utf-8"))
         claude = json.loads((output / ".claude-plugin/marketplace.json").read_text(encoding="utf-8"))
         self.assertEqual(claude["name"], "gamecaden-local")
-        self.assertEqual(claude["owner"]["name"], "immortalbeating2")
+        self.assertEqual(claude["owner"]["name"], "immortalbeating")
         self.assertEqual(claude["plugins"], [{"name": "gamecaden", "source": "./plugins/gamecaden"}])
         self.assertEqual(codex["plugins"][0]["source"]["path"], claude["plugins"][0]["source"])
         self.assertEqual((output / claude["plugins"][0]["source"]).resolve(), package.resolve())

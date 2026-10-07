@@ -17,7 +17,7 @@
 
 ## 阅读与来源更新
 
-领域内部默认使用文档树阅读器，左侧按实际收录关系选择文档，右侧读取实际章节正文；可切换焦点关系图，继续按原文标题、治理 id 与逐项关系回读。树是阅读组织，不是另一份任务清单或门禁。说明与范围见[阅读器与刷新设计](https://github.com/immortalbeating2/gamecaden/blob/v0.1.0/docs/panel.md)和[本轮核验](https://github.com/immortalbeating2/gamecaden/blob/v0.1.0/docs/validation.md)。
+领域内部默认使用文档树阅读器，左侧按实际收录关系选择文档，右侧读取实际章节正文；可切换焦点关系图，继续按原文标题、治理 id 与逐项关系回读。树是阅读组织，不是另一份任务清单或门禁。说明与范围见[阅读器与刷新设计](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/panel.md)和[本轮核验](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/validation.md)。
 
 面板回到前台（窗口 focus / 页面 visible）时调用 `GET /api/projects/<id>/revisions` 检查已登记物理来源版本。只有 complete 为 true、digest 非空才比较；未变化不加载完整视图，变化时合并刷新，成功写回更新受影响记录。全量读取前后版本不一致、来源缺失或检查失败时保留提示，不认定已是最新。编辑、对话框和 busy 时延后自动刷新，原草稿基准及冻结请求不改；当前会话阅读选择、章节、展开和位置按项目 binding 隔离。无需每推进一次就手工维护面板事实，仍按原记录职责保存真正变化。轻量检查不扫描引擎运行根，也不证明实际工程、素材字节或 Git 已同步；这些仍须显式读取和对应证据核验。
 
