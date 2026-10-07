@@ -1,25 +1,25 @@
 {
-  "digest": "38e4825797112dbaaf05482449a2e711a977d8838155fee6d0e1528a9ce151ab",
+  "digest": "190c7153dfa105e4f5754a9de4bcde1a7703c92ad99cb351fb069059eeac4d0b",
   "files": {
     ".claude-plugin/plugin.json": {
-      "sha256": "805a684b4e4eaed052691f7abd55e42d03090e1c315f04ab59554ef873b0b004",
+      "sha256": "a6e5d641dda91460d9385b37c33dab8175395bf7b6504f637a80d772ea04d321",
       "size": 295
     },
     ".codex-plugin/plugin.json": {
-      "sha256": "b46dfcced07adf21f6f368267ad6b7ca855d4cce92d5ca9a30d4ced23c517b31",
+      "sha256": "a6d212f445271a3c4c4d6266e1fa3d0f7429b68f7749feb7a8271ddbfa1d7ea2",
       "size": 366
     },
     "INSTALL.md": {
-      "sha256": "9c647f8971ba25ab08bb2abf585ab146988f073e482c77e97089652ef08ef3f3",
-      "size": 6224
+      "sha256": "d367c24b022c1fa1152e5d1453396edc8b011c649b38ca871bdb3b950b55e4e4",
+      "size": 6639
     },
     "LICENSE": {
       "sha256": "487a41972c5305e2a9c34cc0f70f706c50269952b80c2a05e88b58892eed22df",
       "size": 1073
     },
     "SKILL.md": {
-      "sha256": "30f750e5e357bee20e4968eeb107d4eae51775e6b266a7dd887f9d3f6fa4fc22",
-      "size": 1171
+      "sha256": "827668ea9b22228780bfef2c76381c24fb84041bec5b97f428b8ca243c622ee4",
+      "size": 1408
     },
     "THIRD_PARTY_NOTICES.md": {
       "sha256": "4fc22bb516478596bcd1115f6f05bbd31542abe92e45ea0461a05c80be4cb9d8",
@@ -194,8 +194,8 @@
       "size": 102
     },
     "panels/README.md": {
-      "sha256": "aad2801c4a537cb1fba776cdc30a4078db097a82e6defda5f9c05e16e2af6883",
-      "size": 10101
+      "sha256": "82026beedc34a323e2478734dd556c3b053565479fab2b2c2e3ce3878af453d0",
+      "size": 10194
     },
     "panels/host-config.example.json": {
       "sha256": "9c24fdaf9c2d55097ac3083d6ed84347925175cb9ab6592c42fe601b8a650478",
@@ -246,7 +246,7 @@
       "size": 1609707
     },
     "plugin.json": {
-      "sha256": "7717d9b0d327c999de1151241c5dd38d9d35d85ca07123bbd84d10bcd72e6035",
+      "sha256": "249c258143d20446eb0f011ac78ff67ca5d7c8f41436fa133fe4021e7f4f6201",
       "size": 307
     },
     "profiles/README.md": {
@@ -330,12 +330,16 @@
       "size": 4563
     },
     "scripts/check_contracts.py": {
-      "sha256": "26258897a806f1df21c3099e7ff540732fe5a9fa0f8af03ba50205b66314d456",
-      "size": 21652
+      "sha256": "6bb87f8708551ff68bd9a1fadecba56640316e05c44bd8b6efe4185005e7b3d6",
+      "size": 21809
     },
     "scripts/gamecaden.py": {
       "sha256": "cd048af238b55d3677024967762c3b2d7073a14fde3669e219f973fd6c0e3d9d",
       "size": 20792
+    },
+    "scripts/gamecaden_runtime.py": {
+      "sha256": "3df8e441684c35f06ccea8d35c540c67be0bf73923fe7a5a0e061b7a4419cde2",
+      "size": 14955
     },
     "scripts/requirements.txt": {
       "sha256": "11b2a74047560f68ffd8dbb229e654b6363c38b88222b3fbed499c2397395164",
@@ -346,12 +350,12 @@
       "size": 12562
     },
     "scripts/workflow_governance.py": {
-      "sha256": "a01d8b7bff1e48cf84105a09b01c1a4d358f7fe90fd06e33f8f17defc1d580b6",
-      "size": 21789
+      "sha256": "15e321a5e05530fb40ffc16bbe2c8d4ec03ab5aa005aa1399c93e12afd8d183c",
+      "size": 21946
     },
     "scripts/workflow_io.py": {
-      "sha256": "2ccd84b23579cd7397323e51962d1faae9dc67faac46e38a300b36173a6bdf7a",
-      "size": 43279
+      "sha256": "99a8f6f19ac823d87a7641779490fd43b0505d840021c4475e5ac69a33251437",
+      "size": 43429
     },
     "scripts/workflow_navigation.py": {
       "sha256": "93af9b5523db893dea22b7e0957c5606b5894eaf08913ebe21e339900308fa74",
@@ -366,8 +370,8 @@
       "size": 5369
     },
     "scripts/workflow_panel_server.py": {
-      "sha256": "4696d8e48d427000a237b963a453132e8badc0e77bfd23f89aca06a4c78ccfba",
-      "size": 28917
+      "sha256": "b90d56a7406b7737cf1992160b8005ae68196699e1c631fc33ac0c876961cb53",
+      "size": 29067
     },
     "scripts/workflow_project.py": {
       "sha256": "b03cf9baabac4640df49bf9bf7837d3463bb6c841cc5cbacc48a37641b7f1c2c",
@@ -402,8 +406,8 @@
       "size": 17185
     },
     "shared/local-io.md": {
-      "sha256": "cb614bb7d19e77be2be1c99146f433980922abef29ba4e7e068b05eaa85c9c3c",
-      "size": 10073
+      "sha256": "dcb2860176f2590ac1db102008645b0178b853dd8668d03cf15fc28408fc1fc4",
+      "size": 12760
     },
     "shared/material-requirements.md": {
       "sha256": "bbb208242576f48c4252bc94324713bdd8932eff5f9511037547dd7c35487a0c",
@@ -418,8 +422,8 @@
       "size": 4696
     },
     "shared/records.md": {
-      "sha256": "c50e2ed61e67118708294316d1e709e7099faaf2a062bad20b772cb634d5e8e9",
-      "size": 10937
+      "sha256": "3ab931a7e1e069a6a365d864e83271d71beb04f7f42fa8fdf3601c911e4a8dd3",
+      "size": 11024
     },
     "shared/relation-views.md": {
       "sha256": "16fb8dfbfb5bc53f7cec7e88148d4ea03861a4ea89ba35cab3721ce17d343ca5",
@@ -498,8 +502,8 @@
       "size": 5295
     },
     "skills/init/SKILL.md": {
-      "sha256": "378f3fd50352fda405993b8d3e098ee7495d45db9a75a3941c2aa19f054ca9d0",
-      "size": 8258
+      "sha256": "995cbefeec7ed343c412a06919c034ffad36f9ae42a5ddcd8ae06d703400fd08",
+      "size": 8567
     },
     "skills/init/references/adoption.md": {
       "sha256": "df1fc75928e14fc0eb444141099a4a3593ac0d3f63a710756eb5502ab47c38e7",
@@ -604,5 +608,5 @@
   },
   "format_version": 1,
   "name": "gamecaden",
-  "version": "0.1.2"
+  "version": "0.1.3"
 }

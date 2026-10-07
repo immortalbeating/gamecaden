@@ -112,7 +112,8 @@ class DistributionTests(unittest.TestCase):
 
     def test_standalone_and_shared_dependencies_retained_in_archive(self):
         package = Path(self.release1["plugin_root"])
-        required = ["SKILL.md", ".claude-plugin/plugin.json"]
+        required = ["SKILL.md", ".claude-plugin/plugin.json", "INSTALL.md",
+                    "scripts/gamecaden_runtime.py", "scripts/requirements.txt"]
         required += [p.relative_to(BUNDLE).as_posix() for p in (BUNDLE / "shared").rglob("*") if p.is_file()]
         self.assertGreater(len(required), 2)
         with zipfile.ZipFile(self.release1["archive"]) as archive:

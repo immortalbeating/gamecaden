@@ -14,6 +14,8 @@ Gamecaden 将任务行为、项目事实与宿主展示分开维护。八个职�
 
 插件安装副本与项目记录是不同对象。包升级不自动改写项目设计、采用规则、接受状态或存档。新会话核对安装路径和版本；已有会话发现不能替代版本确认。
 
+包内 `scripts/gamecaden_runtime.py` 以标准库检查或准备独立缓存环境，再转发 I/O、治理、面板与合同工具。插件资源安装与工具就绪分别核验；环境选择和调用规则以 [local-io](../plugins/gamecaden/shared/local-io.md#1-环境与调用) 为准。
+
 ## 来源与 I/O
 
 来源映射指向原记录；原格式保留其维护归属。读取诊断与范围完整性需要一起解释，已定位材料不代表语义正确或条件通过。写入由本地 I/O 库检查快照与修订，保存稳定操作身份和回执；恢复先查询原请求，再处理未决操作。详见 [local-io](../plugins/gamecaden/shared/local-io.md) 与 [格式合同](../plugins/gamecaden/shared/formats-v1.md)。

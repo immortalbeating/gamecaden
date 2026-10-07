@@ -5,6 +5,12 @@ validator, or a concurrency/authorization implementation.
 """
 from __future__ import annotations
 
+if __name__ == "__main__":
+    import sys
+    sys.dont_write_bytecode = True
+    from gamecaden_runtime import bootstrap_cli
+    bootstrap_cli("contracts")
+
 import copy
 import hashlib
 import json

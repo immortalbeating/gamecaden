@@ -1,6 +1,12 @@
 """Loopback panel host. Source files and Workflow receipts remain authoritative."""
 from __future__ import annotations
 
+if __name__ == "__main__":
+    import sys
+    sys.dont_write_bytecode = True
+    from gamecaden_runtime import bootstrap_cli
+    bootstrap_cli("panel")
+
 import argparse
 import base64
 import copy

@@ -4,12 +4,11 @@
 
 ## 准备与启动
 
-需要 Python 3.12+。以下 PowerShell 示例从仓库根执行，虚拟环境保留在本地：
+需要 Python 3.12+；环境准备以[本地 I/O](../plugins/gamecaden/shared/local-io.md#1-环境与调用)为准。以下 PowerShell 示例从仓库根执行：
 
 ```powershell
-python -m venv .venv
-$gcPython = '.venv/Scripts/python.exe'
-& $gcPython -m pip install -r plugins/gamecaden/scripts/requirements.txt
+python -B plugins/gamecaden/scripts/gamecaden_runtime.py check
+python -B plugins/gamecaden/scripts/gamecaden_runtime.py setup
 $gcState = Join-Path $env:LOCALAPPDATA 'Gamecaden/panel-state'
 New-Item -ItemType Directory -Force -Path $gcState | Out-Null
 $gcConfig = Join-Path $gcState 'host-config.json'
@@ -19,10 +18,10 @@ Copy-Item plugins/gamecaden/panels/host-config.example.json $gcConfig
 编辑自己的配置副本，填写真实项目根、workspace 或明确登记的旧来源，移除不用的示例项目。保持示例的写权限为关闭，确认来源可读后启动：
 
 ```powershell
-& $gcPython plugins/gamecaden/scripts/workflow_panel_server.py --config $gcConfig --state-dir $gcState --port 8875
+python -B plugins/gamecaden/scripts/gamecaden_runtime.py run panel --config $gcConfig --state-dir $gcState --port 8875
 ```
 
-POSIX 环境使用 `.venv/bin/python`，并选择自己的独立配置与状态目录。安装副本使用实际插件根替换上面的相对路径。配置格式见 [示例](../plugins/gamecaden/panels/host-config.example.json)。
+POSIX 环境选择自己的独立配置与状态目录。安装副本使用实际插件根替换上面的相对路径。配置格式见 [示例](../plugins/gamecaden/panels/host-config.example.json)。
 
 用状态目录 `private/connection.json` 中的完整连接 URL 打开浏览器。连接口令不写入公开说明、截图或回执；工作深链接只携带项目和对象定位信息。停止启动进程即关闭服务。重启时复用同一可信状态目录，再读取新连接资料。
 

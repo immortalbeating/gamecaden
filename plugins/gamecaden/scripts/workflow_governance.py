@@ -1,5 +1,12 @@
 """Source-backed governance projection. It never writes project facts or authorizes actions."""
 from __future__ import annotations
+
+if __name__ == "__main__":
+    import sys
+    sys.dont_write_bytecode = True
+    from gamecaden_runtime import bootstrap_cli
+    bootstrap_cli("governance")
+
 import argparse, hashlib, json, re
 from pathlib import Path
 from datetime import datetime, timezone

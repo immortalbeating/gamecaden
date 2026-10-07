@@ -1,6 +1,12 @@
 """Local v1 workflow API and JSON-file/stdin CLI. Run --help for invocation."""
 from __future__ import annotations
 
+if __name__ == "__main__":
+    import sys
+    sys.dont_write_bytecode = True
+    from gamecaden_runtime import bootstrap_cli
+    bootstrap_cli("io")
+
 import argparse
 import base64
 import copy

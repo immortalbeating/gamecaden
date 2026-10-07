@@ -1,6 +1,6 @@
 # 安装、升级与回滚
 
-本包是 Gamecaden 0.1.2，自有代码和文档按[MIT](LICENSE)提供；第三方许可见[声明](THIRD_PARTY_NOTICES.md)。插件提供 flow / init / brainstorm / design / develop / assets / verify / close 八个职责；独立Skill使用包根的[gamecaden入口](SKILL.md)读取这些职责。实际名称由宿主回读。工作流记录仍使用已接入项目自己的位置，默认 `game-workflow/`、schema v1。
+本包是 Gamecaden 0.1.3，包含统一工具环境检查与首次依赖准备入口。自有代码和文档按[MIT](LICENSE)提供；第三方许可见[声明](THIRD_PARTY_NOTICES.md)。插件提供 flow / init / brainstorm / design / develop / assets / verify / close 八个职责；独立Skill使用包根的[gamecaden入口](SKILL.md)读取这些职责。实际名称由宿主回读。工作流记录仍使用已接入项目自己的位置，默认 `game-workflow/`、schema v1。
 
 ## Codex插件安装与更新
 
@@ -11,7 +11,7 @@ codex plugin add "gamecaden@gamecaden" --json
 
 普通安装跟踪仓库默认main分支。更新时执行 `codex plugin marketplace upgrade gamecaden`，再执行 `codex plugin add gamecaden@gamecaden --json`；无需填写新版本号，也不表示后台自动更新。
 
-固定版本时可选 `--ref v0.1.2`；固定tag的更新仍读取该tag。已有固定来源改用默认分支，先明确移除原gamecaden marketplace登记再按上面命令添加；其他本地演练来源独立处理。完整步骤见[公开安装说明](https://github.com/immortalbeating/gamecaden/blob/main/docs/installation.md)。
+固定版本时可选 `--ref v0.1.3`；固定tag的更新仍读取该tag。已有固定来源改用默认分支，先明确移除原gamecaden marketplace登记再按上面命令添加；其他本地演练来源独立处理。完整步骤见[公开安装说明](https://github.com/immortalbeating/gamecaden/blob/main/docs/installation.md)。
 
 ## Claude Code插件
 
@@ -33,11 +33,11 @@ npx skills update gamecaden --global
 
 这是npm提供的安装器，不是Gamecaden自有npm注册表包。也可Git克隆并完整复制本目录到宿主的Skill目录；单独复制八个职责目录会丢失共同文档和工具。安装范围、复制模式和手动更新见[公开安装说明](https://github.com/immortalbeating/gamecaden/blob/main/docs/installation.md)。
 
-安装后新开会话核对入口与实际版本。项目通过明确的Gamecaden调用或有效项目指引采用，通常以init完成接入；只调用一次职责按本次范围处理。Codex项目指引使用AGENTS.md，Claude Code使用CLAUDE.md。读取Skill不需要Python，可选工具依赖单独安装。
+安装后新开会话核对入口与实际版本。项目通过明确的Gamecaden调用或有效项目指引采用，通常以init完成接入；只调用一次职责按本次范围处理。Codex项目指引使用AGENTS.md，Claude Code使用CLAUDE.md。读取Skill不需要Python；真正采用项目、首个本地I/O或启动面板前，按[工具就绪与调用](shared/local-io.md#1-环境与调用)另行核验并准备环境。
 
 ## 构建与准备安装源
 
-需要 Python 3.12+。分发工具使用标准库；调用 I/O 或面板再安装 [运行依赖](scripts/requirements.txt)。`$python`、`$bundle`、`$releaseRoot` 和 `$installRoot` 均填写已确认的绝对路径；输出目录必须尚未存在，安装根必须由调用者明确指定。
+需要 Python 3.12+。分发工具使用标准库；I/O 与面板的环境准备见 [本地 I/O](shared/local-io.md#1-环境与调用)。`$python`、`$bundle`、`$releaseRoot` 和 `$installRoot` 均填写已确认的绝对路径；输出目录必须尚未存在，安装根必须由调用者明确指定。
 
 ```powershell
 & $python "$bundle/scripts/gamecaden.py" build --source $bundle --output $releaseRoot
@@ -58,15 +58,15 @@ Codex 安装的是自己的 cache 副本。用新会话核对八个技能的真�
 
 可用 [check_codex_discovery.py](scripts/check_codex_discovery.py) 对明确的 codex-home / project-root 启动新 app-server，核验八个真实缓存入口与文件摘要。它只检查宿主发现，不发送模型请求，也不证明自然语言续接已经执行。
 
-正文和模板可直接读取。工具/面板需要独立 Python 环境：
+正文和模板可直接读取。工具/面板使用包内标准库启动入口，先核对实际安装包根：
 
 ```powershell
-python -m venv $runtimeRoot
-& "$runtimeRoot/Scripts/python.exe" -m pip install -r "$pluginRoot/scripts/requirements.txt"
-& "$runtimeRoot/Scripts/python.exe" "$pluginRoot/scripts/check_contracts.py"
+& $python -B "$pluginRoot/scripts/gamecaden_runtime.py" check
+& $python -B "$pluginRoot/scripts/gamecaden_runtime.py" setup
+& $python -B "$pluginRoot/scripts/gamecaden_runtime.py" run contracts
 ```
 
-`$pluginRoot` 是实际安装包根。POSIX 环境使用 `bin/python`。面板配置和连接资料按 [面板合同](panels/README.md) 保存在独立宿主状态目录；本包没有自动安装 MCP 服务。
+`$python` 是 Python 3.12+，`$pluginRoot` 是实际完整安装包根。环境缓存、复用已有 Python、禁止自动安装及失败处理以 [本地 I/O](shared/local-io.md#1-环境与调用) 为准。资源安装、会话发现和工具就绪分别核验。面板配置和连接资料按 [面板合同](panels/README.md) 保存在独立宿主状态目录；本包没有自动安装 MCP 服务。
 
 ## 升级与恢复
 

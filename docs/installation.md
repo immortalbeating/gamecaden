@@ -1,6 +1,8 @@
 # 安装、更新与独立使用
 
-维护与公开发行已统一到 [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden)。当前迁移版为0.1.2；旧0.1.0/0.1.1保持原内容。原账号地址仅保留GitHub兼容跳转。已有安装更换来源见[仓库迁移](repository-migration.md)。
+维护与公开发行已统一到 [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden)。当前版本为0.1.3；旧0.1.0/0.1.1/0.1.2保持原内容。原账号地址仅保留GitHub兼容跳转。已有安装更换来源见[仓库迁移](repository-migration.md)。
+
+0.1.3 提供统一环境入口；固定旧 tag 不会获得首次使用修复。系统需 Python 3.12+ 与 venv 支持，本地工具首次调用自动准备独立依赖。
 
 Gamecaden提供Codex插件、Claude Code插件和完整目录的Skill安装。插件提供八个命名空间职责；独立入口使用包根的`gamecaden` Skill，再读取同包职责。按宿主实际列表核对名称，安装后在新会话使用。
 
@@ -26,7 +28,7 @@ codex plugin add gamecaden@gamecaden --json
 
 ### 固定版本及切换更新方式
 
-复现或稳定固定场景可以指定tag，例如`codex plugin marketplace add immortalbeating/gamecaden --ref v0.1.2`。固定tag后刷新仍读取该tag，不会自动跳到以后发布的tag；主动升级需改目标版本。
+复现或稳定固定场景可以指定tag，例如`codex plugin marketplace add immortalbeating/gamecaden --ref v0.1.3`。固定tag后刷新仍读取该tag，不会自动跳到以后发布的tag；主动升级需改目标版本。
 
 如果此前登记了`--ref v0.1.0`，改用默认分支前明确替换旧的marketplace登记：
 
@@ -110,6 +112,6 @@ git clone https://github.com/immortalbeating/gamecaden.git
 
 安装提供发现入口。项目采用通常通过明确请求`使用Gamecaden init接入本项目`完成；有效项目指引支持后续自然续接。插件方式与独立方式择一，避免同一宿主重复发现同包。
 
-技能正文无需Python；可选本地I/O和面板需要Python 3.12+及独立运行环境，见[面板说明](panel.md)。这些依赖不会由插件安装或npx自动安装。本轮安装验证不等于模型行为、游戏运行或人工接受。
+技能正文无需Python。插件或npx安装提供资源与发现入口；真正采用项目、首个本地I/O或启动面板前，另按[工具就绪与调用](../plugins/gamecaden/shared/local-io.md#1-环境与调用)检查并准备独立环境。包内启动入口需要Python 3.12+，首次工具调用可自动准备依赖；只读咨询或init inspect不自动安装或写项目指引。面板启动见[面板说明](panel.md)。本轮安装验证不等于模型行为、游戏运行或人工接受。
 
 依据：[Codex插件文档](https://developers.openai.com/plugins/build/plugins)、[Claude市场与版本更新](https://code.claude.com/docs/en/plugin-marketplaces)、[Claude插件安装](https://code.claude.com/docs/en/discover-plugins)、[Vercel skills CLI](https://github.com/vercel-labs/skills)。

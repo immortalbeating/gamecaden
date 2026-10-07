@@ -4,10 +4,10 @@
 
 ## 启动
 
-使用已有 Python 3.12+ 环境，安装 scripts/requirements.txt 中的依赖。先为宿主准备项目清单，格式见 [host-config.example.json](host-config.example.json)。
+先按[工具就绪与调用](../shared/local-io.md#1-环境与调用)核对并准备独立环境，启动入口需要 Python 3.12+。先为宿主准备项目清单，格式见 [host-config.example.json](host-config.example.json)。
 
 ```powershell
-& $python "$bundle/scripts/workflow_panel_server.py" --config $hostConfig --state-dir $hostState --port 8875
+& $python -B "$bundle/scripts/gamecaden_runtime.py" run panel --config $hostConfig --state-dir $hostState --port 8875
 ```
 
 - $hostState 是该启动方专用的本机操作目录，放在游戏业务文档之外。
@@ -34,7 +34,7 @@ Task/Epic 的状态来自原记录。任意 Markdown 正文不被推断成完成
 
 没有 navigation 时仍保留已读来源、未分类资料和孤立文档，不强制补满标注；没有声明流程时明确提示缺口。原文入口只使用已登记来源，窄屏改为领域/文档/步骤列表并保留完整详情。登记范围不代表全部项目完整性。当前阅读器与刷新范围见[设计](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/panel.md)与[核验](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/validation.md)；[领域概览设计](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/panel.md)与[领域核验](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/validation.md)、早前[关系设计](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/panel.md)与[验证](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/validation.md)保留历史范围。
 
-总览的 `GET /api/projects/<id>/governance?focus=T-003` 是只读派生视图；命令行可用 `scripts/workflow_governance.py --project-root ... [--workspace ...] --focus T-003` 读取同一模型。材料 `located` 只表示已定位来源；条件状态和证明不能替代语义核验或授权。旧来源未识别治理定义时明确显示缺口，不推断全部通过。详情见[治理合同](../shared/governance.md)、[材料职责](../shared/material-requirements.md)与[面板续接](../shared/panel-workflow.md)。
+总览的 `GET /api/projects/<id>/governance?focus=T-003` 是只读派生视图；命令行可用 `python -B <bundle>/scripts/gamecaden_runtime.py run governance --project-root ... [--workspace ...] --focus T-003` 读取同一模型。材料 `located` 只表示已定位来源；条件状态和证明不能替代语义核验或授权。旧来源未识别治理定义时明确显示缺口，不推断全部通过。详情见[治理合同](../shared/governance.md)、[材料职责](../shared/material-requirements.md)与[面板续接](../shared/panel-workflow.md)。
 
 已连接页面可用 `#project=<id>&view=overview|assets|review|documents&task=T-003&asset=A-002&candidate=C-001` 定位当前对象；只带实际需要的参数。关系视图参数可加 `diagram=sources|progress`、`lens=domains|impact` 和 `layout=DOWN|RIGHT`，分别选择规范来源/推进条件、项目领域/来源与影响、纵向/横向；例如 `#project=<id>&view=overview&diagram=sources&lens=domains&layout=RIGHT`。选择、章节、展开、缩放、阅读和画布位置在当前会话按项目 binding 隔离，面板刷新与项目切回保留仍有效的对象；来源删除或身份变化时需重新定位。不承诺浏览器整页重载恢复这些阅读设置。`connect=` 仍是一次连接口令，不放入工作深链接。复制的续接摘要包含来源/版本线索，Agent 继续前须重读原记录和现场；面板不运行引擎或自动唤醒 Agent。
 

@@ -6,14 +6,33 @@
 
 ## 1. 环境与调用
 
-入口为 [workflow_io.py](../scripts/workflow_io.py)，依赖见 [requirements.txt](../scripts/requirements.txt)。使用 Python 3.12+；本轮在 Windows、Python 3.14.5 上执行验证。依赖放在调用者选定的工具环境，沿用已有可用环境即可，不向游戏工程复制一个运行时。
+工具就绪与调用以本节为准。读取 Skill 正文、只读咨询或 init 的现场 inspect 不需要准备 Python 依赖；真正采用项目、首个本地 I/O 或启动面板前，先确认实际安装包根并检查工具环境。若 inspect 本身调用本地工具，也按本节处理，但不因此自动安装或写项目指引。
+
+[gamecaden_runtime.py](../scripts/gamecaden_runtime.py) 是标准库启动入口，需要系统已有 Python 3.12+。它为 [requirements.txt](../scripts/requirements.txt) 准备独立环境，不修改全局 Python，不在插件 cache 或游戏工程内放置 venv。缺失或过旧的 Python 需先由宿主准备 Python 3.12+；网络、下载源或目录权限失败时保留明确错误，不承诺无条件成功。
 
 ```powershell
-& $python -m pip install -r "$bundle/scripts/requirements.txt"
-& $python "$bundle/scripts/workflow_io.py" --project-root $gameRoot --request $requestFile
+& $python -B "$bundle/scripts/gamecaden_runtime.py" check
+& $python -B "$bundle/scripts/gamecaden_runtime.py" setup
+& $python -B "$bundle/scripts/gamecaden_runtime.py" run io --project-root $gameRoot --request $requestFile
 ```
 
-这里 `$python` 是实际 Python 可执行文件，`$bundle` 是本包路径，`$gameRoot` 是已确认的项目根，`$requestFile` 是填写真实上下文的 UTF-8 JSON。可用 `--request -` 从 stdin 输入。成功退出码为 0；拒绝、冲突或未完成为 2，stdout 返回 JSON。
+`check` 只读检查；`setup` 幂等准备。两者返回 JSON，核对 `status`、`ready`、`python_executable` 和 `dependencies`，以 `ready=true` 确认工具环境。`run` 在缺依赖时自动准备后继续原调用；准备日志写 stderr，正常业务 stdout 只返回原工具内容。准备失败返回明确的 not-ready 错误，不调用业务工具。
+
+默认缓存为 Windows `%LOCALAPPDATA%/Gamecaden/runtimes`、macOS `~/Library/Caches/Gamecaden/runtimes`、Linux `${XDG_CACHE_HOME:-~/.cache}/Gamecaden/runtimes`。可用 `GAMECADEN_RUNTIME_HOME` 或 `--runtime-home DIR` 指定缓存目录。环境按 requirements 字节、Python 实现及主次版本、平台与架构隔离；依赖文件变化会选择新环境。
+
+托管安装忽略 pip 配置文件和目标、前缀、用户级安装覆盖，先确认解释器属于独立环境；下载源、代理和证书可通过对应 `PIP_INDEX_URL`、`PIP_PROXY`、`PIP_CERT` 等环境参数提供。已有旧式 CLI 直接调用缺依赖时也转入同一入口；库被导入时不自动准备。缺依赖时仅请求 `--help` 会返回就绪诊断，不下载依赖。
+
+已有就绪 Python 可通过 `check --python PATH` 或 `run --python PATH io ...` 复用。外部 Python 缺依赖时返回明确错误，不自动向它执行 pip 安装。禁止自动下载准备时使用：
+
+```powershell
+& $python -B "$bundle/scripts/gamecaden_runtime.py" run --no-install io --project-root $gameRoot --request $requestFile
+```
+
+`--runtime-home` 可用于 check/setup/run；run 的启动参数放在工具名前。支持工具 `io`、`governance`、`panel`、`contracts`，工具名之后的参数原样转交对应入口。例如 `run governance --project-root ... --focus T-003`、`run panel --config ... --state-dir ... --port 8875`、`run contracts`。
+
+这里 `$python` 是 Python 3.12+ 启动程序，`$bundle` 是实际完整安装包根，`$gameRoot` 是已确认的项目根，`$requestFile` 是填写真实上下文的 UTF-8 JSON。I/O 参数、退出码和 stdin/stdout 保持 [workflow_io.py](../scripts/workflow_io.py) 的接口：`--request` 接收 UTF-8 JSON 请求文件或 `-`（stdin）；成功退出码为 0，拒绝、冲突或未完成为 2，stdout 返回 JSON。
+
+就绪成功后，仍需核对真实 I/O 响应与回读结果；手工保存记录不能作为 I/O 已验证的证据。环境未就绪时报告原因和未完成范围，保留项目原状态。
 
 项目根由宿主参数绑定，请求里的 context 不能扩大它。context.project_root 使用绝对路径；context.workspace 与 base_dir 的相对值基于项目根解析。业务 payload/Ref 路径基于 base_dir；省略 base_dir 时使用项目根。Workspace document 本身的映射路径始终基于目标 workspace.yaml，正文/无结构元数据的相对路径由调用者按目标文档准备。
 

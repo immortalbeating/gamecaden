@@ -1,6 +1,8 @@
 # Gamecaden
 
-维护与公开发行已统一到 [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden)。当前迁移版为0.1.2；旧0.1.0/0.1.1保持原内容。原账号地址仅保留GitHub兼容跳转。
+维护与公开发行已统一到 [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden)。当前版本为0.1.3；旧0.1.0/0.1.1/0.1.2保持原内容。原账号地址仅保留GitHub兼容跳转。
+
+0.1.3 补齐新电脑首次工具使用：Codex、Claude 和完整通用包共用环境检查、独立依赖准备与调用入口。
 
 Gamecaden 是面向 Codex、Claude Code及兼容Skill宿主的游戏开发工作流：从已有目标和项目记录继续工作，把设计、实现、资产、验证和收尾接回真实来源。
 
@@ -56,7 +58,7 @@ claude plugin install gamecaden@gamecaden --scope user
 
 ## 可选面板与开发工具
 
-读取技能正文无需 Python 环境。面板和本地 I/O 使用 Python 3.12+，按 [面板说明](docs/panel.md) 安装独立环境。面板读取已登记来源，默认只读；技术检查、用户接受与运行采用分别记录。
+读取技能正文无需 Python 环境。真正采用项目、首个本地 I/O 或启动面板前，按 [工具就绪与调用](plugins/gamecaden/shared/local-io.md#1-环境与调用) 检查并准备独立环境；启动入口需要 Python 3.12+。面板操作见 [面板说明](docs/panel.md)。面板读取已登记来源，默认只读；技术检查、用户接受与运行采用分别记录。
 
 维护测试使用 Python 3.12+ 和 Node.js：
 
