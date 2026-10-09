@@ -1,5 +1,5 @@
 {
-  "digest": "2f7e15739b66502528867ad5bd61e787bede8dfab85c1e676a4e1c72fdc6a4f9",
+  "digest": "581690d9a884b2f8b8b6ef45ca14da1c72367fc78a1938222b008203fd545dbd",
   "files": {
     ".claude-plugin/plugin.json": {
       "sha256": "a6e5d641dda91460d9385b37c33dab8175395bf7b6504f637a80d772ea04d321",
@@ -18,8 +18,8 @@
       "size": 1073
     },
     "SKILL.md": {
-      "sha256": "827668ea9b22228780bfef2c76381c24fb84041bec5b97f428b8ca243c622ee4",
-      "size": 1408
+      "sha256": "a2d8a6688d4bc687c00c042d305210d5b7e4544ebee005af3321449226b24446",
+      "size": 1380
     },
     "THIRD_PARTY_NOTICES.md": {
       "sha256": "4fc22bb516478596bcd1115f6f05bbd31542abe92e45ea0461a05c80be4cb9d8",
@@ -442,24 +442,24 @@
       "size": 10568
     },
     "skills/assets/SKILL.md": {
-      "sha256": "cecf5ba6fb51efd7f1f75d73eddd6cb79c7881936243dffd9ce8c2506d6f951e",
-      "size": 6449
+      "sha256": "58fd657e26b33dba8574e3407a6112248126cafff0129dbfd50de3f965374f33",
+      "size": 6272
     },
     "skills/assets/references/production-and-review.md": {
       "sha256": "03a54f1a0ebf6dab00fcf6a27b8558b2a2511847d770a1d3f3437aec75914077",
       "size": 5049
     },
     "skills/brainstorm/SKILL.md": {
-      "sha256": "abc709e069ae53ee5123d4051bd171a9f7d0f5fff227f3725738e7b03f418561",
-      "size": 9331
+      "sha256": "6dbe25a200f6cf4287bee991eb6e2b6f84f8c9856a170379adc4688e83bbf393",
+      "size": 9154
     },
     "skills/brainstorm/references/decision-exploration.md": {
       "sha256": "92e3f17303b696efdcd214f105d0615ef8b6ef3a8c922f0cc8d3bb298ee33c08",
       "size": 5334
     },
     "skills/close/SKILL.md": {
-      "sha256": "658c36144394f48a53cbf9712d70ae78018a0618c630424c5c518f80c577bc25",
-      "size": 6184
+      "sha256": "538d3f4d921beef2f3bf1778f46b7d7fc7c4b30e270307767e50317bd99aa17b",
+      "size": 6007
     },
     "skills/close/references/closure-and-sync.md": {
       "sha256": "718b7f2f992476072731c209676fe898288ed72ace14d80f0098b045d9c57009",
@@ -470,8 +470,8 @@
       "size": 4806
     },
     "skills/design/SKILL.md": {
-      "sha256": "b0d39f0cd1f30fbe498b833f283ad36c1a099234bdbee40a16fa2780cab82c16",
-      "size": 8222
+      "sha256": "cb0d7677ab3b651157786cbee2adbba4a0f2dda140389c56b92352ba94f3d224",
+      "size": 8045
     },
     "skills/design/references/architecture-and-readiness.md": {
       "sha256": "9cf6aedd55eb3a54ed22f5922be0567245e7c0649767d188504ab1f96d6dd567",
@@ -482,16 +482,16 @@
       "size": 6479
     },
     "skills/develop/SKILL.md": {
-      "sha256": "179d28d0234320150f9dcfaf1ec583d8dc77b7a2d8ff2de4b36f67c67ab3e5c2",
-      "size": 7834
+      "sha256": "15968e949e577aec67c3ece7a68bd90e1be4693b2473c33e440811b5bd664799",
+      "size": 7657
     },
     "skills/develop/references/execution-and-recovery.md": {
       "sha256": "2722fc68b0ab3e4f5e4b525b7fa0fe06ded1373e041510cc49b0aad414022e41",
       "size": 3558
     },
     "skills/flow/SKILL.md": {
-      "sha256": "2b9107e0edca5fadd0cc187901bc607cb82cd8050cbb31de242f7f9092fa47d3",
-      "size": 8601
+      "sha256": "3973fe48fd47ccb27a860a07d86d042f10a93761f6f6d3d5d19a29329a0de587",
+      "size": 8424
     },
     "skills/flow/references/change-work.md": {
       "sha256": "62d69b414bb6f029c73f1f06696b937d5654e1e2da90bf5394e48608e82c5cef",
@@ -502,16 +502,16 @@
       "size": 5295
     },
     "skills/init/SKILL.md": {
-      "sha256": "7f9cd67df0debcdf0706d5f78844608c23e3aed65bed3d96d1177f91abb116ac",
-      "size": 8891
+      "sha256": "b0405294c5d7d499a92171fc7b4fe576c66b6c3d48621aa32c4b9227731ea56d",
+      "size": 8714
     },
     "skills/init/references/adoption.md": {
       "sha256": "142ac9ee72d3069305360b26563042a3a3ad50cc79db75152ccfbfdf1d257868",
       "size": 5141
     },
     "skills/verify/SKILL.md": {
-      "sha256": "f36586bdd2c98cc685175b59d751a57a77cf8dc2a13f5505b586e526ff549db7",
-      "size": 5261
+      "sha256": "d8b23e8dcc09813b1e6d8d1bd150e9b346520e0bb63dbb8bb592145e0c6382b0",
+      "size": 5084
     },
     "skills/verify/references/game-checks.md": {
       "sha256": "79d6b0810b1450501287b54dadc1f75eedb7169b2c691634668cb659843d847c",
