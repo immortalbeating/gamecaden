@@ -1,5 +1,5 @@
 {
-  "digest": "190c7153dfa105e4f5754a9de4bcde1a7703c92ad99cb351fb069059eeac4d0b",
+  "digest": "59d51a7143eee2fe94d11e313241f05ca352d1686e76b9476f32835e3e49a56e",
   "files": {
     ".claude-plugin/plugin.json": {
       "sha256": "a6e5d641dda91460d9385b37c33dab8175395bf7b6504f637a80d772ea04d321",
@@ -490,8 +490,8 @@
       "size": 3558
     },
     "skills/flow/SKILL.md": {
-      "sha256": "91750a5e63a8f9375f57957c95855f6ce8b1df316097a8f32509c500762d7558",
-      "size": 8080
+      "sha256": "39350007cc82439c7b52960f673e49fbca7f7f4feb1fe163a5ac6bea1483eeb7",
+      "size": 8601
     },
     "skills/flow/references/change-work.md": {
       "sha256": "62d69b414bb6f029c73f1f06696b937d5654e1e2da90bf5394e48608e82c5cef",
@@ -506,8 +506,8 @@
       "size": 8567
     },
     "skills/init/references/adoption.md": {
-      "sha256": "df1fc75928e14fc0eb444141099a4a3593ac0d3f63a710756eb5502ab47c38e7",
-      "size": 4155
+      "sha256": "142ac9ee72d3069305360b26563042a3a3ad50cc79db75152ccfbfdf1d257868",
+      "size": 5141
     },
     "skills/verify/SKILL.md": {
       "sha256": "f36586bdd2c98cc685175b59d751a57a77cf8dc2a13f5505b586e526ff549db7",
