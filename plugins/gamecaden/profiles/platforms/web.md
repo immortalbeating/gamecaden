@@ -2,9 +2,9 @@
 
 ## 触发与版本边界
 
-实际运行目标包含浏览器页面时叠加本页：原生 HTML/JS、Phaser、Three.js、Babylon.js、Godot/Unity/Cocos Creator 的浏览器产物等都适用。先按[规则选择](../../shared/rules.md)确认运行根、目标浏览器与发布方式；非浏览器运行不加载。这里是平台规则，不决定游戏引擎，也不要求 Node、Vite、React 或 TypeScript。浏览器行为以目标环境实测为准；具体打包器或引擎版本另查相应 profile 与本项目配置。
+实际运行目标包含浏览器页面时叠加本页：原生 HTML/JS、Phaser、Three.js、Godot/Unity 的浏览器产物等都适用。先按[规则选择](../../shared/rules.md)确认运行根、目标浏览器与发布方式；非浏览器运行不加载。这里是平台规则，不决定游戏引擎，也不要求 Node、Vite、React 或 TypeScript。浏览器行为以目标环境实测为准；具体打包器或引擎版本另查相应 profile 与本项目配置。
 
-WebGL/WebGPU 的选择、对象/资源和渲染循环分别取实际框架条目：[Three.js](../frameworks/threejs.md)、[Babylon.js](../frameworks/babylonjs.md) 或当前其它技术栈。其它目标按真实运行环境核对 API、资源与交付条件，浏览器证据保持自己的范围。
+WebGL/WebGPU 的选择、对象/资源和渲染循环分别取实际框架条目：[Three.js](../frameworks/threejs.md) 或当前其它技术栈。其它目标按真实运行环境核对 API、资源与交付条件，浏览器证据保持自己的范围。
 
 ## 需现场识别的事实
 

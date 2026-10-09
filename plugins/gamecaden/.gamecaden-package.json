@@ -1,5 +1,5 @@
 {
-  "digest": "581690d9a884b2f8b8b6ef45ca14da1c72367fc78a1938222b008203fd545dbd",
+  "digest": "6e23a98ed412e6ba869ae0d5b0e78aa3b4721682e072991a3daa24d23a6d086a",
   "files": {
     ".claude-plugin/plugin.json": {
       "sha256": "a6e5d641dda91460d9385b37c33dab8175395bf7b6504f637a80d772ea04d321",
@@ -250,16 +250,12 @@
       "size": 307
     },
     "profiles/README.md": {
-      "sha256": "d4bd5cfea64e99c54b114993e27616d1d695a3aa9465d214b08e92ccefa6454a",
-      "size": 11085
+      "sha256": "22bd0201b7a07b3f2ac961ab3e9b2a49d1716c33e573974cbb867af2df1c29eb",
+      "size": 9935
     },
     "profiles/common.md": {
       "sha256": "1f7ffbd0cb817c2891b74bb3e5b68e91ab7f850a0b43772179b74cd355a1c44c",
       "size": 7518
-    },
-    "profiles/engines/cocos-creator.md": {
-      "sha256": "153910546f0bf266ce241a98be50561cf967c9c72dc19283c0ec5089f56dabdf",
-      "size": 5961
     },
     "profiles/engines/godot.md": {
       "sha256": "d7ce0083b361046fb1199dc573b1d9957d36cdddb0fe8d790757885280c7cc4d",
@@ -268,10 +264,6 @@
     "profiles/engines/unity.md": {
       "sha256": "4f63acf90ee315038f072b3efe626d5b5cf7b09decc6a5d53c69e212c13599ec",
       "size": 6536
-    },
-    "profiles/frameworks/babylonjs.md": {
-      "sha256": "979556c214e0de4c29b1b065aedee8c70e62e8f9d8f4c4af13eea0c32c1e2d5a",
-      "size": 4478
     },
     "profiles/frameworks/phaser.md": {
       "sha256": "e677e11bf154cf6aee9295e73055be1607fa65f82733ddc4109361cd08245580",
@@ -282,20 +274,12 @@
       "size": 4302
     },
     "profiles/platforms/web.md": {
-      "sha256": "967f2a4f84c2925a8eefb9781c968029406c3ce01d69bd290a7fc944d0b27c50",
-      "size": 6332
+      "sha256": "24856419906c38ce2e8caacc5cef0695f85986c1b793a7c87140c22df7318f4e",
+      "size": 6262
     },
     "profiles/project-structure.md": {
       "sha256": "8500d9e8a0bab58b56e0444a2c30d22c47ddbdfc39196d1f6738ca138061521a",
       "size": 4414
-    },
-    "profiles/references/babylonjs-structure.md": {
-      "sha256": "359de833610d6c87083e5c0a77f700e8bc0d3114c6a3dbd73d780016e2c1924d",
-      "size": 7377
-    },
-    "profiles/references/cocos-structure.md": {
-      "sha256": "52aa29a5d05ef54548bd9beb1d213aec83adb24f2259307ad7ab8d3dd3a37cd9",
-      "size": 9063
     },
     "profiles/references/godot-structure.md": {
       "sha256": "417925b81bf86de064366056eb0b0feb291b9a9ae11ccc2480d489487867356e",
@@ -430,8 +414,8 @@
       "size": 8601
     },
     "shared/rules.md": {
-      "sha256": "21001629827db4f01ae9313b2f6f680a6d1e86e11532f5d570f27c71f0fb54df",
-      "size": 6249
+      "sha256": "943e2bcbb15d7e44a1cdf97e4dec34f242e2fc5b7cfd649dfd4d189cb58f1814",
+      "size": 6236
     },
     "shared/verification.md": {
       "sha256": "9de8438038a188f2aa3cf54964ef7c52377a0ad84da9b684f98177ebe3c7db21",
