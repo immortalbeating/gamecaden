@@ -1,5 +1,5 @@
 {
-  "digest": "59d51a7143eee2fe94d11e313241f05ca352d1686e76b9476f32835e3e49a56e",
+  "digest": "f7185064a9d790dffc3667cab17899eb488b1c02c4e11424ffbca1801d3fc511",
   "files": {
     ".claude-plugin/plugin.json": {
       "sha256": "a6e5d641dda91460d9385b37c33dab8175395bf7b6504f637a80d772ea04d321",
@@ -250,8 +250,8 @@
       "size": 307
     },
     "profiles/README.md": {
-      "sha256": "7ae1c04d0514881b95c684cdd877f62c057b4c09a09d984213a571938f8bff20",
-      "size": 10889
+      "sha256": "d4bd5cfea64e99c54b114993e27616d1d695a3aa9465d214b08e92ccefa6454a",
+      "size": 11085
     },
     "profiles/common.md": {
       "sha256": "1f7ffbd0cb817c2891b74bb3e5b68e91ab7f850a0b43772179b74cd355a1c44c",
@@ -430,16 +430,16 @@
       "size": 8601
     },
     "shared/rules.md": {
-      "sha256": "a7ebcec0fc1dc0cb0443bd9246d8c01d8f18442180c0e0376ba772a6c29e793a",
-      "size": 6030
+      "sha256": "21001629827db4f01ae9313b2f6f680a6d1e86e11532f5d570f27c71f0fb54df",
+      "size": 6249
     },
     "shared/verification.md": {
       "sha256": "9de8438038a188f2aa3cf54964ef7c52377a0ad84da9b684f98177ebe3c7db21",
       "size": 5846
     },
     "shared/workspace.md": {
-      "sha256": "f5a7c0c959d9f3df77e950b1a38b9bbf493b2f12aed966b10151ace32c5cb381",
-      "size": 10574
+      "sha256": "cb77190773d6065fab3bef7276dae8a4eb5e54ed8da435c490ca00f6398f0a8a",
+      "size": 10568
     },
     "skills/assets/SKILL.md": {
       "sha256": "cecf5ba6fb51efd7f1f75d73eddd6cb79c7881936243dffd9ce8c2506d6f951e",
@@ -490,7 +490,7 @@
       "size": 3558
     },
     "skills/flow/SKILL.md": {
-      "sha256": "39350007cc82439c7b52960f673e49fbca7f7f4feb1fe163a5ac6bea1483eeb7",
+      "sha256": "2b9107e0edca5fadd0cc187901bc607cb82cd8050cbb31de242f7f9092fa47d3",
       "size": 8601
     },
     "skills/flow/references/change-work.md": {
@@ -502,8 +502,8 @@
       "size": 5295
     },
     "skills/init/SKILL.md": {
-      "sha256": "995cbefeec7ed343c412a06919c034ffad36f9ae42a5ddcd8ae06d703400fd08",
-      "size": 8567
+      "sha256": "29105e311414e884e7b1196af7ee094c823c39a281ee7e1351e7e20c5cdf92a8",
+      "size": 8561
     },
     "skills/init/references/adoption.md": {
       "sha256": "142ac9ee72d3069305360b26563042a3a3ad50cc79db75152ccfbfdf1d257868",

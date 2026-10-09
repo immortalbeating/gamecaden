@@ -1,6 +1,6 @@
 # 工作区与来源约定
 
-供 flow 定位和 init 登记，并由本工作流其他 Skill 读取来源。新原生映射的 v1 候选字段已由[格式合同](formats-v1.md)与[可校验 schema](../schemas/workflow-v1.schema.json)细化；本页维护接入职责与用法，不代表已发行或完成宿主安装验证。
+供 flow 定位和 init 登记，并由本工作流其他 Skill 读取来源。原生映射的 v1 字段由[格式合同](formats-v1.md)与[可校验 schema](../schemas/workflow-v1.schema.json)定义；本页维护接入职责与用法。来源登记、包安装与后续宿主加载分别核验，实际覆盖以对应验证记录为准。
 
 ## 工作流适用条件
 
@@ -15,7 +15,7 @@
 
 ## 1. 位置与解析
 
-优先使用用户指定或有效项目指引明确引用的工作流入口。新项目草稿默认 game-workflow/，其中 workspace.yaml 记录映射、index.md 负责阅读导航。品牌确定后再统一发行默认值；已接入项目保留自己的映射路径。
+优先使用用户指定或有效项目指引明确引用的工作流入口。新项目默认 game-workflow/，其中 workspace.yaml 记录映射、index.md 负责阅读导航。已接入项目保留自己的映射路径。
 
 workspace.yaml 中所有 path、root、marker 均相对于该 YAML 所在目录解析。写入前结合本次明确目标解析实际路径，核对项目、工作树与作用范围。相对路径使同一项目可以在不同 checkout 中使用；实际运行结果仍记录本次具体基线。
 
