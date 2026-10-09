@@ -1,5 +1,5 @@
 {
-  "digest": "f7185064a9d790dffc3667cab17899eb488b1c02c4e11424ffbca1801d3fc511",
+  "digest": "2f7e15739b66502528867ad5bd61e787bede8dfab85c1e676a4e1c72fdc6a4f9",
   "files": {
     ".claude-plugin/plugin.json": {
       "sha256": "a6e5d641dda91460d9385b37c33dab8175395bf7b6504f637a80d772ea04d321",
@@ -394,8 +394,8 @@
       "size": 14593
     },
     "shared/git-policy.md": {
-      "sha256": "15339b7d92f904779a581151a3c19d673deb4b04c433169dacfd1266e9323f3f",
-      "size": 5326
+      "sha256": "cf3e25553f5667335506b7ff682cbbc30c9906d0607e0d9a7b205dd382f0217b",
+      "size": 6022
     },
     "shared/governance.md": {
       "sha256": "d8da145164dea29b637dfda0df5fc757b7c6f7d317d227c962605be253037b43",
@@ -450,12 +450,12 @@
       "size": 5049
     },
     "skills/brainstorm/SKILL.md": {
-      "sha256": "72e942a2b92b5c3e3c683b1b3647c59e5d82515dfbe3fde81862042da72b4f22",
-      "size": 9208
+      "sha256": "abc709e069ae53ee5123d4051bd171a9f7d0f5fff227f3725738e7b03f418561",
+      "size": 9331
     },
     "skills/brainstorm/references/decision-exploration.md": {
-      "sha256": "4e7818edd463562783084b331eee9d753e143b26d8bb3e07e444ddd0a52b5c42",
-      "size": 5283
+      "sha256": "92e3f17303b696efdcd214f105d0615ef8b6ef3a8c922f0cc8d3bb298ee33c08",
+      "size": 5334
     },
     "skills/close/SKILL.md": {
       "sha256": "658c36144394f48a53cbf9712d70ae78018a0618c630424c5c518f80c577bc25",
@@ -502,8 +502,8 @@
       "size": 5295
     },
     "skills/init/SKILL.md": {
-      "sha256": "29105e311414e884e7b1196af7ee094c823c39a281ee7e1351e7e20c5cdf92a8",
-      "size": 8561
+      "sha256": "7f9cd67df0debcdf0706d5f78844608c23e3aed65bed3d96d1177f91abb116ac",
+      "size": 8891
     },
     "skills/init/references/adoption.md": {
       "sha256": "142ac9ee72d3069305360b26563042a3a3ad50cc79db75152ccfbfdf1d257868",
