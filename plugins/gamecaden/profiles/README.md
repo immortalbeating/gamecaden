@@ -25,11 +25,12 @@ Profile 是按条件加载的工程参考，不是额外 Skill、任务阶段或
 | project-structure | 新建工程结构、加入新模块/生产链、迁移路径或目录职责有歧义 | [目录与文件职责](project-structure.md) |
 | godot | 本次设计或修改的运行根实际采用 Godot | [Godot](engines/godot.md) |
 | unity | 本次设计或修改的运行根实际采用 Unity | [Unity](engines/unity.md) |
+| cocos-creator | 当前运行根或已选设计采用 Cocos Creator | [Cocos Creator](engines/cocos-creator.md)，按实际构建目标另取平台规则 |
 | web | 本次对象在浏览器运行，包括原生网页、各引擎/框架的浏览器产物和工具页 | [Web 平台](platforms/web.md) |
 | phaser | 本次运行根的真实依赖或已选设计使用 Phaser | [Phaser](frameworks/phaser.md)，浏览器目标叠加 Web |
 | threejs | 本次运行根的真实依赖或已选设计使用 Three.js | [Three.js](frameworks/threejs.md)，目标平台与现场集成分别识别 |
 
-游戏领域所需图件/信息继续由 [材料职责](../shared/material-requirements.md) 和 [游戏材料参考](../skills/design/references/game-deliverables.md) 拥有。本轮不另建角色/地图的同义规则库。没有触及的领域无需加载。
+游戏领域所需图件/信息由 [材料职责](../shared/material-requirements.md) 和 [游戏材料参考](../skills/design/references/game-deliverables.md) 拥有；按本次用途直达命中部分。组成、状态、寿命或资源消费者有变化时，取下方[结构专题](#结构变化的专题入口)；浏览器路径、焦点、后台、音频或存储条件取 [Web 交接](platforms/web.md#与-skill-阶段交接)。没有触及的领域无需加载。
 
 选择关系是“通用命中项＋实际引擎/库＋目标平台”。Web 是浏览器平台，不限定 Phaser 或 2D；场景、运行范围与资源关系按实际引擎机制处理。其它未列技术栈仍可使用共同条目与其实际官方资料，不因本表没有专名就套用最相近引擎 API。
 
@@ -40,6 +41,8 @@ Profile 是按条件加载的工程参考，不是额外 Skill、任务阶段或
 - 同仓 HTML 资产面板修复：Web＋面板合同；只有改动了游戏运行输入才增加游戏引擎范围。
 - Phaser 游戏的暂停/重开：通用生命周期＋Web＋Phaser，核对真实主版本。
 - Three.js 浏览器游戏：通用命中项＋Three.js＋Web；React/R3F 只有已采用时再查实际集成。
+- Cocos Creator 的 Web 产物：通用命中项＋Creator＋Web；其它明确目标就近核对真实构建/运行条件和官方资料。
+- Creator 原生游戏：通用命中项＋Creator＋现场原生构建规则，证据对应真正交付入口。
 - 纯静态 HTML 小游戏：通用命中项＋Web，沿用其现有启动方式。
 - 只修已有按钮错字：原 Task、相关显示检查与有效规则足够时直接 quick；无需读取全部目录、角色、地图或发布规则。
 
@@ -61,10 +64,11 @@ Profile 是按条件加载的工程参考，不是额外 Skill、任务阶段或
 |---|---|
 | Godot | [场景、节点与状态](references/godot-structure.md)：真实节点类型、运行树与场景边界、parent/owner、World/UI、Autoload 与编辑/保存 |
 | Unity | [Scene、Prefab 与状态](references/unity-structure.md)：序列化接线、实例/定义、生命周期、UI 系统与可编辑内容 |
+| Cocos Creator | [Scene、节点组件与资源](references/cocos-structure.md)：保存资源与运行树、Node/Component、启停/常驻、资产引用、UI 编辑与目标平台 |
 | Phaser | [Scene 与显示对象](references/phaser-structure.md)：Scene 运行范围、普通对象模块、全局/局部系统、UI 与监听/资源消费者 |
 | Three.js | [渲染树、运行与资源](references/threejs-structure.md)：Scene/Object3D、renderer/循环、页面寿命、共享资源与显式释放、DOM/3D 输入 |
 
-新项目在首次涉及这些关系的实现前形成安排；旧项目按实际影响补齐。已有正确设计可复用，局部 quick 不全量重读。组成图、状态表可留在原设计/Spec 中；专题不新增 Skill、核心实体或默认必填文件。
+已选技术栈但尚无工程的新项目，可先形成必要初始设计，原生来源标为待建立，预定接线不写成已保存或运行事实。旧项目按实际影响复用来源；目标关系变化或来源语义不足时，按命中专题在原设计/Spec 补差异。局部 quick 不全量重读；专题不新增 Skill、核心实体或默认必填文件。
 
 ## 在项目中采用
 
@@ -83,6 +87,6 @@ AI 从本次目标选择条目、核对现场与材料内容，必要检查结�
 
 ## 完成界限
 
-本组文件提供通用、Godot、Unity、Phaser、Three.js 与 Web 浏览器规则候选；不是完整引擎手册或能力适配器。涉及具体 API、导入器、插件、渲染管线、构建平台时读取实际安装版及其官方资料，使用当前可用专业 Skill/工具。明确目标超出内置参考时，继续查其真实条件，不因缺少专属 profile 就阻断工作或套用另一环境的 API。
+本组文件提供通用、Godot、Unity、Cocos Creator、Phaser、Three.js 与 Web 浏览器规则候选；不是完整引擎手册或能力适配器。涉及具体 API、导入器、插件、渲染管线、构建平台时读取实际安装版及其官方资料，使用当前可用专业 Skill/工具。明确目标超出内置参考时，继续查其真实条件，不因缺少专属 profile 就阻断工作或套用另一环境的 API。
 
 本组 profiles 的文档与引用核对不等于各引擎的贯通验证。安装、升级与已有新旧项目有界试点的覆盖见[发行验证记录](https://github.com/immortalbeating/gamecaden/blob/v0.1.3/docs/validation.md)；具体 profile 在目标版本、平台与消费者中的实际结果，仍需保存对应现场证据。

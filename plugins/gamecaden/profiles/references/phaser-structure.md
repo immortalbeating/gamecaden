@@ -35,6 +35,12 @@
 
 **跨场景：玩法、暂停 UI 与结果页。** 已有 Spec 规定暂停时 UI 可操作，结果页保留本局分数。采用 `玩法 Scene → 本局模型 ← 并行 UI Scene / 结果 Scene`；本局模型寿命覆盖结果页，UI 发暂停/继续意图，由协调者执行对应 Scene 操作。UI 本次退出清理自己的模型/DOM/全局监听，新局显式重置模型，重进玩法重建对象并复用已验证资源 keys。验收玩法→暂停→继续→结果→新局两轮，同时检查相机/指针、事件次数与共享动画/纹理消费者。
 
+## 输入来源与工作流交接
+
+Scene 重进、暂停 UI、外部监听或图集替换时，引用 Scene 注册与代码、现有状态模型、loader/atlas/animation 配置和实际创建/播放点，定位组合、状态/输入寿命、监听归属及 key/frame 到消费者关系；不维护全量 Scene 对象名录或手工 key 镜像表。已有源能回答本次问题则直接用；未来组合、共享或退出关系变化，即使源码可读也在原设计补差异。语义不足时形成必要局部状态/时序或消费者关系表达，按[材料参考](../../skills/design/references/game-deliverables.md)选择方法。
+
+已选 Phaser 但尚无工程时，可先形成必要初始设计，注册与资源来源标为待建立；预定配置不代表已加载或运行。浏览器共同输入取 [Web 交接](../platforms/web.md#与-skill-阶段交接)。develop 按来源落实接线，verify 核对本次进入/退出与资源消费者，结果归原 Evidence/Decision。
+
 ## 官方事实来源与验证边界
 
 - [Scenes](https://docs.phaser.io/phaser/concepts/scenes)、[Scene events](https://docs.phaser.io/api-documentation/namespace/scenes-events)：Scene 与 Game 系统、并行运行及生命周期。

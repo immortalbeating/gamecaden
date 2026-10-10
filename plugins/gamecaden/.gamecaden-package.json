@@ -1,5 +1,5 @@
 {
-  "digest": "6e23a98ed412e6ba869ae0d5b0e78aa3b4721682e072991a3daa24d23a6d086a",
+  "digest": "ffb79c5d273f80cb7c548550c17cef025dae35ffd51919279b7c08daac4ad17f",
   "files": {
     ".claude-plugin/plugin.json": {
       "sha256": "a6e5d641dda91460d9385b37c33dab8175395bf7b6504f637a80d772ea04d321",
@@ -250,12 +250,16 @@
       "size": 307
     },
     "profiles/README.md": {
-      "sha256": "22bd0201b7a07b3f2ac961ab3e9b2a49d1716c33e573974cbb867af2df1c29eb",
-      "size": 9935
+      "sha256": "c8fc675fa69472c400dde99228694c842d85e1df51ce1a591a0ba2fc65760562",
+      "size": 10867
     },
     "profiles/common.md": {
       "sha256": "1f7ffbd0cb817c2891b74bb3e5b68e91ab7f850a0b43772179b74cd355a1c44c",
       "size": 7518
+    },
+    "profiles/engines/cocos-creator.md": {
+      "sha256": "153910546f0bf266ce241a98be50561cf967c9c72dc19283c0ec5089f56dabdf",
+      "size": 5961
     },
     "profiles/engines/godot.md": {
       "sha256": "d7ce0083b361046fb1199dc573b1d9957d36cdddb0fe8d790757885280c7cc4d",
@@ -274,32 +278,36 @@
       "size": 4302
     },
     "profiles/platforms/web.md": {
-      "sha256": "24856419906c38ce2e8caacc5cef0695f85986c1b793a7c87140c22df7318f4e",
-      "size": 6262
+      "sha256": "004925f282f4c4a3f1fa6dd7ec7384fc9699d9fc20f1789eeeeed73871d6738d",
+      "size": 7000
     },
     "profiles/project-structure.md": {
       "sha256": "8500d9e8a0bab58b56e0444a2c30d22c47ddbdfc39196d1f6738ca138061521a",
       "size": 4414
     },
+    "profiles/references/cocos-structure.md": {
+      "sha256": "7619c2a198924d79232fd4248412c4e69764451afe98875d67aff2c4f7d62659",
+      "size": 10241
+    },
     "profiles/references/godot-structure.md": {
-      "sha256": "417925b81bf86de064366056eb0b0feb291b9a9ae11ccc2480d489487867356e",
-      "size": 10568
+      "sha256": "4391c49eede59d8282c237e58a8a801fddbc1bba60323e8c4219ad7b4c44afcc",
+      "size": 11333
     },
     "profiles/references/phaser-structure.md": {
-      "sha256": "7a5710c0f048bfb297bcc4f2631692a814c234b3755bcf80be868d6372a3a533",
-      "size": 8123
+      "sha256": "b04e1c5079d87a033521c535bcac6a14c9355d5ac6a44bb34bdba5b2bd927145",
+      "size": 9119
     },
     "profiles/references/structure-contract.md": {
       "sha256": "6d4e019543e0917847c2e0ef4ed9aa1794ed7ea8503ccbad5e54b3c0bcbe7fee",
       "size": 6570
     },
     "profiles/references/threejs-structure.md": {
-      "sha256": "be08c0de2c79eee035c720d14c9a5d58ecee74aaad809979add10193200d71b7",
-      "size": 6380
+      "sha256": "6ad633a9ca17b18062e221fb32719433d9672263413259920c082560a53e784e",
+      "size": 7387
     },
     "profiles/references/unity-structure.md": {
-      "sha256": "d04b62ed741d027466912ab23b8664d8d7d5c75dc0e802928dae678f3b10d9d1",
-      "size": 8683
+      "sha256": "67c515967c962239672527acf1343d409a4dea092dbf5fd3c5529c50150102d8",
+      "size": 9561
     },
     "schemas/governance-v1.schema.json": {
       "sha256": "e9a1a8fc05b32649120a11ae0d1eea86691d16e26ced2face537b04955dfe24a",
@@ -394,8 +402,8 @@
       "size": 12760
     },
     "shared/material-requirements.md": {
-      "sha256": "bbb208242576f48c4252bc94324713bdd8932eff5f9511037547dd7c35487a0c",
-      "size": 5501
+      "sha256": "488bed9d7a59701df555aa81ecfda3a8f82f7d15592f2a633e4be7aa66a39cf9",
+      "size": 7837
     },
     "shared/panel-bridge-v1.md": {
       "sha256": "d04929f79ea515648b320e7524273f01d03cfe3c718be57c7c31da31dd9dc3d8",
@@ -414,8 +422,8 @@
       "size": 8601
     },
     "shared/rules.md": {
-      "sha256": "943e2bcbb15d7e44a1cdf97e4dec34f242e2fc5b7cfd649dfd4d189cb58f1814",
-      "size": 6236
+      "sha256": "605bd4aa611a143ead5aa0ea797d28bbab74db4aa31392aa0e94adeb35e95c83",
+      "size": 6423
     },
     "shared/verification.md": {
       "sha256": "9de8438038a188f2aa3cf54964ef7c52377a0ad84da9b684f98177ebe3c7db21",
@@ -434,8 +442,8 @@
       "size": 5049
     },
     "skills/brainstorm/SKILL.md": {
-      "sha256": "6dbe25a200f6cf4287bee991eb6e2b6f84f8c9856a170379adc4688e83bbf393",
-      "size": 9154
+      "sha256": "22e670692af7eb6b976e645782d32371885370caa68fb77cff8e1c47ccb4eca0",
+      "size": 9587
     },
     "skills/brainstorm/references/decision-exploration.md": {
       "sha256": "92e3f17303b696efdcd214f105d0615ef8b6ef3a8c922f0cc8d3bb298ee33c08",
@@ -462,8 +470,8 @@
       "size": 4740
     },
     "skills/design/references/game-deliverables.md": {
-      "sha256": "c5120a9052d212ec1f9bedcfa03a728985b834a3850a91098cc651e7cd28cfc3",
-      "size": 6479
+      "sha256": "979aba6b0bd258bd4ab4293ed7196c3a5bb53ea0a2c66be1275c0675d4dea8c8",
+      "size": 22168
     },
     "skills/develop/SKILL.md": {
       "sha256": "15968e949e577aec67c3ece7a68bd90e1be4693b2473c33e440811b5bd664799",
@@ -490,8 +498,8 @@
       "size": 8714
     },
     "skills/init/references/adoption.md": {
-      "sha256": "142ac9ee72d3069305360b26563042a3a3ad50cc79db75152ccfbfdf1d257868",
-      "size": 5141
+      "sha256": "ae5f27dcb58eb4aca05e09dbe63f013b67e7f20b587852fa107e02ed13559380",
+      "size": 5582
     },
     "skills/verify/SKILL.md": {
       "sha256": "d8b23e8dcc09813b1e6d8d1bd150e9b346520e0bb63dbb8bb592145e0c6382b0",

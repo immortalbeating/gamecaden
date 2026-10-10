@@ -38,6 +38,12 @@ uGUI 与 UI Toolkit 的功能和支持随版本变化；选型依据本次需要
 
 **跨场景：关卡结束进入结果页再开新局。** 已有 Spec 规定结果页保留本局得分，新局清零。采用 `关卡组件 → 本局模型 ← 结果页 UI`；模型由覆盖这次切换的所有者持有，关卡组件和 UI 分别按进入/离开绑定解绑。实现可用持久根或常驻 Scene；结果页选择现有 uGUI 或 UITK，其回调只发送“新局”意图。验收两次关卡→结果→新局，观察模型、持久所有者数量、分数与回调次数；同时检查重复进入 Play 的现场设置。
 
+## 输入来源与工作流交接
+
+实例覆盖、共享数据、跨 Scene 状态或 UI 接线变化时，引用实际 Scene/Prefab、Inspector 绑定、ScriptableObject、所选 UI 资源及项目/包设置，定位定义/实例差异、序列化引用与状态寿命；不另维护全量 GameObject、GUID 或组件清单。现有接线只表达现状：未来共享、保留或 UI 关系改变时，在原 Task/design 补目标差异；语义不清则补必要的局部关系或生命周期表达，按[材料参考](../../skills/design/references/game-deliverables.md)选择方法。
+
+已选 Unity 但尚无工程时，可先形成必要初始设计，原生来源标为待建立；预定绑定、设置和实例安排不写成已保存或运行。develop 落实实际来源，verify 按本次主张检查保存/重载与运行行为，结果仍归原 Evidence/Decision。
+
 ## 官方事实来源与验证边界
 
 - [Scenes](https://docs.unity3d.com/6000.0/Documentation/Manual/CreatingScenes.html)、[GameObjects](https://docs.unity3d.com/6000.0/Documentation/Manual/class-GameObject.html)、[Prefabs](https://docs.unity3d.com/6000.0/Documentation/Manual/Prefabs.html)：组合、组件与复用机制。
