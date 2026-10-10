@@ -2,11 +2,11 @@
 
 {{project_identity_runtime_roots_and_workflow_usage}}
 
-## 权威来源
-{{vision_spec_roadmap_tasks_epics_assets_and_rules_refs_that_exist}}
+## 当前维护入口
+{{current_vision_required_for_adoption_spec_roadmap_when_needed_and_original_work_assets_rules_refs_that_exist}}
 
 ## 继续工作
 {{how_to_locate_original_work_and_current_restrictions}}
 
-## 旧来源与适用范围
-{{retained_owners_and_mapped_paths_or_omit}}
+## 详细、输入与历史来源
+{{specific_source_uses_versions_adopted_scope_and_retained_owners_without_overlapping_current_responsibility_or_omit}}

@@ -66,6 +66,8 @@ Workspace schema 保留既定字段：schema_version=1、project、runtime_roots
 
 sources 每项包含 id/role/kind/path/owner，可有 scope、format、adapter。format 在本次原生格式中明确为 native-markdown-v1、native-yaml-v1、native-json-v1 或 external；省略的既有映射仍可读取，但工具应报告格式识别结果和实际能力，不默认为可按 v1 改写。
 
+role 是信息类别，scope 是可读范围说明；当前工具不会按 scope 截取章节，也不验证自由正文是否充分承担 Vision/Spec/Roadmap 职责。正式接入时的当前正文与详细引用按[记录约定](records.md#项目级当前正文)整理；旧映射的形态有效与读取兼容不代表内容已经符合新的接入要求。
+
 owner 是维护约定，不是权限。adapter 只是适配标识，不保证其已经存在；真正能力由工具检查后返回。旧管理来源无写适配器时返回原文及限制，继续使用其既有流程或先完成获授权移交。
 
 rule_sources 每项用 id/path/scope 定位生效规则，owner 可选。默认任务/专题来源必须指向正确 role；集合可以尚未创建，但已被具体工作引用的缺失记录不能当作空项目。

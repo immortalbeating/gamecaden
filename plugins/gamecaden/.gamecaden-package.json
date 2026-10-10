@@ -1,5 +1,5 @@
 {
-  "digest": "2b6f65e26d0fe11b08f15fcbe603e1f1f1f10dc4f857f5fa7fffb451acc70c76",
+  "digest": "ae9f777f706fb92e30ee72b7d5123bb980ea57a2ba70ab1d7eaea4883170536f",
   "files": {
     ".claude-plugin/plugin.json": {
       "sha256": "a6e5d641dda91460d9385b37c33dab8175395bf7b6504f637a80d772ea04d321",
@@ -382,8 +382,8 @@
       "size": 6613
     },
     "shared/formats-v1.md": {
-      "sha256": "98add91bf221d852b890b5da8c8e5eaa8b80276d0ddfe67036be2eaa9e98b706",
-      "size": 14593
+      "sha256": "d5584d9733e51df6f7d3daa403c5f0132874609e35b854bf10bf1fee35250982",
+      "size": 14955
     },
     "shared/git-policy.md": {
       "sha256": "cf3e25553f5667335506b7ff682cbbc30c9906d0607e0d9a7b205dd382f0217b",
@@ -402,8 +402,8 @@
       "size": 12760
     },
     "shared/material-requirements.md": {
-      "sha256": "488bed9d7a59701df555aa81ecfda3a8f82f7d15592f2a633e4be7aa66a39cf9",
-      "size": 7837
+      "sha256": "6b40db47dd369dd93a335c6efdaf8c13f68122f515e15053fe8af6564749fea1",
+      "size": 8169
     },
     "shared/panel-bridge-v1.md": {
       "sha256": "d04929f79ea515648b320e7524273f01d03cfe3c718be57c7c31da31dd9dc3d8",
@@ -414,8 +414,8 @@
       "size": 4696
     },
     "shared/records.md": {
-      "sha256": "3ab931a7e1e069a6a365d864e83271d71beb04f7f42fa8fdf3601c911e4a8dd3",
-      "size": 11024
+      "sha256": "f0017f4ef225a6dc45371c08ed4fb5d30bce2301218d26a0515efc2765ae8808",
+      "size": 13800
     },
     "shared/relation-views.md": {
       "sha256": "16fb8dfbfb5bc53f7cec7e88148d4ea03861a4ea89ba35cab3721ce17d343ca5",
@@ -430,8 +430,8 @@
       "size": 5846
     },
     "shared/workspace.md": {
-      "sha256": "20c2c9358031776d9463a5479947e33fd0e00e23730f3e92d6211ad80f95726f",
-      "size": 10867
+      "sha256": "09b3a8100fd8c6174c888b0aaf6e65aa8630c52242750a661c18773645083444",
+      "size": 11887
     },
     "skills/assets/SKILL.md": {
       "sha256": "58fd657e26b33dba8574e3407a6112248126cafff0129dbfd50de3f965374f33",
@@ -442,8 +442,8 @@
       "size": 5049
     },
     "skills/brainstorm/SKILL.md": {
-      "sha256": "22e670692af7eb6b976e645782d32371885370caa68fb77cff8e1c47ccb4eca0",
-      "size": 9587
+      "sha256": "0deb11baec113fe891c40176d80ffd07c935cc097ce63a55376c1ea32de29687",
+      "size": 9879
     },
     "skills/brainstorm/references/decision-exploration.md": {
       "sha256": "92e3f17303b696efdcd214f105d0615ef8b6ef3a8c922f0cc8d3bb298ee33c08",
@@ -462,8 +462,8 @@
       "size": 4806
     },
     "skills/design/SKILL.md": {
-      "sha256": "cb0d7677ab3b651157786cbee2adbba4a0f2dda140389c56b92352ba94f3d224",
-      "size": 8045
+      "sha256": "acb86b6a9cefbe33d66fb43154b5afbf85891eb0d6877a196eed78e5790f7c3d",
+      "size": 8266
     },
     "skills/design/references/architecture-and-readiness.md": {
       "sha256": "9cf6aedd55eb3a54ed22f5922be0567245e7c0649767d188504ab1f96d6dd567",
@@ -486,20 +486,20 @@
       "size": 8424
     },
     "skills/flow/references/change-work.md": {
-      "sha256": "62d69b414bb6f029c73f1f06696b937d5654e1e2da90bf5394e48608e82c5cef",
-      "size": 6121
+      "sha256": "50991254ddfd91a23bee3707ca8f70dad82be139c14bbb88fba9c0b874baf98e",
+      "size": 6676
     },
     "skills/flow/references/resume.md": {
-      "sha256": "63729599e7b1e21238b5579a22beb588a444e6ce35aa5dc30a5549a14219119c",
-      "size": 5543
+      "sha256": "783f8d96f74d09ff68772883dbd3a3fde81ba9b0157bf50e74c7e9847b495bdc",
+      "size": 5831
     },
     "skills/init/SKILL.md": {
-      "sha256": "b0405294c5d7d499a92171fc7b4fe576c66b6c3d48621aa32c4b9227731ea56d",
-      "size": 8714
+      "sha256": "da8f4e547bea23674292f6a00c366f2eca90d0575c1a8f30d0a9daeb56aaed82",
+      "size": 9561
     },
     "skills/init/references/adoption.md": {
-      "sha256": "ae5f27dcb58eb4aca05e09dbe63f013b67e7f20b587852fa107e02ed13559380",
-      "size": 5582
+      "sha256": "07d98c0506345e53cf2459c5c30b5b3ac029b27fcc81c3997d218de39fc722e5",
+      "size": 6525
     },
     "skills/verify/SKILL.md": {
       "sha256": "d8b23e8dcc09813b1e6d8d1bd150e9b346520e0bb63dbb8bb592145e0c6382b0",
@@ -514,8 +514,8 @@
       "size": 542
     },
     "templates/catalog.md": {
-      "sha256": "ca3e0f3facabca24cffa845ddcb867a4bb83940321e56fedc2b5376634607b6d",
-      "size": 3542
+      "sha256": "4f83a25d02249150a06a4356071a45b17a2bc975288c1bd9a4853f92254ca222",
+      "size": 3838
     },
     "templates/decision.md.tpl": {
       "sha256": "b5cd16bc583582f8ae350f0c4e586a118061ea05f371e58fc9008c3d77868e2c",
@@ -546,8 +546,8 @@
       "size": 223
     },
     "templates/index.md.tpl": {
-      "sha256": "d783d15c79ae98189131d0a85374368345b305b4159255ee60839a9da22abf8d",
-      "size": 327
+      "sha256": "133b906a7dd5332d25a578c58fefd6add8ee189799c3ee1b99cab5ed508b7bf9",
+      "size": 457
     },
     "templates/manifest.json.tpl": {
       "sha256": "edd7bb54ceb38d0c7503cbd1c35260ae55946d0ef989dea8046626cca3f3193f",
@@ -574,24 +574,24 @@
       "size": 339
     },
     "templates/roadmap.md.tpl": {
-      "sha256": "cda806d45d63defbaae46d6b37b803783a5e00ea7881d7512f4c246a54bd21e7",
-      "size": 208
+      "sha256": "54f04b1afc9def2d9d3f07e86f526fb08d62185983df0ace176bab1485d77701",
+      "size": 392
     },
     "templates/spec-index.md.tpl": {
-      "sha256": "891b1a27bfd4acf3217134c551e3c58ffe82a3f1b727e78bed9206977f173488",
-      "size": 239
+      "sha256": "57c1477e2d562953816eebe09c00d5dad91d6a8ebba60fbb416904110833407d",
+      "size": 391
     },
     "templates/spec-page.md.tpl": {
-      "sha256": "88b124b48e49364f57b8000bf572d29168f85bf1d06e74681f21aa724bca10a7",
-      "size": 338
+      "sha256": "e34907dc46defc8b9b93c756b7e37bb7b2f46cc6f26195a5746ab604fc7641fe",
+      "size": 412
     },
     "templates/task.md.tpl": {
       "sha256": "b83591a88a3f5ffa3641910ca53be28f722acaa4e38ff1436dda0f20dde24ee1",
       "size": 528
     },
     "templates/vision.md.tpl": {
-      "sha256": "8326389a2a9845f6c00f291d2c99c276b22f88473562935478330981599e6401",
-      "size": 383
+      "sha256": "a4c29dc72a0ff19e4b8368ce1a5deada1b039c3daec40abf51ef951450bccd53",
+      "size": 546
     },
     "templates/workspace.yaml.tpl": {
       "sha256": "4ef41359a03623d607d58c9a52bc8525d8a17d10c3b04515edb85952938dc20b",

@@ -38,7 +38,7 @@ workspace.yaml 中所有 path、root、marker 均相对于该 YAML 所在目录�
 | default_epic_source | 新 Epic 的默认来源；无需要或尚未决定时可为空 |
 | rule_sources | 真正生效的项目规范/profile 来源及适用范围；仅登记可定位的材料，使用时按[规则选择与加载](rules.md)判断 |
 
-sources 的 role 使用 vision、spec、roadmap、task、epic、asset-ledger、evidence、decision、notes、parking-lot。kind 为 file 或 collection。owner 表示维护约定，例如 flow、codestable、trellis、project；它不是操作系统权限，也不强制必须存在同名工具。
+sources 的 role 使用 vision、spec、roadmap、task、epic、asset-ledger、evidence、decision、notes、parking-lot。kind 为 file 或 collection。role 表示信息类别，不自动证明正文职责充分或要求生效。scope 说明适用范围，不是工具的章节筛选器。owner 表示维护约定，例如 flow、codestable、trellis、project；它不是操作系统权限，也不强制必须存在同名工具。
 
 format/adapter 说明实际形态与适配线索，省略时先识别；声明适配器不等于已有写入能力。新建时按需使用[workspace 模板](../templates/workspace.yaml.tpl)，旧来源不会因为登记映射而自动转换。
 
@@ -66,6 +66,12 @@ runtime_roots:
     engine: godot
     marker: ../project.godot
 sources:
+  - id: current-vision
+    role: vision
+    kind: file
+    path: vision.md
+    owner: project
+    format: native-markdown-v1
   - id: current-spec
     role: spec
     kind: file
@@ -88,7 +94,7 @@ rule_sources: []
 
 尚无工程的新项目可使用 runtime_roots: []；预定引擎记录在目标材料中。旧项目可将 task 来源映射到 .trellis/tasks 或 codestable 的实际集合，owner 保留原系统；复杂嵌套来源以真实入口和 scope 说明，不假定全都采用本稿 Task frontmatter。
 
-workspace 不存当前 Task 状态、完成百分比、进程/端口、临时登录信息、批准副本或 package 命令副本。实际命令读项目配置，历史与续接读原记录。
+workspace 不存当前 Task 状态、完成百分比、进程/端口、临时登录信息、批准副本或 package 命令副本。scope 只说明职责和适用范围；当前检查结果与完成判断回原正文/证据，不写进来源说明。实际命令读项目配置，历史与续接读原记录。
 
 项目 Git 策略作为适用规则由 rule_sources/实际入口引用，选择与保存见[Git 策略约定](git-policy.md)。沿用已有权威位置；新项目必要时使用 rules/git.md。仓库当前分支、远端差异和执行进度从 Git/原 Task 获取，不加一份动态镜像。
 
@@ -96,13 +102,15 @@ workspace 不存当前 Task 状态、完成百分比、进程/端口、临时登
 
 ### 新建资料的默认位置
 
-在没有既有权威路径或用户指定位置时，新建正文放在当前工作流目录：vision.md、spec/index.md、roadmap.md、parking-lot.md、notes/、assets/ledger.yaml，以及按需的 evidence/、decisions/、views/。这一约定只决定需要新建时放哪里，不要求全部生成。
+正式接入时，按[项目级当前正文](records.md#项目级当前正文)在当前工作流目录建立 vision.md、必要的 spec/index.md 和 roadmap.md，作为确定的维护入口。用户明确指定其他位置时沿用其要求并登记唯一入口。重复接入保留已确定位置，只补本次差异；已有旧映射的读取和局部续接保持兼容，相关修复才整理其职责。
 
-已有文档能承担职责时直接映射；同一输入文件包含多个职责时说明章节和当前维护范围。未来候选需要持续留存时由独立 parking-lot.md 维护，保留输入来源引用，Vision 只指向该停车场；原需求输入可以保留历史内容，不再把其中的候选段作为第二个活动停车场。默认集合中的新 Task/Epic 位置沿用共同记录规则。
+vision 来源指向当前愿景正文，Spec 总览与必要 Roadmap 指向相应入口；详细领域规范仍可登记独立来源。混合输入按章节/字段、版本和采用范围由当前正文引用，不因含有目标、规则或阶段表就整份登记为当前主要文档。历史/候选登记仅用于定位，不成为另一份生效正文。
+
+其他新资料默认放在 parking-lot.md、notes/、assets/ledger.yaml，以及按需的 evidence/、decisions/、views/，有真实职责时再创建。Task/Epic、账本和检查/决定保留原身份及维护来源。未来候选需持续留存时由独立 parking-lot.md 维护，保留输入引用，Vision 只指向该停车场；原输入中的候选段保留历史身份。默认集合中新 Task/Epic 位置沿用共同记录规则。
 
 ### 入口正文与宿主段落
 
-index 应简述本项目及工作流入口，指明目标/规格/路线/工作记录各从哪里读，说明旧系统保留的范围。只链接已经存在的文件；尚未创建的集合可以说明用途，不把不存在的正文写成有效链接。
+index 应简述本项目及工作流入口，分别指明当前项目级正文、原工作/规则的维护入口，以及详细/输入/历史材料的用途和范围。先由当前正文理解方向与生效范围，再按本次问题读取详细来源；不复写动态进度。只链接已经存在的文件；尚未创建的集合可以说明用途，不把不存在的正文写成有效链接。
 
 在实际生效的项目指引中合并本流程的短段落，路径按项目实际位置改写。Codex默认使用AGENTS.md，Claude Code使用CLAUDE.md；其他宿主沿其实际指引入口。默认示意（技能名称以Codex插件为例，按实际宿主回读改写）：
 

@@ -1,6 +1,6 @@
 # 架构
 
-Gamecaden 将任务行为、项目事实与宿主展示分开维护。八个职责读取项目的权威来源，按请求选择工作；工作区映射记录来源位置，不复制动态状态。详细接入规则见 [workspace](../plugins/gamecaden/shared/workspace.md)。
+Gamecaden 将任务行为、项目事实与宿主展示分开维护。八个职责读取项目的权威来源，按请求选择工作；正式接入整理当前愿景、必要规格总览和开发路线的确定入口，详细输入与原工作保留明确维护范围。工作区映射记录来源位置，不复制动态状态。正文职责见 [records](../plugins/gamecaden/shared/records.md#项目级当前正文)，接入规则见 [workspace](../plugins/gamecaden/shared/workspace.md)。
 
 ## 仓库与分发
 
@@ -19,6 +19,8 @@ Gamecaden 将任务行为、项目事实与宿主展示分开维护。八个职�
 ## 来源与 I/O
 
 来源映射指向原记录；原格式保留其维护归属。读取诊断与范围完整性需要一起解释，已定位材料不代表语义正确或条件通过。写入由本地 I/O 库检查快照与修订，保存稳定操作身份和回执；恢复先查询原请求，再处理未决操作。详见 [local-io](../plugins/gamecaden/shared/local-io.md) 与 [格式合同](../plugins/gamecaden/shared/formats-v1.md)。
+
+主要文档整理属于 Skill 的内容判断与写回约定。当前 role 分类和 scope 说明不自动筛选章节或证明正文合格；旧 Schema/映射继续可读，项目按实际接入或修复范围处理职责。包更新不自动迁移项目。
 
 ## 面板
 

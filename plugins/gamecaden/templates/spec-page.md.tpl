@@ -10,4 +10,4 @@
 {{normative_materials_versions_and_true_consumers}}
 
 ## 参考与维护入口
-{{source_refs_and_related_work}}
+{{specific_source_sections_versions_adopted_scope_and_which_source_owns_future_changes_with_related_work}}
