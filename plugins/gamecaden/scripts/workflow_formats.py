@@ -102,6 +102,7 @@ def request_digest(request):
 
 PREFIXES = {"task": "T", "epic": "E", "evidence": "EV", "decision": "D", "asset": "A"}
 KINDS = {value: key for key, value in PREFIXES.items()}
+ATTACHMENT_STEMS = {"design", "plan", "history", "readme", "index"}
 FRONT = re.compile(r"\A---\n(.*?)\n---(?:\n|$)", re.S)
 BLOCK = re.compile(r"<!-- workflow:record (evidence|decision) ([A-Za-z0-9_.-]+) -->\n```yaml\n(.*?)\n```\n(.*?)\n<!-- workflow:endrecord \2 -->", re.S)
 FORWARD = re.compile(r"<!-- workflow:forward ([A-Za-z0-9_.-]+) -->\n```yaml\n(.*?)\n```\n<!-- workflow:endforward \1 -->", re.S)
@@ -114,7 +115,19 @@ def normalized_id(value):
 
 def identity_kind(metadata):
     value = metadata.get("id", "") if isinstance(metadata, dict) else ""
-    return KINDS.get(value.rsplit("-", 1)[0])
+    return KINDS.get(value.rsplit("-", 1)[0]) if isinstance(value, str) else None
+
+
+def primary_record_path(path):
+    """Reserve native main filenames even when their identity header is damaged."""
+    return path.stem.lower() in PREFIXES or bool(
+        re.match(r"(?:T|E|EV|D|A)-\d+(?:[-_.]|$)", path.stem, re.I))
+
+
+def record_metadata(metadata):
+    # A missing Task ID must not turn recognizable lifecycle metadata into notes.
+    return identity_kind(metadata) is not None or isinstance(metadata, dict) and (
+        metadata.get("mode") in ("quick", "standard") and "epic" in metadata)
 
 
 @dataclass
@@ -130,12 +143,15 @@ class Record:
 
     @property
     def id(self):
+        if self.kind == "attachment":
+            return None  # Producer-local IDs in attachment frontmatter are not workflow identities.
         return self.metadata.get("id") if self.metadata else None
 
 
 class Document:
-    def __init__(self, path, data, native=False, role="document", source=None):
+    def __init__(self, path, data, native=False, role="document", source=None, collection_root=None):
         self.path, self.data, self.native = path, data, native
+        self.collection_root, self.raw_attachment = collection_root, False
         try:
             raw = data.decode("utf-8-sig")
         except UnicodeError as exc:
@@ -165,12 +181,19 @@ class Document:
         else:
             raise WorkflowError("unsupported_format", f"Unsupported native extension: {suffix}")
         kind = identity_kind(metadata) or ("asset-ledger" if role == "asset-ledger" else role)
-        if role in PREFIXES and metadata is None:
-            attachment = path.stem.lower()
-            if attachment in ("design", "plan", "history", "readme", "index"):
-                kind = attachment
-            else:
-                raise WorkflowError("invalid_record", f"Native {role} is missing required frontmatter", {"path": str(path)})
+        stem = path.stem.lower()
+        in_attachment_directory = collection_root is not None and path.parent != collection_root
+        attachment = role == "attachment" or role in PREFIXES and not primary_record_path(path) and (
+            in_attachment_directory or stem in ATTACHMENT_STEMS)
+        if attachment and not record_metadata(metadata):
+            kind = stem if stem in ATTACHMENT_STEMS and not (isinstance(metadata, dict) and "id" in metadata) else "attachment"
+            if suffix != ".md" or metadata is not None and not isinstance(metadata, dict):
+                # Producer data and non-object headers keep their complete text.
+                kind, metadata, body = "attachment", None, self.text
+                self.header = None
+                self.raw_attachment = True
+        elif role in PREFIXES and metadata is None:
+            raise WorkflowError("invalid_record", f"Native {role} is missing required frontmatter", {"path": str(path)})
         fmt = {".json": "native-json-v1", ".yaml": "native-yaml-v1", ".yml": "native-yaml-v1"}.get(suffix, "native-markdown-v1")
         self.main = Record(path, kind, metadata, body, fmt, source)
         if kind in PREFIXES and metadata is not None:
@@ -180,7 +203,7 @@ class Document:
             self.records.extend(Record(path, "asset", item, None, fmt, source) for item in metadata["assets"])
         else:
             self.records.append(self.main)
-        if body is not None:
+        if body is not None and suffix == ".md":
             self.records.extend(self.parse_blocks(body, source))
             matches = list(FORWARD.finditer(body))
             require(body.count("<!-- workflow:forward ") == len(matches), "invalid_record", "Malformed forward block")
@@ -214,7 +237,9 @@ class Document:
     def render(self, metadata=None, body=None):
         metadata = self.main.metadata if metadata is None else metadata
         body = self.main.body if body is None else body
-        if self.path.suffix == ".json":
+        if self.raw_attachment:
+            text = body
+        elif self.path.suffix == ".json":
             text = json.dumps(plain(metadata), ensure_ascii=False, indent=2) + "\n"
         elif self.path.suffix in (".yaml", ".yml"):
             text = yaml_dump(metadata)

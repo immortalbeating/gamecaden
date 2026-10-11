@@ -78,7 +78,11 @@
 
 同一文件中的短记录、独立记录和 Quick/standard 都走相同保护边界。record.update 也检查所承载的正式内嵌块，不能借全量正文替换绕过专门动作。source_revision 与检查对象 Version 分别核对。
 
-在原生Task/Epic集合内创建无frontmatter的design/plan/history附件时，当前读取器按文件stem识别类型。阶段名称放在目录，如 `tasks/T-002/m0/design.md`、`m0/plan.md`；`m0-design.md`这类未支持名称不能由record_type代替持久识别。创建会在写入前按实际来源的读取规则校验，无法回读时返回invalid_record且不写目标，不再留下阻断后续编号的文件。已有不支持附件需保留原字节后移到支持位置或明确登记合适来源，不把缺少frontmatter的真实Task当普通附件放行。
+原生编号集合的子目录支持自然文件名的 `.md`、`.json`、`.yaml`、`.yml` 普通附件，如 `SOURCE.md`、`FILES.md`；集合根仍兼容 design/plan/history/readme/index 名称，不把根目录任意文件都当附件。task/epic/evidence/decision/asset 主文件名、以 T-/E-/EV-/D-/A-数字开头的文件名以及声明正式管理 ID 的内容仍按正式记录校验；缺 ID 但带 quick/standard mode 和 epic 的 Task 元数据也不能降级。坏原生块和重复正式 ID 继续报错。
+
+普通 Markdown 附件的对象 frontmatter 保留 metadata/body；生产者局部 id/status/events 可用 set_fields 更新，不成为工作身份、生命周期或正式事件，也不参与编号引用预留。非对象 frontmatter 保留完整文本，metadata 为 null。无正式身份的 JSON/YAML 附件同样以完整文本返回 body，全文更新仍须语法有效。任何更新仍须回读原来源，不能把普通附件改成正式工作记录；不新增 `.txt` 扫描。
+
+`record.create` 的 attachment 须指定真实 Task/Epic owner 和显式 `.md` path，位于其实际附件目录或子目录。新 Task 材料目录就是主文件所在的 `tasks/T-编号-短名/`，旧平铺 Task 仍使用 `tasks/T-编号/`；后续改标题不搬文件。附件不分配工作 ID 或生命周期。创建在写入前按实际来源的读取规则校验，无法回读时返回 invalid_record 且不写目标；已有材料保留原字节和原归属，不为套用新布局自动迁移。
 
 当前自动内容验证支持单文件 SHA-256，以及本包备用 manifest 中每个实际成员的 SHA-256；候选 Subject 可从其已绑定 candidate.manifest 得到隐含 proof。其他生产工具 manifest、git/build/named 的当前适用性需要对应适配器，当前请求会明确返回 unsupported_format，不把未解析的版本当作通过。已有历史记录仍可保存这些声明，不因此虚构当前验证。
 

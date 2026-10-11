@@ -1075,7 +1075,8 @@
             "design",
             "plan",
             "history",
-            "handoff"
+            "handoff",
+            "attachment"
           ]
         },
         "metadata": {
@@ -1114,7 +1115,8 @@
                 "enum": [
                   "design",
                   "plan",
-                  "history"
+                  "history",
+                  "attachment"
                 ]
               }
             },
@@ -1127,6 +1129,13 @@
               "owner"
             ]
           }
+        },
+        {
+          "if": {
+            "properties": {"record_type": {"const": "attachment"}},
+            "required": ["record_type"]
+          },
+          "then": {"required": ["path"]}
         }
       ]
     },

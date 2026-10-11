@@ -91,8 +91,10 @@ class PanelData:
     def _row(self, data, record_type, source="native", extra=None):
         key = self._key(source, data["path"], data["ref"])
         metadata = data.get("metadata") or {}
+        title = next((value for value in (metadata.get("title"), metadata.get("name"), (extra or {}).get("label"))
+                      if isinstance(value, str) and value), Path(data["path"]).name)
         row = {"key": key, "record_type": record_type,
-               "title": metadata.get("title") or metadata.get("name") or (extra or {}).get("label") or Path(data["path"]).name,
+               "title": title,
                "ref": data["ref"], "path": data["path"], "reference_base": data.get("reference_base"),
                "revision": data["revision"], "metadata": data.get("metadata"),
                "capabilities": data.get("capabilities", ["record.read"]),

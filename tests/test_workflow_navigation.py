@@ -25,6 +25,23 @@ class NavigationTests(unittest.TestCase):
         else: body+=block({'schema_version':1,'navigation':nav})
         path.write_text(body,encoding='utf-8')
     def node(self,view,path): return next(n for n in view['nodes'] if n.get('path')==str(path) and n.get('record_key'))
+    def test_attachment_producer_fields_are_not_workflow_identity_or_relations(self):
+        folder=self.root/'game-workflow/tasks/T-002'
+        folder.mkdir(exist_ok=True)
+        parent=folder/'SOURCE.md'; child=folder/'FILES.md'
+        parent.write_text('---\nid: [42, 43]\ntitle: [producer, preview]\nstatus: revised\ndepends_on: [producer-input]\nrelated: [reference-board]\n---\n# Producer source\n',encoding='utf-8')
+        child.write_text('---\nid: producer-files\n---\n# File list\n',encoding='utf-8')
+        self.annotate(child,{'parent':{'path':'SOURCE.md'}})
+        before={p:p.read_bytes() for p in (parent,child)}
+        view=self.view(); pnode=self.node(view,parent); cnode=self.node(view,child)
+        self.assertEqual(pnode['kind'],'document')
+        self.assertEqual(pnode['title'],'SOURCE.md')
+        self.assertNotIn('id',pnode['ref'])
+        self.assertIsNone(pnode['status'])
+        self.assertEqual(cnode['navigation_parent_key'],pnode['key'])
+        self.assertFalse(any(e['from']==pnode['key'] and e['relation'] in ('requires','references') for e in view['edges']))
+        self.assertFalse(any(d['code'] in ('invalid_navigation_parent','unresolved_relation','invalid_governance') and d.get('source_key')==pnode['key'] for d in view['diagnostics']))
+        self.assertEqual({p:p.read_bytes() for p in before},before)
     def test_domain_parent_is_read_only_and_isolated_document_survives(self):
         task=self.root/'game-workflow/tasks/T-004-map.md'
         from workflow_governance import BLOCK

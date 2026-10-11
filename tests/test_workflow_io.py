@@ -65,6 +65,12 @@ class Integration(unittest.TestCase):
         data.update(metadata)
         return self.request("record.create", {"record_type": "task", "metadata": data, "body": "Keep this goal and next action.\n"}, [])
 
+    def native_only_sources(self):
+        path = self.root / "game-workflow/workspace.yaml"
+        mapping = yaml_load(path.read_text(encoding="utf-8"))
+        mapping["sources"] = [s for s in mapping["sources"] if s.get("format", "").startswith("native-")]
+        self.run_request(self.request("workspace.configure", {"document": plain(mapping)}, [self.condition("workspace.yaml")]))
+
     @unittest.skipUnless(os.name == "nt", "Windows long receipt path")
     def test_windows_long_receipt_roundtrip(self):
         root = self.folder / "long-project"
@@ -102,7 +108,8 @@ class Integration(unittest.TestCase):
         second = self.run_request(request)
         self.assertTrue(second["replayed"])
         self.assertEqual(first["receipt"]["allocations"], second["receipt"]["allocations"])
-        self.assertEqual(len(list((self.root / "game-workflow/tasks").glob("*.md"))), 3)
+        self.assertEqual(len(list((self.root / "game-workflow/tasks").rglob("*.md"))), 3)
+        self.assertEqual(Path(first["data"]["path"]), self.root / "game-workflow/tasks/T-003-new-task/task.md")
         request["payload"]["metadata"]["title"] = "Different work"
         conflict = self.run_request(request, "conflict")
         self.assertEqual(conflict["errors"][0]["code"], "request_id_conflict")
@@ -345,10 +352,10 @@ Workflow(sys.argv[2],fault=crash).execute(json.loads(Path(sys.argv[3]).read_text
         self.assertTrue((self.root / "game-workflow/tasks/T-002/design.md").is_file())
         self.assertEqual(self.read({"id": "T-002"})["metadata"]["status"], "active")
 
-    def test_attachment_creation_uses_registered_reader_before_write(self):
+    def test_attachment_creation_does_not_hide_missing_primary_metadata(self):
         for kind in ("design", "plan", "history"):
             with self.subTest(kind=kind):
-                path = f"tasks/T-002/m0-{kind}.md"
+                path = f"tasks/T-002/T-900-{kind}.md"
                 req = self.request("record.create", {"record_type": kind, "owner": {"id": "T-002"},
                                    "path": path, "body": "# Stage attachment\n"}, [self.condition(path)])
                 result = self.run_request(req, "rejected")
@@ -377,6 +384,208 @@ Workflow(sys.argv[2],fault=crash).execute(json.loads(Path(sys.argv[3]).read_text
         listing = self.run_request(self.request("record.list", {"limit": 100}))
         self.assertFalse(any(x["code"] == "invalid_record" for x in listing["data"]["diagnostics"]))
         self.assertEqual(self.read({"id": "T-002"})["metadata"]["status"], "active")
+        self.assertEqual(self.run_request(self.task_create())["data"]["ref"]["id"], "T-003")
+
+    def test_new_task_and_default_attachments_share_directory(self):
+        created = self.run_request(self.task_create(title="本轮 / 新角色: 主视图?"))
+        path = Path(created["data"]["path"])
+        folder = self.root / "game-workflow/tasks/T-003-本轮-新角色-主视图"
+        self.assertEqual(path, folder / "task.md")
+        self.assertEqual(list(folder.iterdir()), [path])  # Simple work does not create empty materials.
+        task = self.read({"id": "T-003"})
+        self.assertEqual(Path(task["reference_base"]), folder)
+        for kind in ("design", "plan", "history"):
+            result = self.run_request(self.request("record.create", {
+                "record_type": kind, "owner": {"id": "T-003"}, "body": f"# {kind}\n"}, []))
+            self.assertEqual(Path(result["data"]["path"]), folder / f"{kind}.md")
+            self.assertEqual(self.read(result["data"]["ref"])["body"], f"# {kind}\n")
+        update = self.request("record.update", {"target": {"id": "T-003"},
+            "set_fields": {"title": "Renamed work"}, "reason": "Clarify the title."},
+            [{"target": {"id": "T-003"}, "expected_revision": task["revision"]}])
+        self.run_request(update)
+        self.assertEqual(Path(self.read({"id": "T-003"})["path"]), path)
+        self.assertFalse((folder / "T-003").exists())
+
+    def test_explicit_task_path_retains_its_directory(self):
+        request = self.task_create()
+        request["payload"]["path"] = "tasks/custom/custom-task.md"
+        request["preconditions"] = [self.condition("tasks/custom/custom-task.md")]
+        created = self.run_request(request)
+        self.assertEqual(Path(created["data"]["path"]), self.root / "game-workflow/tasks/custom/custom-task.md")
+        attachment = self.run_request(self.request("record.create", {
+            "record_type": "plan", "owner": {"id": "T-003"}, "body": "# Existing custom layout\n"}, []))
+        self.assertEqual(Path(attachment["data"]["path"]), self.root / "game-workflow/tasks/custom/plan.md")
+        self.assertEqual(self.read({"id": "T-002"})["metadata"]["status"], "active")
+
+    def test_explicit_root_task_filename_retains_flat_attachment_layout(self):
+        request = self.task_create()
+        request["payload"]["path"] = "tasks/task.md"
+        request["preconditions"] = [self.condition("tasks/task.md")]
+        self.run_request(request)
+        result = self.run_request(self.request("record.create", {"record_type": "design",
+            "owner": {"id": "T-003"}, "body": "# Flat custom task\n"}, []))
+        self.assertEqual(Path(result["data"]["path"]), self.root / "game-workflow/tasks/T-003/design.md")
+        path = "tasks/T-003/SOURCE.md"
+        result = self.run_request(self.request("record.create", {"record_type": "attachment",
+            "owner": {"id": "T-003"}, "path": path, "body": "# Flat source\n"}, [self.condition(path)]))
+        self.assertEqual(self.read(result["data"]["ref"])["body"], "# Flat source\n")
+
+    def test_source_explanations_do_not_block_unrelated_id_allocations(self):
+        self.native_only_sources()
+        folder = self.root / "game-workflow/tasks/T-002/raw"
+        folder.mkdir(parents=True)
+        for name in ("SOURCE.md", "SOURCE_r2.md", "FILES.md", "m0-design.md"):
+            text = f"# {name}\nProducer source and file references.\n"
+            (folder / name).write_text(text, encoding="utf-8")
+            record = self.read({"path": f"tasks/T-002/raw/{name}"})
+            self.assertEqual(record["body"], text)
+            self.assertNotIn("id", record["ref"])
+            self.assertNotIn("record.transition", record["capabilities"])
+        listing = self.run_request(self.request("record.list", {"types": ["task"], "limit": 100}))
+        self.assertTrue(listing["data"]["complete"])
+        self.assertEqual(listing["data"]["diagnostics"], [])
+        self.assertEqual({r["metadata"]["id"] for r in listing["data"]["items"]}, {"T-001", "T-002"})
+        self.assertEqual(self.run_request(self.task_create())["data"]["ref"]["id"], "T-003")
+        epic = self.run_request(self.request("record.create", {"record_type": "epic",
+            "metadata": {"title": "Another delivery group", "status": "active"}, "body": "# Shared result\n"}, []))
+        self.assertEqual(epic["data"]["ref"]["id"], "E-002")
+        prior = self.read({"id": "EV-001"})
+        evidence = copy.deepcopy(prior["metadata"])
+        evidence.pop("id")
+        created = self.run_request(self.request("record.create", {"record_type": "evidence",
+            "metadata": evidence, "body": "Same fixture observation, independently recorded.\n"}, [],
+            context={"project_root": str(self.root), "base_dir": prior["reference_base"]}))
+        self.assertEqual(created["data"]["ref"]["id"], "EV-003")  # Existing embedded EV-002 remains reserved.
+
+    def test_generic_attachment_creation_roundtrip_and_owner_scope(self):
+        task = self.run_request(self.task_create())
+        relative = Path(task["data"]["path"]).parent.relative_to(self.root / "game-workflow")
+        for owner, path in (("T-002", "tasks/T-002/raw/SOURCE.md"),
+                            ("T-003", (relative / "raw/FILES.md").as_posix()),
+                            ("E-001", "epics/E-001-feedback/research/SOURCE.md")):
+            with self.subTest(owner=owner):
+                body = "# Source\nUnchanged producer facts.\n"
+                result = self.run_request(self.request("record.create", {"record_type": "attachment",
+                    "owner": {"id": owner}, "path": path, "body": body}, [self.condition(path)]))
+                self.assertEqual(result["receipt"]["allocations"], [])
+                self.assertEqual(self.read(result["data"]["ref"])["body"], body)
+                update = self.request("record.update", {"target": {"path": path},
+                    "body": body + "Corrected provenance.\n", "reason": "Update source details."}, [self.condition(path)])
+                self.run_request(update)
+                self.assertEqual(self.read({"path": path})["body"], body + "Corrected provenance.\n")
+        path = "tasks/T-001/SOURCE.md"
+        result = self.run_request(self.request("record.create", {"record_type": "attachment",
+            "owner": {"id": "T-002"}, "path": path, "body": "# Wrong owner\n"}, [self.condition(path)]), "rejected")
+        self.assertEqual(result["errors"][0]["code"], "invalid_scope")
+        self.assertFalse((self.root / "game-workflow" / path).exists())
+        result = self.run_request(self.request("record.create", {"record_type": "attachment",
+            "owner": {"path": "../legacy/.trellis/tasks/04-21-old/task.json"}, "path": "tasks/T-002/raw/external-owner.md",
+            "body": "# Not a native work owner\n"}, [self.condition("tasks/T-002/raw/external-owner.md")]), "rejected")
+        self.assertEqual(result["errors"][0]["code"], "invalid_scope")
+
+    def test_attachment_text_preserves_producer_json_yaml_and_frontmatter(self):
+        self.native_only_sources()
+        folder = self.root / "game-workflow/tasks/T-002/raw"
+        folder.mkdir(parents=True)
+        bodies = {"manifest.json": '{"id": "producer-17", "status": "done", "files": []}\n',
+                  "frames.json": '[{"id": 12, "time": 0.1}]\n',
+                  "settings.yaml": 'id: producer-17\nstatus: done\nfiles: []\n',
+                  "frames.yml": '- frame: 1\n- frame: 2\n',
+                  "SOURCE.md": '---\nid: producer-17\ntitle: Production notes\n---\n# Source\n',
+                  "numeric-id.md": '---\nid: 42\ntitle: Producer reference\n---\n# Source\n',
+                  "scalar.md": '---\nproducer-note\n---\n# Source\n',
+                  "design.md": '---\n- producer-note\n---\n# Producer design\n'}
+        for name, body in bodies.items():
+            with self.subTest(name=name):
+                (folder / name).write_bytes(b"\xef\xbb\xbf" + body.replace("\n", "\r\n").encode())
+                target = {"path": f"tasks/T-002/raw/{name}"}
+                record = self.read(target)
+                self.assertNotIn("id", record["ref"])
+                changed = record["body"].replace("producer-17", "producer-18")
+                fields = {"id": "producer-18"} if name == "SOURCE.md" else {"id": 43} if name == "numeric-id.md" else {}
+                self.run_request(self.request("record.update", {"target": target, "body": changed,
+                    "set_fields": fields, "reason": "Preserve producer data and encoding."}, [self.condition(target["path"])]))
+                expected = body.replace("producer-17", "producer-18").replace("42", "43")
+                self.assertEqual((folder / name).read_bytes(), b"\xef\xbb\xbf" + expected.replace("\n", "\r\n").encode())
+        listing = self.run_request(self.request("record.list", {"types": ["attachment"], "limit": 100}))
+        self.assertTrue(listing["data"]["complete"])
+        self.assertEqual(len(listing["data"]["items"]), len(bodies))
+        self.assertEqual(self.run_request(self.task_create())["data"]["ref"]["id"], "T-003")
+
+    def test_producer_metadata_updates_do_not_become_workflow_lifecycle(self):
+        path = "tasks/T-002/SOURCE.md"
+        body = "---\nid: producer-17\nstatus: done\nevents: []\n---\n# Source\n"
+        self.run_request(self.request("record.create", {"record_type": "attachment", "owner": {"id": "T-002"},
+            "path": path, "body": body}, [self.condition(path)]))
+        self.run_request(self.request("record.update", {"target": {"path": path},
+            "set_fields": {"id": "producer-18", "status": "revised", "events": [{"frame": 1}]},
+            "reason": "Update producer fields."}, [self.condition(path)]))
+        record = self.read({"path": path})
+        self.assertEqual(record["metadata"]["id"], "producer-18")
+        self.assertEqual(record["metadata"]["status"], "revised")
+        self.assertEqual(record["metadata"]["events"], [{"frame": 1}])
+        self.assertNotIn("id", record["ref"])
+        self.assertNotIn("record.transition", record["capabilities"])
+        request = self.request("record.update", {"target": {"path": path},
+            "set_fields": {"id": "T-901", "title": "Hidden task", "mode": "quick", "kind": "bug", "status": "active", "epic": None},
+            "reason": "Cannot introduce a workflow identity."}, [self.condition(path)])
+        self.run_request(request, "rejected")
+        self.assertEqual(self.read({"path": path})["revision"], record["revision"])
+        self.assertEqual(self.run_request(self.task_create())["data"]["ref"]["id"], "T-003")
+
+    def test_bad_primary_records_still_block_new_identity(self):
+        paths = {"tasks/T-900-broken.md": "# Missing metadata\n",
+                 "tasks/T-002/raw/task.md": "# Missing main header\n",
+                 "tasks/T-002/raw/SOURCE.md": "---\nmode: standard\nepic: null\n---\n# Missing ID\n",
+                 "tasks/T-002/raw/broken.json": '{"id": "T-901", "title": "Incomplete"}\n',
+                 "epics/E-001-feedback/research/epic.md": "# Missing Epic header\n",
+                 "evidence/EV-001/raw/EV-900.md": "# Missing Evidence header\n",
+                 "decisions/D-001/raw/decision.md": "# Missing Decision header\n"}
+        for path, body in paths.items():
+            location = self.root / "game-workflow" / path
+            location.parent.mkdir(parents=True, exist_ok=True)
+            location.write_text(body, encoding="utf-8")
+        listing = self.run_request(self.request("record.list", {"limit": 100}))
+        self.assertFalse(listing["data"]["complete"])
+        self.assertEqual(len([e for e in listing["data"]["diagnostics"] if e["code"] == "invalid_record"]), len(paths))
+        rejected = self.run_request(self.task_create(), "rejected")
+        self.assertEqual(rejected["errors"][0]["code"], "invalid_record")
+
+    def test_attachment_cannot_introduce_or_change_a_workflow_identity(self):
+        path = "tasks/T-002/SOURCE.md"
+        task_body = "---\nid: T-901\ntitle: Hidden task\nmode: quick\nkind: bug\nstatus: active\nepic: null\n---\n# Hidden task\n"
+        request = self.request("record.create", {"record_type": "attachment", "owner": {"id": "T-002"},
+            "path": path, "body": task_body}, [self.condition(path)])
+        self.run_request(request, "rejected")
+        self.assertFalse((self.root / "game-workflow" / path).exists())
+        body = "# Producer source\n"
+        self.run_request(self.request("record.create", {"record_type": "attachment", "owner": {"id": "T-002"},
+            "path": path, "body": body}, [self.condition(path)]))
+        update = self.request("record.update", {"target": {"path": path}, "body": task_body,
+            "reason": "Cannot turn notes into a new Task."}, [self.condition(path)])
+        self.run_request(update, "rejected")
+        self.assertEqual(self.read({"path": path})["body"], body)
+        self.assertEqual(self.run_request(self.task_create())["data"]["ref"]["id"], "T-003")
+
+    def test_formal_blocks_in_attachments_keep_identity_protection(self):
+        folder = self.root / "game-workflow/tasks/T-002/raw"
+        folder.mkdir(parents=True)
+        (folder / "SOURCE.md").write_text("# Source\n<!-- workflow:record evidence EV-900 -->\nBad block\n", encoding="utf-8")
+        listing = self.run_request(self.request("record.list", {"limit": 100}))
+        self.assertFalse(listing["data"]["complete"])
+        self.run_request(self.task_create(), "rejected")
+
+    def test_generic_materials_in_other_identity_collections(self):
+        self.native_only_sources()
+        paths = ("epics/E-001-feedback/research/SOURCE.md", "evidence/EV-001/raw/FILES.md", "decisions/D-001/raw/SOURCE.md")
+        for path in paths:
+            location = self.root / "game-workflow" / path
+            location.parent.mkdir(parents=True, exist_ok=True)
+            location.write_text("# Attached explanation\n", encoding="utf-8")
+            self.assertEqual(self.read({"path": path})["body"], "# Attached explanation\n")
+        listing = self.run_request(self.request("record.list", {"limit": 100}))
+        self.assertTrue(listing["data"]["complete"])
+        self.assertEqual(listing["data"]["diagnostics"], [])
         self.assertEqual(self.run_request(self.task_create())["data"]["ref"]["id"], "T-003")
 
     def test_binary_version_subject(self):

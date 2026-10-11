@@ -106,7 +106,7 @@ workspace 不存当前 Task 状态、完成百分比、进程/端口、临时登
 
 vision 来源指向当前愿景正文，Spec 总览与必要 Roadmap 指向相应入口；详细领域规范仍可登记独立来源。混合输入按章节/字段、版本和采用范围由当前正文引用，不因含有目标、规则或阶段表就整份登记为当前主要文档。历史/候选登记仅用于定位，不成为另一份生效正文。
 
-其他新资料默认放在 parking-lot.md、notes/、assets/ledger.yaml，以及按需的 evidence/、decisions/、views/，有真实职责时再创建。Task/Epic、账本和检查/决定保留原身份及维护来源。未来候选需持续留存时由独立 parking-lot.md 维护，保留输入引用，Vision 只指向该停车场；原输入中的候选段保留历史身份。默认集合中新 Task/Epic 位置沿用共同记录规则。
+其他新资料默认放在 parking-lot.md、notes/、assets/ledger.yaml，以及按需的 evidence/、decisions/、views/，有真实职责时再创建。Task/Epic、账本和检查/决定保留原身份及维护来源。未来候选需持续留存时由独立 parking-lot.md 维护，保留输入引用，Vision 只指向该停车场；原输入中的候选段保留历史身份。默认集合中新 Task 使用 `tasks/T-编号-短名/task.md`，专属材料按需同目录或子目录保存；Epic 位置沿用共同记录规则。旧平铺 Task 和已明确的原路径继续复用，不因默认布局更新而迁移。
 
 ### 入口正文与宿主段落
 

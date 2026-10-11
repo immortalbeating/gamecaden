@@ -93,6 +93,21 @@ class Project:
     def source_path(self, source):
         return self.path(source["path"], self.home)
 
+    def collection_root(self, source):
+        return self.source_path(source) if source and source["kind"] == "collection" else None
+
+    def work_directory(self, record):
+        require(record.kind in ("task", "epic") and record.id, "invalid_scope", "Attachment owner must be a real Task or Epic")
+        source = self.source_for(record.path, record.source)
+        root = self.collection_root(source)
+        if record.kind == "epic":
+            return record.path.parent
+        if root and record.path.parent == root:
+            return record.path.parent / record.id
+        if root or record.path.stem.lower() == "task":
+            return record.path.parent
+        return record.path.parent / record.id  # Existing flat Task layouts retain their attachment directory.
+
     def source_for(self, path, source_id=None):
         matches = []
         if source_id and source_id != "support":
@@ -122,12 +137,12 @@ class Project:
             if source and not source.get("format") and source.get("owner") in ("flow", "project"):
                 # Detect only a valid typed header/ledger, never infer old-system ownership from a filename.
                 try:
-                    detected = Document(path, data, True, source["role"], source["id"])
+                    detected = Document(path, data, True, source["role"], source["id"], self.collection_root(source))
                     native = bool(detected.main.id or detected.main.kind == "asset-ledger")
                 except (WorkflowError, ValueError):
                     native = False
             self.documents[path] = Document(path, data, native, source["role"] if source else "document",
-                                            source["id"] if source else None)
+                                            source["id"] if source else None, self.collection_root(source))
         return self.documents[path]
 
     def scan(self):

@@ -71,8 +71,9 @@ class Governance:
         self.add({"key":key,"kind":row["record_type"] if native and row["record_type"] in ("task","epic","asset") else "document",
                   "title":row["title"],"ref":row["ref"],"path":row["path"],"revision":row["revision"],
                   "record_key":row["key"],"metadata":metadata,"role":row.get("role",row["record_type"]),
-                  "interpretation":row.get("interpretation"),"authority":"unknown","status":metadata.get("status") if native else None})
-        self.by_ref[(row["path"],metadata.get("id"))] = key
+                  "interpretation":row.get("interpretation"),"authority":"unknown",
+                  "status":metadata.get("status") if native and row["record_type"]!="attachment" else None})
+        self.by_ref[(row["path"],row["ref"].get("id"))] = key
         return key
 
     def resolve(self, ref, base):
@@ -252,7 +253,7 @@ class Governance:
                 self.invalid_paths.add(row["path"])
                 self.diagnostic("invalid_governance",str(exc),key)
         for row in self.rows:
-            if row["interpretation"]!="native":
+            if row["interpretation"]!="native" or row["record_type"]=="attachment":
                 continue
             key="record:"+row["key"]
             meta=row.get("metadata") or {}

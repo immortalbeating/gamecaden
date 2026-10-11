@@ -169,6 +169,8 @@ class Workflow:
         require(not blockers, "invalid_record", "Cannot allocate with unresolved native source/identity errors")
         used = {normalized_id(r.id) for r in self.project.records + self.project.forwards if r.id}
         for record in self.project.records:
+            if record.kind == "attachment":
+                continue  # Producer metadata is not a set of workflow Ref declarations.
             for ref in walk_refs(record.metadata):
                 if ref.get("id") and not ref.get("project_id") and not ref.get("source"):
                     used.add(normalized_id(ref["id"]))
@@ -187,16 +189,16 @@ class Workflow:
     def allocation(self, kind, rid, path):
         self.allocations.append({"ref": {"id": rid}, "path": str(path), "record_type": kind})
 
-    def default_path(self, kind, rid=None, owner=None):
+    def default_path(self, kind, rid=None, owner=None, title=None):
         if kind in ("design", "plan", "history"):
             require(owner is not None, "invalid_record", "Attachment needs its owning work")
             work = self.project.resolve(owner)
-            require(work.kind in ("task", "epic"), "invalid_scope", "Attachment owner must be a Task or Epic")
-            folder = work.path.parent / work.id if work.kind == "task" else work.path.parent
+            require(work.kind in ("task", "epic") and work.id, "invalid_scope", "Attachment owner must be a real Task or Epic")
+            folder = self.project.work_directory(work)
             return folder / (kind + ".md")
         if kind == "index":
             return self.project.home / "index.md"
-        require(kind not in ("rule", "handoff"), "invalid_record", "Supply an explicit path for a rule/handoff")
+        require(kind not in ("rule", "handoff", "attachment"), "invalid_record", "Supply an explicit path for a rule/handoff/attachment")
         role = kind
         sources = [s for s in self.project.sources if s["role"] == role]
         if self.project.mapping and kind in ("task", "epic"):
@@ -212,7 +214,8 @@ class Workflow:
         if source["kind"] == "file":
             return folder
         if kind == "task":
-            return folder / f"{rid}-work.md"
+            slug = re.sub(r"[^\w-]+", "-", title.casefold() if isinstance(title, str) else "").strip("-_")[:64].rstrip("-_") or "work"
+            return folder / f"{rid}-{slug}" / "task.md"
         if kind == "epic":
             return folder / f"{rid}-work" / "epic.md"
         if rid:
@@ -361,9 +364,9 @@ class Workflow:
 
     def create_record(self, payload):
         kind = payload["record_type"]
-        if kind in ("design", "plan", "history"):
+        if kind in ("design", "plan", "history", "attachment"):
             owner = self.project.resolve(payload["owner"])
-            require(owner.kind in ("task", "epic"), "invalid_scope", "Attachment owner must be a real Task/Epic")
+            require(owner.kind in ("task", "epic") and owner.id, "invalid_scope", "Attachment owner must be a real Task/Epic")
         metadata = copy.deepcopy(payload.get("metadata"))
         body = payload["body"].replace("\r\n", "\n")
         if kind in PREFIXES:
@@ -383,8 +386,11 @@ class Workflow:
             self.write(path, doc.render(body=text))
         else:
             require(not payload.get("container"), "invalid_record", "Standalone creation cannot name a container")
-            path = self.project.path(payload["path"]) if payload.get("path") else self.default_path(kind, metadata.get("id") if metadata else None, payload.get("owner"))
+            path = self.project.path(payload["path"]) if payload.get("path") else self.default_path(
+                kind, metadata.get("id") if metadata else None, payload.get("owner"), metadata.get("title") if metadata else None)
             path = self.new_destination(path, kind, allow_unmapped=True)
+            if kind == "attachment":
+                require(path.is_relative_to(self.project.work_directory(owner)), "invalid_scope", "Attachment must stay in its owner's directory")
             if metadata:
                 if kind in PREFIXES:
                     metadata = rebase(metadata, self.project.base, path.parent, self.project.path)
@@ -393,12 +399,14 @@ class Workflow:
             text = ("---\n" + yaml_dump(metadata) + "---\n" if metadata is not None else "") + body
             data = text.encode("utf-8")
             created = Document(path, data, True, kind)
+            require(kind in PREFIXES or created.main.id is None,
+                    "invalid_record", "Plain/attachment content cannot create a workflow identity")
             require(not any(r.span is not None for r in created.records) and not created.forwards,
                     "invalid_record", "Create addressed embedded records with their dedicated operation")
             source = self.project.source_for(path)
             if source is not None:
                 # Validate the same source interpretation used by later reads and enumeration.
-                Document(path, data, True, source["role"], source["id"])
+                Document(path, data, True, source["role"], source["id"], self.project.collection_root(source))
             self.write(path, data, allocated=not payload.get("path"))
         if kind in PREFIXES:
             self.allocation(kind, metadata["id"], path)
@@ -417,7 +425,7 @@ class Workflow:
             require((after.body or "").startswith(before.body), "invalid_record", "Append explanatory corrections; preserve original observations/reasons")
 
     def protect_blocks(self, doc, data):
-        updated = Document(doc.path, data, True, doc.main.kind, doc.main.source)
+        updated = Document(doc.path, data, True, doc.main.kind, doc.main.source, doc.collection_root)
         old = {r.id: r for r in doc.records if r.span is not None}
         new = {r.id: r for r in updated.records if r.span is not None}
         require(set(old) == set(new), "invalid_record", "Use creation/extraction operations to change embedded identities")
@@ -433,7 +441,8 @@ class Workflow:
         metadata = copy.deepcopy(record.metadata)
         body = payload.get("body", record.body)
         fields = payload.get("set_fields", {})
-        require(not set(fields).intersection({"id", "status", "events"}), "invalid_record", "Use the owning operation for identity/lifecycle/events")
+        require(record.kind == "attachment" or not set(fields).intersection({"id", "status", "events"}),
+                "invalid_record", "Use the owning operation for identity/lifecycle/events")
         if fields:
             require(metadata is not None, "invalid_record", "This document has no metadata block")
             metadata.update(rebase(fields, self.project.base, record.path.parent, self.project.path) if record.kind in PREFIXES else fields)
@@ -449,7 +458,9 @@ class Workflow:
         if metadata and record.kind in PREFIXES:
             self.project.semantic(record.kind, metadata, record.path.parent, fields)
         data = doc.data if metadata == record.metadata and body == record.body else doc.replace_record(record, metadata, body)
-        updated = Document(record.path, data, True, doc.main.kind, doc.main.source)
+        source = self.project.source_for(record.path, record.source)
+        updated = Document(record.path, data, True, source["role"] if source else doc.main.kind,
+                           doc.main.source, doc.collection_root)
         after = next((r for r in updated.records if r.id == record.id), updated.main)
         self.protect(record, after)
         self.protect_blocks(doc, data)

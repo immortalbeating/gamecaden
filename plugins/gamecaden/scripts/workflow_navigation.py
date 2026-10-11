@@ -74,7 +74,7 @@ def build_navigation(gov):
                     raise ValueError('父文档不在已读取来源中')
             record=gov.guard.resolve(ref,base)
             if ref.get('id') and record.id!=ref['id']: raise ValueError('Parent record ID does not match qualified path')
-            matches=[n['key'] for n in gov.nodes.values() if n['key'].startswith('record:') and n.get('record_key') and n['path']==str(record.path) and (n.get('metadata') or {}).get('id')==record.id]
+            matches=[n['key'] for n in gov.nodes.values() if n['key'].startswith('record:') and n.get('record_key') and n['path']==str(record.path) and n['ref'].get('id')==record.id]
             if len(matches)!=1: raise ValueError('父文档不在已读取来源中或来源不唯一')
             parent=matches[0]
             if gov.nodes[parent]['kind']!='document': raise ValueError('父对象不是 document')

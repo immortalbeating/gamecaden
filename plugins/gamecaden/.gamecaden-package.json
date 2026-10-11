@@ -1,5 +1,5 @@
 {
-  "digest": "ae9f777f706fb92e30ee72b7d5123bb980ea57a2ba70ab1d7eaea4883170536f",
+  "digest": "0c547285dd7a5f2c608fed67b16a4f5ce6a69e509f247c92e9b5640b5c03e9e8",
   "files": {
     ".claude-plugin/plugin.json": {
       "sha256": "a6e5d641dda91460d9385b37c33dab8175395bf7b6504f637a80d772ea04d321",
@@ -42,16 +42,16 @@
       "size": 384
     },
     "examples/v1/io/create-replayed.response.json": {
-      "sha256": "b2760f04b5bf7994f2e2208169c6012064ac38135d4dc5e897d3b60e77723ba1",
-      "size": 1016
+      "sha256": "70685fcc2468035ce876a0abee8002acac13f7beecd56cbe1ae80b28935e402f",
+      "size": 1029
     },
     "examples/v1/io/create-task.request.json": {
       "sha256": "0d827e4d5b4f9893f20376b0043375ad7e88ba5d135bca0387d651db01f8494d",
       "size": 620
     },
     "examples/v1/io/create-unknown.response.json": {
-      "sha256": "46fcaf99ba9338e1884f37d8b28dff8163816dbe7ade732a3696634aee63945c",
-      "size": 1133
+      "sha256": "2212a03f33f17fa6b8a2bfcfe76b6ebc95ec29d709bdc600c968105b9512ef48",
+      "size": 1146
     },
     "examples/v1/io/decision.request.json": {
       "sha256": "37d965119922b8502e8692556ddb71a1b8e7306aec258902e132af5c0cc9e831",
@@ -314,8 +314,8 @@
       "size": 12833
     },
     "schemas/workflow-v1.schema.json": {
-      "sha256": "113a1d15f6068ec511ac2c853b3b3347f177670927ba30c6a9fef80743fb21b6",
-      "size": 60821
+      "sha256": "36419ff42ee279baa7f777dd3a20e27b21fdc30d227316fbf000e40edb92e131",
+      "size": 61089
     },
     "scripts/check_codex_discovery.py": {
       "sha256": "c069715532a9a045d5be8797d8566265982e9e3d56704679248a54de5182daaa",
@@ -338,24 +338,24 @@
       "size": 59
     },
     "scripts/workflow_formats.py": {
-      "sha256": "c13c926e93dea6bd59225563f8fefb8ba419235f52272a6de5e69990bf252a84",
-      "size": 12562
+      "sha256": "ff556962919e967777cddcf97ed8840e92a2e3f3755c654c1f03d8d76dd0bbd4",
+      "size": 14117
     },
     "scripts/workflow_governance.py": {
-      "sha256": "15e321a5e05530fb40ffc16bbe2c8d4ec03ab5aa005aa1399c93e12afd8d183c",
-      "size": 21946
+      "sha256": "11fc4c5682291271e9566342932594964b6b07863da9423c7d4f56a0d667a053",
+      "size": 22041
     },
     "scripts/workflow_io.py": {
-      "sha256": "99a8f6f19ac823d87a7641779490fd43b0505d840021c4475e5ac69a33251437",
-      "size": 43429
+      "sha256": "80cbf50a9c84c14ae81a86ffa824d5f50ef961ad17d3e5fd25823e3a31f6853d",
+      "size": 44415
     },
     "scripts/workflow_navigation.py": {
-      "sha256": "93af9b5523db893dea22b7e0957c5606b5894eaf08913ebe21e339900308fa74",
-      "size": 5369
+      "sha256": "bc627203733d597d80795b7e5119e2bdd768b82242b6532db238506e4e98af7c",
+      "size": 5352
     },
     "scripts/workflow_panel_data.py": {
-      "sha256": "87a82c2793deb4b7306cca0812cf73d020165634371a58ee22b04d0dd67a334b",
-      "size": 13010
+      "sha256": "11605a55b7416a9ea6c437cd8dda4720aea9ea19b21135f561d857e64f0d8110",
+      "size": 13115
     },
     "scripts/workflow_panel_revisions.py": {
       "sha256": "adb3c92382b281549378cf397ae04f3d5c44363777f3faf9478e75c79d7212da",
@@ -366,8 +366,8 @@
       "size": 29067
     },
     "scripts/workflow_project.py": {
-      "sha256": "b03cf9baabac4640df49bf9bf7837d3463bb6c841cc5cbacc48a37641b7f1c2c",
-      "size": 19804
+      "sha256": "e878f342fba61b173ced904f3bd7bbfa70e2f178b48f676b9c21386e25ed5b0f",
+      "size": 20645
     },
     "scripts/workflow_relations.py": {
       "sha256": "405e18daa4825412419c0d657e89b64309357d92c8001f5fbc227d290c2fbf24",
@@ -382,8 +382,8 @@
       "size": 6613
     },
     "shared/formats-v1.md": {
-      "sha256": "d5584d9733e51df6f7d3daa403c5f0132874609e35b854bf10bf1fee35250982",
-      "size": 14955
+      "sha256": "d42300613c2b98e9bf6b0005b4cb9ae67c07c1847c5c81798e5d58898deed7bc",
+      "size": 15870
     },
     "shared/git-policy.md": {
       "sha256": "cf3e25553f5667335506b7ff682cbbc30c9906d0607e0d9a7b205dd382f0217b",
@@ -394,12 +394,12 @@
       "size": 6505
     },
     "shared/io-v1.md": {
-      "sha256": "4a2d963b0073e057d4657b5f9c3222ff17271884f0ef6eb51b5c51496ae20543",
-      "size": 17185
+      "sha256": "c0d45971ad928ba2ae7e2f8c79b542edfcb7f09c4c95f7d79fe70e562c8f6505",
+      "size": 17688
     },
     "shared/local-io.md": {
-      "sha256": "dcb2860176f2590ac1db102008645b0178b853dd8668d03cf15fc28408fc1fc4",
-      "size": 12760
+      "sha256": "d81f4e5cfcef937d8ed1f711ef57ffb0df119e58569ec2764aac74a7ee32211d",
+      "size": 13703
     },
     "shared/material-requirements.md": {
       "sha256": "6b40db47dd369dd93a335c6efdaf8c13f68122f515e15053fe8af6564749fea1",
@@ -414,8 +414,8 @@
       "size": 4696
     },
     "shared/records.md": {
-      "sha256": "f0017f4ef225a6dc45371c08ed4fb5d30bce2301218d26a0515efc2765ae8808",
-      "size": 13800
+      "sha256": "4bd75103e6b4402394fd17729a62999bf09a9bd0fda76e7f18372c3a4e938ef0",
+      "size": 14423
     },
     "shared/relation-views.md": {
       "sha256": "16fb8dfbfb5bc53f7cec7e88148d4ea03861a4ea89ba35cab3721ce17d343ca5",
@@ -430,8 +430,8 @@
       "size": 5846
     },
     "shared/workspace.md": {
-      "sha256": "09b3a8100fd8c6174c888b0aaf6e65aa8630c52242750a661c18773645083444",
-      "size": 11887
+      "sha256": "68b7d0fa5d164f5c94dd6fc043ae24cb6eda6d96aaa191d1ae91a0bd84b6db54",
+      "size": 12066
     },
     "skills/assets/SKILL.md": {
       "sha256": "58fd657e26b33dba8574e3407a6112248126cafff0129dbfd50de3f965374f33",
