@@ -91,7 +91,7 @@ Epic 元数据只有 id/title/status 和可选 related/extensions；子 Task 归
 
 ## 5. Evidence
 
-工具原生报告已经承担记录职责时直接引用，不为了符合本页重复造一份 Evidence。原生独立记录需要 id/title/observed_at/actor/subjects/result/coverage，可有 report_refs、corrects、extensions。
+工具原生报告已经承担记录职责时直接引用，留存、索引与轮次按[共同记录](records.md#留存索引与版本)，不为了符合本页重复造一份 Evidence。原生独立记录需要 id/title/observed_at/actor/subjects/result/coverage，可有 report_refs、corrects、extensions。
 
 observed_at 表达检查实际发生时间，可用明确日期或时间；未知为 null。actor 不明可为 null，不能补造检查者。subjects 说明对象、适用范围，版本在影响复用、接受或批量判断时必须精确绑定。
 
@@ -154,6 +154,8 @@ to: {path: "../evidence/EV-001.md"}
 新原生台账为 schema_version=1 与 assets。每个资产包含 id/title/purpose、candidates、selected_uses，可选来源、替换关系及扩展。
 
 candidate 包含其局部 id、manifest 引用及 Version，可引用来源和 Evidence；同一候选 ID 不用于另一个实质内容版本。manifest 负责逐文件参数与内容摘要，台账只引用其身份，不手抄每文件属性。
+
+旧候选绑定保持不可变，新候选核验自己的 manifest 和成员；历史载荷不可读或失配时按[候选恢复](asset-handoff.md#候选快照与遗留恢复)保留限制和诊断。登记新版本不修正旧检查、转移接受或自动改变选用。
 
 selected_uses 每项包含 use_id、purpose、runtime_id、consumer、candidate_id，可加 baseline、Decision/Evidence 引用。它表达指定选用；没有 approved、adopted、official 或统一 current_version 开关。真实采用由工程和适用 Evidence 对照，未能观察时显示未知，不能从台账推断成功。
 

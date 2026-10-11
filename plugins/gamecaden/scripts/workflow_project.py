@@ -9,7 +9,7 @@ import re
 
 from workflow_formats import (Document, PREFIXES, Record, WorkflowError, canonical, normalized_id,
                               json_load, plain, require, revision, validate, walk_refs, yaml_load)
-from workflow_storage import STATE_NAME, file_revision
+from workflow_storage import STATE_NAME, file_revision, filesystem_path
 
 
 DEFAULTS = {"vision": ("file", "vision.md"), "spec": ("collection", "spec"),
@@ -22,7 +22,7 @@ DEFAULTS = {"vision": ("file", "vision.md"), "spec": ("collection", "spec"),
 class Project:
     def __init__(self, root, context):
         self.root = Path(root).resolve(strict=True)
-        require(self.root.is_dir(), "invalid_scope", "Project root must be a directory")
+        require(filesystem_path(self.root).is_dir(), "invalid_scope", "Project root must be a directory")
         require(Path(context["project_root"]).is_absolute(), "invalid_scope", "project_root must be absolute")
         require(Path(context["project_root"]).resolve() == self.root, "permission_denied", "Request root differs from host-bound root")
         self.base = self.path(context.get("base_dir", str(self.root)), self.root)
@@ -31,7 +31,7 @@ class Project:
         self.observed = {}
         self.documents, self.records, self.forwards, self.diagnostics = {}, [], [], []
         self.sources, self.mapping = [], None
-        if self.workspace.exists():
+        if filesystem_path(self.workspace).exists():
             self.mapping = yaml_load(self.read_bytes(self.workspace).decode("utf-8-sig"))
             self.validate_workspace(self.mapping, check_files=False)
             self.sources = plain(self.mapping["sources"])
@@ -50,14 +50,16 @@ class Project:
         for part in candidate.relative_to(self.root).parts:
             require(part.lower() not in (".git", STATE_NAME), "permission_denied", "Reserved operational/VCS location")
             current /= part
-            require(not current.is_symlink() and not current.is_junction(), "invalid_scope", "Linked paths require an explicit adapter", {"path": str(current)})
+            physical = filesystem_path(current)
+            require(not physical.is_symlink() and not physical.is_junction(), "invalid_scope", "Linked paths require an explicit adapter", {"path": str(current)})
         require(candidate.resolve() == candidate, "invalid_scope", "Path resolution changed")
         return candidate
 
     def read_bytes(self, path):
         path = self.path(path)
-        require(path.is_file(), "not_found", "Source file not found", {"path": str(path)})
-        data = path.read_bytes()
+        physical = filesystem_path(path)
+        require(physical.is_file(), "not_found", "Source file not found", {"path": str(path)})
+        data = physical.read_bytes()
         observed = revision(data)
         require(str(path) not in self.observed or self.observed[str(path)] == observed,
                 "revision_conflict", "Source changed while reading", {"path": str(path)})
@@ -78,17 +80,17 @@ class Project:
         for row in value["sources"]:
             path = self.path(row["path"], self.home)
             if check_files and row["kind"] == "file":
-                require(path.is_file(), "not_found", "Mapped file does not exist", {"path": str(path)})
+                require(filesystem_path(path).is_file(), "not_found", "Mapped file does not exist", {"path": str(path)})
         for row in value["runtime_roots"]:
             location = self.path(row["path"], self.home)
             marker = self.path(row["marker"], self.home) if row.get("marker") else None
             if check_files:
-                require(location.is_dir(), "not_found", "Runtime root missing")
-                require(marker is None or marker.is_file(), "not_found", "Runtime marker missing")
+                require(filesystem_path(location).is_dir(), "not_found", "Runtime root missing")
+                require(marker is None or filesystem_path(marker).is_file(), "not_found", "Runtime marker missing")
         for row in value["rule_sources"]:
             location = self.path(row["path"], self.home)
             if check_files:
-                require(location.is_file(), "not_found", "Rule source missing")
+                require(filesystem_path(location).is_file(), "not_found", "Rule source missing")
 
     def source_path(self, source):
         return self.path(source["path"], self.home)
@@ -134,6 +136,20 @@ class Project:
         if path not in self.documents:
             data = self.read_bytes(path)
             native = bool(source and source.get("format", "").startswith("native-"))
+            # Non-record payloads remain path-addressable, read-only objects even
+            # inside native collections. Text record extensions keep strict parsing.
+            payload = path.suffix.lower() not in (".md", ".json", ".yaml", ".yml")
+            if payload:
+                doc = Document(path, data, False, "attachment" if source and source["kind"] == "collection" else "document",
+                               source["id"] if source else None, self.collection_root(source))
+                binary_suffixes = {".bin", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".bmp", ".tiff",
+                                   ".wav", ".mp3", ".ogg", ".flac", ".mp4", ".webm", ".mov", ".avi",
+                                   ".ttf", ".otf", ".woff", ".woff2", ".glb", ".fbx", ".blend", ".pdf",
+                                   ".zip", ".gz", ".7z", ".rar", ".tar", ".exe", ".dll"}
+                if path.suffix.lower() in binary_suffixes or b"\x00" in data:
+                    doc.main.body = None
+                self.documents[path] = doc
+                return doc
             if source and not source.get("format") and source.get("owner") in ("flow", "project"):
                 # Detect only a valid typed header/ledger, never infer old-system ownership from a filename.
                 try:
@@ -152,16 +168,17 @@ class Project:
         for source in self.sources:
             try:
                 path = self.source_path(source)
-                if self.mapping is None and not path.exists():
+                if self.mapping is None and not filesystem_path(path).exists():
                     continue  # Defaults are optional locations, not missing authoritative records.
                 if source["kind"] == "collection":
                     files = []
-                    if path.exists():
-                        for directory, folders, names in os.walk(path, followlinks=False):
+                    if filesystem_path(path).exists():
+                        for directory, folders, names in os.walk(filesystem_path(path), followlinks=False):
                             folders[:] = [name for name in folders if name not in (".git", STATE_NAME)
                                           and not (Path(directory) / name).is_symlink()
                                           and not (Path(directory) / name).is_junction()]
-                            files.extend(Path(directory) / name for name in names if Path(name).suffix.lower() in (".md", ".json", ".yaml", ".yml"))
+                            relative = Path(directory).relative_to(filesystem_path(path))
+                            files.extend(path / relative / name for name in names if Path(name).suffix.lower() in (".md", ".json", ".yaml", ".yml"))
                 else:
                     files = [path]
                 for file in sorted(files):

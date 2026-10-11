@@ -2374,6 +2374,23 @@
     "RecordList": {
       "type": "object",
       "properties": {
+        "summary": {
+          "type": "object",
+          "properties": {
+            "scope": {"const": "full_scan"},
+            "details_scope": {"const": "page"},
+            "snapshot": {"$ref": "#/$defs/Revision"},
+            "item_count": {"type": "integer", "minimum": 0},
+            "source_revision_count": {"type": "integer", "minimum": 0},
+            "diagnostic_count": {"type": "integer", "minimum": 0},
+            "diagnostic_counts": {
+              "type": "object",
+              "additionalProperties": {"type": "integer", "minimum": 0}
+            }
+          },
+          "required": ["scope", "details_scope", "snapshot", "item_count", "source_revision_count", "diagnostic_count", "diagnostic_counts"],
+          "additionalProperties": false
+        },
         "items": {
           "type": "array",
           "items": {

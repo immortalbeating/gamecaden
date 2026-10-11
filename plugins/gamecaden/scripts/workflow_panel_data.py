@@ -150,8 +150,10 @@ class PanelData:
             if detail["revision"] != item["revision"] or detail["path"] != item["path"]:
                 raise PanelDataError("revision_conflict", "Source changed while collecting panel records", 409)
             rows.append(self._row(detail, item["record_type"]))
-        observed = self._call("record.list", {"limit": 1})
-        if observed["source_revisions"] != listed["source_revisions"]:
+        # Compare full-scan fingerprints using the same query, not page-local
+        # revisions. The cursor does not affect the listing fingerprint.
+        observed = self._call("record.list", {"limit": limit})
+        if observed["summary"]["snapshot"] != listed["summary"]["snapshot"]:
             raise PanelDataError("revision_conflict", "Source list changed while collecting panel records", 409)
         return {"project": project, "records": rows, "next_cursor": listed["next_cursor"],
                 "complete": listed["complete"], "diagnostics": listed["diagnostics"],

@@ -273,7 +273,10 @@ class Workflow:
         import base64
         records = self.project.scan()
         source_revisions = [{"ref": {"path": p}, "revision": rev} for p, rev in sorted(self.project.observed.items())]
-        fingerprint = revision(canonical({"sources": source_revisions, "diagnostics": self.project.diagnostics,
+        diagnostics = copy.deepcopy(self.project.diagnostics)
+        if self.store.pending():
+            diagnostics.append({"code": "operation_pending", "message": "Some records have unfinished operations"})
+        fingerprint = revision(canonical({"sources": source_revisions, "diagnostics": diagnostics,
                                           "filter": {k: v for k, v in payload.items() if k != "cursor"}}).encode("utf-8"))
         offset = 0
         if payload.get("cursor"):
@@ -294,18 +297,22 @@ class Workflow:
                 continue
             selected.append(record)
         selected.sort(key=lambda r: (str(r.path), r.id or ""))
-        page = selected[offset:offset + payload.get("limit", 100)]
+        limit = payload.get("limit", 100)
+        page = selected[offset:offset + limit]
         items = []
         for record in page:
             data = self.project.read_record(record, False)
             items.append({k: data[k] for k in ("ref", "path", "reference_base", "revision", "metadata", "diagnostics")} | {"record_type": record.kind})
-        next_offset = offset + len(page)
-        cursor = base64.urlsafe_b64encode(canonical({"snapshot": fingerprint, "offset": next_offset}).encode()).decode() if next_offset < len(selected) else None
-        diagnostics = copy.deepcopy(self.project.diagnostics)
-        if self.store.pending():
-            diagnostics.append({"code": "operation_pending", "message": "Some records have unfinished operations"})
+        next_offset = offset + limit
+        cursor = base64.urlsafe_b64encode(canonical({"snapshot": fingerprint, "offset": next_offset}).encode()).decode() if next_offset < max(len(selected), len(source_revisions), len(diagnostics)) else None
+        counts = {}
+        for item in diagnostics:
+            counts[item["code"]] = counts.get(item["code"], 0) + 1
         return {"items": items, "next_cursor": cursor, "complete": self.project.scan_complete,
-                "source_revisions": source_revisions, "diagnostics": diagnostics}
+                "source_revisions": source_revisions[offset:offset + limit], "diagnostics": diagnostics[offset:offset + limit],
+                "summary": {"scope": "full_scan", "details_scope": "page", "snapshot": fingerprint,
+                            "item_count": len(selected), "source_revision_count": len(source_revisions),
+                            "diagnostic_count": len(diagnostics), "diagnostic_counts": counts}}
 
     def build_view(self, payload):
         records = self.project.scan()
@@ -585,6 +592,8 @@ class Workflow:
         return {"ref": {"id": rid, "fragment": event["event_id"]}, "path": str(path), **self.registration("decision",path)}
 
     def asset_operation(self, payload, select=False):
+        historical_diagnostics = []
+        validated_candidates = []
         ledger_path = self.ref_path(payload["ledger"])
         self.touched.append(ledger_path)
         if ledger_path.exists():
@@ -599,6 +608,8 @@ class Workflow:
             ledger, doc = {"schema_version": 1, "assets": []}, None
         if not select:
             asset = rebase(payload["asset"], self.project.base, ledger_path.parent, self.project.path)
+            retained = {}
+            changed = None
             if payload["mode"] == "create":
                 asset["id"] = self.allocate("asset", asset.get("id"))
                 require(not asset["selected_uses"], "invalid_record", "Create assets without selections")
@@ -612,11 +623,37 @@ class Workflow:
                 for candidate in old["candidates"]:
                     require(candidate["id"] in new_candidates and candidate["version"] == new_candidates[candidate["id"]]["version"]
                             and candidate["manifest"] == new_candidates[candidate["id"]]["manifest"], "invalid_record", "Existing candidate identity/content must be preserved")
+                retained = {c["id"]: c for c in old["candidates"]}
+                # Existing references may name unavailable historical payloads.
+                # Compare within the same object/field: another candidate's old
+                # reference cannot excuse a newly introduced reference here.
+                def added_refs(current, previous):
+                    prior = {canonical(ref) for ref in walk_refs(previous)}
+                    return [ref for ref in walk_refs(current) if canonical(ref) not in prior]
+                changed = []
+                for key, value in asset.items():
+                    if key not in ("candidates", "selected_uses", "extensions"):
+                        changed.extend(added_refs(value, old.get(key)))
+                for candidate in asset["candidates"]:
+                    prior = retained.get(candidate["id"])
+                    if prior is None:
+                        changed.extend(walk_refs(candidate))
+                    else:
+                        for key in ("source_refs", "evidence_refs"):
+                            changed.extend(added_refs(candidate.get(key), prior.get(key)))
                 old.update(asset)
                 asset = old
-            self.project.semantic("asset", asset, ledger_path.parent)
+            self.project.semantic("asset", asset, ledger_path.parent, changed=changed)
             for candidate in asset["candidates"]:
-                self.project.check_candidate(candidate, ledger_path.parent, asset["id"])
+                if candidate["id"] not in retained:
+                    self.project.check_candidate(candidate, ledger_path.parent, asset["id"])
+                    validated_candidates.append(candidate["id"])
+                    continue
+                try:
+                    self.project.check_candidate(candidate, ledger_path.parent, asset["id"])
+                except WorkflowError as exc:
+                    historical_diagnostics.append({"candidate_id": candidate["id"], "scope": "retained_history",
+                                                   "error": exc.item()})
         else:
             asset = next((a for a in ledger["assets"] if a["id"] == payload["asset_id"]), None)
             require(asset is not None, "not_found", "Asset is missing")
@@ -626,6 +663,7 @@ class Workflow:
                 candidates = [c for c in asset["candidates"] if c["id"] == use["candidate_id"]]
                 require(len(candidates) == 1, "invalid_scope", "Selected candidate is missing")
                 self.project.check_candidate(candidates[0], ledger_path.parent, asset["id"])
+                validated_candidates.append(candidates[0]["id"])
                 position = next((i for i, u in enumerate(asset["selected_uses"]) if u["use_id"] == use["use_id"]), None)
                 if position is None:
                     asset["selected_uses"].append(use)
@@ -634,11 +672,15 @@ class Workflow:
             else:
                 require(any(u["use_id"] == payload["use_id"] for u in asset["selected_uses"]), "not_found", "Selected use is missing")
                 asset["selected_uses"] = [u for u in asset["selected_uses"] if u["use_id"] != payload["use_id"]]
-            self.project.semantic("asset", asset, ledger_path.parent)
+            # Old candidates are not the object being selected or cleared.
+            self.project.semantic("asset", asset, ledger_path.parent,
+                                  changed={"selected_uses": [use]} if payload["action"] == "set" else {})
         validate("AssetLedger", ledger)
         data = doc.render(metadata=ledger) if doc else (json.dumps(plain(ledger), ensure_ascii=False, indent=2) + "\n").encode() if ledger_path.suffix == ".json" else yaml_dump(ledger).encode("utf-8")
         self.write(ledger_path, data)
-        return {"ref": {"id": asset["id"]}, "path": str(ledger_path), "runtime_adoption": "unknown", **self.registration("asset-ledger",ledger_path)}
+        return {"ref": {"id": asset["id"]}, "path": str(ledger_path), "runtime_adoption": "unknown",
+                "validated_candidate_ids": validated_candidates, "historical_candidate_diagnostics": historical_diagnostics,
+                **self.registration("asset-ledger",ledger_path)}
 
     def check_replay_authority(self, value):
         # Re-check capability binding before applying a previously prepared plan.

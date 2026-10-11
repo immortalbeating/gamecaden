@@ -63,7 +63,7 @@
 | view.build | Progress/Timeline/Assets 的 JSON 读模型，可保存至原有或指定位置；不推断通过百分比或运行采用 |
 | operation.status | 读取原操作回执及可观察的恢复情况，不写原文档 |
 
-原生 Markdown/YAML/JSON 及 UTF-8（包括 BOM、CRLF）已实现。修改保留未改动的正文和 YAML 注释；新增结构用序列化器处理。二进制对象可以按路径绑定摘要，正文为 null，不被误当文本解码。
+原生 Markdown/YAML/JSON 及 UTF-8（包括 BOM、CRLF）已实现。修改保留未改动的正文和 YAML 注释；新增结构用序列化器处理。二进制对象在原生集合内外均可按路径只读及绑定摘要，正文为 null，无正式记录身份和写能力。Windows 长源路径的物理读取/枚举使用扩展路径，返回的逻辑路径、项目边界与链接限制保持一致。
 
 旧格式无适配器时按原文只读。来源声明为原生但损坏时返回具体格式错误。既有 sources 的外部归属、重叠解释或限定来源不能被绕过；字段 `owner` 不是操作授权。
 
@@ -85,6 +85,8 @@
 `record.create` 的 attachment 须指定真实 Task/Epic owner 和显式 `.md` path，位于其实际附件目录或子目录。新 Task 材料目录就是主文件所在的 `tasks/T-编号-短名/`，旧平铺 Task 仍使用 `tasks/T-编号/`；后续改标题不搬文件。附件不分配工作 ID 或生命周期。创建在写入前按实际来源的读取规则校验，无法回读时返回 invalid_record 且不写目标；已有材料保留原字节和原归属，不为套用新布局自动迁移。
 
 当前自动内容验证支持单文件 SHA-256，以及本包备用 manifest 中每个实际成员的 SHA-256；候选 Subject 可从其已绑定 candidate.manifest 得到隐含 proof。其他生产工具 manifest、git/build/named 的当前适用性需要对应适配器，当前请求会明确返回 unsupported_format，不把未解析的版本当作通过。已有历史记录仍可保存这些声明，不因此虚构当前验证。
+
+`asset.upsert` 的创建核验全部新候选；更新保护已有候选 ID/manifest/version 和原选用关系，严格核验新候选及新增引用。返回 `validated_candidate_ids` 和 `historical_candidate_diagnostics`，后者说明保留旧载荷的失配/不可读情况，不将其改为通过。`asset.select set` 仍逐项核对所选候选；恢复登记、更新选用及工程采用分开，流程见[候选快照与遗留恢复](asset-handoff.md#候选快照与遗留恢复)。
 
 ## 4. 决定者与接受来源
 
@@ -115,5 +117,7 @@ settled 回执说明原操作当时的结果；需要现在的内容时另读原
 这些保障针对本地协作调用。外部编辑器不参加项目锁；工具检测可观察的版本变化，不能把任意非合作编辑器纳入同一文件事务。本轮没有验证断电、网络盘或跨机器写入。
 
 JSON views 保留来源、原文、时间和诊断。raw 源无法完整枚举结构化记录时 complete=false；重复 ID 和未结算操作是另外的诊断，不一概改变扫描完整性。分页是否还有内容看 next_cursor。Timeline 当前提供带来源的记录/事件材料，正文中的任意历史叙述不伪造为精确时间线。
+
+`record.list` 的 items、source_revisions 和 diagnostics 各按同一 offset/limit 分页；记录读完后可能仍有修订/诊断页，按 next_cursor 结束。summary 给出全扫描指纹、三类总数及按 code 的诊断计数，详情范围为 page；分页详情不等于全量验收。游标及面板前后核对使用同查询的全扫描指纹，来源或查询变化使游标失效。仍需全扫描以保持一致性；缩小实际扫描范围通过[来源登记](workspace.md#2-便携字段)，不靠 scope 文本静默排除内容。
 
 工具不执行引擎、素材生成或 Git 交付，也不替代 verify/close 的实际判断。开发测试见维护仓库的 [test_workflow_io.py](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/tests/test_workflow_io.py)；包内纯合同检查为 [check_contracts.py](../scripts/check_contracts.py)。

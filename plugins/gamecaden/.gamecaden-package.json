@@ -1,5 +1,5 @@
 {
-  "digest": "0c547285dd7a5f2c608fed67b16a4f5ce6a69e509f247c92e9b5640b5c03e9e8",
+  "digest": "f3715f99fa0845f5dcb503da5e3594e756aac3ecdccb3f6a1e70840ef11617b7",
   "files": {
     ".claude-plugin/plugin.json": {
       "sha256": "a6e5d641dda91460d9385b37c33dab8175395bf7b6504f637a80d772ea04d321",
@@ -282,8 +282,8 @@
       "size": 7000
     },
     "profiles/project-structure.md": {
-      "sha256": "8500d9e8a0bab58b56e0444a2c30d22c47ddbdfc39196d1f6738ca138061521a",
-      "size": 4414
+      "sha256": "2b7bc6a1f488ddc5a3bff0fbf6d1e96e07f16ab6c9fbeef57589abe5504da301",
+      "size": 4861
     },
     "profiles/references/cocos-structure.md": {
       "sha256": "7619c2a198924d79232fd4248412c4e69764451afe98875d67aff2c4f7d62659",
@@ -314,8 +314,8 @@
       "size": 12833
     },
     "schemas/workflow-v1.schema.json": {
-      "sha256": "36419ff42ee279baa7f777dd3a20e27b21fdc30d227316fbf000e40edb92e131",
-      "size": 61089
+      "sha256": "c6654d97b0a2d844676704067f3037507766b3d05c05d060003fa29b2b94ab73",
+      "size": 61870
     },
     "scripts/check_codex_discovery.py": {
       "sha256": "c069715532a9a045d5be8797d8566265982e9e3d56704679248a54de5182daaa",
@@ -346,16 +346,16 @@
       "size": 22041
     },
     "scripts/workflow_io.py": {
-      "sha256": "80cbf50a9c84c14ae81a86ffa824d5f50ef961ad17d3e5fd25823e3a31f6853d",
-      "size": 44415
+      "sha256": "2a3db669a048b775a29b64e8bd6b023628fb0346bf632cbd2e7828b595820183",
+      "size": 47108
     },
     "scripts/workflow_navigation.py": {
       "sha256": "bc627203733d597d80795b7e5119e2bdd768b82242b6532db238506e4e98af7c",
       "size": 5352
     },
     "scripts/workflow_panel_data.py": {
-      "sha256": "11605a55b7416a9ea6c437cd8dda4720aea9ea19b21135f561d857e64f0d8110",
-      "size": 13115
+      "sha256": "c21d10197c20a280d3509e8cebb0f00d7517f5ca8e9215d8d9d6f484c80e608d",
+      "size": 13274
     },
     "scripts/workflow_panel_revisions.py": {
       "sha256": "adb3c92382b281549378cf397ae04f3d5c44363777f3faf9478e75c79d7212da",
@@ -366,8 +366,8 @@
       "size": 29067
     },
     "scripts/workflow_project.py": {
-      "sha256": "e878f342fba61b173ced904f3bd7bbfa70e2f178b48f676b9c21386e25ed5b0f",
-      "size": 20645
+      "sha256": "dfd0e3ca502e85d5990ce168152eabfce21324fb847a7376437077043a6c271c",
+      "size": 22091
     },
     "scripts/workflow_relations.py": {
       "sha256": "405e18daa4825412419c0d657e89b64309357d92c8001f5fbc227d290c2fbf24",
@@ -378,12 +378,12 @@
       "size": 13410
     },
     "shared/asset-handoff.md": {
-      "sha256": "025f5e5052863659c09edfe7e3e72279df84bb96063d648b9eb3569403344f12",
-      "size": 6613
+      "sha256": "84f5ad4462ae0a2ab6fdd1439122d9fb90b4229b66b36baf893ed9ceea261ad0",
+      "size": 7900
     },
     "shared/formats-v1.md": {
-      "sha256": "d42300613c2b98e9bf6b0005b4cb9ae67c07c1847c5c81798e5d58898deed7bc",
-      "size": 15870
+      "sha256": "7583a14091d751e010e2bcf47b12b0ff1bed0acc576b8f0eb19168c1605be13e",
+      "size": 16221
     },
     "shared/git-policy.md": {
       "sha256": "cf3e25553f5667335506b7ff682cbbc30c9906d0607e0d9a7b205dd382f0217b",
@@ -398,8 +398,8 @@
       "size": 17688
     },
     "shared/local-io.md": {
-      "sha256": "d81f4e5cfcef937d8ed1f711ef57ffb0df119e58569ec2764aac74a7ee32211d",
-      "size": 13703
+      "sha256": "98268955c5065b3b8054575acfbcdcd5700efb1bc9ebd69cc4a572303cca2f31",
+      "size": 14920
     },
     "shared/material-requirements.md": {
       "sha256": "6b40db47dd369dd93a335c6efdaf8c13f68122f515e15053fe8af6564749fea1",
@@ -414,28 +414,28 @@
       "size": 4696
     },
     "shared/records.md": {
-      "sha256": "4bd75103e6b4402394fd17729a62999bf09a9bd0fda76e7f18372c3a4e938ef0",
-      "size": 14423
+      "sha256": "b7b63fa4eb3930fb1b84d985cecd48535fc29407b8b9b3e1643d43bb44972a35",
+      "size": 17460
     },
     "shared/relation-views.md": {
       "sha256": "16fb8dfbfb5bc53f7cec7e88148d4ea03861a4ea89ba35cab3721ce17d343ca5",
       "size": 8601
     },
     "shared/rules.md": {
-      "sha256": "605bd4aa611a143ead5aa0ea797d28bbab74db4aa31392aa0e94adeb35e95c83",
-      "size": 6423
+      "sha256": "c34538517f3f4095502476893391099ca7a9ff2b1d32d588b491eede3a491fdf",
+      "size": 6733
     },
     "shared/verification.md": {
-      "sha256": "9de8438038a188f2aa3cf54964ef7c52377a0ad84da9b684f98177ebe3c7db21",
-      "size": 5846
+      "sha256": "1a708e4c104728d08ddf4a20f64866d8baf9216d2c7aa00991d97b2612afee29",
+      "size": 6211
     },
     "shared/workspace.md": {
-      "sha256": "68b7d0fa5d164f5c94dd6fc043ae24cb6eda6d96aaa191d1ae91a0bd84b6db54",
-      "size": 12066
+      "sha256": "b0a5dfb72160d515c018b2e34e7d3be770a42901403c8eafff26ac16c1bab47e",
+      "size": 12597
     },
     "skills/assets/SKILL.md": {
-      "sha256": "58fd657e26b33dba8574e3407a6112248126cafff0129dbfd50de3f965374f33",
-      "size": 6272
+      "sha256": "c8b76a7518ce7cccfc99404dc4c6bb4eb44091bab5b5159e5aa9aef010fd7a55",
+      "size": 6306
     },
     "skills/assets/references/production-and-review.md": {
       "sha256": "03a54f1a0ebf6dab00fcf6a27b8558b2a2511847d770a1d3f3437aec75914077",
@@ -450,8 +450,8 @@
       "size": 5334
     },
     "skills/close/SKILL.md": {
-      "sha256": "538d3f4d921beef2f3bf1778f46b7d7fc7c4b30e270307767e50317bd99aa17b",
-      "size": 6007
+      "sha256": "7e5f0120d7a5149ad435fdf93d53386da4663f75e4517dc69b01447b8c7726a3",
+      "size": 6066
     },
     "skills/close/references/closure-and-sync.md": {
       "sha256": "718b7f2f992476072731c209676fe898288ed72ace14d80f0098b045d9c57009",
@@ -490,20 +490,20 @@
       "size": 6676
     },
     "skills/flow/references/resume.md": {
-      "sha256": "783f8d96f74d09ff68772883dbd3a3fde81ba9b0157bf50e74c7e9847b495bdc",
-      "size": 5831
+      "sha256": "54b055e5dd28901bc3063cd5790520c13fca58f8623961dc562a5febd4b0d895",
+      "size": 5927
     },
     "skills/init/SKILL.md": {
       "sha256": "da8f4e547bea23674292f6a00c366f2eca90d0575c1a8f30d0a9daeb56aaed82",
       "size": 9561
     },
     "skills/init/references/adoption.md": {
-      "sha256": "07d98c0506345e53cf2459c5c30b5b3ac029b27fcc81c3997d218de39fc722e5",
-      "size": 6525
+      "sha256": "5f0263947fc1dfd85a26ba35b78e253d0077ea8b6d685acd8d1314ed8445a403",
+      "size": 6715
     },
     "skills/verify/SKILL.md": {
-      "sha256": "d8b23e8dcc09813b1e6d8d1bd150e9b346520e0bb63dbb8bb592145e0c6382b0",
-      "size": 5084
+      "sha256": "fb939f4812360737c8257b4142ea7c257db77ab70ba38a9cb8fd617991aefdb8",
+      "size": 5157
     },
     "skills/verify/references/game-checks.md": {
       "sha256": "79d6b0810b1450501287b54dadc1f75eedb7169b2c691634668cb659843d847c",
