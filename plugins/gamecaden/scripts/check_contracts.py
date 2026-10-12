@@ -327,7 +327,7 @@ def main():
     # a general template renderer and never renders project files.
     bindings = {"task_id":"T-901", "epic_id":"E-901", "evidence_id":"EV-901",
                 "decision_id":"D-901", "title":"Sample", "kind":"feature",
-                "actual_status":"active", "subject_id":"A-001", "checked_scope":"Sample",
+                "actual_status":"active", "actual_mode":"quick", "subject_id":"A-001", "checked_scope":"Sample",
                 "actual_result":"not_run", "actual_recorded_at":"2026-09-22T00:00:00Z",
                 "actual_decider_kind":"agent", "actual_decider_id":"example-agent",
                 "actual_action":"choose", "subject_scope":"Sample", "decision_scope":"Sample",
@@ -348,6 +348,10 @@ def main():
                        ("decision.md.tpl","Decision")):
         value,_ = metadata((ROOT/'templates'/name).read_text(encoding='utf-8'))
         validate(kind,bind(value))
+        if name == "task.md.tpl":
+            bindings["actual_mode"] = "standard"
+            validate(kind,bind(value))
+            bindings["actual_mode"] = "quick"
     for name, kind in (("workspace.yaml.tpl","Workspace"),("asset-ledger.yaml.tpl","AssetLedger")):
         validate(kind,bind(yaml_read((ROOT/'templates'/name).read_text(encoding='utf-8'))))
     validate("Manifest",bind(json_read(ROOT/'templates/manifest.json.tpl')))

@@ -56,6 +56,8 @@ claude plugin install gamecaden@gamecaden --scope user
 
 职责按请求选择，不是八步必经流程。详细规则见 [技能目录](plugins/gamecaden/skills) 和 [来源约定](plugins/gamecaden/shared/workspace.md)。Notes 提供项目内的基础记录能力；经验增强尚未采用。当前包没有后台记忆、自动调度或专用 MCP 服务。
 
+quick 和 standard 是同一 Task 的轻量与常规管理模式；按交付的实际组织与维护需要选择。常规模式也能直接处理明确小步骤，模式不降低验证或接受要求。选用与模板见 [Task 模式](plugins/gamecaden/shared/records.md#选择管理模式)。
+
 视图与独立交接不增加 Skill 命令：面板直接读原来源，JSON 快照和 handoff 按真实需求保存，默认路径、刷新与版本留存见[派生输出](plugins/gamecaden/shared/derived-outputs.md)。当前工具不提供完整面板静态 HTML 导出，不生成新的 Markdown 进度视图。
 
 ## 可选面板与开发工具

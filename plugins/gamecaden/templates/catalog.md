@@ -14,8 +14,8 @@
 | [Roadmap](roadmap.md.tpl) | 正式采用项目级持续开发时默认建立；保留当前真实成果与未定范围，不为凑阶段编造承诺 |
 | [Phased Development Plan](development-plan.md.tpl) | 已选大型方案需分阶段转为一个/多个 Epic 的交付编排；按 [PDP 合同](../shared/phased-development.md)独立于工作记录保存 |
 | [停车场](parking-lot.md.tpl) | 出现值得保留但未承诺的未来想法 |
-| [Task](task.md.tpl) | 持续交付，使用同一原生元数据格式 |
-| [Quick Task](quick-task.md.tpl) | 明确局部交付的轻记录；并非验证豁免 |
+| [Task 通用蓝本](task.md.tpl) | 先按真实需要选 quick/standard；正文保留有用部分，常规模式也可简记 |
+| [Task 轻量蓝本](quick-task.md.tpl) | 已选择 quick 时使用；开工记录目标与必要检查，结果按实际进展保存 |
 | [Epic](epic.md.tpl) | 多个相关交付需共同目标和整体出口 |
 | [Design](design.md.tpl) | 设计正文确需独立阅读/维护 |
 | [Plan](plan.md.tpl) | 原 Task 的唯一内部清单或已有 Epic 的界内安排；上位 PDP 使用独立蓝本 |

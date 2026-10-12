@@ -1,5 +1,5 @@
 {
-  "digest": "95c37d3f30b7055820ded3e1ad5a6e0463d8a9e0d5074c72c7a159330fc5f286",
+  "digest": "10b0efaf3e070a15f26bcbd12850164c66a55112045e882db5cad94eecf28dc9",
   "files": {
     ".claude-plugin/plugin.json": {
       "sha256": "a6e5d641dda91460d9385b37c33dab8175395bf7b6504f637a80d772ea04d321",
@@ -206,7 +206,7 @@
       "size": 21863
     },
     "panels/night/app.mjs": {
-      "sha256": "e30da73b45cc8eeb758b9d151bdf42ab4b3436907af8ecb3d8e783ced7d60c56",
+      "sha256": "f096fdd4e76fdbcfb28b56ecf827a23c26deffc39349e60b00795b5c4a4be09c",
       "size": 105821
     },
     "panels/night/domain-reader.mjs": {
@@ -322,8 +322,8 @@
       "size": 4563
     },
     "scripts/check_contracts.py": {
-      "sha256": "6bb87f8708551ff68bd9a1fadecba56640316e05c44bd8b6efe4185005e7b3d6",
-      "size": 21809
+      "sha256": "09f03cce17b6824a842c5f75f042cbe056f5ee11455e1933dae068e8ee4cb159",
+      "size": 22000
     },
     "scripts/gamecaden.py": {
       "sha256": "cd048af238b55d3677024967762c3b2d7073a14fde3669e219f973fd6c0e3d9d",
@@ -386,8 +386,8 @@
       "size": 4037
     },
     "shared/formats-v1.md": {
-      "sha256": "8f107e4fce2efe8ce59d9ac3fd744e9175f78a96c9c74ce71e6d28ab0e2a4259",
-      "size": 16655
+      "sha256": "81297da9ce771aed972d3ab304639886e774e1cb752f78e40fe8f2182bb4cbf9",
+      "size": 16725
     },
     "shared/git-policy.md": {
       "sha256": "cf3e25553f5667335506b7ff682cbbc30c9906d0607e0d9a7b205dd382f0217b",
@@ -422,8 +422,8 @@
       "size": 5949
     },
     "shared/records.md": {
-      "sha256": "4bf040b9fcc381ee61f00bc50a0735c5798caeefcc655a2505d61a3c858fc569",
-      "size": 20102
+      "sha256": "459c0f605471a708a4ffa532b8d459133d456edb78d1509d4f2d1f4fdb8cd60a",
+      "size": 21959
     },
     "shared/relation-views.md": {
       "sha256": "16fb8dfbfb5bc53f7cec7e88148d4ea03861a4ea89ba35cab3721ce17d343ca5",
@@ -458,8 +458,8 @@
       "size": 5334
     },
     "skills/close/SKILL.md": {
-      "sha256": "7ac4c673b7b0b2fbe5c932645d7e7b18c31d73b2172048fc07b416305149c51f",
-      "size": 6463
+      "sha256": "ed5cfab0866352e41a011e46109b33e7419649fcfa8868f668720eb5e8c2b7cf",
+      "size": 6450
     },
     "skills/close/references/closure-and-sync.md": {
       "sha256": "e7a53524167e132070ed449947386a22e5c5d1c789b8b02e31573c766ee6de68",
@@ -482,20 +482,20 @@
       "size": 22168
     },
     "skills/develop/SKILL.md": {
-      "sha256": "f3a4e1f1baa22234360cc463d027bd7b36ec5271854b5f8a41c8fe7fbbeb2d40",
-      "size": 7962
+      "sha256": "659786bf40369a267ba1443f50e26180f14461074bf43e666b298d8532c9f47a",
+      "size": 7964
     },
     "skills/develop/references/execution-and-recovery.md": {
       "sha256": "2722fc68b0ab3e4f5e4b525b7fa0fe06ded1373e041510cc49b0aad414022e41",
       "size": 3558
     },
     "skills/flow/SKILL.md": {
-      "sha256": "a1d1ba1ceacb14e9ed13362a09efed56b9b7a605ebc882755ca3e99ff4215c0f",
-      "size": 8645
+      "sha256": "1a1e54a69c87840903ca2f13cd03885e206152019eadab2de893978599b5b286",
+      "size": 8805
     },
     "skills/flow/references/change-work.md": {
-      "sha256": "5599377f7b83d7b96230c70ba3e5c36cb450f0fdae911f33097616d5bdcfc151",
-      "size": 7097
+      "sha256": "8824d1869e2b91fcdbd6d14c1e58fcf1b4523e6c9ac3a07601f1722a581e80ab",
+      "size": 7108
     },
     "skills/flow/references/resume.md": {
       "sha256": "19feacd61d00c14f674fc1d676daf75c1afcd8988c52c8043ab75f98ef770f96",
@@ -522,8 +522,8 @@
       "size": 542
     },
     "templates/catalog.md": {
-      "sha256": "9db787cbdc3760d634b69f6cf7d856e1f332d5f552a8657f17c9ba43cb9d3b56",
-      "size": 4185
+      "sha256": "e008b9120b177c5b4f5dddd649774b5e4ff1f4bb2b84b1d0fdbe3566897c593d",
+      "size": 4287
     },
     "templates/decision.md.tpl": {
       "sha256": "b5cd16bc583582f8ae350f0c4e586a118061ea05f371e58fc9008c3d77868e2c",
@@ -582,8 +582,8 @@
       "size": 916
     },
     "templates/quick-task.md.tpl": {
-      "sha256": "6750b81647cdb341f89cb97ff82591cba6955cda8644eb804360b89341c09896",
-      "size": 339
+      "sha256": "2ad7b477522b5f5247211007202497d176282bffc2c8cbe9d0497b71c508087e",
+      "size": 478
     },
     "templates/roadmap.md.tpl": {
       "sha256": "bb4f0a53e8041ecae057bd87c54e57621eb5c1c03b64f73601a00503247558c0",
@@ -598,8 +598,8 @@
       "size": 412
     },
     "templates/task.md.tpl": {
-      "sha256": "b83591a88a3f5ffa3641910ca53be28f722acaa4e38ff1436dda0f20dde24ee1",
-      "size": 528
+      "sha256": "9e6c171636a7ca10dbd19044367148702a257410caeebb5f5a8abf7c2cd79756",
+      "size": 535
     },
     "templates/vision.md.tpl": {
       "sha256": "a4c29dc72a0ff19e4b8368ce1a5deada1b039c3daec40abf51ef951450bccd53",

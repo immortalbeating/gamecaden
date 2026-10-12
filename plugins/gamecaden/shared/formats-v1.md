@@ -9,7 +9,7 @@
 | 对象 | 新原生形态 | 机读内容与正文 |
 |---|---|---|
 | workspace | workspace.yaml | 定位、来源与规则映射；无执行进度 |
-| Task／Quick Task | Markdown＋YAML frontmatter | 同一套六个必需字段；正文说明交付、结果与续接 |
+| Task（quick／standard） | Markdown＋YAML frontmatter | 同一套六个必需字段；正文说明交付、结果与续接 |
 | Epic | Markdown＋frontmatter | id/title/status；正文拥有共同目标与整体出口 |
 | Vision、Spec、Roadmap、停车场、Notes、Git 规则 | Markdown | 默认使用可读正文；需要稳定引用的条目加稳定锚点 |
 | PDP（development-plan） | plans/<安全标题>.md | 项目/版本级方案编排；无管理 ID、无 Task/Epic owner 或生命周期；明确来源与 Stage 范围 |
@@ -88,7 +88,7 @@ Epic 元数据只有 id/title/status 和可选 related/extensions；子 Task 归
 
 暂停/推进限制和恢复条件继续在 Task 当前续接正文中保存，不增加 paused 生命周期。工具返回这段原文或完整正文供模型判断；正文标题无法可靠识别时返回原文和提示，不能据 active 就得出可执行。面板展示该限制，自动执行不得绕过当前用户指示。
 
-正文仍回答目标/范围、现状/方案、必要安排、验收、实际结果、续接/收尾。Quick 用四答和必要续接即可；Task 的 plan.md 拥有内部实施清单，已有 Epic 计划组织本 Epic 的交付引用。项目/版本级上位编排使用 [PDP](phased-development.md)，其 S 标识与 Roadmap 的 M 标识是文档内锚点，不分配新管理 ID。详尽参数与原报告保留原引用。
+正文按[模式与记录用途](records.md#选择管理模式)回答本次目标/边界、必要检查、实际结果和续接；需要时维护方案与步骤，正文深度不靠标签机械决定。Task 的 plan.md 拥有内部实施清单，已有 Epic 计划组织本 Epic 的交付引用。项目/版本级上位编排使用 [PDP](phased-development.md)，其 S 标识与 Roadmap 的 M 标识是文档内锚点，不分配新管理 ID。详尽参数与原报告保留原引用。
 
 ## 5. Evidence
 

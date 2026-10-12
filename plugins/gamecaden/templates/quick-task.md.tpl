@@ -9,7 +9,11 @@ epic: null
 
 # {{title}}
 
-- 做了什么：{{result}}
+## 目标与必要检查
+{{current_goal_scope_required_checks_and_acceptance_or_original_refs}}
+
+## 实际结果
+- 做了什么：{{actual_result_or_not_yet_started}}
 - 改了哪些：{{changes}}
 - 怎样验证：{{method_result_and_limits}}
 - 对规格/台账的影响：{{actual_sync_or_no_impact}}

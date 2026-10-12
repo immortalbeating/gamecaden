@@ -1,7 +1,7 @@
 ---
 id: "{{task_id}}"
 title: "{{title}}"
-mode: "standard"
+mode: "{{actual_mode}}"
 kind: "{{kind}}"
 status: "{{actual_status}}"
 epic: null

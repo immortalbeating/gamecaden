@@ -351,7 +351,7 @@ const relativePath = value => {
   return root && raw.toLowerCase().startsWith(`${root.toLowerCase()}/`) ? raw.slice(root.length+1) : raw.split('/').slice(-2).join('/');
 };
 const taskMode = row => row.record_type === 'task' && row.metadata?.mode ?
-  ` · ${row.metadata.mode === 'quick' ? 'Quick 快改' : row.metadata.mode === 'standard' ? 'Standard 标准' : row.metadata.mode}` : '';
+  ` · ${row.metadata.mode === 'quick' ? 'Quick 轻量' : row.metadata.mode === 'standard' ? 'Standard 常规' : row.metadata.mode}` : '';
 
 const nodeByKey = key => state.governance?.nodes?.find(n => n.key === key);
 const nodeRef = node => (typeof node?.ref === 'string' ? node.ref : node?.ref?.id || node?.metadata?.id || node?.ref?.fragment) || node?.title || '';
