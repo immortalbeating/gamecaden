@@ -51,6 +51,8 @@ The first capacity-limited continuation attempt changed no project files; its fa
 
 The program suite covers the final runtime code. The final release differs from its last model-test package only in an installation-guide sentence identifying English maintenance as canonical; the shared language policy and runtime code are unchanged. Final contracts, integrity, navigation, and deterministic builds cover the release source. These observations do not guarantee every future host/model/session, nor prove a cost reduction without a before/after comparison.
 
+The first release CI run passed on Ubuntu but exposed a Windows test-fixture setup error: TEMP used an 8.3 path alias while the tool bound its canonical root. The source-I/O fixture now resolves its existing root before constructing context and targets. An actual Windows short-path experiment reproduced the old refusal; all seven affected tests then passed with the corrected fixture. Production path-boundary, reserved-location, symlink/junction, and revision protections were not changed. The complete Windows/Ubuntu CI matrix is rerun on this fixture correction before publication; the initial failed run remains recorded.
+
 No real game-engine execution, GPU/raster acceptance, physical-device behavior, user playtest approval, macOS execution, or new Claude model behavior was verified in this batch. Daily installed copies and external game projects were not changed. Transient evaluation authentication was removed; anonymous raw evidence remains local. Historical sections below describe earlier development snapshots, including their then-unpublished status, rather than a new release certificate.
 
 ## 未发布变更：Task 管理模式与执行深度

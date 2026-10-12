@@ -21,6 +21,8 @@ class SourceIO(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory(prefix="gc-source-")
         self.root = Path(self.temp.name) / "project"
         shutil.copytree(FIXTURE, self.root)
+        # Windows TEMP may use an 8.3 alias; bind the existing fixture's canonical root.
+        self.root = self.root.resolve(strict=True)
         self.context = {"project_root": str(self.root), "base_dir": str(self.root / "game-workflow")}
 
     def tearDown(self):
