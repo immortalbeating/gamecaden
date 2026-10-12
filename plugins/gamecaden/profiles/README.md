@@ -1,92 +1,101 @@
-# 游戏工程 profiles：选择、采用与复核
+<a id="游戏工程-profiles选择采用与复核"></a>
+# Game engineering profiles: selection, adoption and review
 
-Profile 是按条件加载的工程参考，不是额外 Skill、任务阶段或一组自动生效的全项目门禁。规则性质与冲突处理由 [shared/rules](../shared/rules.md) 维护；本页负责选择和接入这些参考。
+A Profile is a conditionally loaded engineering reference, not an extra Skill, task stage or automatically effective set of project-wide gates. [shared/rules](../shared/rules.md) owns rule nature and conflict handling; this page owns selection and integration of these references.
 
-## 定位与规则纳入
+<a id="定位与规则纳入"></a>
+## Purpose and rule inclusion
 
-本工作流从多渠道开发实践、可靠资料和业内仍适用的做法中提炼指导，帮助 AI 选择游戏设计、工程与内容方案，及早识别常见失败，并沿真实玩家路径核对预期结果。记录与检查支撑这些判断，不用文档数量、规则数量或工具通过替代游戏目标。
+This workflow draws guidance from development practice across multiple channels, reliable materials and still-applicable industry approaches, helping AI choose game design, engineering and content approaches, identify common failures early, and check expected results along actual player paths. Records and checks support these judgments; document counts, rule counts or tool success do not replace game goals.
 
-新增或提升规则/专题时，判断以下内容是否足够：
+When adding or promoting rules/topics, judge whether the following are sufficient:
 
-- **解决什么弯路**：指出可迁移的失败模式或设计取舍，以及它怎样影响玩法、内容、实现或交付；背景词、市场标签和未来可能使用不足以建立新专题。
-- **依据是否可靠且仍适用**：官方机制、实际项目经验、行业做法与本工作流选择分别表达。保留来源、版本/环境、适用条件与反例；历史做法按当前机制复核，单一项目折衷保留原范围。
-- **能否帮助下一动作**：写清触发、要保住的结果、理由、默认与可替代方法，以及有辨别力的观察；检查强度与当前主张相称。
-- **是否值得独立维护**：通用原则由共用规则拥有，引擎差异由对应专题解释；已有章节能承担的内容就近补充。新专题的指导收益应足以覆盖加载、引用和持续校准成本。
+- **Which detour is avoided**: Identify transferable failure patterns or design tradeoffs and their effect on gameplay, content, implementation or delivery; background terms, market labels and possible future use are insufficient to establish a new topic.
+- **Whether the basis is reliable and still applicable**: Express official mechanisms, actual project experience, industry approaches and workflow choices separately. Retain sources, versions/environments, applicability conditions and counterexamples; review historical approaches against current mechanisms, while single-project compromises retain original scope.
+- **Whether it helps the next action**: Specify triggers, outcomes to preserve, reasons, defaults/alternatives and discriminating observations; checking intensity matches current claims.
+- **Whether independent maintenance is worthwhile**: Shared rules own general principles and corresponding topics explain engine differences; supplement existing sections nearby when they can serve the content. Guidance benefits of new topics should cover loading, referencing and ongoing calibration costs.
 
-通用价值按工作流的游戏开发范围判断，不要求每条经验都已在用户个人项目中发生。实际使用仍按当前目标命中；资料中的平台案例不自动变成项目承诺或包的支持范围。尚无足够依据或范围的推论保留为调查/建议，不能标成行业通则或必要门禁。
+Judge general value within this workflow's game-development scope; every lesson need not have occurred in the user's personal projects. Actual use still follows current goals; platform examples in materials do not automatically become project commitments or package support scope. Inferences lacking sufficient basis/scope remain investigations/recommendations, without being labeled industry-wide rules or required gates.
 
-## 选择本次需要的部分
+<a id="选择本次需要的部分"></a>
+## Select what this work needs
 
-先确定本次对象、实际运行根、引擎/框架版本、目标平台和动作。读取已有工程配置与有效项目约定；材料不足时保留未知，已有设计选择可先用于方案，不冒充安装或运行事实。
+First determine current objects, actual runtime roots, engine/framework versions, target platforms and actions. Read existing project configuration and effective agreements; retain unknowns where materials are insufficient. Existing design choices may guide plans without masquerading as installation/runtime facts.
 
-| Profile ID | 何时读取 | 正文 |
+| Profile ID | When to read | Body |
 |---|---|---|
-| game-common | 玩法、共享状态、内容接入、生命周期或运行验收受影响 | [通用游戏工程](common.md)中命中的条目 |
-| project-structure | 新建工程结构、加入新模块/生产链、迁移路径或目录职责有歧义 | [目录与文件职责](project-structure.md) |
-| godot | 本次设计或修改的运行根实际采用 Godot | [Godot](engines/godot.md) |
-| unity | 本次设计或修改的运行根实际采用 Unity | [Unity](engines/unity.md) |
-| cocos-creator | 当前运行根或已选设计采用 Cocos Creator | [Cocos Creator](engines/cocos-creator.md)，按实际构建目标另取平台规则 |
-| web | 本次对象在浏览器运行，包括原生网页、各引擎/框架的浏览器产物和工具页 | [Web 平台](platforms/web.md) |
-| phaser | 本次运行根的真实依赖或已选设计使用 Phaser | [Phaser](frameworks/phaser.md)，浏览器目标叠加 Web |
-| threejs | 本次运行根的真实依赖或已选设计使用 Three.js | [Three.js](frameworks/threejs.md)，目标平台与现场集成分别识别 |
+| game-common | Gameplay, shared state, content integration, lifecycle or runtime acceptance is affected | Applicable entries in [common game engineering](common.md) |
+| project-structure | Creating project structure, adding modules/production pipelines, migrating paths or ambiguous directory responsibilities | [Directory and file responsibilities](project-structure.md) |
+| godot | The runtime root designed/modified here actually uses Godot | [Godot](engines/godot.md) |
+| unity | The runtime root designed/modified here actually uses Unity | [Unity](engines/unity.md) |
+| cocos-creator | Current runtime roots or selected designs use Cocos Creator | [Cocos Creator](engines/cocos-creator.md), with platform rules selected separately by actual build target |
+| web | Current objects run in browsers, including native pages, browser outputs of engines/frameworks and tool pages | [Web platform](platforms/web.md) |
+| phaser | Actual dependencies of current runtime roots or selected designs use Phaser | [Phaser](frameworks/phaser.md), adding Web for browser targets |
+| threejs | Actual dependencies of current runtime roots or selected designs use Three.js | [Three.js](frameworks/threejs.md), identifying target platforms and local integrations separately |
 
-游戏领域所需图件/信息由 [材料职责](../shared/material-requirements.md) 和 [游戏材料参考](../skills/design/references/game-deliverables.md) 拥有；按本次用途直达命中部分。组成、状态、寿命或资源消费者有变化时，取下方[结构专题](#结构变化的专题入口)；浏览器路径、焦点、后台、音频或存储条件取 [Web 交接](platforms/web.md#与-skill-阶段交接)。没有触及的领域无需加载。
+[Material responsibilities](../shared/material-requirements.md) and [game material references](../skills/design/references/game-deliverables.md) own game-domain diagrams/information; go directly to applicable parts for current uses. For changes to composition, state, lifetime or resource consumers, use [structure topics](#topic-entries-for-structural-changes) below; for browser paths, focus, background, audio or storage conditions, use [Web handoff](platforms/web.md#handoff-to-skill-stages). Untouched domains need not be loaded.
 
-选择关系是“通用命中项＋实际引擎/库＋目标平台”。Web 是浏览器平台，不限定 Phaser 或 2D；场景、运行范围与资源关系按实际引擎机制处理。其它未列技术栈仍可使用共同条目与其实际官方资料，不因本表没有专名就套用最相近引擎 API。
+Selection is "applicable common entries + actual engine/library + target platform". Web is a browser platform, without restricting Phaser or 2D; handle scenes, runtime scopes and resource relationships using actual engine mechanisms. Other unlisted stacks may still use common entries and their actual official documentation; do not apply the nearest engine API merely because this table lacks a dedicated name.
 
-### 组合示例
+<a id="组合示例"></a>
+### Combination examples
 
-- Godot 桌面角色接入：通用内容/状态条目＋Godot；按实际接入读取角色材料。
-- Godot 的 Web 导出：Godot＋Web；不加载 Phaser。
-- 同仓 HTML 资产面板修复：Web＋面板合同；只有改动了游戏运行输入才增加游戏引擎范围。
-- Phaser 游戏的暂停/重开：通用生命周期＋Web＋Phaser，核对真实主版本。
-- Three.js 浏览器游戏：通用命中项＋Three.js＋Web；React/R3F 只有已采用时再查实际集成。
-- Cocos Creator 的 Web 产物：通用命中项＋Creator＋Web；其它明确目标就近核对真实构建/运行条件和官方资料。
-- Creator 原生游戏：通用命中项＋Creator＋现场原生构建规则，证据对应真正交付入口。
-- 纯静态 HTML 小游戏：通用命中项＋Web，沿用其现有启动方式。
-- 只修已有按钮错字：原 Task、相关显示检查与有效规则足够时直接 quick；无需读取全部目录、角色、地图或发布规则。
+- Godot desktop character integration: common content/state entries + Godot; read character materials according to actual integration.
+- Godot Web export: Godot + Web; do not load Phaser.
+- Fixing a co-located HTML asset panel: Web + panel contract; add game-engine scope only when game runtime input changes.
+- Phaser game pause/restart: common lifecycle + Web + Phaser, checking actual major versions.
+- Three.js browser game: applicable common entries + Three.js + Web; check actual React/R3F integration only when adopted.
+- Cocos Creator Web outputs: applicable common entries + Creator + Web; for other explicit targets, check actual build/runtime conditions and official documentation nearby.
+- Creator native game: applicable common entries + Creator + local native-build rules, with evidence tied to actual delivery entries.
+- Pure static HTML small game: applicable common entries + Web, retaining existing startup methods.
+- Only fixing a typo on an existing button: use quick directly when original Task, relevant display checks and effective rules suffice; no need to read every directory, character, map or release rule.
 
-同一仓库可有多个运行根；组合针对目标对象，不按仓库里出现的所有技术名全量叠加。联网、性能、多人协作等分支只由实际承诺或风险触发。
+One repository may have multiple runtime roots; combinations target current objects without adding every technology name in the repository. Networking, performance, multiplayer collaboration and similar branches trigger only through actual commitments or risks.
 
-## 规则怎样写
+<a id="规则怎样写"></a>
+## How to write rules
 
-各文件的短 ID 用于引用某条参考，沿用既有的对象、动作、范围、依据与复核语义。ID 不是项目 Gate ID，也不产生新的业务生命周期。
+Short IDs in files reference individual entries, retaining existing object, action, scope, basis and review semantics. They are not project Gate IDs and create no new business lifecycle.
 
-条目需说明触发、规则性质、期望行为和可观察核对方式。必要条件约束结果；默认做法允许模型选择其他能满足条件的方法。规则在表中标为“必要”仍以其触发成立为前提；文档可用、材料存在和脚本通过不自动证明实际要求已满足。
+Entries explain triggers, rule nature, expected behavior and observable checks. Required conditions constrain outcomes; defaults let models choose other methods meeting conditions. Even when labeled "required" in tables, rules depend on triggers applying; available documentation, existing materials and successful scripts do not automatically establish actual requirements being met.
 
-进一步区分依据的含义：**引擎事实**由对应版本官方资料/现场结果核对；**官方最佳实践**提供可选组织方法；**本工作流默认**说明采用理由、允许替代和反例；**项目经验**注明其前提，区分有效做法、失败模式与当时的折衷。同一组规则就近引用实际来源与验收，不让用户逐项填写另一份来源台账。
+Further distinguish the meaning of bases: **engine facts** are checked through version-specific official documentation/local results; **official best practices** provide optional organization methods; **workflow defaults** explain adoption reasons, permitted alternatives and counterexamples; **project experience** states premises, distinguishing effective practices, failure patterns and compromises at the time. Reference actual sources and acceptance near the same rule group, without asking users to fill another source ledger entry by entry.
 
-## 结构变化的专题入口
+<a id="结构变化的专题入口"></a>
+## Topic entries for structural changes
 
-新增独立页面/关卡、复用主体、跨生命周期状态、监听或内容编辑方式时，先按[结构共同约定](references/structure-contract.md)明确本次组成与责任，再取命中的引擎专题：
+When adding independent pages/levels, reusable entities, cross-lifecycle state, listeners or content-editing methods, first clarify current composition/responsibilities using the [shared structure contract](references/structure-contract.md), then take applicable engine topics:
 
-| 当前框架 | 专题 |
+| Current framework | Topic |
 |---|---|
-| Godot | [场景、节点与状态](references/godot-structure.md)：真实节点类型、运行树与场景边界、parent/owner、World/UI、Autoload 与编辑/保存 |
-| Unity | [Scene、Prefab 与状态](references/unity-structure.md)：序列化接线、实例/定义、生命周期、UI 系统与可编辑内容 |
-| Cocos Creator | [Scene、节点组件与资源](references/cocos-structure.md)：保存资源与运行树、Node/Component、启停/常驻、资产引用、UI 编辑与目标平台 |
-| Phaser | [Scene 与显示对象](references/phaser-structure.md)：Scene 运行范围、普通对象模块、全局/局部系统、UI 与监听/资源消费者 |
-| Three.js | [渲染树、运行与资源](references/threejs-structure.md)：Scene/Object3D、renderer/循环、页面寿命、共享资源与显式释放、DOM/3D 输入 |
+| Godot | [Scenes, nodes and state](references/godot-structure.md): actual node types, runtime trees/scene boundaries, parent/owner, World/UI, Autoload and editing/saving |
+| Unity | [Scene, Prefab and state](references/unity-structure.md): serialized wiring, instances/definitions, lifecycle, UI systems and editable content |
+| Cocos Creator | [Scene, node components and resources](references/cocos-structure.md): saved resources/runtime trees, Node/Component, enable/disable/persistence, asset references, UI editing and target platforms |
+| Phaser | [Scene and display objects](references/phaser-structure.md): Scene runtime scopes, ordinary-object modules, global/local systems, UI and listener/resource consumers |
+| Three.js | [Rendering trees, runtime and resources](references/threejs-structure.md): Scene/Object3D, renderer/loops, page lifetimes, shared resources/explicit release, DOM/3D input |
 
-已选技术栈但尚无工程的新项目，可先形成必要初始设计，原生来源标为待建立，预定接线不写成已保存或运行事实。旧项目按实际影响复用来源；目标关系变化或来源语义不足时，按命中专题在原设计/Spec 补差异。局部 quick 不全量重读；专题不新增 Skill、核心实体或默认必填文件。
+For new projects with selected stacks but no engineering project yet, form necessary initial design first, mark native sources as pending creation, and do not describe planned wiring as saved/runtime facts. Existing projects reuse sources according to actual effects; when target relationships change or source semantics are insufficient, supplement differences in original design/Spec under applicable topics. Local quick changes do not reread everything; topics add no Skills, core entities or default mandatory files.
 
-## 在项目中采用
+<a id="在项目中采用"></a>
+## Adoption in projects
 
-1. 沿用已采纳的项目规则。新项目/新范围需要约定时，由模型按实际引擎、目标和已有授权选择相关 profiles，并说明影响；不要求用户填写 profile ID 或逐条审批常规工程选择。
-2. 长期采用范围就近保存到已有 Spec/规则章节：引用的 profile/条目、来源版本或内容摘要、运行根/平台、项目差异，以及改变后需复核的内容。只有原文没有合适位置才使用 [项目规则模板](../templates/project-rules.md.tpl)。当前 Task 的临时安排留在原 Task，不自动提升为全项目要求。
-3. `workspace.yaml.rule_sources` 继续只定位项目根内真实存在的规则文件。包内参考由 Skill 的相对链接读取；不要把宿主安装目录写成越界的项目路径。为离线、分发或固定版本确需保留全文时，在已授权接入范围保存选定参考的本地版本快照，登记其来源、版本与唯一维护位置，并核对其实际引用的依赖仍可达；只复制一页而留下失效的相对链接不算完成。项目差异单独留在原规则，不同时手改快照与上游。
-4. 更新包不等于更新项目约定。比较被采用条目的实际差异，再处理受影响对象；旧版本不可定位时保留缺口，先调查，不能无声套用另一个版本。无关条目变动不要求全项目重验。
+1. Retain adopted project rules. When new projects/scopes need agreements, models select relevant profiles according to actual engines, goals and existing authorization, explaining effects; users need not fill profile IDs or approve routine engineering choices individually.
+2. Save lasting adoption scope nearby in existing Spec/rule sections: referenced profiles/entries, source versions or content summaries, runtime roots/platforms, project differences and what needs review after changes. Use the [project rules template](../templates/project-rules.md.tpl) only when original text lacks suitable locations. Temporary arrangements for current Tasks remain in original Tasks, without automatic promotion to project-wide requirements.
+3. `workspace.yaml.rule_sources` still locates only actual rule files within project roots. Skills read package references through relative links; do not register host installation directories as out-of-bound project paths. When offline use, distribution or fixed versions truly require full text retention, save local version snapshots of selected references within authorized adoption scope, registering sources, versions and unique maintenance locations, and checking referenced dependencies remain reachable; copying one page while leaving broken relative links is incomplete. Keep project differences separately in original rules, without manually editing snapshots and upstream simultaneously.
+4. Package updates do not equal project-agreement updates. Compare actual differences in adopted entries, then handle affected objects; when older versions cannot be located, retain the gap and investigate first, without silently applying another version. Unrelated entry changes do not require project-wide revalidation.
 
-包内 profiles 随技能包分发；项目内的固定版本快照仅在实际需要时按上述采用约定保存。安装或升级技能包不自动更新项目已生效规则，也不自动生成项目快照。运行时事实仍来自原工程配置，不在 profile 表中再手工维护一套引擎版本或包依赖。
+Package profiles ship with the skill package; fixed-version project snapshots are saved only when actually needed under adoption agreements above. Installing/upgrading skill packages does not automatically update effective project rules or generate project snapshots. Runtime facts still come from original project configuration; do not manually maintain another engine-version/package-dependency ledger in profile tables.
 
-## 进入面板的边界
+<a id="进入面板的边界"></a>
+## Boundaries for entering the panel
 
-只有本次真正采用且需要共享追踪的规则/前提，才按 [governance](../shared/governance.md)在其原拥有者处表达。长期规则归 Spec，整体出口归 Epic/里程碑，执行前提归依赖方 Task；把 profile 目录整批注册为所有任务的 required 条件会错误扩大范围。
+Only rules/prerequisites actually adopted here and needing shared tracking are expressed at original owners under [governance](../shared/governance.md). Lasting rules belong to Spec, overall exit criteria to Epic/milestones, execution prerequisites to dependent Tasks; registering the entire profile directory as required conditions for every task incorrectly expands scope.
 
-AI 从本次目标选择条目、核对现场与材料内容，必要检查结果仍归原 Evidence/Decision。页面显示来源及已实例化条件，不负责从任意 profile 散文自动推导全部门禁。工具匹配与语义判断各有责任。
+AI selects entries by current goals and checks local facts/material content; original Evidence/Decision still owns necessary check results. Pages display sources and instantiated conditions, without automatically deriving every gate from arbitrary profile prose. Tool matching and semantic judgment have separate responsibilities.
 
-## 完成界限
+<a id="完成界限"></a>
+## Completion boundaries
 
-本组文件提供通用、Godot、Unity、Cocos Creator、Phaser、Three.js 与 Web 浏览器规则候选；不是完整引擎手册或能力适配器。涉及具体 API、导入器、插件、渲染管线、构建平台时读取实际安装版及其官方资料，使用当前可用专业 Skill/工具。明确目标超出内置参考时，继续查其真实条件，不因缺少专属 profile 就阻断工作或套用另一环境的 API。
+These files provide candidate common, Godot, Unity, Cocos Creator, Phaser, Three.js and Web browser rules; they are not complete engine manuals or capability adapters. For specific APIs, importers, plugins, rendering pipelines or build platforms, read actual installed versions and official documentation, using available specialist Skills/tools. When explicit targets exceed built-in references, continue investigating actual conditions, without blocking work for a missing dedicated profile or applying another environment's APIs.
 
-本组 profiles 的文档与引用核对不等于各引擎的贯通验证。安装、升级与已有新旧项目有界试点的覆盖见[发行验证记录](https://github.com/immortalbeating/gamecaden/blob/v0.1.3/docs/validation.md)；具体 profile 在目标版本、平台与消费者中的实际结果，仍需保存对应现场证据。
+Documentation/reference checks for these profiles do not equal end-to-end engine validation. See [release validation records](https://github.com/immortalbeating/gamecaden/blob/v0.1.3/docs/validation.md) for installation, upgrade and bounded pilots in existing new/old projects; actual results for particular profiles in target versions, platforms and consumers still require corresponding local evidence.

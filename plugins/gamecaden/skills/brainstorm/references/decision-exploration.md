@@ -1,53 +1,60 @@
-# 关键取舍与有依据的追问
+<a id="关键取舍与有依据的追问"></a>
+# Key tradeoffs and evidence-based follow-up questions
 
-在开放玩法或方案确定、用户要求持续深入追问或全面审视，或当前方案存在相互依赖的实质选择时读取。本参考规定当前讨论范围内的分支覆盖、续问与退出；局部需求只覆盖相关分支。
+Read for open gameplay or solution selection, explicit requests for continuous in-depth questioning or comprehensive examination, or interdependent substantive choices in the current solution. This reference specifies branch coverage, follow-up and exit within the current discussion scope; local requirements cover relevant branches only.
 
-## 看清当前分歧
+<a id="看清当前分歧"></a>
+## Understand the current disagreement
 
-先解释用户要获得什么结果，再看给出的方案是否确实实现它。例如自动化程度很高的玩法仍需说明玩家在何处作出有意义选择；紧凑体验与大规模长期内容也需要明确各自作用范围，不能只把它们并列为功能。
+First explain the result users want, then examine whether the proposed solution actually achieves it. For example, highly automated gameplay still needs to explain where players make meaningful choices; compact experiences and large-scale long-term content also need explicit respective scopes, rather than being listed as parallel features alone.
 
-从相关来源确认事实：已采用规则、实际代码/内容、目标平台和消费者。把缺证据的判断作为假设，避免把未知包装成不可行，也避免为了配合用户而宣称不存在代价。
+Confirm facts from relevant sources: adopted rules, actual code/content, target platforms and consumers. Treat judgments lacking evidence as assumptions; avoid disguising unknowns as infeasibility or claiming there are no costs to accommodate users.
 
-## 用具体反例检查
+<a id="用具体反例检查"></a>
+## Check with concrete counterexamples
 
-选择会改变当前方案的角度，而不全项询问：
+Select angles that change the current solution, rather than asking every item:
 
-- 玩家在正常路径中何时看见结果，失败或重试时会发生什么。
-- 两个目标是否争夺同一个输入、画面空间、状态所有者或制作资源。
-- 新内容是否需要原方案没有的消费者、数据或持续维护。
-- 当前设计是否依赖尚未选择的方向，是否把示意图或候选当成既定合同。
-- 能否用一次有边界的调查/试验验证关键假设，而不是继续猜测。
+- When players see results on normal paths, and what happens on failure or retry.
+- Whether two goals compete for the same input, screen space, state owner or production resources.
+- Whether new content needs consumers, data or sustained maintenance absent from the original solution.
+- Whether current design depends on an unselected direction or treats illustrations/candidates as established contracts.
+- Whether one bounded investigation/experiment can verify key assumptions instead of continued guessing.
 
-已发现的影响按真实范围说明；不把所有未来风险都改写成当前门禁。
+Describe discovered impacts within actual scope; do not turn every future risk into a current gate.
 
-## 给出意见
+<a id="给出意见"></a>
+## Give an opinion
 
-说明各可行方向怎样满足用户结果、会放弃或增加什么，再推荐最符合当前约束的方向。反对某个想法时给出具体理由和可保留的价值；用户未选择前，推荐仍是推荐。
+Explain how each feasible direction meets user outcomes, what it gives up or adds, then recommend the direction best fitting current constraints. When opposing an idea, give concrete reasons and value that can be retained; before the user chooses, recommendations remain recommendations.
 
-可查明的事实、已有明确决定，以及在现有授权内的普通可逆实现/表现选择由模型处理。会改变当前需求、产品承诺或实质偏好的用户取舍，按主 Skill 提问，不因推荐看起来更优就代替用户决定。不要让用户决定可查明的 API、文件路径、普通控件位置或内部实现细节。
+The model handles ascertainable facts, established decisions and ordinary reversible implementation/presentation choices within authorization. For user tradeoffs changing current requirements, product commitments or material preferences, ask under the main Skill; an apparently better recommendation does not replace user choice. Do not ask users to decide ascertainable APIs, file paths, ordinary control positions or internal implementation details.
 
-## 问题组织与退出
+<a id="问题组织与退出"></a>
+## Organizing questions and exit
 
-普通澄清解决当前具体分歧；深入追问则持续走完当前范围内会改变结果的决策分支。用户明确要求全面审视方案时，覆盖整份方案的关键分支，不因某一条主路径已能实施就提前结束。
+Ordinary clarification resolves the current concrete disagreement; in-depth follow-up continues through decision branches within current scope that change outcomes. When users explicitly request comprehensive examination, cover key branches of the entire solution; do not end early merely because one main path can be implemented.
 
-### 连续深入追问
+<a id="连续深入追问"></a>
+### Continuous in-depth follow-up
 
-1. 从现有目标与材料列出关键未决分支及其依赖，按主 Skill 的[深度判断表](../SKILL.md#按未决项选择提问深度)确定本轮覆盖。区分能查明的事实、用户取舍和必须试验的体验假设；清单服务本轮推理，需要留存时放回原记录的未决项。
-2. 先处理会改变后续问题的上游选择。按主 Skill 的提问节奏说明本轮问题、相关备选与推荐依据，选择适合当前问题的表达；只呈现当前问题及必要背景，每题聚焦一个决定。依赖未回答内容的后续细节留到下一轮，不一次倾倒整棵设计树。
-3. 等待真实回答。用户要求解释、自由讨论或暂不选择时，先澄清，原取舍仍为未决。收到决定后检查其与既有约定是否一致，再用具体玩家情境、反例、失败/重试路径或资源冲突检验边界。用户说“两者都要”时，探明两者作用范围和冲突时优先级，不自行删除其中一项。
-4. 将已确定结论按 brainstorm 的记录归属及时更新，保留精确边界、数值、例外和否定要求；建议和试验假设保持原身份。用户明确只聊不写时仅在会话中整理。无需为每轮另建文档或 Decision。
-5. 重算未决分支；仍有影响当前讨论范围的未决取舍时，继续提出当前可决定的下一问题。新事实或回答暴露关联、遗漏或冲突时，加深受影响分支，不因初始分类轻就提前结束。用户改变目标时只重访受影响部分；已有答案直接沿用，普通可逆实现细节交给模型判断。
+1. List key unresolved branches and dependencies from existing goals and materials, using the main Skill's [Depth judgment table](../SKILL.md#choose-question-depth-from-unresolved-matters) for current coverage. Distinguish ascertainable facts, user tradeoffs and experience assumptions requiring experiments; the list supports current reasoning and, when retained, goes into unresolved items in original records.
+2. Handle upstream choices that alter subsequent questions first. Follow the main Skill's question cadence to explain this question, relevant alternatives and recommendation grounds, choosing suitable expression; present only the current question and necessary context, each question focused on one decision. Leave details dependent on unanswered content to the next round instead of dumping the entire design tree.
+3. Wait for an actual answer. For explanation requests, free discussion or deferral of choice, clarify first; the original tradeoff remains unresolved. After a decision, check consistency with existing agreements and test boundaries through concrete player situations, counterexamples, failure/retry paths or resource conflicts. When users say “both”, establish respective scopes and conflict priority without deleting one yourself.
+4. Promptly update established conclusions under brainstorm record ownership, retaining precise boundaries, numbers, exceptions and negative requirements; recommendations and experimental assumptions retain original identities. For explicit chat-only requests, organize within the session only. No new document or Decision is needed per round.
+5. Reassess unresolved branches; while tradeoffs affecting current discussion remain, ask the next currently decidable question. New facts or answers revealing relationships, omissions or conflicts deepen affected branches; do not end early because initial classification was light. Revisit only affected parts when users change goals; reuse existing answers and let the model judge ordinary reversible implementation details.
 
-### 收敛与暂停
+<a id="收敛与暂停"></a>
+### Convergence and pausing
 
-转入 design 或实施准备前，当前目标、作用对象、承诺边界、关键取舍和可观察的接受结果应已清楚；影响当前结果的用户取舍必须解决。仍有阻断决定时继续追问，不能只登记“等待取舍”就宣布已经收敛。
+Before entering design or implementation preparation, current goals, affected objects, commitment boundaries, key tradeoffs and observable acceptance results should be clear; user tradeoffs affecting current results must be resolved. Keep asking when blocking decisions remain; merely registering “awaiting tradeoff” cannot establish convergence.
 
-技术事实通过查证处理，体验或性能假设通过有界试验处理。后续批次的未知只有在明确归属且确实不阻断当前交付时才可后置；后置不取消完整目标，也不把未经验证的假设写成事实。
+Handle technical facts through investigation and experience/performance assumptions through bounded experiments. Unknowns in later batches can be deferred only with clear ownership and no actual blockage of current delivery; deferral does not cancel complete goals or turn unverified assumptions into facts.
 
-用户要求全面审视时，回查原材料的关键分支和承诺，确认没有遗漏、弱化或与新结论冲突；不能因一条主路径已经能实施就结束。
+For comprehensive examination requests, recheck key branches and commitments in original materials for omissions, weakening or conflicts with new conclusions; do not end because one main path is implementable.
 
-用户要求停止追问、暂停或保留多个候选时，按该范围收住并说明已确定与未解决之处。开放候选或用户暂停不等于完成实施准备；不因回答了若干问题或轮数已多就退出。
+When users request stopping questions, pausing or retaining multiple candidates, stop within that scope and explain settled and unresolved matters. Open candidates or user pauses do not complete implementation preparation; question count or many rounds do not justify exit.
 
-没有固定问答轮数，也不新增统一的最终批准环节；沿用实际项目规则和已有授权。高强度追问可以揭示需求矛盾，性能、可行性和“是否好玩”仍需要相应证据或体验试验。
+There is no fixed number of question-and-answer rounds or new uniform final approval step; retain actual project rules and existing authorization. Intensive questioning can expose requirement contradictions; performance, feasibility and “is it fun” still require corresponding evidence or experience experiments.
 
-需要试验时说明问题、范围、输入和观察方式。只有在原授权允许的范围内实施；只要求讨论时可以交付试验建议，不自行修改工程或声称试验已通过。
+For experiments, explain question, scope, inputs and observation method. Implement only within original authorization; a discussion-only request may receive experiment recommendations, without engineering changes or claims that experiments passed.

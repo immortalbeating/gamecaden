@@ -1,30 +1,36 @@
-# 贡献指南
+# Contributing
 
-先通过 Issue 说明具体问题、复现步骤和期望行为。小修复可直接提交 Pull Request；涉及记录格式、公共接口或职责边界的改动，先说明消费者、兼容方案及验证条件。
+Describe the problem, reproduction, and expected behavior in an Issue. Small fixes may go directly to a Pull Request; changes to record formats, public interfaces, or responsibility boundaries should first explain consumers, compatibility, and verification conditions.
 
-## 本地检查
+## Local checks
 
-需要 Python 3.12+ 和 Node.js。面板与 I/O 的额外依赖使用独立虚拟环境：
+Python 3.12+ and Node.js are required. Prepare panel/I/O dependencies in a separate virtual environment:
 
 ```sh
 python -m venv .venv
 ```
 
-Windows 使用 `.venv/Scripts/python.exe`，POSIX 使用 `.venv/bin/python`；用该解释器安装 `plugins/gamecaden/scripts/requirements.txt`。从仓库根运行：
+Use `.venv/Scripts/python.exe` on Windows or `.venv/bin/python` on POSIX, installing `plugins/gamecaden/scripts/requirements.txt` with that interpreter. Run from the repository root:
 
 ```sh
 python scripts/check.py --suite all
 ```
 
-按改动影响选择较小检查集见 [验证说明](docs/validation.md)。保存命令、环境与结果，说明无法执行的检查；发行前仍需完整检查。
+Choose smaller suites according to impact as described in the [validation history](docs/validation.md). Retain commands, environment, and results, including checks that could not run. A release still requires the full suite.
 
-## 提交内容
+## Authoring and language compatibility
 
-`main`用于通过检查的公开版本，未完成的开发使用独立分支。插件内容变化时增加版本号，三份manifest同步；已发布tag与同版本包保持不可变。默认分支跟踪用户通过更新命令取得新版本，固定tag用户主动选择目标版本。
+English is the authoritative development and maintenance language for code interfaces, schemas, Skill bodies, shared contracts, material references, and templates. Update the actual English source when behavior changes rather than maintaining separate language-specific rule branches. Public English and Chinese usage guides explain the same package; complete Chinese rule comparisons are local review material and are not published.
 
-- 保持公共插件与维护测试分离：插件在 `plugins/gamecaden/`，测试在 `tests/`，维护入口在 `scripts/`。
-- 变更说明写清问题、最终行为、兼容影响和实际验证；有关合同随实现同步。
-- 使用匿名夹具，不提交连接资料、真实项目记录或机器专属路径。
-- 保留第三方许可和出处。不要将测试通过写成用户接受或运行采用。
+The toolkit's authoring language is separate from the user's material language. New project documents default to the user's current language unless explicitly chosen otherwise; localize headings, labels, table headers, prompts, and prose, retaining executable identifiers. Maintain existing documents in their language unless conversion is requested. The [workspace language convention](plugins/gamecaden/shared/workspace.md#6-language-preferences) is authoritative. Avoid parsers that require one natural language's headings. Preserve UTF-8 content, Unicode titles, and original record identities; localized fixtures test compatibility rather than define an English-only output format.
 
-项目采用 [MIT](LICENSE)。贡献应具有可用于该许可的权利；第三方材料保留自己的许可说明。
+## Contributions and releases
+
+`main` holds checked public versions; unfinished development uses separate branches. Increase the version when plugin content changes and synchronize all three manifests. Released tags and same-version packages are immutable. Default-branch users receive changes through update commands; pinned-tag users choose the next version explicitly.
+
+- Keep the public plugin separate from maintenance tests: `plugins/gamecaden/`, `tests/`, and `scripts/` have distinct responsibilities.
+- Describe the problem, resulting behavior, compatibility, and actual verification; update related contracts alongside implementation.
+- Use anonymous fixtures. Never commit connection data, real project records, machine-specific paths, private history, or local Chinese rule comparisons.
+- Preserve third-party licenses and attribution. Test success does not imply user acceptance or runtime adoption.
+
+The project uses [MIT](LICENSE). Contributions must have rights compatible with that license; third-party materials retain their own licenses.

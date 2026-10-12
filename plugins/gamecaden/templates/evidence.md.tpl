@@ -8,16 +8,19 @@ subjects:
     scope: "{{checked_scope}}"
 result: "{{actual_result}}"
 coverage: []
-# 按实际需要增加 subject.version、report_refs、corrects；未知信息不要补造。
+# Add subject.version, report_refs, and corrects as actually needed; leave unknown information unknown.
 ---
 
 # {{title}}
 
-## 方法与环境
+<a id="方法与环境"></a>
+## Method and environment
 {{actual_method_environment_and_baseline}}
 
-## 观察与结论
+<a id="观察与结论"></a>
+## Observations and conclusions
 {{observations_and_support_for_result}}
 
-## 覆盖、限制与来源
+<a id="覆盖限制与来源"></a>
+## Coverage, limitations, and sources
 {{coverage_limits_and_raw_report_refs}}

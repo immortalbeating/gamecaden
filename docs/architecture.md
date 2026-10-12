@@ -1,37 +1,45 @@
-# 架构
+# Architecture
 
-Gamecaden 将任务行为、项目事实与宿主展示分开维护。八个职责读取项目的权威来源，按请求选择工作；正式接入整理当前愿景、必要规格总览和开发路线的确定入口，详细输入与原工作保留明确维护范围。工作区映射记录来源位置，不复制动态状态。正文职责见 [records](../plugins/gamecaden/shared/records.md#项目级当前正文)，接入规则见 [workspace](../plugins/gamecaden/shared/workspace.md)。
+Gamecaden separates task behavior, project facts, and host presentation. Eight responsibilities read authoritative project sources and select work for the request. Formal adoption organizes definite current Vision, necessary Spec overview, and Roadmap entries; detailed inputs and original work retain clear maintenance scope. Workspace mappings locate sources without duplicating changing state. See [record responsibilities](../plugins/gamecaden/shared/records.md#current-project-level-bodies) and [workspace adoption](../plugins/gamecaden/shared/workspace.md).
 
-## 仓库与分发
+## Repository and distribution
 
-| 位置 | 职责 |
-| --- | --- |
-| `.agents/plugins/marketplace.json` | 指向公共 `plugins/gamecaden` 的安装入口 |
-| `plugins/gamecaden/` | 插件 manifest、技能、合同、schema、模板、脚本和面板 |
-| `tests/` | 维护测试与匿名夹具 |
-| `scripts/check.py` | 合同、Python、JavaScript 与构建检查入口 |
-| `dist/` | 构建产物，忽略提交 |
+| Location | Responsibility |
+|---|---|
+| `.agents/plugins/marketplace.json` | Installation entry pointing to public `plugins/gamecaden` |
+| `plugins/gamecaden/` | Plugin manifests, Skills, contracts, schemas, templates, scripts, and panel |
+| `tests/` | Maintenance tests and anonymous fixtures |
+| `scripts/check.py` | Contract, Python, JavaScript, and build checks |
+| `dist/` | Build artifacts, excluded from commits |
 
-插件安装副本与项目记录是不同对象。包升级不自动改写项目设计、采用规则、接受状态或存档。新会话核对安装路径和版本；已有会话发现不能替代版本确认。
+Installed package copies and project records are different objects. Upgrades do not automatically rewrite project designs, adopted rules, acceptance, or saves. Verify installed paths/version in a new session; discovery in an old session does not establish the installed version.
 
-包内 `scripts/gamecaden_runtime.py` 以标准库检查或准备独立缓存环境，再转发 I/O、治理、面板与合同工具。插件资源安装与工具就绪分别核验；环境选择和调用规则以 [local-io](../plugins/gamecaden/shared/local-io.md#1-环境与调用) 为准。
+The standard-library `scripts/gamecaden_runtime.py` launcher checks/prepares an isolated cached environment, then forwards I/O, governance, panel, and contract tools. Resource installation and tool readiness are checked separately under [local I/O](../plugins/gamecaden/shared/local-io.md#1-environment-and-invocation).
 
-## 来源与 I/O
+## English development, user-language materials
 
-来源映射指向原记录；原格式保留其维护归属。读取诊断与范围完整性需要一起解释，已定位材料不代表语义正确或条件通过。写入由本地 I/O 库检查快照与修订，保存稳定操作身份和回执；恢复先查询原请求，再处理未决操作。详见 [local-io](../plugins/gamecaden/shared/local-io.md) 与 [格式合同](../plugins/gamecaden/shared/formats-v1.md)。
+English is the canonical maintenance language of interfaces, schemas, workflow rules, references, and templates. English and Chinese usage guides describe one package. Complete Chinese rule comparisons stay in ignored local review material rather than a second public rule set.
 
-新 Task 默认以 `tasks/T-编号-短名/task.md` 作为主入口，专属材料按需归入同目录或子目录；旧平铺 Task 和原附件目录保持兼容。普通附件依附原 Task/Epic，没有独立工作身份或生命周期；共享规格、资产和证据继续从原来源引用。
+Material language follows the [workspace convention](../plugins/gamecaden/shared/workspace.md#6-language-preferences). Replies and new project materials default to the user's language; explicit communication/document preferences may differ. Adapt template headings, labels, table headers, prompts, and prose, preserving schema keys, IDs, enums, paths, and commands. Existing material language and identity are preserved during maintenance unless conversion is requested.
 
-证据留存、默认位置、索引与整理触发由 [records](../plugins/gamecaden/shared/records.md#留存索引与版本) 统一定义；原报告可以承担 Evidence 职责，版本重跑保留最小充分历史。路径读取区分原生文本与只读二进制，物理长路径处理保持逻辑 Ref 和边界。列表三类详情共同分页，面板按全扫描指纹核对一致性；来源收敛由明确的正文/索引和窄集合完成。
+Native I/O retains caller-supplied UTF-8 bodies/titles and handles Unicode filenames. A document's headings are not native identity syntax. Governance displays an actual source section in any language, without inferring status or acceptance from its heading. Extraction adds language-neutral path-provenance data; legacy partial extraction recovery retains matching old target bytes. Technical diagnostics are English, while original user content remains unchanged. The current panel controls remain Chinese; panel localization is separate from document-language behavior.
 
-主要文档整理属于 Skill 的内容判断与写回约定。当前 role 分类和 scope 说明不自动筛选章节或证明正文合格；旧 Schema/映射继续可读，项目按实际接入或修复范围处理职责。包更新不自动迁移项目。
+## Sources and I/O
 
-项目级持续接入默认建立 Roadmap，产品成果/M 里程碑与条件引用由该正文维护。已选大型方案需分阶段落实时，项目/版本级 [PDP](../plugins/gamecaden/shared/phased-development.md)（development-plan）独立保存于 plans/，编排 Epic 与局部 S Stage；Task 归属及生命周期保持原定义。PDP 无管理 ID/生命周期，旧 design/plan/history 附件继续依附真实 Task/Epic。创建、登记和内容完整性分别核对，数量不表示实施已经发生。
+Mappings point to original records whose formats retain their maintenance ownership. Explain diagnostics together with scope completeness; located material does not imply semantic validity or satisfied conditions. Local I/O checks snapshots/revisions and saves stable operation identities/receipts. Query the original request before recovering unsettled operations. See [local I/O](../plugins/gamecaden/shared/local-io.md) and the [format contract](../plugins/gamecaden/shared/formats-v1.md).
 
-## 面板
+New Tasks default to `tasks/T-<number>-<short-name>/task.md`, with dedicated materials in that directory or subdirectories as needed. Legacy flat Tasks and original attachment directories remain compatible. Ordinary attachments belong to their Task/Epic and have no separate work identity/lifecycle; shared specifications, assets, and evidence remain referenced from their original sources.
 
-本地面板通过同一库派生展示已登记来源。浏览器草稿用于输入恢复，原 Task、Decision 和账本仍是权威事实。前台事件触发来源版本检查；续接摘要是定位线索，继续前重读原记录和现场。面板不运行引擎或唤醒 Agent。见 [启动说明](panel.md) 与 [桥接合同](../plugins/gamecaden/shared/panel-bridge-v1.md)。
+[Records](../plugins/gamecaden/shared/records.md#retention-indexing-and-versions) unify evidence retention, default paths, indexing, and organization triggers. Existing reports may fulfill Evidence responsibilities; reruns retain sufficient history. Path reading distinguishes native text from read-only binary data, and physical long-path handling retains logical Refs and boundaries. Records, diagnostics, and revisions share list pagination; the panel uses full-scan fingerprints for consistency. Source registration is narrowed to relevant bodies/indexes and bounded collections.
 
-[派生输出](../plugins/gamecaden/shared/derived-outputs.md)区分实时 HTML、可重建 JSON 汇总与冻结快照，保存视图不是启动前置；当前 view.build 不导出完整静态 HTML。独立 handoff 从真实来源生成，默认时间/序号名称留新轮次，来源参与修订核对；它与操作回执、工作生命周期分别处理。
+Main-document organization is a Skill's semantic judgment and write-back convention. role/scope do not automatically filter sections or prove adequate bodies. Old schemas/mappings remain readable, and responsibilities are organized within actual adoption/repair scope. Package updates do not migrate projects automatically.
 
-工程 profiles 是按条件加载的参考。技术检查、模型遵循、引擎表现、用户接受和发布授权各自需要对应证据，见 [验证层级](validation.md)。
+Ongoing project adoption defaults to a Roadmap maintaining product outcomes/M milestones and condition references. An adopted large scheme needing phased implementation uses a project/version-level [PDP](../plugins/gamecaden/shared/phased-development.md), saved independently in plans/ and arranging Epics and local S Stages. Task ownership/lifecycle remain unchanged. PDP adds no management ID/lifecycle; design/plan/history attachments remain owned by real Tasks/Epics. Creation, registration, and content adequacy are verified separately; counts do not establish implementation.
+
+## Panel
+
+The local panel derives registered sources through the same library. Browser drafts recover input; original Task, Decision, and ledger records remain authoritative. Foreground events trigger source-version checks. Continuation summaries are location clues; reread original records and the actual environment before proceeding. The panel neither runs engines nor wakes agents. See [panel startup](../plugins/gamecaden/panels/README.md) and the [bridge contract](../plugins/gamecaden/shared/panel-bridge-v1.md).
+
+[Derived outputs](../plugins/gamecaden/shared/derived-outputs.md) distinguish live HTML, rebuildable JSON summaries, and frozen snapshots. Saved views are not startup prerequisites; current view.build does not export complete static HTML. Independent handoffs derive from actual sources, retain new time/sequence rounds, and check source revisions; they are distinct from operation receipts and work lifecycles.
+
+Engineering profiles are conditionally loaded references. Technical checks, model adherence, engine behavior, user acceptance, and release authorization each need corresponding evidence under the [validation tiers](validation.md).

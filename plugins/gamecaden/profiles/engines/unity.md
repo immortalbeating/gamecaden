@@ -1,45 +1,51 @@
-# Unity 引擎 profile
+<a id="unity-引擎-profile"></a>
+# Unity engine profile
 
-## 触发与版本边界
+<a id="触发与版本边界"></a>
+## Triggers and version boundaries
 
-实际项目运行根是 Unity，或当前新项目设计已明确选用 Unity 时使用，以 Unity 6（6000.0）官方文档作为本轮核对基线；现场 Editor 版本、Packages、渲染管线、目标平台和项目设置决定具体行为。只有设计选择、尚无工程时，用本页形成安排，运行事实保持未知。尚未选定 Unity 时只把它作为候选比较；本页不假设 Editor、CLI、MCP 或构建模块已经可用。Web Player 目标另叠加[Web 平台 profile](../platforms/web.md)，不加载 Phaser 规则。
+Use this when the actual project runtime root is Unity, or the current new-project design explicitly selects Unity. Unity 6 (6000.0) official documentation is this round's checking baseline; the local Editor version, Packages, rendering pipeline, target platform and project settings determine specific behavior. With only a design choice and no project, use this page to form arrangements while keeping runtime facts unknown. Before Unity is selected, treat it only as a candidate for comparison; this page does not assume Editor, CLI, MCP or build modules are available. Web Player targets additionally load the [Web platform profile](../platforms/web.md), without Phaser rules.
 
-## 需现场识别的工程事实
+<a id="需现场识别的工程事实"></a>
+## Engineering facts to identify in the project
 
-- 项目根、`ProjectSettings/ProjectVersion.txt`、`Packages/manifest.json`、有效 Scene/Build Profile、目标 Player 平台与是否有可用 Editor/构建模块。
-- 命中对象是 Scene 实例、Prefab asset/实例、ScriptableObject asset、导入资源或运行时生成对象；引用由谁持有。
-- Play Mode 的 Domain Reload/Scene Reload 设定、静态字段、事件订阅和场景切换路径。
-- 本次是否涉及物理时钟、Update 顺序、存档、Web 导出或资产迁移；未涉及则不强加相应系统。
+- Project root, `ProjectSettings/ProjectVersion.txt`, `Packages/manifest.json`, effective Scene/Build Profile, target Player platform, and availability of Editor/build modules.
+- Whether the affected object is a Scene instance, Prefab asset/instance, ScriptableObject asset, imported resource or runtime-generated object; who holds references.
+- Play Mode Domain Reload/Scene Reload settings, static fields, event subscriptions and scene-switching paths.
+- Whether this work concerns the physics clock, Update order, saves, Web export or asset migration; do not impose corresponding systems when unaffected.
 
-## 条件规则
+<a id="条件规则"></a>
+## Conditional rules
 
-规则性质沿用 [rules](../../shared/rules.md)。Unity 官方机制支持核对；具体目录和游戏架构按本项目设计选择。
+Rule nature follows [rules](../../shared/rules.md). Official Unity mechanisms support checks; choose specific directories and game architecture according to this project's design.
 
-| ID | 性质与触发 | 要求或默认做法 | 可观察验证 |
+| ID | Nature and trigger | Requirement or default approach | Observable validation |
 |---|---|---|---|
-| UNITY-ROOT | 必要：识别或接入 Unity 项目 | 以实际项目设置、Packages 和 Scene/构建配置确认运行根与版本；`Assets` 存在或文档提 Unity 不足以证明。 | 可定位当前工程身份、目标场景和目标平台；未运行 Editor 时标明未验证。 |
-| UNITY-META | 必要：导入、移动/改名原资源或创建资源副本 | 原资源移动/改名保持 `.meta` 配对及 GUID 身份。创建同项目中的新独立副本时通过编辑器/可靠流程生成新的身份，避免两个有效资源复用同一 GUID；工程迁移则保留原身份和引用关系。 | 导入后检查受影响 Scene/Prefab/资源引用，无 Missing、意外身份替换或重复 GUID；验证副本与原件按设计独立。 |
-| UNITY-REFERENCE | 必要：场景/Prefab/组件接线 | 区分 Prefab asset、Scene 中实例与序列化引用；改动目标层级和覆盖范围应与消费者一致。 | 实际 Scene/Prefab 实例上的组件字段、事件与运行行为相符。 |
-| UNITY-SHARED-DATA | 必要：ScriptableObject 被多个对象共享且可变 | 明确它是共享配置 asset 还是运行实例状态；避免把一份共享 asset 的可变值误当每个单位独立状态。 | 多实例互相影响、退出重进与重新进入 Play Mode 的结果符合设计。 |
-| UNITY-PLAY-LIFE | 必要：静态状态、事件或初始化依赖 Play Mode/场景生命周期 | 根据现场 Domain Reload、Scene Reload 和生命周期设定安排初始化/解绑；不要以一次 Play 成功推断反复进入安全。 | 连续进入/退出 Play Mode、重载 Scene 后订阅和状态仍正确。 |
-| UNITY-UPDATE | 必要：物理与逐帧逻辑交互或顺序敏感 | 依据实际 `Update`、`FixedUpdate` 等时序安排输入采样、物理操作与表现；需固定顺序时确认项目已有设置与依赖。 | 在本次相关帧率/固定步长下，规则与碰撞符合项目约定；不把所有物理模拟默认为逐位确定性。 |
-| UNITY-PLAYER | 必要：承诺可交付 Player | 明确目标 Build Profile、场景列表、平台模块与构建配置；Editor Play 结果只证明 Editor 条件。 | 实际目标 Player 构建并启动，走本次用户路径；失败区分构建、启动与行为。 |
-| UNITY-ASSET-HANDOFF | 必要：正式资产接入 | 追踪源文件、导入设置、`.meta` 身份、Prefab/Scene 消费者与当前候选；导入成功不等于已接线或已被接受。 | 在实际消费者中验证引用、显示/动作及必要运行条件。 |
-| UNITY-STRUCTURE | 默认：新系统、对象复用或结构边界变化 | 命中 Scene/Prefab 组合、共享定义与实例状态、生命周期或 UI 系统时，按 [Unity 结构专题](../references/unity-structure.md) 读取相应章节；选择组件、Prefab、ScriptableObject 或普通 C# 类依项目需求。 | 能定位状态所有者、序列化接线与消费者；相关实例和进入/退出行为符合已有设计。 |
+| UNITY-ROOT | Required: identifying or adopting a Unity project | Confirm runtime root and version using actual project settings, Packages and Scene/build configuration; presence of `Assets` or a document mentioning Unity is insufficient proof. | Current project identity, target scene and platform can be located; mark unverified when Editor has not run. |
+| UNITY-META | Required: importing, moving/renaming original resources or creating resource copies | Preserve `.meta` pairing and GUID identity when moving/renaming originals. For new independent copies in the same project, generate new identities through the editor/a reliable process, avoiding two valid resources sharing one GUID; project migration preserves original identities and reference relationships. | After import, check affected Scene/Prefab/resource references for Missing, unexpected identity replacement or duplicate GUIDs; verify copies and originals are independent as designed. |
+| UNITY-REFERENCE | Required: scene/Prefab/component wiring | Distinguish Prefab assets, Scene instances and serialized references; the target layer and override scope of changes must match consumers. | Component fields, events and runtime behavior on actual Scene/Prefab instances agree. |
+| UNITY-SHARED-DATA | Required: a mutable ScriptableObject shared by multiple objects | Clarify whether it is a shared configuration asset or runtime instance state; do not mistake mutable values in one shared asset for each unit's independent state. | Cross-instance effects, exit/re-entry and re-entering Play Mode match the design. |
+| UNITY-PLAY-LIFE | Required: static state, events or initialization depend on Play Mode/scene lifecycle | Arrange initialization/unsubscription according to local Domain Reload, Scene Reload and lifecycle settings; one successful Play does not establish safe repeated entry. | Subscriptions and state remain correct after consecutive Play Mode entries/exits and Scene reloads. |
+| UNITY-UPDATE | Required: physics and per-frame logic interact or order is sensitive | Arrange input sampling, physics operations and presentation according to actual `Update`, `FixedUpdate`, etc.; when a fixed order is needed, confirm existing project settings and dependencies. | Rules and collisions follow project agreements at relevant frame rates/fixed timesteps; do not assume all physics simulation is bitwise deterministic. |
+| UNITY-PLAYER | Required: a deliverable Player is promised | Specify target Build Profile, scene list, platform modules and build configuration; Editor Play results establish only Editor conditions. | Build and launch the actual target Player and follow this user path; distinguish build, startup and behavior failures. |
+| UNITY-ASSET-HANDOFF | Required: formal asset integration | Trace source files, import settings, `.meta` identity, Prefab/Scene consumers and current candidate; successful import does not establish wiring or acceptance. | Validate references, display/actions and necessary runtime conditions in the actual consumer. |
+| UNITY-STRUCTURE | Default: new systems, object reuse or structural boundary changes | For affected Scene/Prefab composition, shared definitions/instance state, lifecycle or UI systems, read corresponding sections of the [Unity structure topic](../references/unity-structure.md); choose components, Prefab, ScriptableObject or ordinary C# classes according to project needs. | State owners, serialized wiring and consumers can be located; relevant instances and entry/exit behavior follow the existing design. |
 
-## 资源身份与结构
+<a id="资源身份与结构"></a>
+## Resource identity and structure
 
-`.meta` 内的 GUID 承担 Unity 资产引用身份；同一资源改路径时保持身份，新独立资源需要独立身份。Prefab asset 与其实例、ScriptableObject asset 与运行状态各有不同作用范围，设计时应写明本次修改落在哪一层。目录与命名由项目现状和[项目结构](../project-structure.md)决定；共同原则见[profiles 总览](../README.md)和[共同边界](../common.md)，不为采用本 profile 迁移已有工程。
+GUIDs in `.meta` carry Unity asset reference identity; preserve identity when changing a resource's path, while new independent resources need independent identities. Prefab assets and their instances, ScriptableObject assets and runtime state have different scopes; specify which layer this change affects during design. Directories and naming follow project conditions and [project structure](../project-structure.md); shared principles are in the [profiles overview](../README.md) and [common boundaries](../common.md). Do not migrate an existing project simply to adopt this profile.
 
-## 与 Skill 阶段交接
+<a id="与-skill-阶段交接"></a>
+## Handoff to Skill stages
 
-- `flow/init`：登记实际版本、运行根和有效项目规则；工具可用性现场确认。
-- `brainstorm/design`：命中新系统、Scene/Prefab 组合、共享数据、生命周期或 UI 结构时读取 [Unity 结构专题](../references/unity-structure.md) 对应章节，在已有设计/Spec 写清所有者、消费者与可观察结果；时序或构建风险按对应规则处理。
-- `develop/assets`：结构快改只读取 [Unity 结构专题](../references/unity-structure.md) 命中项，按已授权范围修改对应资产与引用；候选、接受、选用、接入按[资产交接](../../shared/asset-handoff.md)继续同一工作身份。
-- `verify/close`：用[验证约定](../../shared/verification.md)区分 Editor、目标 Player、人工接受与发布；复用原 Task/Evidence/Decision 的适用结果。
+- `flow/init`: Register actual version, runtime root and effective project rules; confirm tool availability in the project environment.
+- `brainstorm/design`: For affected new systems, Scene/Prefab composition, shared data, lifecycle or UI structure, read corresponding sections of the [Unity structure topic](../references/unity-structure.md) and specify owners, consumers and observable results in existing design/Spec; handle timing or build risks under corresponding rules.
+- `develop/assets`: For structural quick changes, read only applicable [Unity structure topic](../references/unity-structure.md) entries, modifying corresponding assets and references within authorized scope; continue the same work identity for candidate, acceptance, selection and integration under [asset handoff](../../shared/asset-handoff.md).
+- `verify/close`: Use the [verification contract](../../shared/verification.md) to distinguish Editor, target Player, human acceptance and release; reuse applicable results from original Task/Evidence/Decision records.
 
-## 官网依据与未验证范围
+<a id="官网依据与未验证范围"></a>
+## Official basis and unverified scope
 
-- Unity 6 官方：[Asset Metadata](https://docs.unity3d.com/6000.0/Documentation/Manual/AssetMetadata.html)、[ScriptableObject](https://docs.unity3d.com/6000.0/Documentation/Manual/class-ScriptableObject.html)、[Event function execution order](https://docs.unity3d.com/6000.0/Documentation/Manual/execution-order.html)、[Domain Reloading](https://docs.unity3d.com/6000.0/Documentation/Manual/domain-reloading.html)、[Build Profiles](https://docs.unity3d.com/6000.0/Documentation/Manual/create-build-profile.html)。
-- 本轮未接入或运行真实 Unity 工程、Editor、Player、CLI/MCP；具体项目的版本差异、安装状态及构建结果仍待现场核验。
-
+- Unity 6 official: [Asset Metadata](https://docs.unity3d.com/6000.0/Documentation/Manual/AssetMetadata.html), [ScriptableObject](https://docs.unity3d.com/6000.0/Documentation/Manual/class-ScriptableObject.html), [Event function execution order](https://docs.unity3d.com/6000.0/Documentation/Manual/execution-order.html), [Domain Reloading](https://docs.unity3d.com/6000.0/Documentation/Manual/domain-reloading.html), [Build Profiles](https://docs.unity3d.com/6000.0/Documentation/Manual/create-build-profile.html).
+- This round did not adopt or run actual Unity projects, Editor, Player or CLI/MCP; version differences, installation state and build results for specific projects still require checks in their actual environments.

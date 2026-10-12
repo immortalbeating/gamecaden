@@ -1,58 +1,65 @@
-# 分阶段开发计划（Phased Development Plan，PDP）
+<a id="分阶段开发计划phased-development-planpdp"></a>
+# Phased Development Plan (PDP)
 
-用于把已选大型方案转为交付编排：方案 → PDP → Epic → Stage → Task。PDP 是项目或版本级文档，Stage 是其实施分段；二者没有新的工作生命周期。Task 的正式归属仍由 `Task.epic` 保存。
+Use this to turn a selected large plan into delivery orchestration: plan → PDP → Epic → Stage → Task. PDP is a project- or version-level document, and Stage is an implementation segment within it; neither has a new work lifecycle. Formal Task ownership remains in `Task.epic`.
 
-## 何时使用
+<a id="何时使用"></a>
+## When to Use
 
-用户要求把已有方案分阶段落实，或一个/多个大型目标需要按批次、依赖、风险及开发容量持续实施、检查或交接时，design 整理或复用 PDP。已有可执行编排直接沿用，局部修复、充分的 Task 或简单 Epic 可以直接执行。方案篇幅、会话次数不单独触发 PDP。
+design organizes or reuses a PDP when the user asks to implement an existing plan in stages, or when one or more large goals need sustained implementation, checks, or handoff by batches, dependencies, risks, and development capacity. Reuse existing executable orchestration directly; local fixes, sufficient Tasks, and simple Epics can execute directly. Plan length or session count alone does not trigger a PDP.
 
-方案可以来自多轮对话、brainstorm、设计交付或已有设计包。先区分已采用内容、建议和未定假设；生成计划不改变原实施授权。完整方向改变才更新 Vision，产品成果安排改变才更新 Roadmap。
+Plans may come from multi-round conversations, brainstorm, design deliverables, or existing design packages. First distinguish adopted content, recommendations, and undecided assumptions; generating a plan does not change original implementation authorization. Update Vision only when overall direction changes, and Roadmap only when product outcome arrangements change.
 
-## 信息归属
+<a id="信息归属"></a>
+## Information Ownership
 
-| 来源 | 拥有的信息 |
+| Source | Owned information |
 |---|---|
-| 原方案/设计材料 | 详细设计、理由、输入与明确采用范围 |
-| Roadmap | 产品成果、M 里程碑、必要先后和当前整体判断 |
-| PDP | 方案到 Epic 的分解、各 Epic 的 Stage 安排和阶段特有组合检查 |
-| Epic | 建立后的有界目标、共同约定及整体出口 |
-| Task | 自身交付、具体步骤、实际结果、证据和生命周期 |
+| Original plan/design materials | Detailed design, rationale, inputs, and explicit adopted scope |
+| Roadmap | Product outcomes, M milestones, necessary order, and current overall judgment |
+| PDP | Plan decomposition into Epics, each Epic's Stage arrangements, and stage-specific combination checks |
+| Epic | Established bounded goals, shared conventions, and overall exits |
+| Task | Its own delivery, concrete steps, actual results, evidence, and lifecycle |
 
-创建真实 Epic 后，PDP 保留目标摘要和引用；Epic 直接引用其对应 PDP 编排，不镜像 Stage 表。PDP 内新建的承接 Task 归对应 Stage 的 Epic；跨目标合作时明确承接 Epic，并引用其他目标的输入，不因“共享”就清空归属。已有独立或共享工作可被 Stage 引用，仍保留其真实归属，不重新收编。拟建工作只说明待建立的目标归属，不冒用正式 E 标识。
+After actual Epics are created, PDP retains goal summaries and references; Epics directly reference their corresponding PDP orchestration without mirroring Stage tables. New Tasks created to deliver the PDP belong to their Stage's Epic; for cross-goal collaboration, identify the delivering Epic and reference other goals' inputs, without clearing ownership because work is “shared.” Existing independent or shared work may be referenced by Stages while retaining actual ownership, without reassignment. Planned work states only its intended goal ownership and does not misuse formal E identifiers.
 
-已在其他位置维护的设计、阶段安排或条件先精确引用，明确移交后才切换维护源。Task 内部计划继续按 [records](records.md#实施安排与-planmd)；PDP 不复制各 Task 的执行清单和状态。
+Precisely reference design, stage arrangements, or conditions maintained elsewhere first; switch maintenance sources only after explicit transfer. Task-internal plans continue under [records](records.md#implementation-arrangements-and-planmd); PDP does not copy each Task's execution lists and states.
 
-## 默认内容
+<a id="默认内容"></a>
+## Default Content
 
-1. **方案范围与依据**：对应产品/版本、采用方案的路径和版本/章节、完整承诺及未定部分。
-2. **Epic 与 Stage 编排**：当前规划几个 Epic、每个包含哪些 Stage、当前总 Stage 数及待定部分；数量来自同一编排表，不另维护一份统计账本。
-3. **当前推进与欠项**：现在可以执行的工作、必要输入或未决项、相关事实/证据引用及下一动作。
+1. **Plan scope and grounds**: corresponding product/version, paths and versions/sections of adopted plans, full commitments, and undecided parts.
+2. **Epic and Stage orchestration**: how many Epics are currently planned, their Stages, the current total Stage count, and undecided portions; derive counts from the same orchestration table without another statistics ledger.
+3. **Current progression and gaps**: currently executable work, necessary inputs or unresolved items, related fact/evidence references, and next actions.
 
-默认编排表：
+Default orchestration table:
 
-| Epic 或拟建目标 | Stage | 预期产出 | 输入与必要前提 | 承接工作 | 阶段检查或出口 |
+| Epic or planned goal | Stage | Expected output | Inputs and necessary prerequisites | Delivering work | Stage check or exit |
 |---|---|---|---|---|---|
 
-按有界目标与整体出口划分 Epic；Stage 按真实依赖、风险、可验证产出和容量安排。近期工作细化为实际 Task，远期保留成果和待细化安排，完整承诺不因分阶段而缩减。拟建 Epic/Task 写目标和待创建状态，实际落盘后引用真实 E/T 标识；规划数量不表示记录已建立或成果已完成。
+Divide Epics by bounded goals and overall exits; arrange Stages by actual dependencies, risks, verifiable outputs, and capacity. Refine near-term work into actual Tasks; retain outcomes and arrangements awaiting detail for distant work. Staging does not reduce full commitments. Planned Epics/Tasks state goals and awaiting-creation status; reference real E/T identifiers after actual creation. Planned counts do not mean records exist or outcomes are complete.
 
-## Stage 与里程碑
+<a id="stage-与里程碑"></a>
+## Stages and Milestones
 
-新 PDP 内的 Stage 默认使用 S1、S2 等唯一局部标识，每项明确所属 Epic 或拟建目标。需要独立成果分段时可用 S1.1 等子标识；设计、实现、测试是否分段按实际输入/产出判断，不按名称凑层级。
+Stages in new PDPs default to unique local identifiers S1, S2, etc.; each identifies its Epic or planned goal. Use subidentifiers such as S1.1 when independent outcome subdivisions are needed. Decide whether design, implementation, and testing need segmentation by actual inputs/outputs rather than adding hierarchy to fit names.
 
-新 Roadmap 的里程碑默认用 M1、M2；已有 S/M/C 等标识保留。S/M 是文档内稳定锚点，不是新的全局管理 ID；需要跨文档定位表内项目时提供实际 Markdown 锚点（如 `<a id="s1"></a>S1`）或对应标题，以原路径与 fragment 引用，不能假定表格文字自动成为锚点。改顺序不重编号，取消/合并保留去向。
+New Roadmap milestones default to M1, M2; retain existing S/M/C and other identifiers. S/M are stable anchors within documents, not new global management IDs. To locate table items across documents, supply actual Markdown anchors (such as `<a id="s1"></a>S1`) or corresponding headings and reference original paths plus fragments; do not assume table text automatically becomes an anchor. Do not renumber after reordering; preserve dispositions after cancellation/merging.
 
-Stage 表达怎样实施，里程碑表达哪个成果在何种范围/基线成立。阶段出口可以支撑一个里程碑，一个里程碑也可组合多个 Epic/Stage。相同范围的 Task/Epic 条件直接引用，PDP 只定义阶段特有的组合检查；Roadmap 只定义产品层面的独有条件。是否限制下游动作取决于真实依赖，必要接受沿原承诺，不为每段新增统一审批。
+Stages express how to implement; milestones express which outcomes hold within which scope/baseline. A stage exit can support a milestone, and a milestone can combine multiple Epics/Stages. Directly reference Task/Epic conditions in the same scope; PDP defines only stage-specific combination checks, and Roadmap only unique product-level conditions. Whether downstream actions are restricted depends on actual dependencies; necessary acceptance follows original commitments, without adding uniform approval per segment.
 
-## 执行、变化与验证
+<a id="执行变化与验证"></a>
+## Execution, Changes, and Verification
 
-进入当前 Stage 时回读其必要输入、原工作和适用条件；继续后段时核对真正需要的结果，而非统一等待所有前段 Task 行政关闭。取得结果后更新原 Task/Epic；影响 Stage 编排或产品成果判断时同步对应 PDP/Roadmap 的摘要和原依据。当前 Stage 只是续接说明，不增加另一套状态字段。
+On entering the current Stage, read back necessary inputs, original work, and applicable conditions; before later segments, check genuinely needed results rather than uniformly waiting for administrative closure of all earlier Tasks. Update original Task/Epic after results arrive; synchronize summaries and original grounds in corresponding PDP/Roadmap when Stage orchestration or product outcome judgments are affected. The current Stage is only a continuation explanation, not another state field system.
 
-方案/范围/依赖改变时重判受影响的 Epic、Stage、Task 与证据，保留未改变部分和旧新去向。临时分段也保留已被引用的历史，不原地擦掉旧承诺。阶段计数、文件存在或 Task closed 数量不能证明组合结果成立。
+When plans/scope/dependencies change, reassess affected Epics, Stages, Tasks, and evidence, retaining unchanged portions and old/new dispositions. Even temporary segments preserve referenced history rather than erasing old commitments in place. Stage counts, file existence, or Task closed counts cannot prove combination results hold.
 
-交付 PDP 前核对：已采用方案的承诺均有 Epic/Stage 承接或明确待细化去向；数量与表一致；现有工作已复用、拟建工作没有冒用正式 ID；必要前提与组合检查可定位，未知仍明确；职责没有与 Roadmap/Epic/Task 重复维护。
+Before delivering a PDP, check that all adopted-plan commitments have Epic/Stage delivery or explicit destinations awaiting refinement; counts match tables; existing work is reused and planned work does not misuse formal IDs; necessary prerequisites and combination checks are locatable and unknowns explicit; responsibilities are not maintained redundantly with Roadmap/Epic/Task.
 
-## 保存与工具
+<a id="保存与工具"></a>
+## Storage and Tools
 
-新 PDP 默认位于工作流目录的 `plans/<安全标题>.md`，role/record_type 使用 `development-plan`，来源 owner 为项目维护约定；已有明确位置继续使用。它可以在建立 Epic 前独立保存，创建载荷不提供 Task/Epic owner，不借假 Epic 满足附件规则，也不冒充 Vision/Spec/Roadmap。目标已属于其他来源角色时先选未占用位置或明确调整登记，不能静默按另一类保存。
+New PDPs default to `plans/<safe-title>.md` under the workflow directory, with role/record_type `development-plan` and source owner defined by project maintenance conventions; retain existing explicit locations. They may be saved independently before Epic creation; creation payloads supply no Task/Epic owner, do not invent Epics to satisfy attachment rules, and do not impersonate Vision/Spec/Roadmap. When a target already belongs to another source role, first choose an unoccupied location or explicitly adjust registration rather than silently saving under another type.
 
-使用 record.create 时，省略 path 须提供 `metadata.title`；显式 path 可沿用既有位置。创建后按返回的 source_proposal 登记来源并回读；改标题不搬文件，实际维护使用原 path 引用。PDP 无管理 ID、无 record.transition；工具只能确认保存/引用事实，内容完整性由上述判断核对。模板见 [PDP](../templates/development-plan.md.tpl)。
+For record.create, omitting path requires `metadata.title`; explicit path may retain existing locations. After creation, register sources using returned source_proposal and read back; renaming titles does not move files, and actual maintenance uses original path references. PDP has no management ID or record.transition; tools can confirm only storage/reference facts, while content completeness is judged above. See the [PDP template](../templates/development-plan.md.tpl).

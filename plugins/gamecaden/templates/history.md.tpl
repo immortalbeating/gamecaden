@@ -1,7 +1,8 @@
-# {{work_title}} · 详细历史
+<a id="work_title--详细历史"></a>
+# {{work_title}} · Detailed history
 
-原工作：{{owning_work_ref}}
+Owning work:{{owning_work_ref}}
 
 {{meaningful_historical_events_and_source_refs}}
 
-当前目标、状态与下一步继续由原工作维护；本文件只承接已拆出的历史正文。
+The original work continues to own the current goal, status, and next action; this file contains only the historical body separated from that record.

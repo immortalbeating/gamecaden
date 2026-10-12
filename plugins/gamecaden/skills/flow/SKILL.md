@@ -1,85 +1,90 @@
 ---
 name: flow
-description: 仅在用户明确要求本次使用 Gamecaden，或当前项目有效指引已采用 Gamecaden 时使用。处理开发请求、续接及进行中工作的增补、调整或取消，定位原记录并选择合适路径；普通无关项目不自动接入或迁移。
+description: Use only when the user explicitly requests Gamecaden for this work, or effective guidance in the current project has adopted Gamecaden. Handle development requests, continuation, and additions, adjustments or cancellation of ongoing work; locate original records and choose the appropriate path. Unrelated ordinary projects are not automatically adopted or migrated.
 ---
 
 # Flow
 
-先核对上述适用条件；未满足时沿原项目指引处理。边界说明见[工作流适用条件](../../shared/workspace.md)。
+First check the applicability conditions above; when they are not met, follow the original project guidance. See [Workflow applicability](../../shared/workspace.md) for boundaries.
 
-把当前请求推进到其实际要求的结果，沿用已有项目目标、记录和授权。结合适用开发经验与规范，帮助模型选择设计、工程、内容和验证方法，减少已知弯路并保持预期游戏方向；具体执行按任务与可用能力选择，记录支持判断和续接。
+Advance the current request to the result it actually requires, retaining existing project goals, records and authorization. Use applicable development experience and conventions to help the model choose design, engineering, content and verification methods, reduce known detours, and maintain the intended game direction. Choose concrete execution according to the task and available capabilities; records support judgment and continuation.
 
-本文相对链接以本 SKILL.md 所在目录解析；../../shared/ 指向共同技能包根目录的 shared/，不以目标项目或 skills/ 为起点。
+Resolve relative links in this document from the directory containing this SKILL.md; ../../shared/ points to shared/ in the common skill package root, not from the target project or skills/.
 
-## 1. 确认本次意图和现场
+<a id="1-确认本次意图和现场"></a>
+## 1. Confirm this work's intent and current situation
 
-- 结合当前请求与尚未结束的原工作，识别讨论/了解、实施、验证、收尾或接入意图。原执行中的状态追问先回答，再继续原目标，除非用户明确停止或改变目标。
-- 优先使用用户指定的项目、目录、Task/Issue 或已有明确上下文。检查本次路径下生效的指引、工作流入口和相关运行标识；仅在需要扩大定位范围时继续搜索。
-- 有 workspace/index 时读取，缺少时使用已有明确指引和项目事实，按[工作区约定](../../shared/workspace.md)核对实际根和来源。项目名、目录名、开放端口或一份旧交接都不能单独证明目标正确。
-- 只读问题先按问题读取。相关路径和记录足以支持局部工作时直接推进，缺少全套工作流文档不构成全局门禁。
+- Combine the current request with unfinished original work to identify discussion/understanding, implementation, verification, closure or adoption intent. Answer status questions during ongoing execution first, then continue the original goal unless the user explicitly stops or changes it.
+- Prefer the project, directory, Task/Issue or established context specified by the user. Check effective guidance, workflow entrypoints and relevant runtime identifiers under the current path; search further only when the locating scope needs to expand.
+- Read workspace/index when present; otherwise use clear existing guidance and project facts, checking actual roots and sources under [Workspace conventions](../../shared/workspace.md). A project name, directory name, open port or old handoff alone cannot prove that the target is correct.
+- For read-only questions, first read what the question needs. Advance local work directly when relevant paths and records suffice; missing a complete set of workflow documents is not a global gate.
 
-新会话开始处理项目请求时，可按有效指引恢复相关上下文；执行仍依据本次“继续/实施”等意图或已明确授权的延续运行。打开空白对话、存在 active Task 或仅查询状态，不自动授权推进任意旧工作。技能发现与宿主入口的机制及限制见续接参考。
+At the start of a new session handling a project request, restore relevant context according to effective guidance as appropriate; execution still follows this request's intent such as “continue/implement” or an explicitly authorized continuing run. Opening a blank conversation, having an active Task, or only asking for status does not automatically authorize advancing arbitrary old work. See the continuation reference for Skill discovery and host entrypoint mechanisms and limits.
 
-完成这一判断时，应能说明本次目标、实际操作范围、原始记录由谁维护，以及尚缺哪一个会影响下一动作的信息。
+At the end of this judgment, be able to explain the current goal, actual operation scope, who maintains the original records, and which missing information would affect the next action.
 
-## 2. 按需建立接入关系
+<a id="2-按需建立接入关系"></a>
+## 2. Establish adoption relationships as needed
 
-| 现场 | 处理 |
+| Situation | Handling |
 |---|---|
-| 已有有效入口 | 复用，不因新会话再初始化 |
-| 根或来源不明确 | 读取 [init](../init/SKILL.md) 的 inspect 方式，先查明 |
-| 明确要求接入/补齐工作流 | 使用 init 的 adopt/repair，完成后继续原请求 |
-| 指定范围要切换旧记录维护责任 | 使用 init 的 migrate；保留旧身份与历史 |
-| 只是读取旧项目或修复其已有工作 | 按旧来源继续，不把当前请求扩展为迁移 |
-| 明确调用 flow 做交付，目标唯一且确无旧工作来源 | 可按共同约定保存本次 Task；完整项目接入另按实际需要处理 |
+| An effective entrypoint exists | Reuse it; do not initialize again because the session is new |
+| Roots or sources are unclear | Read [init](../init/SKILL.md)'s inspect mode to establish them first |
+| Explicit request to adopt/complete the workflow | Use init adopt/repair, then continue the original request |
+| The specified scope switches maintenance responsibility for old records | Use init migrate; retain old identities and history |
+| Only reading an old project or repairing its existing work | Continue from old sources; do not expand the request into migration |
+| Explicit flow invocation for delivery, with a unique target and genuinely no old work source | Save this Task under common conventions as appropriate; handle complete project adoption separately according to actual need |
 
-init 返回目标根、权威位置和相关缺口即可，flow 不新建自己的状态或日志文件。需要初始化时才读取 init；已有入口的普通执行不用加载它。
+init need only return target roots, authoritative locations and relevant gaps; flow does not create its own state or log files. Read init only when initialization is needed; ordinary execution through an existing entrypoint does not load it.
 
-## 3. 定位已有工作或选择管理方式
+<a id="3-定位已有工作或选择管理方式"></a>
+## 3. Locate existing work or choose management mode
 
-涉及创建、续接或回写工作时，读取[共同记录规则](../../shared/records.md)的相关部分。恢复已有工作时同时读取[续接参考](references/resume.md)。
+When creating, continuing or writing back work, read the relevant parts of [Common record rules](../../shared/records.md). When restoring existing work, also read the [Continuation reference](references/resume.md).
 
-需要从面板定位原 Task、候选或适用条件时，按[面板续接](../../shared/panel-workflow.md)取得派生视图并回读原来源；已有明确约束照常生效，普通 quick 不因此增加无关门禁。
+When locating an original Task, candidate or applicability condition through the panel, obtain the derived view under [Panel continuation](../../shared/panel-workflow.md) and read back original sources. Established explicit constraints still apply; ordinary quick work does not acquire unrelated gates through this.
 
-用户对进行中工作增加内容、修改目标、要求暂缓或废弃时，读取[变更处理](references/change-work.md)。先处理与原交付的关系，再决定扩充、升级、拆分、替代或取消；不会把每条新消息都当作新任务。
+When the user adds content, changes goals, requests deferral or abandonment of ongoing work, read [Change handling](references/change-work.md). Handle the relationship to the original delivery first, then decide on expansion, upgrade, splitting, replacement or cancellation; do not treat every new message as a new task.
 
-- 当前请求属于已有 Task 的修复、补验或调整：使用原工作，按当前动作需要选择执行深度。
-- 新独立交付目标与落点明确、可按现有方法和输入直接完成：quick 轻量模式通常合适。
-- 常规交付需要维护方案、步骤、接口关系、批次或持续跟进：可采用 standard 常规模式，不限于重大风险工作。
-- 多个结果可独立交付且需要共同范围和集成判断：由 Epic 统筹、Task 分别承接。
-- 纯讨论、一次性现状回答或维护管理对象自身：按对应文档处理，不为每次阅读/编辑先建任务。
+- The request repairs, supplements verification or adjusts an existing Task: use the original work and choose execution depth according to the current action.
+- A new independent delivery has a clear goal and destination and can be completed directly with existing methods and inputs: quick lightweight mode is usually suitable.
+- Ordinary delivery needs maintained solutions, steps, interface relationships, batches or ongoing follow-up: standard mode may be used, not only for major-risk work.
+- Multiple results can be delivered independently and need common scope and integration judgment: coordinate through an Epic, with Tasks handling each result.
+- Pure discussion, a one-time current-state answer, or maintenance of a management object itself: handle it in the corresponding document; do not create a task before every read/edit.
 
-管理模式按[Task 模式](../../shared/records.md#选择管理模式)由模型选择，验证需要和记录存放分别判断。已可用依赖、会话切换和报告数量不单独决定模式；两者交界按真实维护需要处理。已有外部来源的工作按其约定记录，不擅自改成另一套生命周期。
+The model chooses management mode under [Task modes](../../shared/records.md#selecting-the-management-mode); judge verification needs and record storage separately. Available dependencies, session changes and report count alone do not determine mode; handle the boundary according to real maintenance needs. Record work with existing external sources according to their conventions, without changing it to another lifecycle unilaterally.
 
-## 4. 选择本次动作并实际推进
+<a id="4-选择本次动作并实际推进"></a>
+## 4. Choose and actually advance the current action
 
-选择下一动作时，结合本次变更对象、实际消费者和交付阶段，定位影响本次工作的生效约束与材料；相关要求尚不清楚时，按[规则选择](../../shared/rules.md)和[材料职责](../../shared/material-requirements.md)读取命中部分。已有且适用的依据直接继承，缺项只约束依赖它的动作；具体方法由任务与实际能力决定。本次需要保存或交接方案时，影响判断的关键依据按既有授权和规则约定引用回原记录。
+When choosing the next action, use the object being changed, actual consumers and delivery stage to locate effective constraints and materials that affect this work. When relevant requirements are unclear, read matching parts of [Rule selection](../../shared/rules.md) and [Material responsibilities](../../shared/material-requirements.md). Inherit existing applicable grounds directly; gaps constrain only actions that depend on them. Concrete methods follow the task and actual capabilities. When saving or handing off a solution in this work, cite key grounds affecting judgment back into original records under existing authorization and rule conventions.
 
-| 请求与材料 | 当前动作 |
+| Request and materials | Current action |
 |---|---|
-| 只询问或审阅现状 | 读取相关事实并回答/审阅 |
-| 核心方向尚需比较 | 读取 [brainstorm](../brainstorm/SKILL.md)，处理相关分歧并保存到对应位置 |
-| 已有需求，缺必要方案；或明确要求设计/方案审阅 | 读取 [design](../design/SKILL.md)，形成或审阅本次安排 |
-| 已选大型方案需要分阶段转为交付，或明确要求分阶段开发计划 | 读取 design 与 [PDP](../../shared/phased-development.md)，复用原方案并编排 Epic/Stage/Task；纯规划不自动实施 |
-| 已有可执行设计或明确工程快改 | 读取 [develop](../develop/SKILL.md)，直接实现与必要验证，不为顺序完整再加载 brainstorm/design |
-| 内容制作、复用、修订或审阅后交付 | 读取 [assets](../assets/SKILL.md)，按具体用途生产与留存；包含接入时协同 develop |
-| 已有素材的工程接入或引用修复 | 使用 develop 并核对资产交接与允许范围，无需重新生产 |
-| 验证、评审或检查能否交付 | 读取 [verify](../verify/SKILL.md)，按指定目标判断覆盖与结果，不自动扩大成发布 |
-| 收尾 Task/Epic 或处理关闭条件 | 读取 [close](../close/SKILL.md)，沿用实际承诺、有效证据和已有授权 |
+| Only asking about or reviewing current state | Read relevant facts and answer/review |
+| Core direction still needs comparison | Read [brainstorm](../brainstorm/SKILL.md), resolve relevant differences and save to the corresponding location |
+| Requirements exist but a necessary solution is missing; or explicit design/solution review request | Read [design](../design/SKILL.md), form or review this arrangement |
+| A selected large solution needs phased delivery, or an explicit phased development plan request | Read design and [PDP](../../shared/phased-development.md), reuse the original solution and arrange Epic/Stage/Task; pure planning does not automatically implement |
+| Executable design exists or an explicit engineering quick change | Read [develop](../develop/SKILL.md), implement and perform necessary verification directly; do not load brainstorm/design merely to complete a sequence |
+| Content production, reuse, revision, or delivery after review | Read [assets](../assets/SKILL.md), produce and retain for the specific use; coordinate with develop when integration is included |
+| Engineering integration or reference repair of existing materials | Use develop and check asset handoff and allowed scope; no need to produce again |
+| Verification, review, or checking whether delivery is possible | Read [verify](../verify/SKILL.md), judge coverage and results for the specified target; do not automatically expand into release |
+| Closing a Task/Epic or handling closure conditions | Read [close](../close/SKILL.md), retain actual commitments, valid evidence and existing authorization |
 
-用户给出的设计和明确跳过 brainstorm 的选择直接生效。可调查事实自行核实；已授权范围内的常规可逆选择自行决定；只有实质影响范围、兼容性、权限或必要接受的未决项才澄清。涉及用户接受时，先准备可检查的对象、版本与相关差异，问题只询问真实选择或无法核实的事实；记录 ID、存放位置及回写由模型按来源约定处理，不要求用户指定技术落盘细节。
+User-supplied design and an explicit choice to skip brainstorm take effect directly. Investigate ascertainable facts yourself; decide ordinary reversible choices within authorized scope yourself. Clarify only unresolved matters that materially affect scope, compatibility, permissions or necessary acceptance. For user acceptance, first prepare a reviewable object, version and relevant differences; ask only about real choices or unverifiable facts. The model handles record IDs, storage and writeback according to source conventions; do not require users to specify technical persistence details.
 
-本包提供总入口及七个职责 Skill、共享工具和 [工程 profiles](../../profiles/README.md) 规则候选。安装、更新或核对宿主发现时读取 [安装说明](../../INSTALL.md)；日常交付直接使用实际可用入口。专业执行能力按当前环境判断，需要时读取匹配的专业 Skill/项目规则；确实缺少工具或关键输入时，记录具体缺口，只暂停依赖它的动作。
+This package provides a main entrypoint and seven responsibility Skills, shared tools and [Engineering profiles](../../profiles/README.md) as rule candidates. Read [Installation instructions](../../INSTALL.md) when installing, updating or checking host discovery; daily delivery directly uses actually available entrypoints. Judge specialized execution capabilities from the current environment, reading matching specialized Skills/project rules when needed. When tools or key inputs are genuinely missing, record the specific gap and pause only dependent actions.
 
-职责模块齐备不意味着每次都逐个调用。已有充分检查的明确快改，可以在当前执行中完成轻量收尾；需要核验覆盖、独立审阅、复杂关闭或用户点名时再加载 verify/close 的相应指导。
+Having all responsibility modules does not mean calling each one every time. An explicit quick change with sufficient checks can complete lightweight closure in the current execution; load corresponding verify/close guidance when coverage checks, independent review, complex closure or an explicit user request requires it.
 
-原请求要求实施且输入/能力已足够时，路由后继续执行；“已选择 develop”不构成原请求完成。路由本身不要求开新会话或派子代理，协作按当前授权与实际收益决定。
+When the original request requires implementation and inputs/capabilities suffice, continue execution after routing; “develop selected” does not complete the original request. Routing itself does not require a new session or subagent; collaboration follows current authorization and actual benefit.
 
-## 5. 保存结果并留下可续接的位置
+<a id="5-保存结果并留下可续接的位置"></a>
+## 5. Save results and leave a continuation location
 
-- 在原记录保存有意义的结果、实际验证和当前下一步；共享结论引用原始来源。
-- 当前实现进入其声明基线时，及时校准受影响 Spec；目标、路线或台账只有实际受影响时才更新。
-- 对外声明分清做了什么、验证到哪里、尚缺什么。使用真实结果，不以文件存在、报告标题或汇总状态替代证据。
-- 收尾时按本工作承诺判断完成；换会话、生成报告或移交未完事项不自动关闭工作。
+- Save meaningful results, actual verification and the current next step in original records; shared conclusions cite original sources.
+- When current implementation enters its declared baseline, promptly align affected Spec; update goals, routes or ledgers only when actually affected.
+- In external claims, distinguish what was done, how far verification reached and what is missing. Use real results; do not replace evidence with file existence, report titles or summary status.
+- At closure, judge completion against this work's commitments; changing sessions, generating reports or handing over unfinished items does not automatically close work.
 
-向用户简述实际结果和必要限制，附对应记录入口。只有下一步确实需要用户输入时才留下具体问题；否则在原授权范围内继续原请求。
+Briefly report actual results and necessary limits to the user, with the corresponding record entrypoint. Leave a specific question only when the next step truly needs user input; otherwise continue the original request within original authorization.

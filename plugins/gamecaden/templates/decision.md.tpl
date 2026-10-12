@@ -18,8 +18,10 @@ events:
 
 # {{title}}
 
-## 理由与依据
+<a id="理由与依据"></a>
+## Reasoning and basis
 {{reason_alternatives_and_recoverable_basis}}
 
-## 适用与后续
+<a id="适用与后续"></a>
+## Applicability and follow-up
 {{exact_scope_versions_and_followup_owners}}

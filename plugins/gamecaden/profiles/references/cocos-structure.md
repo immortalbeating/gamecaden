@@ -1,63 +1,70 @@
-# Cocos Creator：Scene、Node、Component 与资源生命周期
+<a id="cocos-creatorscenenodecomponent-与资源生命周期"></a>
+# Cocos Creator: Scene, Node, Component and resource lifecycles
 
-新增 Scene/Prefab、独立页面、复用单位、跨场景状态、池化/外部订阅、资源持有或编辑/UI 方式变化时读取。先用[共同结构合同](structure-contract.md)，再读取本页命中的机制；版本和平台由 [Cocos Creator profile](../engines/cocos-creator.md)决定。本页复用该 profile 的 ID，不新增同义 Gate。
+Read this when adding Scene/Prefab, independent pages, reusable units, cross-scene state, pooling/external subscriptions, resource ownership, or changing editing/UI methods. First use the [shared structure contract](structure-contract.md), then read applicable mechanisms here; the [Cocos Creator profile](../engines/cocos-creator.md) determines versions and platforms. This page reuses that profile's IDs without synonymous Gates.
 
-## 对象与制作源
+<a id="对象与制作源"></a>
+## Objects and production sources
 
-**引擎事实（3.8 资料基线）**：Node 组织变换树并承载 Component，组件提供渲染、输入、物理或脚本行为；保存的 `.scene`/场景资源与运行 `Scene` 根节点分别说明，Prefab 资源实例化产生 Node 树。普通 TS 对象可承载规则和状态，不自动收到组件回调。`World`、`GameSession`、`LevelHost` 是项目可选职责名；Canvas、UITransform、Sprite、MeshRenderer 等是组件，不能当成 Godot 的同名节点类。[场景资源](https://docs.cocos.com/creator/3.8/manual/en/asset/scene.html)、[运行 Scene](https://docs.cocos.com/creator/3.8/api/en/class/Scene)。
+**Engine facts (3.8 documentation baseline)**: Node organizes the transform tree and holds Components; components provide rendering, input, physics or script behavior. Distinguish saved `.scene`/scene resources from runtime `Scene` root nodes; instantiating a Prefab resource produces a Node tree. Ordinary TS objects may hold rules/state without automatically receiving component callbacks. `World`, `GameSession` and `LevelHost` are optional project responsibility names; Canvas, UITransform, Sprite, MeshRenderer, etc. are components, not Godot node classes with similar names. [Scene resources](https://docs.cocos.com/creator/3.8/manual/en/asset/scene.html), [Runtime Scene](https://docs.cocos.com/creator/3.8/api/en/class/Scene).
 
-**本工作流默认**：独立编辑或重复实例的内容使用合适 Scene/Prefab/组件。清楚的代码工厂、数据生成器与预览也可继续用；选择须支持本次编辑和验证结果。组件连接引擎，业务模型通过显式数据/动作接口提供状态；简单局部行为可以保留在一个组件。
+**Workflow default**: Independently edited or repeatedly instantiated content uses suitable Scene/Prefab/components. Clear code factories, data generators and previews may continue to be used; choices must support current editing and validation outcomes. Components connect the engine; business models supply state through explicit data/action interfaces; simple local behavior may remain in one component.
 
-| 命中范围 | 默认与允许替代 | 常见反例 | 可观察验收 |
+| Applicable scope | Default and permitted alternatives | Common counterexamples | Observable acceptance |
 |---|---|---|---|
-| 新页面或复用单位（COCOS-COMPOSITION） | 在原设计标明 Scene/Prefab 来源、Node/组件、实例入口与必要依赖；既有组合能承担用途时继续使用 | 把每个 TS 类都做成节点；Prefab 中隐式查一个固定宿主路径；只复制运行节点却没有制作源 | 重载制作源后接线保持；提供必要依赖后两个实例或另一个宿主仍有效 |
-| 跨场景/共享状态（COCOS-STATE） | 只读定义与实例/本局状态分别持有；需要跨真正 Scene 切换时，可用符合引擎要求的常驻根与组件，或现有应用层持有的模型 | 局部选中项全局化；修改同一共享 Asset 当每单位血量；每个 Scene 又创建一份常驻会话 | 两实例状态独立/共享符合意图；切场景保留目标状态，新局按设计重置，没有重复常驻所有者 |
-| 启停/池化/异步（COCOS-LIFE） | 按活动范围配对连接/取消，先区分引擎自身管理与自己加到外部总线、SDK、原生计时器的工作；晚到结果检查原请求/消费者是否仍适用 | 每次 onEnable 增加外部回调而只在最终 onDestroy 清理；普通 helper 假定也有组件回调；旧加载结果覆盖新页 | 停用、再次启用、入池/取出和切换后只有预期效果；离场结果按归属处理 |
-| 加载/持有/释放（COCOS-ASSETS） | 跟踪静态与动态引用；动态长期持有按实际 addRef/decRef 或项目等效资源拥有机制配对；Bundle/Asset 释放前定位仍在使用的消费者 | JS 字段赋值被误当引擎引用计数；离场一律 releaseAll；预加载回调被当成已经创建 UI/运行 Scene | 一个消费者退出后另一个仍能显示/运行；重新加载、失败和过期返回正确；必要释放没有漏掉，也不释放仍需共享的内容 |
-| 资源迁移/复制（COCOS-IDENTITY） | 原资产保留身份与导入设置；新独立副本取得独立 UUID，并核对 SpriteFrame 等子资源及实际字段 | 只按路径认资源；移动时丢 .meta；同时保留两份相同 UUID；为解决缺失批量重建全部身份 | Editor 导入后受影响 Scene/Prefab、组件字段、Bundle 加载消费者仍对应正确对象 |
-| UI 与编辑（COCOS-UI） | UI 根使用适当 Canvas/RenderRoot2D；UITransform 管矩形，Widget 做对齐，Layout 做布局；相机与 layer/visibility 决定显示；按目标适配尺寸/安全区/触摸 | 将 Canvas 当自动布局或唯一 UI 可见性保证；控件布局与手写坐标争抢；遮罩显示正确但输入穿透/吞掉 | 在实际目标尺寸、相机/弹窗与输入路径中检查；场景/Prefab 或生成器提供可用编辑与预览入口 |
+| New pages or reusable units (COCOS-COMPOSITION) | Identify Scene/Prefab sources, Node/components, instance entries and necessary dependencies in original design; retain existing composition when it serves the purpose | Turning every TS class into a node; Prefab implicitly searching a fixed host path; copying runtime nodes without production sources | Wiring survives production-source reload; with necessary dependencies supplied, two instances or another host remain valid |
+| Cross-scene/shared state (COCOS-STATE) | Hold read-only definitions separately from instance/current-session state; for actual Scene switches, use persistent roots/components meeting engine requirements or models held by the existing application layer | Globalizing local selections; modifying the same shared Asset as each unit's health; each Scene creating another persistent session | Two instances' independence/sharing matches intent; target state survives scene changes, new sessions reset as designed, with no duplicate persistent owners |
+| Enable/disable/pooling/asynchrony (COCOS-LIFE) | Pair connection/cancellation by active scope; distinguish engine-managed work from own external-bus, SDK or native-timer work; late results check whether original request/consumer still applies | Adding external callbacks every onEnable but cleaning only on final onDestroy; ordinary helpers assuming component callbacks; old loading results overwriting new pages | Only expected effects after disabling, re-enabling, pool return/retrieval and switching; results after exit handled according to ownership |
+| Loading/retaining/releasing (COCOS-ASSETS) | Track static/dynamic references; pair long-term dynamic retention through actual addRef/decRef or equivalent project resource ownership; locate still-active consumers before releasing Bundle/Asset | Mistaking JS field assignment for engine reference counts; always using releaseAll on exit; treating preload callbacks as already-created UI/runtime Scene | One consumer's exit leaves another displaying/running; reload, failure and expired returns are correct; necessary releases are not missed and still-shared content is not released |
+| Resource migration/copying (COCOS-IDENTITY) | Original assets retain identity/import settings; new independent copies receive independent UUIDs, checking SpriteFrame and other sub-assets and actual fields | Recognizing resources only by path; losing .meta during moves; keeping two copies with one UUID; rebuilding all identities in bulk to resolve missing ones | After Editor import, affected Scene/Prefab, component fields and Bundle-loading consumers still correspond to correct objects |
+| UI and editing (COCOS-UI) | UI roots use suitable Canvas/RenderRoot2D; UITransform handles rectangles, Widget alignment, Layout layout; camera and layer/visibility determine display; adapt size/safe areas/touch to targets | Treating Canvas as automatic layout or sole visibility guarantee; control layout competing with handwritten coordinates; masks display correctly but input passes through/is swallowed | Check actual target sizes, cameras/dialogs and input paths; scenes/Prefabs or generators provide usable editing/preview entries |
 
-## 生命周期和常驻范围
+<a id="生命周期和常驻范围"></a>
+## Lifecycle and persistence scope
 
-onLoad/start 用于对应的一次初始化，onEnable/onDisable 对应组件或节点的启停，onDestroy 对应销毁回调；具体顺序与执行条件按现场版本。禁用、移出父节点、池化保留和真正销毁分别判断。`destroy()` 的销毁请求与帧末回收区分，异步与 SDK 回调不因此自动结束；对外部回调保留可精确解除的身份。
+onLoad/start handle corresponding one-time initialization, onEnable/onDisable component/node enable/disable, and onDestroy destruction callbacks; actual versions determine order and execution conditions. Judge disabling, removing from parents, pooling retention and actual destruction separately. Distinguish `destroy()` requests from end-of-frame reclamation; asynchronous and SDK callbacks do not automatically end because of them; retain identities for precise external-callback removal.
 
-3.8 的 `director.addPersistRootNode` 要求目标处于场景的根层级；常驻节点跨 Scene 切换保留，但不自动保证业务唯一或新局清零。`removePersistRootNode` 取消常驻属性，不是立即销毁。仍由合适应用对象持有的普通模型可以继续使用，不把所有工具函数/局部视图提升为常驻节点。[生命周期](https://docs.cocos.com/creator/3.8/manual/zh/scripting/life-cycle-callbacks.html)、[场景管理](https://docs.cocos.com/creator/3.8/manual/zh/scripting/scene-managing.html)。
+In 3.8, `director.addPersistRootNode` requires a target at the scene's root level; persistent nodes survive Scene switching without guaranteeing business uniqueness or new-session clearing. `removePersistRootNode` removes persistence, without immediate destruction. Ordinary models already held by suitable application objects may continue there; do not promote every utility function/local view into persistent nodes. [Lifecycle](https://docs.cocos.com/creator/3.8/manual/zh/scripting/life-cycle-callbacks.html), [Scene management](https://docs.cocos.com/creator/3.8/manual/zh/scripting/scene-managing.html).
 
-## 资源引用与目标平台
+<a id="资源引用与目标平台"></a>
+## Resource references and target platforms
 
-Asset Manager 可分析序列化中的静态依赖，普通 JS 动态赋值不自动体现动态持有关系。按实际拥有机制维护引用与释放；直接 release/releaseAsset/releaseAll 可直接释放目标资源，其安全性不能用“引擎会做引用检查”概括。资源仍共享时，先处理真正持有者和依赖。释放运行节点、释放 Asset、移除 Bundle 管理项与清理下载缓存是不同动作，按本次目标区分。[资源释放](https://docs.cocos.com/creator/3.8/manual/zh/asset/release-manager.html)。
+Asset Manager can analyze serialized static dependencies; ordinary dynamic JS assignment does not automatically reflect dynamic ownership. Maintain references/releases under actual ownership mechanisms; direct release/releaseAsset/releaseAll can release target resources directly, so their safety cannot be summarized as "the engine checks references". When resources remain shared, first handle actual owners and dependencies. Releasing runtime nodes, releasing Assets, removing Bundle manager entries and cleaning download caches are different actions, distinguished according to current targets. [Resource release](https://docs.cocos.com/creator/3.8/manual/zh/asset/release-manager.html).
 
-游戏权威状态与命中的外部适配寿命分别说明。浏览器构建采用 [Web](../platforms/web.md) 命中项，其它明确目标就近核对真实构建/运行条件、工具链与官方资料。预览支持的行为只证明其环境，实际交付按本次目标取证。
+Explain authoritative game state separately from relevant external-adaptation lifetimes. Browser builds use applicable [Web](../platforms/web.md) entries; for other explicit targets, check actual build/runtime conditions, toolchains and official documentation nearby. Preview-supported behavior establishes only its environment; collect actual delivery evidence according to current targets.
 
-## 候选例子
+<a id="候选例子"></a>
+## Candidate examples
 
-以下是说明性设计，未建工程或运行，不是官方固定模板。
+These are illustrative designs, without project creation or execution, not fixed official templates.
 
-**单 Scene 拾取试验**：Scene 中 Node 挂玩家/拾取物组件；重复拾取物可用 Prefab，共享奖励定义，当前场景组件持有本局分数。一个简单试验无需先做常驻会话或 Bundle 系统。检查两个实例的奖励与消失、真实拾取一次、重开后的分数；只交设计时保存这些安排，不填运行通过。
+**Single-Scene pickup experiment**: Nodes in Scene hold player/pickup components; repeated pickups may use Prefab with shared reward definitions, while the current scene component holds session score. A simple experiment need not first build persistent sessions or Bundle systems. Check rewards/disappearance for two instances, one actual pickup and score after restart; design-only delivery saves these arrangements without marking runtime success.
 
-**跨关、结算、新局**：原设计要求结果页保留本局分数。候选采用常驻 `SessionHost (Node + 自定义 Component)` 持有本局模型，`Play.scene` 和 `Result.scene` 消费模型；本次自定义组件的职责和代码来源要能定位。玩法内可组合：
+**Level transitions, settlement and new sessions**: Original design requires the results page to retain session score. One candidate uses persistent `SessionHost (Node + custom Component)` to hold the session model, consumed by `Play.scene` and `Result.scene`; responsibilities and code sources of this custom component must be locatable. Gameplay may compose:
 
 ```text
 Play (Scene)
-├── World (Node + 本次所需玩法/物理/渲染根组件)
-│   ├── CurrentLevel (Node，关卡/Prefab 实例根)
-│   └── Player (Node，若本次换关要求保留则置于关卡外)
+├── World (Node + gameplay/physics/rendering root components needed here)
+│   ├── CurrentLevel (Node, level/Prefab instance root)
+│   └── Player (Node, outside the level if retention is required for this level change)
 └── HUDRoot (Node + Canvas + UITransform)
-    └── ScorePanel (Node + UITransform + 所需布局/显示组件)
+    └── ScorePanel (Node + UITransform + required layout/display components)
 ```
 
-本例 World 若使用 Sprite 等 2D 渲染组件，按官方机制提供合适的 RenderRoot2D/Canvas 祖先与 UITransform 等组件；若使用 3D 内容，取其实际渲染/物理组件和 camera/layer。树只示意组合归属，不能用 `World` 名称推断渲染能力。
+If World uses Sprite or other 2D rendering components, provide suitable RenderRoot2D/Canvas ancestors and UITransform, etc., under official mechanisms; for 3D content, use actual rendering/physics components and camera/layer. The tree illustrates composition ownership only; `World` does not imply rendering capabilities.
 
-真实 `director` Scene 替换与 Play 内局部关卡替换的释放范围不同，设计须指出实际路径；玩家置于 CurrentLevel 外只解决局部替换，不保证跨真正 Scene 切换保留。HUD 使用实际 camera/layer 接线，结果页发新局意图，由会话拥有者重置后进入玩法。动态资产按各消费者持有/释放，验证切换、重进、多实例、剩余共享消费者和目标宿主路径。
+Actual `director` Scene replacement and local level replacement inside Play release different scopes; design must identify actual paths. Placing players outside CurrentLevel addresses only local replacement, without guaranteeing survival across actual Scene switching. HUD uses actual camera/layer wiring; results send new-session intent, with the session owner resetting before gameplay entry. Dynamic assets are retained/released by each consumer; validate switching, re-entry, multiple instances, remaining shared consumers and target-host paths.
 
-## 输入来源与工作流交接
+<a id="输入来源与工作流交接"></a>
+## Input sources and workflow handoff
 
-Scene/Prefab 保存、第二实例、跨场景保留、池化、迟到加载或 UI 接线变化时，引用真实 Scene/Prefab、组件属性与脚本、Asset/.meta、Bundle 配置、加载与引用管理实现及实际 UI/相机接线，定位制作源、实例入口、定义/状态、活动寿命与资源消费者；不手抄全量节点树、UUID 或资源持有清单。已有来源足够则直接用；新增共享、独立、保留或退出关系时，即使源码可读，也在原 Task/design 补现状到目标的差异。语义不清则补命中关系的说明或必要局部关系/时序表达，按[材料参考](../../skills/design/references/game-deliverables.md)选择方法。
+When Scene/Prefab saves, second instances, cross-scene retention, pooling, late loading or UI wiring changes, reference actual Scene/Prefab, component properties/scripts, Asset/.meta, Bundle configuration, loading/reference-management implementations and actual UI/camera wiring to locate production sources, instance entries, definition/state, active lifetimes and resource consumers; do not manually copy full node trees, UUIDs or resource ownership inventories. Use sufficient existing sources directly; when adding shared, independent, retained or exit relationships, add current-to-target differences to original Task/design even if source is readable. If semantics are unclear, add relevant relationship explanations or necessary local relationship/timing expressions, selecting methods under [material references](../../skills/design/references/game-deliverables.md).
 
-已选 Creator 但尚无工程时，可先形成必要初始设计，原生来源标为待建立；预定组件、资源与接线不代表已保存或运行。浏览器共同条件取 [Web 交接](../platforms/web.md#与-skill-阶段交接)，其他目标沿用本页平台边界。develop/assets 落实真实制作源与消费者，verify 按本次主张核对保存、实例、启停、资源与目标入口，结果归原 Evidence/Decision。
+When Creator is selected but no project exists, first form necessary initial design and mark native sources as pending creation; planned components, resources and wiring do not represent saved or running facts. Browser common conditions use [Web handoff](../platforms/web.md#handoff-to-skill-stages); other targets follow platform boundaries here. develop/assets implement actual production sources and consumers; verify checks saves, instances, enable/disable, resources and target entries according to current claims, with results in original Evidence/Decision records.
 
-## 来源与交付边界
+<a id="来源与交付边界"></a>
+## Sources and delivery boundaries
 
-资料核对日期：2026-10-01，技术事实参照上述链接及官方[节点/组件](https://docs.cocos.com/creator/3.8/manual/zh/concepts/scene/node-component.html)、[项目结构](https://docs.cocos.com/creator/3.8/manual/zh/getting-started/project-structure/index.html)、[资源工作流](https://docs.cocos.com/creator/3.8/manual/zh/asset/asset-workflow.html)、[Canvas](https://docs.cocos.com/creator/3.8/manual/zh/ui-system/components/editor/canvas.html)、[UITransform](https://docs.cocos.com/creator/3.8/manual/zh/ui-system/components/editor/ui-transform.html)、[Widget](https://docs.cocos.com/creator/3.8/manual/zh/ui-system/components/editor/widget.html)、[Layout](https://docs.cocos.com/creator/3.8/manual/zh/ui-system/components/editor/layout.html)。3.8 文档中保留的早期示例不直接证明其他版本所有 API 兼容。
+Documentation checked: 2026-10-01. Technical facts refer to links above and official [nodes/components](https://docs.cocos.com/creator/3.8/manual/zh/concepts/scene/node-component.html), [project structure](https://docs.cocos.com/creator/3.8/manual/zh/getting-started/project-structure/index.html), [asset workflow](https://docs.cocos.com/creator/3.8/manual/zh/asset/asset-workflow.html), [Canvas](https://docs.cocos.com/creator/3.8/manual/zh/ui-system/components/editor/canvas.html), [UITransform](https://docs.cocos.com/creator/3.8/manual/zh/ui-system/components/editor/ui-transform.html), [Widget](https://docs.cocos.com/creator/3.8/manual/zh/ui-system/components/editor/widget.html) and [Layout](https://docs.cocos.com/creator/3.8/manual/zh/ui-system/components/editor/layout.html). Earlier examples retained in 3.8 documentation do not directly establish all-API compatibility with other versions.
 
-默认方案与观察方法属于本工作流选择。设计一致性、Editor 保存/接线、运行行为、目标构建及人工接受仍按[共同证据](../../shared/verification.md)分别报告，归原 Task/Evidence/Decision。本轮仅核对文档，未运行 Creator 或任何候选。
+Default approaches and observation methods are workflow choices. Design consistency, Editor save/wiring, runtime behavior, target builds and human acceptance remain separately reported under [shared evidence](../../shared/verification.md), within original Task/Evidence/Decision records. This round checked only documentation and did not run Creator or any candidates.

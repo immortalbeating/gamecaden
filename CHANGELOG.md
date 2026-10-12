@@ -1,28 +1,29 @@
-# 变更记录
+# Changelog
 
-Windows存储使用扩展名称处理物理I/O，修复深目录操作回执的写入、读取与重放；逻辑路径、scope、guard和CAS保持。分发包包含自有MIT全文，并保留第三方EPL通知。
+Windows physical I/O uses extended paths for deep operation-receipt writes, reads, and replay, retaining logical paths, scope, guards, and CAS. Packages include the full MIT license and retain third-party EPL notices. Earlier release notes below remain in their original Chinese wording.
 
-## 未发布
+## Unreleased
 
-- 统一 Task 的 quick 轻量与 standard 常规表达，说明任务整体模式与当前动作深度；按实际方案/步骤/接口及持续维护需要选择，不将常规模式限定为高风险工作。通用模板明确填入实际模式，轻模板补开工目标和必要检查。
-- 项目级持续接入默认维护 Roadmap 正文与 M 里程碑表；大型已采用方案经独立 PDP 编排 Epic 和局部 S Stage，Task 仍归属原 Epic，结果按实际条件回写。
-- 收敛视图为按需 JSON 保存与现有实时 HTML 面板；冻结输出保留轮次。独立交接补齐默认 UTC 路径、来源修订核对、重复留存与操作重放保护。
+## v0.2.0 — 2026-10-12
 
-- 统一证据用途、默认落盘、独立报告索引和重跑留存；保留小检查的 Task 简记与已有工具报告，不强制每张截图创建 EV。目录整理按读取/归属问题触发。
-- 修复原生集合内二进制附件只读及摘要绑定、Windows 长源路径读取/枚举；列表的记录、诊断与修订共同分页，面板使用全扫描指纹核对变化。
-- 新候选登记严格检查本次内容并保留历史失配诊断，旧身份/版本/决定继续保留；明确稳定候选快照及覆盖后的恢复，不把登记成功扩为运行采用。
-- 收敛来源登记到相关正文/索引和窄集合，补清跨工作树实际入口与操作根；验收围绕原承诺、真实消费者与最终基线验证。
-- 补清局部接受与需独立引用的决定边界、本轮明确例外与长期规则的作用范围；保留必要条件、默认方法及模型选择空间。
-
-- 材料参考补充常用名称、功能、触发场景和等效来源；按用途直达相关领域，区分设计表达、生产清单、运行证据与接受，不增加整套必交文件或统一审批。
-- 恢复 Cocos Creator profile、结构专题和选择入口，并与 Godot、Unity、Phaser、Three.js、Web 一起补充原生输入复用与目标差异的材料导航。
-- 暂停 Babylon.js 专属 profile、选择入口和结构专题；后续有实际需求时重新核对并启用。已有发行与项目采用记录保持原范围。
-- 八个职责及独立 Skill 入口简化 description 开头的适用条件；正文保留短检查并引用统一边界说明，继续支持本次显式调用与已采用项目的自然续接。
-- brainstorm 的提问模板改为可选示例，允许按问题与用户节奏选择表达，保留逐轮提问、真实备选与关键取舍的收敛要求。
-- Git 交付先沿用本轮明确授权，仅在确需建立或调整长期策略时展示套餐；本轮安排沿用原工作或接入结果，不自动改写项目策略。
-- 修正规则、profiles 与接入说明中的草稿和未来发行措辞，区分已保存的安装/试点证据与仍需现场核验的范围。
-- flow 在选择动作时提示按变更对象、消费者与交付阶段定位生效约束和材料，继承有效依据并限定缺项影响；方案回写沿用已有授权。
-- 旧项目接入参考增加情境导航，连接普通续接、只读识别、接入、映射修复、维护责任移交与材料补齐。
+- Establish English as the canonical development and maintenance language for every Skill, shared contract, material reference, profile, and template. Publish English and Chinese usage guides for one plugin identity; complete Chinese rule comparisons remain local, outside public history.
+- Separate authoring language from user-material language. Replies and new documents default to the user's current language unless explicitly chosen otherwise; adapt prose, explanations, template structure, and new human-readable metadata to reading needs while preserving technical identifiers, established terminology, and inherited exact-match qualifiers; isolated English labels create no acceptance gate. Existing document language is retained unless conversion is requested. Handoff timestamps remain actual UTC metadata without a forced English body footer.
+- Remove the Chinese-heading dependency from governance excerpts, retain original-language content, and use language-neutral extraction provenance. Preserve exact legacy partial-extraction recovery and original target bytes. Internal technical diagnostics are English; current panel controls remain Chinese.
+- Define quick and standard as lightweight and regular management modes of the same Task. Select from actual solutions, steps, interfaces, and maintenance needs; standard is not limited to high-risk work. The general template binds the actual mode, and the lightweight template records starting goals and necessary checks.
+- Default sustained project adoption to a current Roadmap with M milestones. An adopted large scheme uses a separate PDP to arrange Epics and local S Stages; Tasks retain their Epic ownership and results follow actual conditions.
+- Limit derived views to optional JSON storage and the existing live HTML panel, retaining frozen rounds. Independent handoffs define UTC default names, source-revision checks, repeated versions, and operation-replay protection.
+- Unify evidence purposes, default storage, independent-report indexing, and rerun retention. Preserve concise Task checks and existing tool reports; no EV is required for each screenshot. Organize directories when actual reading/ownership problems arise.
+- Support read-only binary attachments and digest binding within native collections, and Windows long source reads/enumeration. Records, diagnostics, and revisions share pagination; the panel checks changes with a full-scan fingerprint.
+- Validate newly registered candidates' actual contents while retaining historical mismatch diagnostics, identities, versions, and decisions. Define stable candidate snapshots and recovery after overwrite; registration is not runtime adoption.
+- Narrow source registration to relevant bodies/indexes and bounded collections. Clarify effective entry points and operation roots across worktrees. Verify original delivery promises against actual consumers and final baselines.
+- Clarify local acceptance and independently referenced decisions, current-work exceptions versus lasting rules, required conditions versus default methods, and the model's choice of sufficient methods.
+- Add common material names, functions, trigger scenarios, and equivalent sources. Route by information purpose, distinguishing design expression, production inventories, runtime evidence, and acceptance, without a mandatory full document set or universal approval.
+- Restore Cocos Creator profiles, structure references, and selection entries; add native-input reuse and target-specific material navigation alongside Godot, Unity, Phaser, Three.js, and Web.
+- Pause Babylon.js-specific profiles, selection entries, and structure references until actual demand justifies renewed verification. Existing releases/project adoption retain their original scope.
+- Simplify applicability wording in the eight responsibilities and standalone Skill descriptions, retaining a short body check and shared boundary. Explicit current-work invocation and natural continuation in adopted projects remain supported.
+- Make brainstorm question templates optional examples, retaining successive questions, actual alternatives, and convergence on key tradeoffs while adapting expression to the user and problem.
+- Reuse current explicit Git authorization first. Present long-term policy profiles only when needed; one-work arrangements remain with original work/adoption results instead of silently changing project policy.
+- Clarify current versus historical validation in rule/profile/adoption text. At action selection, flow identifies applicable constraints and materials by changed objects, consumers, and delivery phase; valid sources are inherited and missing inputs restrict only dependent actions. Legacy adoption navigation covers continuation, read-only identification, adoption, mapping repairs, ownership transfers, and missing materials.
 
 ## v0.1.3 — 2026-10-08
 

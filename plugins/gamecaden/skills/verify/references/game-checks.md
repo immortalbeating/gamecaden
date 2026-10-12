@@ -1,45 +1,50 @@
-# 按游戏主张选择检查
+<a id="按游戏主张选择检查"></a>
+# Choose checks by game claims
 
-由当前要求和实际影响决定要读的部分。下列是覆盖方向，不是每任务全量清单；引擎命令和技术参数来自当前项目、适用 profile 与可用专业能力。
+Current requirements and actual impact determine which parts to read. These are coverage directions, not full checklists for every task; engine commands and parameters come from current projects, applicable profiles and available specialized capabilities.
 
-## 1. 不同证据证明不同事情
+<a id="1-不同证据证明不同事情"></a>
+## 1. Different evidence proves different things
 
-| 要判断的结果 | 相应证据及常见缺口 |
+| Result to judge | Corresponding evidence and common gaps |
 |---|---|
-| 文档、设计或内容包符合自身交付 | 检查承诺的信息、文件、引用和一致性；无需自动增加未来游戏运行义务 |
-| 代码/配置可解析、编译，资源可导入 | 实际命令结果与目标版本；不直接证明运行场景或玩家路径 |
-| 状态/规则正确 | 对真实接口的行为检查，覆盖相关顺序、失败和恢复；替身不替代本次要证明的关键边界 |
-| 工程结构符合本次约定 | 对照实际保存/声明来源、真实类型、装配依赖与权威状态；按影响核对多实例、切换、退出/重进、编辑/预览能力。设计图、解析通过或场景数量不直接证明运行归属正确 |
-| 关卡/机制能正常使用 | 由正常输入进入目标流程，核对碰撞、导航、事件和返回；瞬移到终点不能证明自然可达 |
-| UI 可操作且显示正确 | 实际页面与相关焦点、返回、暂停、展开/遮挡、尺寸或输入方式；静态截图不能代替交互路径 |
-| 资产实际被使用 | 具体消费者、资源身份/版本、触发与可见/可听结果；复制、加载或主台账选用不单独证明实际表现 |
-| 存档/迁移可靠 | 隔离数据的旧版读取、变更、保存、重载及相关中断/重复路径；只测内存值不足 |
-| 性能满足目标 | 指定规模、场景、硬件/平台、测量方法及实际结果；小规模 smoke 不证明目标规模达标 |
-| 某目标平台可交付 | 对应构建、依赖和该产物的必要外部运行检查；编辑器通过不等于导出或设备通过 |
-| 体验/风格得到要求的接受 | 对应版本与方面的真实接受记录；技术通过与模型观感分别保留 |
+| Documents, design or content packages fulfill their own delivery | Check committed information, files, references and consistency; do not automatically add future game-runtime obligations |
+| Code/configuration parses/compiles and resources import | Actual command results and target versions; does not directly prove runtime scenes or player paths |
+| State/rules are correct | Behavioral checks through real interfaces covering relevant order, failure and recovery; substitutes do not replace key boundaries this work proves |
+| Engineering structure meets current agreements | Compare actual saved/declared sources, real types, assembly dependencies and authoritative state; check multiple instances, switching, exit/re-entry and editing/preview by impact. Design diagrams, parsing passes or scene counts do not directly prove correct runtime ownership |
+| Levels/mechanics function normally | Enter target processes through normal inputs; check collision, navigation, events and return. Teleporting to endpoints does not prove natural reachability |
+| UI operates and displays correctly | Actual pages and relevant focus, return, pause, expansion/occlusion, dimensions or input modes; static screenshots do not replace interaction paths |
+| Assets are actually used | Specific consumers, resource identities/versions, triggering and visible/audible results; copying, loading or master-ledger selection alone does not prove actual presentation |
+| Saves/migration are reliable | Old-version reading, changes, saving, reloading and relevant interruption/repetition with isolated data; memory values alone are insufficient |
+| Performance meets targets | Specified scale, scenes, hardware/platforms, measurement methods and actual results; small smoke tests do not prove target scale |
+| A target platform is deliverable | Corresponding builds, dependencies and necessary external runtime checks of that artifact; editor passes do not equal export/device passes |
+| Experience/style receives required acceptance | Actual acceptance records for corresponding versions/aspects; retain technical passes and model impressions separately |
 
-## 2. 选择真实目标
+<a id="2-选择真实目标"></a>
+## 2. Select actual targets
 
-各引擎/框架与实际目标分别使用当前项目提供的检查与运行方法。核对目标工程、入口场景/页面、构建与配置；可达的桥接端口、旧进程或现成截图不能替代实例确认。预览与真实交付入口分别报告；机制、玩家路径和体验按本次承诺检查，渲染或 Scene 名称不能替代实际运行根。
+Use current-project check/runtime methods for each engine/framework and actual target separately. Check engineering targets, entry scenes/pages, builds and configuration; reachable bridges, old processes or existing screenshots do not replace instance confirmation. Report previews and actual delivery entrypoints separately; check mechanics, player paths and experience against commitments. Rendering or Scene names do not replace actual runtime roots.
 
-工程或平台机制影响本次结论时，按 [profiles](../../../profiles/README.md)读取命中的验证条目，并回读本项目已采用规则及版本。profile 列出的可观察检查是选择方法的依据，不是每个 Task 必跑的完整测试套件。
+When engineering/platform mechanisms affect conclusions, read matching verification items through [Profiles](../../../profiles/README.md), then adopted project rules/versions. Observable profile checks support method selection; they are not mandatory full test suites for every Task.
 
-结构变化先读[共同验收边界](../../../profiles/references/structure-contract.md)，再按引擎专题选择本次能暴露错误归属、串状态、重复监听、未保存或不可编辑内容的观察点。只交设计时检查信息与安排；主张已实现或运行时需要实际工程证据。可在提供真实必要依赖的测试宿主验证独立模块，不要求全部组件无依赖单独启动。
+For structure changes, read [Common acceptance boundaries](../../../profiles/references/structure-contract.md), then select engine-topic observations exposing wrong ownership, leaked state, duplicate listeners, unsaved or uneditable content. Design-only deliveries check information/arrangements; implemented/runtime claims need actual engineering evidence. Independent modules may be verified in test hosts supplying real necessary dependencies; not every component must start alone without dependencies.
 
-游戏与同仓工具分别核验。例如 HTML 审批面板需要验证选择、版本绑定、写回和撤销语义；只有它实际修改了游戏消费者，才新增对应游戏接入覆盖。
+Verify games and tools in the same repository separately. For example, an HTML approval panel checks selection, version binding, writeback and withdrawal semantics; add game integration coverage only when it actually modifies game consumers.
 
-设备/平台或工具缺失时限定结论。可完成静态或其他平台的独立部分，但不要将其当作缺失平台的替代通过。
+Limit conclusions for missing devices/platforms/tools. Complete independent static/other-platform parts as appropriate, but do not treat them as replacement passes for missing platforms.
 
-## 3. 避免验证绕过要证明的行为
+<a id="3-避免验证绕过要证明的行为"></a>
+## 3. Avoid bypassing behavior under proof
 
-注入状态、跳过引导、直接调用内部函数或用替身服务可以定位局部问题；要求涉及真实输入、持久化、消费者接线或外部边界时，还需相应实际路径。
+State injection, skipping tutorials, calling internal functions directly or substitute services can locate local problems; claims involving actual inputs, persistence, consumer wiring or external boundaries still need corresponding actual paths.
 
-截图、录音、视频和日志需要与当前对象、运行条件和观察点对应。参考图可指导目标，但不是本次运行证据；截图也不能证明未出现的后续交互。
+Screenshots, recordings, videos and logs must correspond to current objects, runtime conditions and observation points. Reference images guide targets but are not current runtime evidence; screenshots cannot prove subsequent interactions absent from them.
 
-确定性输出可以检查精确属性，视觉/声音质量则使用适合对象的观察或明确接受。没有既定指标时说明观察依据与限制，不临时发明分数阈值作为通用门禁。
+Check precise properties for deterministic outputs; visual/audio quality uses suitable observation or explicit acceptance. Without established metrics, explain observation grounds and limits instead of inventing score thresholds as general gates.
 
-## 4. 处理测试与现行要求的冲突
+<a id="4-处理测试与现行要求的冲突"></a>
+## 4. Handle conflicts between tests and current requirements
 
-失败先区分实现问题、环境故障和测试是否表达当前有效要求。旧校验器要求“文件总数恰好 N”，而当前合同允许扩展时，应按实际必需项与消费者重新判断；不能为了旧计数删除有效内容。
+For failures, distinguish implementation issues, environment faults and whether tests express effective requirements. An old validator requiring “exactly N files” with a current contract allowing extension should be reassessed by actual necessary items and consumers; do not delete valid content for old counts.
 
-更新过时测试时保存依据与新覆盖，保持被核验需求不被悄悄削弱。当前需求本身存在实质歧义时，将具体取舍交给对应设计/用户，不能让校验器替产品决定范围。
+When updating outdated tests, save grounds and new coverage without silently weakening verified requirements. For substantive ambiguity in requirements themselves, hand concrete tradeoffs to corresponding design/users; validators cannot decide product scope.

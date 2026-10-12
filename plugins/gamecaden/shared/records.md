@@ -1,88 +1,96 @@
-# 共同对象、记录与交接
+<a id="共同对象记录与交接"></a>
+# Shared objects, records, and handoff
 
-供本工作流各 Skill 在选择、创建、恢复或更新记录时按相关章节读取。这里保存可执行的共同约定，不要求每次把全部内容载入。
+Workflow Skills read relevant sections when selecting, creating, restoring, or updating records. This page holds executable shared conventions; loading all content on every invocation is not required.
 
-创建或修改新原生记录时，按需读取[格式合同](formats-v1.md)的对应章节和[模板目录](../templates/catalog.md)中相应蓝本；不全量加载或一次复制。首个本地 I/O 前按[本地读写工具](local-io.md#1-环境与调用)检查并准备独立工具环境，再保存、回读和处理冲突；手工写记录不证明工具调用已验证。格式与接口细化本页职责，不改变旧来源、不新增另一份事实；操作名不是自动安装的宿主 MCP 命令。
+When creating/modifying new native records, read the corresponding sections of the [format contract](formats-v1.md) and blueprints in the [template catalog](../templates/catalog.md) as needed; do not load or copy everything at once. Before the first local I/O, check and prepare the isolated tool environment according to [local read/write tools](local-io.md#1-environment-and-invocation), then save, read back, and handle conflicts. Manually writing records does not establish validated tool invocation. Formats and interfaces refine this page's responsibilities without changing legacy sources or adding another copy of facts; operation names are not automatically installed host MCP commands.
 
-## 1. 文档职责
+<a id="1-文档职责"></a>
+## 1. Document responsibilities
 
-- Vision：完整产品目标、核心体验、设计支柱、边界与当前关键取舍。
-- Spec：生效规则及声明基线的实际能力，二者分开。角色图/蓝图可构成规则；未实现目标不变成当前能力。
-- Roadmap：成果、顺序和必要前提，引用承接工作及通过依据。
-- PDP（Phased Development Plan）：把已选大型方案编排为 Epic、Stage 与承接工作；上位计划不增加工作生命周期。
-- Epic：有界变化、共同约定与整体验收。自身管理可直接维护，具体实施归 Task。
-- Task：一个具体交付，主记录说明目标、方案、验收、当前结果与下一步；细节按需拆出。
-- 停车场：未纳入承诺的未来想法。已承诺但排在后面的内容留在目标/路线，不靠停放削减范围。
-- Notes：有依据、带适用条件的可复用认识；不自动成为批准或项目规则。
+- Vision: complete product goals, core experience, design pillars, boundaries, and current key choices.
+- Spec: effective rules and actual capabilities at a declared baseline, kept separate. Role diagrams/blueprints may constitute rules; unimplemented targets do not become current capabilities.
+- Roadmap: outcomes, order, and necessary prerequisites, referencing carrying work and evidence of passing.
+- PDP (Phased Development Plan): orchestrates a selected large solution into Epics, Stages, and carrying work; higher-level plans add no work lifecycle.
+- Epic: bounded change, shared conventions, and overall acceptance. Its own management may be maintained directly; concrete implementation belongs to Tasks.
+- Task: one concrete delivery; the main record explains goal, solution, acceptance, current results, and next steps, splitting details as needed.
+- Parking lot: future ideas outside commitments. Committed later work stays in goals/routes; parking does not reduce scope.
+- Notes: evidence-backed reusable understanding with applicability conditions; not automatically approval or project rules.
 
-用户提供的设计包按职责整理并保留来源。文件格式与目录名不自动决定其成熟度、是否生效或是否已运行采用。
+Organize user-provided design packages by responsibility and preserve sources. File formats and directory names do not automatically determine maturity, effectiveness, or runtime adoption.
 
-### 项目级当前正文
+<a id="项目级当前正文"></a>
+### Current project-level bodies
 
-正式接入时，在选定的工作流目录建立确定的当前维护入口；用户明确指定其他位置时保存其唯一入口。已有材料复用内容与具体引用，项目级正文按下表整理，不以混合设计包或开发方案整份代替。
+At formal onboarding, establish definite current maintenance entry points in the selected workflow directory; if users explicitly specify another location, retain its unique entry point. Reuse existing content and specific references. Organize project-level bodies as below rather than substituting an entire mixed design package or development solution.
 
-| 正文 | 建立时机 | 正文回答什么 |
+| Body | When to establish | Questions the body answers |
 |---|---|---|
-| vision.md | 正式接入时建立当前愿景 | 整款游戏的目标、玩家体验与核心循环、设计支柱、边界和重要取舍；方向未定时表达真实已知与未定点 |
-| spec/index.md | 已有需持续维护的规则或实现基线 | 哪些规则在什么范围生效、实际能力属于哪个基线、当前限制，以及详细领域规范/图件/数据的维护入口 |
-| roadmap.md | 正式采用本工作流进行项目级持续开发时默认建立 | 承诺成果、M 里程碑、先后与必要前提、达成条件和承接工作；当前整体判断引用原事实 |
+| vision.md | Establish the current vision at formal onboarding | Goals for the whole game, player experience and core loop, design pillars, boundaries, and important choices; express actual knowns and unresolved points when direction is unsettled |
+| spec/index.md | Rules or implementation baselines already require ongoing maintenance | Which rules apply in which scope, which baseline actual capabilities belong to, current limitations, and maintenance entry points for detailed domain specifications/diagrams/data |
+| roadmap.md | Established by default when formally adopting this workflow for ongoing project-level development | Committed outcomes, M milestones, order and necessary prerequisites, achievement conditions, and carrying work; current overall judgment references original facts |
 
-正文应可独立理解其当前结论，引用用于依据和详细展开。Vision 保留完整承诺，包括尚未实现的目标；未采用旁支归停车场，影响方向的未定点就近说明。Spec 分开生效规则、目标方案与实现能力；Roadmap 拥有产品成果安排，PDP 拥有实施 Stage 编排，Task 拥有自己的步骤与状态。没有方向或实现证据时保留未知，文件已建立不证明目标已收敛或能力已具备。
+Bodies should make their current conclusions independently understandable; references provide bases and detailed elaboration. Vision retains complete commitments, including unimplemented goals; unadopted branches belong in the parking lot, while unresolved points affecting direction are explained nearby. Spec separates effective rules, target solutions, and implemented capabilities. Roadmap owns product-outcome arrangements, PDP owns implementation Stage orchestration, and Task owns its steps and state. Retain unknowns when direction or implementation evidence is absent; file existence proves neither converged goals nor available capabilities.
 
-整理生效规则须能指出用户采用依据或现行权威维护范围；原文中的单句、提案或检查预期不单独证明规则已采用。来源冲突且无明确优先依据时，保留双方与未确认范围，继续不依赖该取舍的工作。Roadmap 可以只含当前一个已确定成果，后续安排未定时如实说明；方向完全未定时保留真实已知与未定范围。工程准备、实现与测试步骤归原工作/计划，不为凑路线制造额外成果；新成果安排区分建议与已承诺内容。
+Organizing effective rules requires identifying user adoption evidence or current authoritative maintenance scope. A single sentence, proposal, or expected check in original text alone does not prove adoption. When sources conflict without a clear priority basis, retain both and the unconfirmed scope while continuing independent work. Roadmap may contain only the current single confirmed outcome, explicitly stating unresolved future arrangements. If direction is entirely unsettled, retain actual knowns and unresolved scope. Engineering preparation, implementation, and test steps belong to original work/plans; do not manufacture extra outcomes to fill a route. Distinguish proposed from committed new outcomes.
 
-原 north-star、GDD、开发方案等输入保留原位置、版本和具体章节引用；当前正文说明采用到什么范围。选定正文拥有相应当前方向/总览/路线的维护责任，原材料继续承担输入、详细设计或历史职责；确有旧系统持续维护的同一事实时，按接入授权明确移交或保留范围。详细领域规则、配置、图件与数据可以由原来源维护，总览说明其有效范围与消费者，不复制每个参数。
+Original north-star, GDD, development solutions, and other inputs retain original locations, versions, and specific section references; current bodies explain the adopted scope. Selected bodies own maintenance of their respective current direction/overview/route; original materials remain inputs, detailed designs, or history. If a legacy system genuinely maintains the same fact continuously, explicitly transfer or retain scope under onboarding authorization. Original sources may continue maintaining detailed domain rules, configuration, diagrams, and data; overviews explain effective scope and consumers without copying every parameter.
 
-后续变化按[变更处理](../skills/flow/references/change-work.md#4-同步真正受影响的内容)更新当前正文及真正受影响的原工作。旧项目的日常续接、只读请求和单次局部交付按已有来源继续；本条在正式接入或相关接入修复中落实，不因包更新或缺少新正文阻断独立工作。Task/Epic、资产台账、Manifest、Evidence 和 Decision 继续保留各自唯一真实来源。
+Subsequent changes update current bodies and genuinely affected original work according to [change handling](../skills/flow/references/change-work.md#4-synchronize-actually-affected-content). Daily continuation, read-only requests, and single local deliveries in legacy projects continue from existing sources. Apply this rule during formal onboarding or related onboarding repairs; package updates or missing new bodies do not block independent work. Task/Epic, asset ledgers, Manifest, Evidence, and Decision each retain their unique actual sources.
 
-### Roadmap 的默认正文与推进
+<a id="roadmap-的默认正文与推进"></a>
+### Default Roadmap body and progression
 
-默认四部分：产品/版本范围与路线依据、里程碑与先后关系、当前整体判断与欠项、来源与维护范围。默认成果表使用以下列：
+The default four parts are: product/version scope and route basis; milestones and order; current overall judgment and outstanding items; sources and maintenance scope. The default outcome table uses these columns:
 
-| 成果/里程碑标识 | 预期成果 | 达成条件或条件引用 | 必要前提 | 承接工作与详细材料 |
+| Outcome/milestone identifier | Expected outcome | Achievement conditions or condition references | Necessary prerequisites | Carrying work and detailed materials |
 |---|---|---|---|---|
 
-新里程碑默认用 M1、M2；已有 S/M/C 等标识继续引用。长条件或同范围 Epic 的整体出口精确引用，Roadmap 只定义产品层面的独有条件。承接尚未安排、判断未知或必要接受待发生时明确写出；表头完整、Task 全 closed 都不证明成果达成。
+New milestones default to M1, M2; continue referencing existing S/M/C and other identifiers. Precisely reference long conditions or overall exit criteria of Epics with the same scope. Roadmap defines only its own product-level conditions. Explicitly state unscheduled carrying work, unknown judgments, or pending necessary acceptance; complete table headings and all Tasks being closed do not prove outcome achievement.
 
-首次安排、扩展或调整项目/版本路线时，核对唯一 Roadmap 并补齐受影响的当前正文。接续下一阶段回查相应成果与真实前提；取得有效结果影响整体判断时及时更新摘要及原 Evidence/Decision 引用。PDP 的详细 Stage 表、Task 步骤/状态和原日志从原来源读取，路线只维护其产品层面结论。默认格式见 [Roadmap 模板](../templates/roadmap.md.tpl)。
+When first arranging, expanding, or adjusting project/version routes, check the unique Roadmap and complete affected current bodies. Before the next stage, revisit its corresponding outcome and actual prerequisites. When valid results affect overall judgment, promptly update summaries and original Evidence/Decision references. Read detailed PDP Stage tables, Task steps/states, and original logs from their original sources; the route maintains only product-level conclusions. See the [Roadmap template](../templates/roadmap.md.tpl) for the default format.
 
-### 大型方案到交付编排
+<a id="大型方案到交付编排"></a>
+### From large solutions to delivery orchestration
 
-用户要求把已选方案分阶段落实，或一个/多个大型目标需要持续分批实施与组合检查时，按 [PDP 合同](phased-development.md)形成项目/版本级计划，明确当前 Epic/Stage 划分、输入和承接去向。已有充分编排直接复用，明确快改或简单 Epic 不绕行 PDP。方案是设计内容与选择结果，不新增“方案状态”；采用范围和未定假设仍在原材料说明。
+When users request phased implementation of a selected solution, or one/more large goals require continued batch implementation and combined checks, form a project/version-level plan under the [PDP contract](phased-development.md), clarifying current Epic/Stage divisions, inputs, and carrying destinations. Reuse sufficient existing orchestration directly; explicit quick fixes or simple Epics do not detour through PDP. Solutions are design content and choice outcomes, without new “solution states”; adopted scope and unsettled assumptions remain explained in original materials.
 
-通用 Skill 提供组织与缺项判断，本项目已生效且适用的规则继续约束工作。已有授权或明确的新指令改变规则时，保存相应范围与依据；不能借“按需”绕过仍然生效的要求，也不能把某个项目的规则套用到其他游戏。
+Generic Skills provide organization and gap judgment; effective, applicable project rules continue constraining work. When existing authorization or explicit new instructions change rules, save corresponding scope and basis. “As needed” cannot bypass still-effective requirements, and one project's rules cannot be imposed on other games.
 
-## 2. 选择和创建工作
+<a id="2-选择和创建工作"></a>
+## 2. Selecting and creating work
 
-Task 是统一的工作对象，quick 为轻量模式，standard 为常规模式；两者使用同一身份、存放规则和生命周期。
+Task is the unified work object; quick is its lightweight mode and standard its regular mode. Both use the same identity, storage rules, and lifecycle.
 
-### 选择管理模式
+<a id="选择管理模式"></a>
+### Selecting the management mode
 
-模式描述整个 Task 的组织和记录方式。执行某一步时，根据当前输入、安排和实际影响选择深度；standard 内的明确小修也可直接实施、检查和简记。已有 Task 内的修复、补验和局部调整回原 Task，不为一次轻量动作新建同目标工作或改动原模式。
+Mode describes the whole Task's organization and recording. For a specific step, choose depth according to current inputs, arrangements, and actual impact. Clear small fixes within standard may also be implemented, checked, and briefly recorded directly. Fixes, supplementary validation, and local adjustments within existing Tasks return to those Tasks; do not create same-goal work or change the original mode for one lightweight action.
 
-| 模式 | 合适的交付形态 | 默认处理 |
+| Mode | Suitable delivery form | Default handling |
 |---|---|---|
-| quick | 目标与落点明确，现有方法/输入足以直接完成的局部交付，简短说明即可支持执行与续接 | 核对相关条件后执行，保存目标、必要检查、实际结果与下一步 |
-| standard | 常规开发需要维护方案、实施步骤、接口关系、批次或持续跟进；涉及需处理的关键未知、风险或协作时也适用 | 保存并维护真正有用的安排和中间判断，已有充分安排直接复用；低风险同样可以采用 |
+| quick | A local delivery with clear goal and destination, sufficiently supported by existing methods/inputs for direct completion; a brief explanation supports execution and continuation | Execute after checking relevant conditions; save goals, necessary checks, actual results, and next steps |
+| standard | Regular development requiring maintained solutions, implementation steps, interface relationships, batches, or ongoing follow-up; also applicable to key unknowns, risks, or collaboration requiring treatment | Save and maintain genuinely useful arrangements and intermediate judgments, directly reusing sufficient existing arrangements; suitable for low risk as well |
 
-依赖是否影响模式，看是否需要协调其他交付、确认尚不可用的结果或维护变化中的接口/版本前提。复用成熟库、读取现行规格或引用已可用输入可以直接实施。普通换会话与保存下一步沿续接规则处理；交接确需维护分工、输入版本或持续推进安排时，结合这些实际需要选择模式。独立报告或 handoff 文件本身不规定模式。
+Whether dependencies affect mode depends on the need to coordinate other deliveries, confirm unavailable results, or maintain changing interface/version prerequisites. Reusing mature libraries, reading current specifications, or referencing available inputs may proceed directly. Ordinary session changes and saved next steps follow continuation rules. When handoffs genuinely require maintained responsibilities, input versions, or ongoing progression arrangements, choose mode based on those actual needs. Independent reports or handoff files do not themselves determine mode.
 
-测试数量、报告份数、代码行数、归属 Epic、步骤数量或一次失败都不单独决定模式。两者均遵守适用约束、验证和必要接受；mode 不决定质量底线或工具写入保护。交界处由模型按实际维护需要选择，相关安排就地说明，不另建模式选型日志或要求用户选标签，也不追求 quick 使用比例。
+Test count, report count, code lines, Epic membership, step count, or one failure alone does not determine mode. Both follow applicable constraints, validation, and necessary acceptance; mode does not determine the quality floor or tool write protection. At the boundary, models choose according to actual maintenance needs, explaining related arrangements locally without separate mode-selection logs or asking users to choose labels; do not pursue a target quick-use ratio.
 
-范围或管理需要实质改变时保留 Task 身份重判模式和安排；仅当前步骤变简单、拆正文或生成报告不触发重判。多个独立结果需要共同推进时采用 Epic＋Tasks；只有材料多时拆正文，不因资料长度创造新任务。
+When scope or management needs substantively change, retain Task identity and reassess mode/arrangements. A simpler current step, body splitting, or report generation alone does not trigger reassessment. Use Epic + Tasks when multiple independent outcomes require shared progression. Split prose when only material volume increases; do not create Tasks because documents are long.
 
-### 创建与保存
+<a id="创建与保存"></a>
+### Creation and saving
 
-新流程默认每个 Task 使用独立目录，主入口为 `tasks/T-编号-短名/task.md`。短名在创建时由 title 安全整理，保留 Unicode 单词字符和连字符、转为小写，其他连续字符替换为短横线，截取最多 64 字符并去除首尾短横线/下划线；为空时使用 `work`。后续修改标题、quick/standard 或生命周期不搬动主文件，编号项目内稳定、不复用。旧平铺 `tasks/T-编号-短名.md` 继续读写，其默认附件目录仍为 `tasks/T-编号/`；显式原路径不迁移，原任务身份不改。创建前查看已映射新工作来源中的实际编号，并检查是否已有同目标工作；并发遇到冲突时选有效未占用身份或协调，不能覆盖已有记录。
+New workflows default to one directory per Task, with `tasks/T-<number>-<short-name>/task.md` as the main entry. At creation, safely derive the short name from title: retain Unicode word characters and hyphens, lowercase it, replace other character runs with hyphens, truncate to at most 64 characters, and trim leading/trailing hyphens/underscores. Use `work` if empty. Later title, quick/standard, or lifecycle changes do not relocate the main file; numbers remain stable and unreused within the project. Legacy flat `tasks/T-<number>-<short-name>.md` files remain readable/writable with default attachment directories `tasks/T-<number>/`; explicit original paths and Task identities do not change. Before creation, inspect actual numbering in mapped new-work sources and check for existing same-goal work. On concurrent conflicts, select a valid unused identity or coordinate rather than overwrite existing records.
 
-明确用 flow 完成交付而项目没有旧工作来源时，按[工作区约定](workspace.md)使用本次项目的默认 Task 集合留存即可，不以缺少整套接入文件为由把应保存的结果仅留在聊天中。普通无关请求或用户明确要求不留记录时不擅自建立本流程。
+When explicitly using flow to complete delivery in a project without legacy work sources, retain results in this project's default Task collection under [workspace conventions](workspace.md). Missing complete onboarding files is not a reason to leave results requiring retention only in chat. Do not establish this workflow for unrelated ordinary requests or when users explicitly request no records.
 
-新 Task 的少量 frontmatter：
+Minimal frontmatter for a new Task:
 
 ```yaml
 ---
 id: T-001
-title: 修复暂停返回焦点
+title: Fix focus after returning from pause
 mode: quick
 kind: bug
 status: active
@@ -90,103 +98,111 @@ epic: null
 ---
 ```
 
-字段是说明形态，不预设本次真实标题/状态。生命周期为 planned、active、closed、cancelled；验收、人工接受、采用和发布分别判断。Quick 可完成后简记，发生中断时保存必要 active/续接信息。
+Fields illustrate the form rather than prescribe the actual title/state. Lifecycle states are planned, active, closed, cancelled; delivery acceptance, human acceptance, adoption, and release are judged separately. Quick may be briefly recorded after completion; on interruption, save necessary active/continuation information.
 
-kind 是开放的工作性质标签，不按该字段或 mode 决定验证强度；可选 depends_on 表达实际所需结果，related 只表达关联。六项必需字段保持不变，正文标题不构成强制语法。
+kind is an open label for the nature of work; neither it nor mode determines validation intensity. Optional depends_on expresses actually required results, while related expresses relationships only. The six required fields remain unchanged; body headings are not mandatory syntax.
 
-生命周期不单独构成执行许可。明确暂缓可保留 planned/active，并在原记录的当前推进限制中说明用户指示和恢复条件；恢复时同时读取这些限制。增补、改目标、暂缓和取消的具体分流见[变更处理](../skills/flow/references/change-work.md)。
+Lifecycle alone does not permit execution. Explicit deferral may retain planned/active with user instructions and resumption conditions in the original record's current progression restrictions; read those restrictions when resuming. Specific routing for additions, changed goals, deferral, and cancellation is in [change handling](../skills/flow/references/change-work.md).
 
-quick 开工时简述目标、边界及必要检查/接受或原依据；随进展回答做了什么、改了哪些、怎样验证、对规格/台账有何影响，并保存未完成项。standard 按需要维护方案、步骤、依赖和重要过程；两者都按真实内容组织正文，标准模式也可简记，不生成空章节。Task 主记录保持当前理解，长设计、计划和历史按需拆为唯一正文的附件。
+At quick start, briefly state goals, boundaries, and necessary checks/acceptance or original basis. As work progresses, answer what was done/changed, how it was validated, and impacts on specifications/ledgers; save unfinished items. standard maintains solutions, steps, dependencies, and important process details as needed. Both organize bodies around actual content; standard may also be brief, without empty sections. Task main records retain current understanding; split long designs, plans, and history into attachments with unique bodies as needed.
 
-新格式需要拆正文时，设计、唯一实施清单和历史按需使用 Task 目录中的 `design.md`、`plan.md`、`history.md`；本任务独有的来源说明、文件清单和其他材料可使用自然文件名，放在同目录或按用途建立的子目录。共享规格、资产和证据保留原归属，以引用连接；不因创建 Task 复制材料或生成强制清单。已有映射及旧平铺 Task 的附件路径继续复用，不按篇幅阈值机械拆分。
+When splitting bodies in the new format, designs, the unique implementation checklist, and history may use `design.md`, `plan.md`, `history.md` in the Task directory. Source explanations, file inventories, and other Task-exclusive materials may use natural filenames in the same directory or purpose-specific subdirectories. Shared specifications, assets, and evidence retain original ownership and connect through references; Task creation does not duplicate materials or generate mandatory checklists. Continue using existing mappings and legacy flat-Task attachment paths; do not split mechanically by length thresholds.
 
-Quick 预计要等待、切换或持续执行时，也及时保存当前目标与进展，不等结束才首次落盘。意外中断发生后无法补存尚未留下的内容；恢复以最后保存的事实和实际现场为准。
+When Quick is expected to wait, switch contexts, or run continuously, promptly save current goals and progress rather than waiting until completion for the first save. Unexpected interruptions cannot retroactively save content never retained; recovery uses the latest saved facts and actual scene.
 
-### 实施安排与 plan.md
+<a id="实施安排与-planmd"></a>
+### Implementation arrangements and plan.md
 
-默认将足够清楚的实施安排留在 Task。计划内容的必要性与文件是否独立分别判断；存在风险需要考虑顺序，不自动意味着需要新文件。
+By default, keep sufficiently clear implementation arrangements in the Task. Judge the need for plan content separately from whether it needs its own file. Risks requiring order considerations do not automatically require new files.
 
-出现以下任一实际需要时，拆出唯一实施清单：
+Extract the unique implementation checklist when any of these actual needs occurs:
 
-- 用户/有效项目约定要求独立计划，或已有独立实施文档被持续使用；后者沿用原路径和名称（如 implement.md），不另造 plan.md。
-- 同一 Task 内的分支、先后依赖、批次或恢复/回退安排需要作为独立工作清单反复执行、交接或审阅，内嵌内容已无法清楚支持这种使用。
-- 计划持续更新并明显挤压主记录，使目标、验收、当前结果和下一步难以定位；抽出后能让两种阅读各自清楚。
+- The user/effective project conventions require a separate plan, or an existing separate implementation document is continuously used. In the latter case, retain its original path/name (such as implement.md) rather than create another plan.md.
+- Branches, sequential dependencies, batches, or recovery/rollback arrangements within the same Task require repeated execution, handoff, or review as an independent checklist, which embedded content no longer clearly supports.
+- An evolving plan noticeably crowds the main record, making goals, acceptance, current results, and next steps hard to locate; extraction clarifies both reading purposes.
 
-跨会话、修改文件多、步骤多、验证次数多或 mode 为 standard 都不单独构成拆分条件。由模型结合上述用途决定并简述理由；日常文档整理无需额外批准。
+Cross-session work, many modified files, many steps, many validation runs, or standard mode alone does not justify splitting. Models decide based on those purposes and briefly explain reasons; routine document organization requires no extra approval.
 
-Task 的 plan.md 拥有内部实施步骤与顺序，必要时写结果、前提、检查点、等待或回退安排，并链接真实执行证据。已有 Epic 计划维护该 Epic 范围的交付编排、引用真实 Task；大型方案的上位分阶段编排使用 [PDP](phased-development.md)，已由 PDP 维护的 Stage 表不在 Epic 再复制。原 Task/Epic 保留总体目标、验收和当前结果，引用计划；设计理由仍归设计正文。
+A Task's plan.md owns internal implementation steps and order, with results, prerequisites, checkpoints, waiting/rollback arrangements when needed, linking actual execution evidence. Existing Epic plans maintain orchestration of deliveries within that Epic and reference actual Tasks. Higher-level phased orchestration of large solutions uses [PDP](phased-development.md); Stage tables already maintained by PDP are not duplicated in Epics. Original Tasks/Epics retain overall goals, acceptance, and current results, referencing plans; design rationale remains in design bodies.
 
-若实际出现多个可独立交付和验收的结果，按 Task/Epic 关系拆工作；不能把它们永久藏在一个超大 plan.md 中。仅做文件拆分不改变 Task 身份、模式或生命周期；范围/风险实质变化时再按共同规则重判。
+If multiple independently deliverable/acceptable outcomes actually emerge, split work through Task/Epic relationships rather than permanently hide them in a huge plan.md. File splitting alone does not change Task identity, mode, or lifecycle; reassess under shared rules when scope/risk substantively changes.
 
-## 3. 归属、依赖和旧来源
+<a id="3-归属依赖和旧来源"></a>
+## 3. Ownership, dependencies, and legacy sources
 
-Task 至多归属一个 Epic，独立/跨 Epic 共享工作可为 null。具体执行依赖由依赖方 Task 声明所需结果与状态，不按上游行政关闭一刀切。整体出口条件归 Epic/里程碑；PDP 的 Stage 只维护其特有组合检查，其他条件精确引用原定义。相同条件只定义一次，阶段安排不改变 Task 的 Epic 归属。
+A Task belongs to at most one Epic; independent/cross-Epic shared work may use null. Dependent Tasks declare the results and states required for specific execution, without uniformly requiring upstream administrative closure. Overall exit conditions belong to Epics/milestones. PDP Stages maintain only their unique combined checks, precisely referencing other original conditions. Define identical conditions once; stage arrangements do not change Task Epic membership.
 
-新 Epic 默认使用 epics/E-编号-短名/epic.md，frontmatter 保存 id、title、status；正文说明共同目标/边界、约定、交付引用、整体验收和当前未决项。只有实际需要统筹多个交付时创建，按已映射的默认 Epic 来源落盘；不在 Epic 内另设无 Task 的实施路径。
+New Epics default to epics/E-<number>-<short-name>/epic.md, with id, title, status frontmatter. Bodies explain shared goals/boundaries, conventions, deliverable references, overall acceptance, and current unresolved items. Create only when multiple deliveries actually require coordination and save under the mapped default Epic source; do not establish a separate implementation path without Tasks inside Epics.
 
-来自旧系统的工作先按真实格式和约定操作，保留其原身份和路径；本稿示例不是强制改写旧 YAML/状态的授权。workspace 声明切换且对象确已移交后才采用新维护规则。
+Operate legacy-system work first according to actual formats/conventions, preserving original identities and paths. These examples do not authorize forced rewriting of legacy YAML/states. Adopt new maintenance rules only after workspace declares the switch and objects have actually been transferred.
 
-## 4. 验证、决定和记录形态
+<a id="4-验证决定和记录形态"></a>
+## 4. Validation, decisions, and record forms
 
-Evidence 保存对象/必要版本、方法/环境、实际观察与结论、覆盖范围和来源。它是一项检查事实职责；`EV-*` 是原生记录形态，截图/日志是依据材料，完整工具报告也可承担这项职责。独立报告放在 Task 材料目录仍是独立报告，不按文件后缀或 EV 数量判断证据是否充分。
+Evidence preserves subjects/necessary versions, methods/environment, actual observations/conclusions, coverage, and sources. It is a responsibility for check facts; `EV-*` is a native record form, screenshots/logs are basis materials, and complete tool reports may fulfill the responsibility. Independent reports remain independent reports inside Task material directories; neither file suffix nor EV count determines evidence sufficiency.
 
-### 留存、索引与版本
+<a id="留存索引与版本"></a>
+### Retention, indexing, and versions
 
-| 实际用途 | 默认留存与升级 |
+| Actual purpose | Default retention and escalation |
 |---|---|
-| 临时调试、探索试跑，尚不作为验收或决定依据 | 使用项目允许的临时输出；有续接价值时在 Task 简记发现，不把每次试跑永久归档。 |
-| 简单局部交付的检查 | Task 简记对象/基线、方法、结果和限制，链接必要材料；无需为一条充分的小检查另建报告。 |
-| 阶段/Epic 出口、独立复核、正式资产审阅，或结果需跨任务复用/比较版本 | 默认形成可独立定位的证据记录或报告，原 Task/Epic 汇总当前结论与稳定引用。一个检查批次可对应一份记录，不为每张截图分配 EV。 |
-| 已有完整工具报告 | 直接采用原报告，补真正缺少的对象/范围说明；原生查询或条件匹配确有需要时使用已支持的适配，或创建简短 EV 索引引用报告。 |
+| Temporary debugging or exploratory trial runs not yet used for acceptance/decisions | Use project-permitted temporary outputs; briefly record useful continuation findings in the Task rather than permanently archive every trial. |
+| Checks for simple local deliveries | Briefly record subject/baseline, method, results, and limitations in the Task, linking necessary materials; no separate report is needed for one sufficient small check. |
+| Stage/Epic exits, independent review, formal asset review, or results requiring cross-task reuse/version comparison | Default to independently locatable evidence records/reports; original Tasks/Epics summarize current conclusions and stable references. One check batch may correspond to one record; do not assign EVs to every screenshot. |
+| Existing complete tool reports | Adopt original reports directly, adding genuinely missing subject/scope explanations; when native queries/condition matching genuinely need it, use supported adaptation or create a short EV index referencing the report. |
 
-本任务独有的截图、日志和报告新建时默认放在 Task 材料目录的 `evidence/`；多个检查轮次按检查名与轮次分开。原生独立 EV 默认放在工作区的 Evidence 来源；已有报告、共享证据和旧附件沿原位置引用。主 Task/Epic 须能直达本轮结果，需集中发现的独立报告通过 Evidence 来源或索引定位；已有 Task 集合内的报告用索引引用，不再叠加重叠 collection。EV 索引负责对象/版本、结论/覆盖和报告引用，方法与原始观察仍由原报告维护。
+New screenshots, logs, and reports exclusive to this Task default to `evidence/` inside its material directory. Separate multiple check rounds by check name and round. Native independent EVs default to the workspace Evidence source; existing reports, shared evidence, and legacy attachments are referenced at original locations. Main Tasks/Epics must directly reach current-round results. Independently discoverable reports use Evidence sources/indexes; index existing reports within Task collections rather than add overlapping collections. EV indexes own subject/version, conclusion/coverage, and report references; original reports still own methods and raw observations.
 
-一旦结果用于评审、验收或决定，将必要报告和依据转入稳定留存；之后重跑、改变测法或实质纠正使用新轮次/新记录。保存最小充分历史，保留旧引用能解释的原结论，不以同名复制覆盖已引用的旧报告。说明性勘误追加更正。更新 Task 当前摘要及真正受影响的决定/规格引用；同步未完成时表达各自基线和待补动作，尚未对齐的结果不拼成当前整体通过。
+Once results are used for review, acceptance, or decisions, move necessary reports/basis into stable retention. Subsequent reruns, method changes, or substantive corrections use new rounds/records. Save minimal sufficient history and original conclusions explainable through old references; do not overwrite referenced old reports with same-name copies. Append explanatory errata. Update current Task summaries and genuinely affected decision/specification references. When synchronization is incomplete, state respective baselines and pending actions; do not combine unaligned results into a current overall pass.
 
-Decision 保存谁在什么范围对什么对象作出了什么选择。本 Task 的单项局部取舍/接受可就近记录对象、必要版本、决定者和范围。台账/工程采用或多项工作需要引用同一决定、批量审阅，或需分别撤回/替代对象/方面/用途时，默认保存可独立定位的决定记录；原生记录可以独立或内嵌，保持唯一身份。记录用户已作出的决定不等于新增审批，模型建议或获授权代判分别归因，不记成用户亲自接受。
+Decision preserves who chose what for which subjects and scope. Single local choices/acceptances for this Task may record subjects, necessary versions, decision-makers, and scope nearby. When ledger/engineering adoption or multiple works need the same decision, batch review, or separate withdrawal/replacement by subject/aspect/use, default to an independently locatable decision record. Native records may be independent or embedded, retaining unique identities. Recording existing user decisions does not add approval requirements. Attribute model recommendations or authorized delegated judgments separately rather than record them as personal user acceptance.
 
-独立记录可以服务多个工作，原 Task 只引用。内嵌记录拆出时保留身份和可定位引用，原位置不继续维护另一份完整正文。
+Independent records may serve multiple works; original Tasks only reference them. When extracting embedded records, preserve identities and locatable references; do not maintain another complete body at the original location.
 
-复用记录必须核对当前对象、范围和必要条件。只因新会话、日期较早或无关改动不要求全部重验。
+Reuse requires checking current subjects, scope, and necessary conditions. New sessions, older dates, or unrelated changes alone do not require revalidating everything.
 
-具体覆盖、复用/失效、独立核验及检查结论按[验证约定](verification.md)处理；结论不构成另一套 Task 生命周期。
+Specific coverage, reuse/invalidation, independent verification, and check conclusions follow [validation conventions](verification.md); conclusions do not create another Task lifecycle.
 
-## 5. 游戏资产与采用
+<a id="5-游戏资产与采用"></a>
+## 5. Game assets and adoption
 
-资产主台账保存身份、来源、用途、候选与指定选用/替换关系；manifest 保存文件技术事实；Decision 保存接受/允许范围；工程消费者及针对它的 Evidence 证明真实接入。
+Asset master ledgers preserve identity, sources, uses, candidates, and designated selection/replacement relationships. manifests preserve technical file facts; Decisions preserve acceptance/permitted scope; engineering consumers and their Evidence establish actual integration.
 
-采用以候选版本、用途、消费者和基线分别判断。同一素材获准用于 A/B，A 成功、B 失败时保留批准范围并如实记录部分结果；不把批准当作全部接入，也不把 B 的失败改写成原批准被撤销。
+Judge adoption separately by candidate version, use, consumer, and baseline. If the same material is permitted for A/B and A succeeds while B fails, preserve the approved scope and truthfully record partial results. Approval does not establish complete integration; B's failure does not rewrite original approval as withdrawn.
 
-制作候选、接受外观、正式采用和发布的承诺不同。按用户原目标推进，不通过改名或拆后续任务降低原承诺。缺少某项必要接受时只暂停依赖它的动作。
+Producing candidates, accepting appearance, formal adoption, and release are different commitments. Advance the user's original goal without reducing commitments through renaming or splitting later Tasks. Missing necessary acceptance pauses only actions dependent on it.
 
-具体生产/接入时，读取[资产交接与采用](asset-handoff.md)中的身份、台账更新、批量决定、面板写回和部分接入规则；上述事实归属保持不变。
+For actual production/integration, read [asset handoff and adoption](asset-handoff.md) rules for identity, ledger updates, batch decisions, panel write-back, and partial integration; the above ownership of facts stays unchanged.
 
-## 6. 当前事实、关闭与汇总
+<a id="6-当前事实关闭与汇总"></a>
+## 6. Current facts, closure, and aggregation
 
-取得重要结果、出现阻塞/待审、交接或收尾时回写原 Task/Epic。结果影响产品成果或当前整体判断时同步 Roadmap 摘要与原依据；影响 Stage 编排时同步对应 PDP。Spec 在事实进入其声明基线后及时更新；共享规则改变先对齐有效范围与决定，负责变更的 Task 可执行写回，Epic 收尾查缺和整合。
+Write back to original Tasks/Epics when important results arrive, blockers/pending reviews arise, or during handoff/closure. If results affect product outcomes/current overall judgment, synchronize Roadmap summaries and original bases; if they affect Stage orchestration, synchronize corresponding PDPs. Update Spec promptly after facts enter its declared baseline. For shared-rule changes, first align effective scope and decisions; the responsible Task may perform write-back, while Epic closure checks gaps and integrates.
 
-Task 按自身承诺和必要条件关闭；Epic 按整体验收判断，子任务全 closed 不自动等于整体完成。遗留移交只解决去向，不自动满足仍属于当前范围的承诺。
+Tasks close according to their own commitments and necessary conditions; Epics are judged by overall acceptance. All child Tasks being closed does not automatically establish overall completion. Handoff of remaining items only establishes their destinations, not fulfillment of commitments still in current scope.
 
-原关闭当时正确，后来的需求/回归由当前变化的工作承接；查明原关闭就存在误判时，保留历史说明并按需要重开同一工作。明确目标改变时记录受影响对象的去向和旧新关联。
+If original closure was correct at the time, later requirements/regressions belong to work for the current change. If original closure is found to have been mistaken then, preserve historical explanation and reopen the same work as needed. On explicit goal changes, record affected objects' destinations and old/new relationships.
 
-Progress/Timeline 从原记录汇总，注明来源和汇总时点；它们不反向证明原记录通过。保存、刷新与留存统一按[派生输出](derived-outputs.md)，新视图使用 JSON/HTML 而非另一份 Markdown 进度正文。普通事件不再重复写独立总日志；无实际变化的文件不为留痕改日期。
+Progress/Timeline aggregate original records, stating sources and aggregation times; they do not prove original records passed. Saving, refreshing, and retention follow [derived outputs](derived-outputs.md). New views use JSON/HTML rather than another Markdown progress body. Ordinary events are not duplicated in a separate aggregate log; do not change dates in unchanged files merely to leave traces.
 
-实际收尾由 [close](../skills/close/SKILL.md) 按本次意图处理，范围调整、整体出口、历史误判和部分写回见其参考；日常快改可直接履行相同信息职责，不要求另走一轮仪式。
+Actual closure is handled by [close](../skills/close/SKILL.md) according to current intent; its references cover scope adjustments, overall exits, historical misjudgments, and partial write-back. Daily quick fixes may directly fulfill the same information responsibilities without another ritual round.
 
-## 7. 续接与独立交接
+<a id="7-续接与独立交接"></a>
+## 7. Continuation and independent handoff
 
-进入下一个动作时传递：用户本次要求、实际项目/运行根、原始工作标识与来源、当前范围及下一动作、适用记录和具体缺口。
+Pass on the following before the next action: the user's current request, actual project/runtime roots, original work identifiers and sources, current scope and next action, applicable records, and specific gaps.
 
-这可以是当前上下文中的简短说明，不要求新建交接文件。涉及写入的动作核对原来源与实际根后执行。已有授权继续有效；缺失信息如果会实质改变目标或权限，准备具体问题并继续独立可做的工作。
+This may be a brief explanation in current context; a new handoff file is not required. For writes, check original sources and actual roots before acting. Existing authorization remains valid. If missing information would substantively change goals or permissions, prepare specific questions while continuing independent available work.
 
-用户确需独立交接或有效项目约定要求时，按[独立 handoff](derived-outputs.md#独立-handoff)从已更新原记录导出快照，保存实际范围、基线、证据与下一步；默认放在 handoffs/，再次生成另存版本，后续仍更新原记录。
+When users genuinely need independent handoff or effective project conventions require it, export a snapshot from updated original records according to [independent handoff](derived-outputs.md#standalone-handoff), retaining actual scope, baselines, evidence, and next steps. The default location is handoffs/; regeneration saves a new version, while subsequent work still updates original records.
 
-## 8. 按实际问题整理
+<a id="8-按实际问题整理"></a>
+## 8. Organize according to actual problems
 
-| 触发情况 | 整理动作 |
+| Trigger | Organization action |
 |---|---|
-| 当前目标、有效结论或下一步被长过程遮住 | 主记录保留当前理解，将实际需要反复阅读的设计、唯一计划或历史拆到原工作附件，保留精确引用。 |
-| 同一事实在多个正文重复更新，或原报告已需要共享 | 确定唯一维护源，其他位置改为摘要/引用；按上面的用途升级证据或决定。 |
-| 入口失效、证据轮次混用，或来源列表被回执/历史载荷淹没 | 修复具体引用、版本关系或来源范围；默认位置和映射按 [workspace](workspace.md)，原身份与历史仍可定位。 |
+| Long process narratives obscure current goals, effective conclusions, or next steps | Retain current understanding in the main record; extract designs, the unique plan, or history needing repeated reading into original work attachments with precise references. |
+| The same fact is updated repeatedly in multiple bodies, or original reports need sharing | Establish one maintenance source and replace other locations with summaries/references; escalate evidence/decisions according to the purposes above. |
+| Broken entry points, mixed evidence rounds, or source lists overwhelmed by receipts/historical payloads | Repair specific references, version relationships, or source scopes; default locations and mappings follow [workspace](workspace.md), while original identities/history remain locatable. |
 
-不按日期、字数或任务关闭次数周期性搬文件。删除/覆盖前核对仍有效的引用和项目留存政策；可重建缓存与当前证据、候选源及未结算 I/O 回执分别处理。整理目录不改变接受、采用或工作生命周期。
+Do not periodically move files based on dates, word counts, or Task closure counts. Before deleting/overwriting, check still-valid references and project retention policies. Treat rebuildable caches separately from current evidence, candidate sources, and unsettled I/O receipts. Directory organization does not change acceptance, adoption, or work lifecycles.

@@ -1,23 +1,57 @@
-# 验证范围与方法
+<a id="验证范围与方法"></a>
+# Validation Scope and Methods
 
-程序检查、宿主发现、模型行为、游戏运行、用户接受与发布交付分别提供证据。某一层通过不能替代其他层。
+Program checks, host discovery, model behavior, game runtime, user acceptance, and release delivery need separate evidence. Passing one layer does not replace another. Historical development/installation results below remain in their original Chinese wording and retain their original source versions; they are not silently relabeled as new release checks.
 
-## 仓库检查
+<a id="仓库检查"></a>
+## Repository checks
 
-从仓库根运行，需要 Python 3.12+ 与 Node.js；涉及面板/I/O 时，先按 [面板说明](panel.md) 安装独立环境的依赖，并使用该解释器执行入口。
+Run from the repository root using Python 3.12+ and Node.js. For panel/I/O dependencies, prepare an isolated environment under the [panel guide](../plugins/gamecaden/panels/README.md), then run with its interpreter:
 
 ```sh
 python scripts/check.py --suite all
 ```
 
-`all` 覆盖合同、Python、JavaScript 与构建完整性。日常按影响选用：
+`all` covers contracts, Python, JavaScript, and build integrity. Select smaller checks according to impact:
 
 ```sh
 python scripts/check.py --suite core
 python scripts/check.py --suite distribution
 ```
 
-具体检查集合以入口的实现和 `--help` 为准。合同检查核对包内接口与文件关系；核心回归核对 I/O、治理及面板模型；分发检查核对构建、完整性和安装恢复行为。发行前执行完整集合，保存环境、命令、真实结果与未覆盖项。
+The entry point and `--help` define actual suites. Contract checks verify interfaces/file relationships; core regression checks I/O, governance, and panel models; distribution checks builds, integrity, installation, and recovery. Before release, run the complete suite and retain the environment, commands, actual results, and uncovered scope. Material-language behavior requires inspecting actual generated documents, including headings/labels, not only response language or tool exit codes.
+
+## v0.2.0 release validation
+
+The 2026-10-12 release makes English the canonical development and maintenance language for all Skills, shared contracts, material references, profiles, and templates. The public repository has English and Chinese usage guides; complete Chinese rule comparisons and raw evaluation artifacts stay outside public history. Existing multilingual example fixtures and earlier validation observations retain their original source versions.
+
+Local program validation used Python 3.14.5 and Node.js 24.16.0:
+
+```sh
+python -B -X utf8 scripts/check.py --suite all
+python -B -X utf8 plugins/gamecaden/scripts/check_contracts.py
+git -c core.whitespace=cr-at-eol diff --check
+```
+
+The final runtime implementation passed 153 core tests, 44 distribution tests with one file-symlink capability skip on Windows, and 13 JavaScript tests. Coverage includes native language-preserving writes, extraction provenance and exact legacy recovery, multilingual source excerpts, and handoff metadata time/replay without a forced-language body footer. Contracts, 536 local links/anchors, and 75 canonical rule/reference/template bodies were checked separately after the final language wording changes. Two fresh builds had identical package inventories and identical ZIP bytes, with 152 inventoried resources, 153 archive files, and retained MIT/EPL licenses and notices.
+
+Fresh isolated Codex installations discovered all eight Skills with verified cache paths and digests. Actual Codex CLI sessions used gpt-6.1-sol/high and natural requests, without inheriting this maintenance discussion or scoring instructions. Inspection covered written documents, original input hashes, commands/results, source revisions, Task scope/status, and responses; process exit codes alone were not treated as behavior evidence.
+
+| Natural request | Observed behavior |
+|---|---|
+| English formal adoption from an existing product package | English current Vision/Spec/Roadmap and entry points; original input retained; adopted goals separated from unimplemented capabilities |
+| Chinese adoption with English product inputs | Readable Chinese current documents and explanations; English input retained; no invented runtime or acceptance result |
+| English continuation of an existing Chinese quick Task | Existing Chinese README/Task language and quick identity retained; requested copy repair and real check completed within the original promise |
+| Spanish design with existing English project inputs | New design/Task prose in Spanish; existing English Roadmap maintained in its language; design completion not presented as implementation or visual acceptance |
+| Chinese independent verification and handoff for an English active Task | Real two-input kernel check, independently readable report and EV entry, source-bound handoff, retained English Task language and active/standard identity; no implementation or Git changes |
+
+Language suitability is assessed from readable prose and explanations for the user, stable technical identifiers, and established professional terminology. It is not a zero-English test or a gate on isolated English labels. Exact inherited scope/coverage bindings retain their actual values. The final narrowed wording was tested in a fresh installation on the affected verification/handoff request and independently reviewed.
+
+The first capacity-limited continuation attempt changed no project files; its failure was retained and a fresh session with identical inputs completed. An early navigation candidate incorrectly treated YAML comments as Markdown headings; contract checks caught it before model execution, and it was corrected. Initial handoff observations exposed an automatic English timestamp footer, which was removed while preserving actual UTC metadata and replay behavior. A free-text English metadata value also prompted clarification; the final user-approved policy then explicitly retained conventional terms and labels without creating language acceptance gates. Earlier observations were not rewritten as final-byte reruns. The affected path was retested after the code and policy corrections, while still-applicable observations on other paths were retained.
+
+The program suite covers the final runtime code. The final release differs from its last model-test package only in an installation-guide sentence identifying English maintenance as canonical; the shared language policy and runtime code are unchanged. Final contracts, integrity, navigation, and deterministic builds cover the release source. These observations do not guarantee every future host/model/session, nor prove a cost reduction without a before/after comparison.
+
+No real game-engine execution, GPU/raster acceptance, physical-device behavior, user playtest approval, macOS execution, or new Claude model behavior was verified in this batch. Daily installed copies and external game projects were not changed. Transient evaluation authentication was removed; anonymous raw evidence remains local. Historical sections below describe earlier development snapshots, including their then-unpublished status, rather than a new release certificate.
 
 ## 未发布变更：Task 管理模式与执行深度
 

@@ -1,76 +1,82 @@
 ---
 name: develop
-description: 仅在用户明确要求本次使用 Gamecaden，或当前项目有效指引已采用 Gamecaden 时使用。实现或修复已明确的交付，将代码、场景、数据和资源接到真实运行路径并验证。支持明确快改与持续 Task；已有设计直接复用，内容制作按需协同 assets。
+description: Use only when the user explicitly requests Gamecaden for this work, or effective guidance in the current project has adopted Gamecaden. Implement or repair defined deliveries, connect code, scenes, data and resources to actual runtime paths and verify them. Support explicit quick changes and sustained Tasks; reuse existing design directly and coordinate content production with assets as needed.
 ---
 
 # Develop
 
-先核对上述适用条件；未满足时沿原项目指引处理。边界说明见[工作流适用条件](../../shared/workspace.md)。
+First check the applicability conditions above; when they are not met, follow original project guidance. See [Workflow applicability](../../shared/workspace.md) for boundaries.
 
-把已授权目标推进到可观察的工程结果，按实际影响验证并回写原工作。实现方法、步骤粒度和必要协作由模型判断；目标、事实来源和交付承诺保持可追踪。
+Advance authorized goals to observable engineering results, verify according to actual impact and write back to original work. The model judges methods, step granularity and necessary collaboration; goals, fact sources and delivery commitments remain traceable.
 
-本文相对链接以本 SKILL.md 所在目录解析；../../shared/ 位于共同技能包根目录。
+Resolve relative links from this SKILL.md's directory; ../../shared/ is in the common skill package root.
 
-## 1. 接住原交付并核对现场
+<a id="1-接住原交付并核对现场"></a>
+## 1. Take over original delivery and check the situation
 
-从当前上下文或 [flow](../flow/SKILL.md) 沿用原 Task、目标、设计/计划、验收、推进限制和已有授权。按[工作区约定](../../shared/workspace.md)核对实际运行根；通过[规则选择与加载](../../shared/rules.md)读取本次适用规则，已有且仍适用的材料直接复用。
+Retain original Task, goals, design/plan, acceptance, advancement constraints and existing authorization from current context or [flow](../flow/SKILL.md). Check actual runtime roots under [Workspace conventions](../../shared/workspace.md); read applicable rules through [Rule selection and loading](../../shared/rules.md), reusing still-applicable materials directly.
 
-检查本次相关代码、场景、资源引用和既有改动。写入前分清本次与他人的修改；实际使用编辑器、桥接或外部运行进程时核对所连接的项目与工作树。只有真实隔离或并行需要时使用独立工作树，不为每个快改新建环境。
+Check related code, scenes, resource references and existing changes. Distinguish current changes from others before writing; when using editors, bridges or external runtime processes, check connected projects and worktrees. Use separate worktrees only for actual isolation/parallel needs, not every quick change.
 
-涉及 Git 交付时按[项目 Git 策略](../../shared/git-policy.md)核对既有约定与本次例外。可以在已授权的有意义检查点提交，只包含本次拥有的变化；未选策略不自动授权提交/推送，明确当前指示也无需再经过一次方案选择。
+For Git delivery, check existing agreements and current exceptions under [Project Git policy](../../shared/git-policy.md). Commit at authorized meaningful checkpoints as appropriate, including only owned changes; an unselected policy does not authorize commit/push automatically, and explicit current instructions do not need another solution selection.
 
-明确用户本次要实现、修复、接入还是只调查。只读诊断或设计请求按其范围返回，不因具备工具就扩大为运行修改；完整实现请求则持续推进原承诺。
+Establish whether users request implementation, repair, integration or investigation only. Return read-only diagnosis/design within scope, without expanding into runtime changes because tools exist; continue complete implementation requests through original commitments.
 
-## 2. 选择执行深度
+<a id="2-选择执行深度"></a>
+## 2. Choose execution depth
 
-按[记录约定](../../shared/records.md)使用原工作，进入实现不另建 Task。
+Use original work under [Record conventions](../../shared/records.md); entering implementation does not create another Task.
 
-原工作属于 [PDP](../../shared/phased-development.md) 的 Stage 时，读取当前段必要输入/真实前提及原 Task/Epic，按实际可执行交付推进；阶段只是编排，Task 归属与生命周期不变。已有充分局部安排直接复用，不为工程快改补整套上位计划。
+When original work belongs to a [PDP](../../shared/phased-development.md) Stage, read necessary current inputs/actual prerequisites and original Task/Epic, advancing actual executable delivery. Stages are orchestration only; Task ownership and lifecycle remain. Reuse sufficient local arrangements directly without a full upper-level plan for engineering quick changes.
 
-- quick：简述目标和必要检查，核对相关条件后直接执行；实际结果简记，需等待或中断时保存进展。
-- standard：复用已确定目标与安排，维护本次需要的步骤、接口或阶段判断；明确局部步骤同样可直接实施和简记，独立 plan.md 按共同标准出现。
-- Task 的范围或管理需要实质改变时，按[模式判断](../../shared/records.md#选择管理模式)保留身份重判并补必要安排；一次失败或当前步骤变轻不单独改变 mode，必要接受沿原约定。
+- quick: briefly state goals and necessary checks; execute directly after checking relevant conditions, briefly record actual results and save progress for waiting/interruption.
+- standard: reuse established goals/arrangements and maintain steps, interfaces or stage judgments needed here; explicit local steps may likewise be implemented directly and briefly recorded. Independent plan.md follows common criteria.
+- When Task scope or management needs materially change, retain identity and reassess under [Mode judgment](../../shared/records.md#selecting-the-management-mode), supplementing needed arrangements. One failure or a lighter current step alone does not change mode; necessary acceptance follows original agreements.
 
-执行设计已足够时直接使用。缺失实现安排回到 [design](../design/SKILL.md) 的相关部分；只有实际产品取舍不清才局部澄清。可调查事实自行查证，常规可逆选择自行决定。
+Use sufficient executable design directly. Return to relevant [design](../design/SKILL.md) parts for missing implementation arrangements; clarify locally only when actual product tradeoffs are unclear. Investigate ascertainable facts and decide ordinary reversible choices yourself.
 
-本次触及正式生产输入、跨系统关系或接入条件时，按[材料职责](../../shared/material-requirements.md)核对命中职责；需定位 Task/候选/条件时按[面板续接](../../shared/panel-workflow.md)读取派生视图并回读原记录。局部 quick 只核对相关条件。
+When this work touches formal production inputs, cross-system relationships or integration conditions, check matching [Material responsibilities](../../shared/material-requirements.md); locate Tasks/candidates/conditions through derived views under [Panel continuation](../../shared/panel-workflow.md) and read back original records. Local quick work checks related conditions only.
 
-修 bug、遇到关键未知、反复失败、需要并行/隔离或恢复中断时，读取[执行与恢复](references/execution-and-recovery.md)的对应部分。
+For bugs, key unknowns, repeated failures, parallel/isolation needs or interruption recovery, read corresponding [Execution and recovery](references/execution-and-recovery.md) parts.
 
-## 3. 实现完整的可观察路径
+<a id="3-实现完整的可观察路径"></a>
+## 3. Implement complete observable paths
 
-沿真实触发连接输入、状态、内容/数据、消费者与结果。遵守已定责任边界和生命周期；必要结构调整服务本次正确实现，避免把新行为继续塞进错误所有者。
+Connect inputs, state, content/data, consumers and results along actual triggers. Follow established responsibility boundaries and lifecycles; necessary structure changes serve correct implementation, avoiding more new behavior in wrong owners.
 
-新增独立页面/关卡、复用对象、跨生命周期状态或编辑方式时，核对原设计是否按[结构约定](../../profiles/references/structure-contract.md)回答实际组成与依赖，并读取对应引擎/库专题及目标平台。已有足够安排直接实现；缺少影响当前实现的边界时，就近补齐相关设计。落实真实场景/Prefab/组件/渲染树/代码模块的制作源、接线与编辑入口，按所有权处理运行与共享资源；分出空文件或管理器不作为结构完成依据。
+For new independent pages/levels, reusable objects, state across lifecycles or editing approaches, check whether original design answers actual composition and dependencies under [Structural conventions](../../profiles/references/structure-contract.md), and read corresponding engine/library topics and target platform. Implement sufficient arrangements directly; complete locally any missing boundaries affecting implementation. Establish production sources, wiring and editing entrypoints of real scenes/Prefabs/components/render trees/code modules; handle runtime/shared resources by ownership. Empty files or managers do not prove completed structure.
 
-有集成风险时先打通能验证风险的真实路径，再扩展其余承诺；试通一小段并不减少原完整目标。普通明确修改直接完成，不预先展开无关抽象、全仓重构或固定粒度步骤。
+With integration risks, first connect real paths that verify them, then expand remaining commitments; a successful small segment does not reduce complete goals. Complete ordinary explicit changes directly without unrelated abstractions, repository-wide refactoring or fixed-granularity steps in advance.
 
-修改生成产物时先查其实际来源和生成方式，维护正确来源并重新生成。存在编辑器托管资源、导入文件或稳定引用身份时，使用本项目适用的方式，防止代码修改与场景/资源仍不一致。
+For generated outputs, check actual sources and generation methods first, maintain correct sources and regenerate. For editor-managed resources, imported files or stable reference identities, use applicable project methods to prevent code and scene/resource inconsistency.
 
-用户中途新增、替换、暂缓或取消内容时，按 flow 的[变更处理](../flow/references/change-work.md)调整原工作及受影响安排。保留已经成立的结果，只停止依赖未决信息的动作。
+For mid-work additions, replacements, deferral or cancellation, adjust original work and affected arrangements under flow's [Change handling](../flow/references/change-work.md). Retain established results; stop only actions dependent on unresolved information.
 
-## 4. 与内容生产协作
+<a id="4-与内容生产协作"></a>
+## 4. Collaborate with content production
 
-本次需要新素材、内容变体或源内容修订时，使用 [assets](../assets/SKILL.md)；复用现成合格素材可直接进入接入，不要求重新生成。
+Use [assets](../assets/SKILL.md) for new materials, content variants or source revisions; qualified existing materials integrate directly without regeneration.
 
-按[资产交接与采用](../../shared/asset-handoff.md)核对具体版本、用途、消费者及相应允许范围，再进行资源导入、配置/场景接线和运行检查。承诺正式接入时继续做到该结果；只要求候选预览时按约定预览，不将临时接线登记为正式采用。
+Check specific version, use, consumer and corresponding allowed scope under [Asset handoff and adoption](../../shared/asset-handoff.md), then import resources, wire configuration/scenes and check runtime. Continue to formal integration when committed; for candidate-preview requests, preview as agreed without registering temporary wiring as formal adoption.
 
-接入失败先定位原因：资源内容/格式问题交回制作，工程引用/状态/生命周期问题在实现侧修复，契约冲突回到相关设计。协作发生在同一交付内，不为每次切换 Skill 新建 Task。
+Locate integration failures first: return content/format problems to production, repair engineering reference/state/lifecycle problems in implementation, and return contract conflicts to relevant design. Collaboration remains within the same delivery without new Tasks per Skill switch.
 
-## 5. 以实际影响完成验证
+<a id="5-以实际影响完成验证"></a>
+## 5. Complete verification by actual impact
 
-从用户要求和有效规则判断该验证什么，使用当前工程真实存在的命令、工具和玩家/用户入口。选能覆盖影响的检查，必要时增加有辨别力的测试；不按 quick/standard 标签机械规定测试数量或全量回归。
+Judge verification from user requirements and effective rules, using real project commands, tools and player/user entrypoints. Select checks covering impact, adding discriminating tests when needed; quick/standard labels do not mechanically dictate test counts or full regression.
 
-文件存在、代码编译、静态检查、资源导入和运行路径分别说明覆盖范围。涉及移动、页面切换、输入焦点、存档恢复或资源切换时，验证相应实际路径，不能用跳过关键环节的注入或截图替代。
+State coverage of file existence, compilation, static checks, resource import and runtime paths separately. For movement, page switching, input focus, save restoration or resource switching, verify actual corresponding paths; injections/screenshots skipping key links cannot replace them.
 
-已有证据按[验证约定](../../shared/verification.md)核对对象、输入、基线和覆盖后复用；变化使其失效时只补相关检查。通过后有依据地结束验证，失败则处理真实原因。未运行、中断、超时或环境不可用如实记录，不改写成通过。
+Reuse evidence after checking object, inputs, baseline and coverage under [Verification conventions](../../shared/verification.md); when changes invalidate it, supplement relevant checks only. End verification on grounded passes; handle actual causes of failure. Record not run, interrupted, timed out or unavailable environments honestly without recasting as passes.
 
-人工接受或独立核验在原交付/项目规则需要时完成；工具 PASS、模型检查与用户接受按真实来源区分。需要完整覆盖判断或独立核验时接续 [verify](../verify/SKILL.md)；明确小改已有充分检查时直接使用结果。
+Complete human acceptance or independent verification when original delivery/project rules require it; distinguish tool PASS, model checks and user acceptance by actual source. Continue with [verify](../verify/SKILL.md) for complete coverage judgment or independent verification; use results directly for explicit small changes with sufficient checks.
 
-## 6. 同步事实与交接
+<a id="6-同步事实与交接"></a>
+## 6. Synchronize facts and hand off
 
-取得有意义结果、遇到等待、范围变化或准备交接时，回写原 Task：实际变化、已运行/未运行检查、关键结论、剩余要求与可执行下一步。详细证据引用原报告，不另建开发日志或第二份进度清单。
+Write back to original Task at meaningful results, waiting, scope changes or handoff preparation: actual changes, run/not-run checks, key conclusions, remaining requirements and executable next steps. Cite original reports for detailed evidence, without another development log or progress list.
 
-当前行为已进入声明基线时更新受影响 Spec；涉及资产时按共同约定同步选择/引用与接入证据。只更新受影响来源，派生视图随后刷新。
+Update affected Spec when current behavior enters declared baseline; for assets, synchronize selections/references and integration evidence under common conventions. Update affected sources only; derived views refresh afterward.
 
-依据 Task 自身承诺与[共同关闭规则](../../shared/records.md)判断是否可关闭。需要的接受或检查尚未完成时保留实际未完成项。本任务交付条件满足后，原请求明确要求收尾或已授权完整交付时，继续完成相应收尾；复杂关闭使用 [close](../close/SKILL.md)。用户明确只实现某部分或暂不关闭时保留该限制。Git 提交、合并、打包和发布沿用各自实际授权与要求。
+Judge closure from Task commitments and [Common closure rules](../../shared/records.md). Retain actual unfinished items when necessary acceptance/checks are incomplete. After delivery conditions are met, continue corresponding closure when explicitly requested or complete delivery is authorized; use [close](../close/SKILL.md) for complex closure. Retain explicit partial-implementation or no-closure limits. Git commits, merges, packaging and publishing each retain actual authorization and requirements.

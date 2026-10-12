@@ -1,118 +1,124 @@
 ---
 name: brainstorm
-description: 仅在用户明确要求本次使用 Gamecaden，或当前项目有效指引已采用 Gamecaden 时使用。通过逐轮提问、可行备选与推荐明确游戏想法、需求边界和关键取舍，直至当前讨论范围收敛。用于需求探索、方案确定或深入审视；已有明确需求或可执行设计不重复访谈，用户明确仅要意见时按该范围答复。
+description: Use only when the user explicitly requests Gamecaden for this work, or effective guidance in the current project has adopted Gamecaden. Clarify game ideas, requirement boundaries and key tradeoffs through successive questions, feasible alternatives and recommendations until the current discussion scope converges. Use for requirement exploration, solution selection or in-depth examination; do not repeat interviews for clear requirements or executable designs, and answer within scope when users explicitly want opinions only.
 ---
 
 # Brainstorm
 
-先核对上述适用条件；未满足时沿原项目指引处理。边界说明见[工作流适用条件](../../shared/workspace.md)。
+First check the applicability conditions above; when they are not met, follow original project guidance. See [Workflow applicability](../../shared/workspace.md) for boundaries.
 
-通过逐轮提问和有依据的备选比较，明确当前讨论范围内的需求与关键取舍。关键取舍明确后形成结论，不用长篇建议替代需求探索；保留完整目标，不以固定问卷或缩减目标制造收敛。
+Clarify requirements and key tradeoffs within current discussion through successive questions and grounded comparisons. Form conclusions after key tradeoffs are clear; do not replace requirement exploration with lengthy advice. Retain complete goals without manufacturing convergence through fixed questionnaires or reduced goals.
 
-本文相对链接以本 SKILL.md 所在目录解析；../../shared/ 位于共同技能包根目录。
+Resolve relative links from this SKILL.md's directory; ../../shared/ is in the common skill package root.
 
-## 1. 识别本轮讨论的范围
+<a id="1-识别本轮讨论的范围"></a>
+## 1. Identify this discussion's scope
 
-结合用户请求、已给材料和已有工作判断当前讨论范围：整款游戏、某个 Epic/Task 的分歧或一个局部取舍。沿用已经确定的范围、决定和授权。
+Judge scope from user requests, supplied materials and existing work: the whole game, disagreements within an Epic/Task or a local tradeoff. Retain established scope, decisions and authorization.
 
-用户调用 brainstorm 讨论尚未确定的游戏想法、玩法或方案时，默认以逐轮提问推进。先简要说明当前理解，再提出一个最能影响后续方向的未决问题，给出可行备选和推荐；不要自行将这类请求当成只要一次意见。
+When users invoke brainstorm for undecided game ideas, gameplay or solutions, advance by successive questions by default. Briefly state current understanding first, then ask one unresolved question with the greatest influence on subsequent direction, giving feasible alternatives and a recommendation; do not decide these requests want a one-time opinion only.
 
-用户明确仅要意见或比较、不要访谈时，按该范围答复。“只讨论、不写文件或不实现”限制写入与实施范围，不取消提问。
+When users explicitly want opinions or comparisons without interviews, answer within that scope. “Discuss only, do not write files or implement” limits writing and implementation, without cancelling questions.
 
-先读相关事实与既有约定。存在项目时按[工作区约定](../../shared/workspace.md)找当前来源；没有项目或用户只想聊时直接讨论，不先初始化目录。不要让用户重讲已经提供的设计或可查明的项目事实。
+Read relevant facts and established conventions first. With a project, find current sources under [Workspace conventions](../../shared/workspace.md); without a project or when users only want to chat, discuss directly without initializing directories first. Do not ask users to repeat supplied design or ascertainable project facts.
 
-用户明确不做 brainstorm 且目标足够清楚时，复用输入转入所需设计/执行。已有明确答案的选择直接沿用；只有一个关键取舍未定时，只处理该取舍。当前范围没有需要用户决定的未决项时，说明已确定结论与下一动作，不人为制造问题。
+When users explicitly skip brainstorm and goals are sufficiently clear, reuse inputs and enter required design/execution. Retain choices with clear existing answers; with only one unresolved key tradeoff, handle that tradeoff alone. Without unresolved matters requiring user choice in current scope, explain settled conclusions and the next action without manufacturing questions.
 
-### 按未决项选择提问深度
+<a id="按未决项选择提问深度"></a>
+### Choose question depth from unresolved matters
 
-依据已查明的目标和未决事项判断深度：需求还有哪些未知，决定之间是否相互依赖，后果是否影响兼容、已有投入或不可逆结果，以及本轮覆盖局部取舍、系统还是完整方案。不要按题目长短、文件数、代码行数或预计工时直接分类。
+Judge depth from established goals and unresolved matters: what requirements remain unknown, whether decisions depend on each other, whether consequences affect compatibility, existing investment or irreversible results, and whether this round covers a local tradeoff, system or complete solution. Do not classify directly by question length, file count, lines of code or estimated hours.
 
-| 当前情况 | 判定依据 | 提问深度 |
+| Current situation | Judgment grounds | Question depth |
 |---|---|---|
-| 需求已明确 | 当前范围没有关键用户取舍，已有事实与决定足以支持下一动作 | 沿用已有决定，不制造访谈问题 |
-| 局部取舍 | 一个有明确边界、相对独立的未决选择 | 聚焦该项；必要时深入其正常、失败与后果边界 |
-| 联动取舍 | 多个选择互相影响，上游回答会改变后续问题 | 先问上游，按真实回答逐轮展开相关分支 |
-| 开放方案或全面审视 | 目标、主要体验或范围尚不清楚，或用户要求整体问透 | 覆盖当前范围的关键分支，收敛前回查遗漏与冲突 |
+| Requirements clear | No key user tradeoff in current scope; existing facts and decisions suffice for the next action | Retain decisions without manufacturing interview questions |
+| Local tradeoff | One bounded, relatively independent unresolved choice | Focus on it; examine normal, failure and consequence boundaries when needed |
+| Linked tradeoffs | Choices affect each other; upstream answers change later questions | Ask upstream first, unfolding relevant branches from actual answers |
+| Open solution or comprehensive examination | Goals, main experience or scope unclear, or users request a thorough examination | Cover key branches within current scope; recheck omissions and conflicts before convergence |
 
-用户要求全面审视时按其范围覆盖，已有答案用于回查一致性，不重复询问。单一取舍的重大后果也需检查，不因标为局部就跳过边界。
+Cover user-requested comprehensive examination within their scope; use existing answers for consistency checks without asking again. Check major consequences even for a single tradeoff; a local label does not skip boundaries.
 
-这些情况决定从哪里开始和覆盖哪些分支，不设问题数配额或难度分数，也不与 quick / standard / Epic 绑定。实现工作量与访谈未知分别判断：复杂实现若需求已定，转查证或 design；一行修改若改变收益、存档或寿元，仍需问清相关取舍。
+These situations determine starting points and branch coverage, without question quotas or difficulty scores, and without binding to quick / standard / Epic. Judge implementation workload separately from interview unknowns: complex implementation with settled requirements goes to investigation or design; a one-line change affecting benefits, saves or lifespan still needs corresponding tradeoffs clarified.
 
-新事实或回答暴露关联、遗漏或冲突时，增加受影响分支的深度；已解决分支直接沿用。深度调整不扩大用户请求范围，退出仍按[收敛与暂停](references/decision-exploration.md#收敛与暂停)判断。
+When new facts or answers expose links, omissions or conflicts, deepen affected branches; directly retain resolved branches. Depth adjustment does not expand request scope; exit still follows [Convergence and pausing](references/decision-exploration.md#convergence-and-pausing).
 
-## 2. 找到有影响的分歧
+<a id="2-找到有影响的分歧"></a>
+## 2. Find consequential disagreements
 
-- 从玩家行动、结果与反馈理解用户希望得到的体验，区分目标、手段和当前假设。
-- 查明本次会触及的约束、已有能力或制作条件，避免基于虚构现状给方案。
-- 指出目标之间的冲突、遗漏的消费者、成本与依赖；可以建议不加入某内容，但建议不等于用户已取消该目标。
-- 开放玩法或方案确定、用户要求连续追问或全面审视，或出现相互依赖的实质选择时，读取[取舍探索](references/decision-exploration.md)，按当前讨论范围覆盖关键分支；局部单一取舍只处理相关分支。
+- Understand desired experience through player actions, outcomes and feedback, distinguishing goals, means and current assumptions.
+- Establish constraints, existing capabilities or production conditions touched here, avoiding solutions based on invented current state.
+- Identify conflicts between goals, omitted consumers, costs and dependencies; recommend omitting content as appropriate, but recommendation does not mean users cancelled the goal.
+- For open gameplay/solution selection, explicit continuous questioning or comprehensive examination, or interdependent substantive choices, read [Tradeoff exploration](references/decision-exploration.md) and cover key branches within current scope; a single local tradeoff handles relevant branches only.
 
-完整目标、本轮成果和未采纳旁支分别表达。用户没有要求缩减时，阶段安排保留其完整承诺；提出范围取舍时说明理由并保持为建议。
+Express complete goals, this round's outcomes and unadopted branches separately. Without a user request for reduction, staged arrangements retain complete commitments; give reasons for scope tradeoffs and keep them recommendations.
 
-视觉、玩法或体验表达能帮助比较真实方向时，按[材料职责](../../shared/material-requirements.md)和[材料用途参考](../design/references/game-deliverables.md)选择相关草图、参考板、规则例子或原型，说明它能解决的分歧与成本。已有材料直接复用；探索不要求先补正式生产包，建议试验和实际运行分别报告，形成材料仍沿用本轮讨论授权。
+When visual, gameplay or experience expression helps compare actual directions, select relevant sketches, reference boards, rule examples or prototypes under [Material responsibilities](../../shared/material-requirements.md) and [Material use reference](../design/references/game-deliverables.md), explaining the disagreement resolved and cost. Reuse existing materials; exploration does not require a formal production package first. Report recommended experiments and actual runs separately; producing materials still follows this discussion's authorization.
 
-## 3. 提出推荐与真正必要的问题
+<a id="3-提出推荐与真正必要的问题"></a>
+## 3. Give recommendations and truly necessary questions
 
-可调查的技术事实先查证；可按现有约定和合理默认完成的实现/表现选择直接处理。只把无法推断，且实质影响体验、承诺、兼容性、成本或权限的取舍交给用户。
+Investigate ascertainable technical facts first; directly handle implementation/presentation choices achievable through existing conventions and reasonable defaults. Ask users only about uninferable tradeoffs materially affecting experience, commitments, compatibility, cost or permissions.
 
-默认一次只问一个关键问题。用户要求批量回答，或少量问题相互独立且简短易答时，可以一轮多题；依赖尚未回答内容的问题留到下一轮。用户指定节奏时沿用。
+Ask one key question at a time by default. With user-requested batch answers, or a few independent, brief and easy questions, ask multiple in a round as appropriate; questions dependent on unanswered content wait until the next round. Retain user-specified cadence.
 
-需要用户取舍时，说明本轮问题、必要背景、真实备选的主要收益/代价与推荐理由。可用短对话、表格或下方文字示例，按问题与用户节奏选择表达。默认提供 2–3 个真实可行的选项，推荐项放在首位；只有两个真实方向时就给两个。发出问题前核对推荐与理由一致，使用编号时核对对应关系。背景只写回答本题所需的信息，详细依据按需展开。
-
-```markdown
-**问题：<本轮需要确定的一个关键取舍>**
-
-<必要背景：为什么这个取舍会影响当前目标>
-
-1. **<方向 A>（推荐）** — <做法、主要收益与代价>
-2. **<方向 B>** — <做法、主要收益与代价>
-3. **<方向 C>** — <做法、主要收益与代价；有真实第三方向时才列出>
-
-**推荐理由：** <为何首选更符合当前目标和约束>
-
-可以回复编号或描述其他方向，也可以先追问、暂不选择。
-```
-
-用户意图尚不足以构造真实备选，或问题需要用户表达不能合理枚举的想法时，提出开放问题；下方文字是可选示例。回答澄清后再比较方向，不为满足数量编造选项。
+For user tradeoffs, explain this question, necessary context, major benefits/costs of real alternatives and recommendation grounds. Use short conversation, tables or the textual example below according to question and user cadence. Default to 2–3 genuinely feasible options, recommended first; give two when only two real directions exist. Check recommendation/reason consistency before asking, and number correspondence when numbering. Include only background needed to answer, expanding detailed grounds as needed.
 
 ```markdown
-**问题：<需要用户表达的一个关键意图或偏好>**
+**Question: <One key tradeoff to settle this round>**
 
-<必要背景与已知约束>
+<Necessary background: why this tradeoff affects the current goal>
 
-**建议起点：** <供参考的方向与理由，不作为用户已经作出的决定>
+1. **<Direction A> (Recommended)** — <Approach, main benefits and costs>
+2. **<Direction B>** — <Approach, main benefits and costs>
+3. **<Direction C>** — <Approach, main benefits and costs; include only if a real third direction exists>
 
-可以直接描述你的想法，也可以先追问。
+**Recommendation grounds:** <Why the first choice fits current goals and constraints better>
+
+You can reply with a number or describe another direction, or ask further questions without choosing yet.
 ```
 
-等待真实回答再推进依赖该决定的下一轮。用户追问选项含义、要求自由讨论或暂不选择时，先解释或讨论，原取舍仍为未决；不要把追问、未回答或推荐当成用户选择。解释中发现选项需要改变时，明确重列后再等待回答。
+When user intent is insufficient for real alternatives, or the question needs ideas that cannot reasonably be enumerated, ask an open question; the following text is an optional example. Compare directions after clarification; do not invent options to meet a count.
 
-回答后更新已定结论和未决分支，用具体情境、反例、失败/重试路径或资源冲突检验边界，再提出下一个当前可决定的问题。关键分支尚未解决时继续追问，不用列出待定项代替解决；不设固定轮数，收敛条件见[取舍探索](references/decision-exploration.md#收敛与暂停)。用户已经明确选择时直接使用，改变主张时仅重访受影响部分。
+```markdown
+**Question: <One key intention or preference the user needs to express>**
 
-## 4. 保存到原本应负责的位置
+<Necessary context and known constraints>
 
-需要持久留存时，按[共同记录规则](../../shared/records.md)定位：
+**Suggested starting point:** <A direction and reasons for consideration, not an already-made user decision>
 
-已接入项目的方向结论写回 index 指定的当前正文；首次正式接入按[项目级当前正文](../../shared/records.md#项目级当前正文)形成确定入口。依据引用原材料具体范围，已有明确目标直接整理；未选定方向不写成已采用结论。
+You can describe your ideas directly or ask further questions first.
+```
 
-| 结论 | 去向 |
+Wait for an actual answer before advancing the next round dependent on that decision. For questions about option meanings, free discussion or no choice yet, explain/discuss first; the tradeoff remains unresolved. Do not treat follow-up questions, missing answers or recommendations as user choices. If explanation reveals options need changing, explicitly relist them and wait for an answer.
+
+After answers, update settled conclusions and unresolved branches, test boundaries through concrete situations, counterexamples, failure/retry paths or resource conflicts, then ask the next currently decidable question. Continue questioning while key branches remain unresolved; a list of pending matters does not replace resolution. No fixed round count applies; convergence conditions appear in [Tradeoff exploration](references/decision-exploration.md#convergence-and-pausing). Use explicit user choices directly; revisit affected parts only when positions change.
+
+<a id="4-保存到原本应负责的位置"></a>
+## 4. Save where responsibility originally belongs
+
+For persistent retention, locate under [Common record rules](../../shared/records.md):
+
+Write direction conclusions in adopted projects back to current primary documents designated by index; at first formal adoption, form definite entrypoints under [Current project primary documents](../../shared/records.md#current-project-level-bodies). Cite specific original-material scopes for grounds and organize clear existing goals directly; unselected directions are not adopted conclusions.
+
+| Conclusion | Destination |
 |---|---|
-| 完整体验、边界、关键方向 | Vision |
-| 有界变化的共同约定 | Epic |
-| 当前交付的要求、方案判断或未决项 | 原 Task |
-| 已明确生效的长期规则 | 对应 Spec，区分实际实现状态 |
-| 未纳入承诺、值得以后重访的旁支 | 独立停车场 |
+| Complete experience, boundaries, key directions | Vision |
+| Common agreements for bounded changes | Epic |
+| Requirements, solution judgments or unresolved matters of current delivery | Original Task |
+| Explicitly effective long-term rules | Corresponding Spec, distinguishing actual implementation state |
+| Branches outside commitments worth revisiting later | Independent parking lot |
 
-在已接入项目的工作中保存有价值的阶段结论，区分已确定、建议和待验证假设。开放探索可先在对话中推进；用户明确只聊不写时不落盘。无需为每轮讨论另写 talk 文件，也不因讨论就自动创建 Task/Epic。
+Save valuable interim conclusions in work within adopted projects, distinguishing settled, recommended and assumptions needing verification. Open exploration can start in conversation; explicit chat-only requests do not persist files. No talk file per round or automatic Task/Epic creation merely for discussion is needed.
 
-若当前工作被新增、替代或暂缓，按 flow 的[变更规则](../flow/references/change-work.md)处理，保留有效历史。普通记录不为文件数量而拆分。
+For additions, replacements or deferral of current work, use flow's [Change rules](../flow/references/change-work.md), retaining valid history. Do not split ordinary records for file count.
 
-## 5. 收住当前分支并继续正确的动作
+<a id="5-收住当前分支并继续正确的动作"></a>
+## 5. Close the current branch and continue the correct action
 
-按[取舍探索](references/decision-exploration.md#收敛与暂停)的收敛与暂停条件收住当前分支，说明已确定结论、仍有影响的未知及其归属和下一动作。当前关键用户取舍尚未解决时继续提问；用户要求停止、保留候选或明确仅要意见时按该范围收住，不将未决候选称为完成实施准备。
+Close the branch under [Tradeoff exploration](references/decision-exploration.md#convergence-and-pausing)'s convergence/pausing conditions, explaining settled conclusions, consequential unknowns and their ownership, and the next action. Keep asking while key user tradeoffs remain unresolved; stop within scope for requests to stop, retain candidates or give opinions only. Unresolved candidates do not constitute completed implementation preparation.
 
-目标已明确但还缺落地安排时，读取 [design](../design/SKILL.md)。已有可执行方案且用户已要求实施时，继续相应动作；只要求讨论或设计时，交付该结果，不擅自执行生产或工程修改。
+With clear goals but missing practical arrangements, read [design](../design/SKILL.md). With an executable solution and requested implementation, continue corresponding actions; discussion/design-only requests deliver those results without unilaterally performing production or engineering changes.
 
-已选大型方案需分阶段转为交付时，design 按 [PDP](../../shared/phased-development.md)整理上位编排，保留原设计与已确定结论。方案是否更新 Vision 取决于方向影响；普通取舍或已有充分工作不自动新增 PDP。
+For phased delivery of a selected large solution, design organizes upper-level arrangements under [PDP](../../shared/phased-development.md), retaining original design and settled conclusions. Whether solutions update Vision depends on directional impact; ordinary tradeoffs or sufficiently established work do not automatically add PDP.
 
-一次只需修正一个问题时不重开完整访谈；技术未知可以由调查或已授权的有界试验处理，不以持续追问替代取证。
+A single issue needing correction does not reopen a full interview; technical unknowns can be handled by investigation or authorized bounded experiments rather than perpetual questions replacing evidence gathering.

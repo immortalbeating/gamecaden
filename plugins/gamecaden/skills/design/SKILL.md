@@ -1,79 +1,85 @@
 ---
 name: design
-description: 仅在用户明确要求本次使用 Gamecaden，或当前项目有效指引已采用 Gamecaden 时使用。将已选目标转为游戏/工程设计、必要图件、实施安排与验证依据，或把大型方案编排为分阶段开发计划。用于缺落地方案、方案审阅或设计交付；明确快改和已有可执行设计直接复用。
+description: Use only when the user explicitly requests Gamecaden for this work, or effective guidance in the current project has adopted Gamecaden. Turn selected goals into game/engineering design, necessary diagrams, implementation arrangements and verification grounds, or organize large solutions into phased development plans. Use for missing practical solutions, solution review or design delivery; reuse explicit quick changes and existing executable designs directly.
 ---
 
 # Design
 
-先核对上述适用条件；未满足时沿原项目指引处理。边界说明见[工作流适用条件](../../shared/workspace.md)。
+First check the applicability conditions above; when they are not met, follow original project guidance. See [Workflow applicability](../../shared/workspace.md) for boundaries.
 
-为当前交付建立足以指导下一动作的设计。设计贴合真实消费者和项目现状，保留完整目标；材料深度由当前动作、风险和已有约定决定。
+Establish sufficient design to guide the next action for current delivery. Fit design to actual consumers and project state, retaining complete goals; material depth follows current actions, risks and established agreements.
 
-本文相对链接以本 SKILL.md 所在目录解析；../../shared/ 位于共同技能包根目录。
+Resolve relative links from this SKILL.md's directory; ../../shared/ is in the common skill package root.
 
-## 1. 确定这次要设计什么
+<a id="1-确定这次要设计什么"></a>
+## 1. Determine what to design here
 
-复用用户需求、已选方案、原 Task/Epic 和项目有效规格。按[工作区约定](../../shared/workspace.md)定位相关来源；目标或运行根已经明确时不重新初始化。
+Reuse user requirements, selected solutions, original Task/Epic and effective project specifications. Locate relevant sources under [Workspace conventions](../../shared/workspace.md); do not reinitialize established goals or runtime roots.
 
-- 用户只要设计/计划：交付相应材料，运行代码、资产接入和引擎操作按原授权边界处理。
-- 用户只要求审阅现有方案：交付有依据的问题和建议，保留原文件；要求修改/落实设计时再按对应来源保存。
-- 用户已要求实现/生产：设计足够后继续原请求，不在中途要求重新发起实施。
-- 已有可执行设计：核对相关差异并复用，必要时直接进入下一动作。
-- 已选大型方案需分阶段落实、明确要求上位阶段开发文档：读取 [Phased Development Plan](../../shared/phased-development.md)，编排当前 Epic/Stage 与承接去向；可以在真实工作建立前保存 PDP，不为存放计划创建虚构 Epic。
-- 核心体验或承诺存在真实未决取舍：只处理该分歧，必要时读 [brainstorm](../brainstorm/SKILL.md)，不重新访谈全部内容。
+- Users want design/plans only: deliver corresponding materials; code execution, asset integration and engine operations follow original authorization boundaries.
+- Users only want existing solutions reviewed: deliver grounded problems and recommendations, preserving original files; save to corresponding sources when modifying/implementing design is requested.
+- Users requested implementation/production: continue the original request after sufficient design, without requiring a fresh implementation request midway.
+- Executable design exists: check relevant differences and reuse, entering the next action directly as needed.
+- Selected large solutions need phased execution, or explicit upper-level phased development documents are requested: read [Phased Development Plan](../../shared/phased-development.md) and arrange current Epic/Stage and ownership destinations. PDP may be saved before real work exists, without fictitious Epics for plan storage.
+- Core experience or commitments have genuine unresolved tradeoffs: handle that disagreement only, reading [brainstorm](../brainstorm/SKILL.md) as needed without reinterviewing all content.
 
-按[记录约定](../../shared/records.md)保留原工作；阶段从讨论进入设计不产生新 Task。独立、需留存或交接的设计交付可以由 design Task 承接；纯规划或维护管理对象自身写回该对象。
+Retain original work under [Record conventions](../../shared/records.md); moving from discussion to design does not create a new Task. Independent design deliveries needing retention or handoff may use a design Task; pure planning or maintenance of a management object writes back to that object.
 
-## 2. 先核对现状与消费者
+<a id="2-先核对现状与消费者"></a>
+## 2. Check current state and consumers first
 
-沿本次相关输入或触发，查看状态、数据、场景/模块、实际消费者和可观察结果。当前没有实现时明确为新设计，不虚构已有接口、结果或通过记录。
+Follow relevant inputs or triggers to inspect state, data, scenes/modules, actual consumers and observable results. With no current implementation, explicitly describe new design without inventing existing interfaces, results or pass records.
 
-说明哪些必须改变、哪些需要验证、哪些尚待调查。读取相关项目规则、已有设计和失败经验，已有且仍适用的认识直接复用；不为局部变更展开无关全仓审计。
+Explain what must change, needs verification or remains under investigation. Read relevant project rules, existing design and failure experience, reusing still-applicable understanding; do not expand local changes into unrelated repository-wide audits.
 
-形成方案前，按[规则选择与加载](../../shared/rules.md)读取本次命中的通用、领域、引擎/框架/平台和项目要求。区分生效约定、默认建议与历史经验；按实际运行根和版本选择，不因为同仓存在 HTML 面板就误判游戏技术栈。需要专业设计判断时仅加载实际可用且相关的 Skill，仍遵守本次设计/执行范围。
+Before solutions, read matching general, domain, engine/framework/platform and project requirements under [Rule selection and loading](../../shared/rules.md). Distinguish effective agreements, default recommendations and historical experience; select by actual runtime roots and versions, without mistaking an HTML panel in the same repository for the game's stack. Load only available relevant Skills for specialized judgment, retaining current design/execution scope.
 
-把缺口分清：项目中可查的技术事实继续调查；尚未定义且可合理选择的接口/初值作为明确设计建议给出；只有实质改变玩家结果或承诺的未决取舍才问用户。材料没有列出字段或输入动作，不自动意味着应让用户提供技术答案。
+Distinguish gaps: investigate project-accessible technical facts; offer explicit design recommendations for undefined interfaces/initial values that can reasonably be selected; ask users only about unresolved tradeoffs materially changing player outcomes or commitments. Materials omitting fields or input actions do not automatically require technical answers from users.
 
-当前数据不足时，设计补齐相应来源/接口的路径，不据此默认降低用户结果。需要改变功能含义的简化保持为明确建议，不把“当前更容易实现”当作用户已经选择该替代方案的证据。
+With insufficient current data, design paths for completing corresponding sources/interfaces rather than defaulting to reduced user outcomes. Simplifications changing feature meaning remain explicit recommendations; “easier to implement now” is not evidence users selected that replacement.
 
-跨场景、共享状态、生命周期或多系统接口需要设计时，读取[架构与可推进条件](references/architecture-and-readiness.md)的相应部分。简单局部改动直接给出必要安排。
+For cross-scene, shared-state, lifecycle or multi-system interface design, read corresponding parts of [Architecture and advancement conditions](references/architecture-and-readiness.md). Give necessary arrangements directly for simple local changes.
 
-## 3. 确定必要内容和表达
+<a id="3-确定必要内容和表达"></a>
+## 3. Determine necessary content and expression
 
-玩法、角色、地图、UI、反馈、存档或生产输入发生变化时，先按[材料职责](../../shared/material-requirements.md)判断本次动作触发什么，再按需读取[游戏材料参考](references/game-deliverables.md)中命中的条目。需要由面板定位材料或条件时按[面板续接](../../shared/panel-workflow.md)回读原来源。
+For gameplay, character, map, UI, feedback, save or production-input changes, judge responsibilities triggered by current actions under [Material responsibilities](../../shared/material-requirements.md), then read matching entries in [Game material reference](references/game-deliverables.md) as needed. For panel-assisted location of materials or conditions, read back original sources under [Panel continuation](../../shared/panel-workflow.md).
 
-定义责任、输入输出和关键关系，再选择文字、图件或数据形式。已有材料能承担职责时引用其明确版本；图和文字说明哪些生效、哪些示意、哪些待验证。
+Define responsibilities, inputs/outputs and key relationships, then choose text, diagrams or data. Cite explicit versions of existing materials that fulfill responsibilities; diagrams and text explain what is effective, illustrative or awaiting verification.
 
-本次承诺需要的设计说明或图示，应在交付中实际形成，或引用已满足职责的材料；不能只列“之后需要画图”就认为设计已交付。用户只要求生产安排时，交付安排和必要设计表达，不把后续原始素材、动画预览或运行结果提前列为本轮必须生成的产物。
+Design explanations or diagrams required by current commitments should actually be produced in delivery or cite materials already fulfilling responsibilities; merely listing “draw diagrams later” does not deliver design. When users request production arrangements only, deliver arrangements and necessary design expression; do not prematurely require later raw materials, animation previews or runtime results as this round's outputs.
 
-缺项只约束依赖它的动作。下一步是灰盒或有界试验时，使用符合该目的的输入；正式生产/采用所需的规则和接受要求仍按原约定判断，不以试验结果代替最终交付。
+Gaps constrain dependent actions only. For grayboxing or bounded experiments next, use purpose-fitting inputs; formal production/adoption rules and acceptance requirements still follow original agreements, without replacing final delivery with experimental results.
 
-## 4. 形成方案、实施安排和验证路径
+<a id="4-形成方案实施安排和验证路径"></a>
+## 4. Form solutions, implementation arrangements and verification paths
 
-方案说明：本次变化与边界、相关现状、各部分职责、数据/状态/资源如何到达消费者、失败与恢复，以及重要取舍。
+Explain current changes and boundaries, relevant state, each part's responsibility, how data/state/resources reach consumers, failure/recovery and important tradeoffs.
 
-实施安排围绕可观察结果和真实依赖组织，优先解决会阻断交付的未知。技术事实先调查；确需试验时说明要回答的问题、允许改动的范围和观察依据。用户只要文档时交付试验安排，不自行运行未授权原型。
+Organize implementation around observable results and actual dependencies, prioritizing unknowns that block delivery. Investigate technical facts first; when experiments are necessary, explain the question, allowed change scope and observation grounds. For document-only requests, deliver experiment arrangements without running unauthorized prototypes.
 
-验证对应实际承诺：正常玩家路径、状态转换、消费者接入和必要的人工接受等。说明证据会覆盖什么，不假造命令、运行结果或采用状态。
+Match verification to actual commitments: normal player paths, state transitions, consumer integration and necessary human acceptance. Explain evidence coverage without inventing commands, runtime results or adoption status.
 
-普通可逆实现和局部表现选择由模型按既有约定处理；只有会实质改变结果、兼容性、权限或约定成本的分歧才澄清。若发现用户要求互相冲突，明确给出推荐和理由，不默默删除范围。
+The model handles ordinary reversible implementation and local presentation choices under existing agreements; clarify only disagreements materially changing outcomes, compatibility, permissions or agreed costs. For conflicting user requirements, explicitly recommend with reasons rather than silently dropping scope.
 
-## 5. 保存与一致性检查
+<a id="5-保存与一致性检查"></a>
+## 5. Save and check consistency
 
-简单内容写回原 Task；设计正文较多或需要独立消费时使用其 design.md。是否拆出 plan.md 按[记录约定](../../shared/records.md)的“实施安排与 plan.md”判断，主记录保留当前说明与引用。Epic 保存跨 Task 的共同设计，Task 保存本次交付的具体安排。
+Simple content writes back to original Task; use its design.md for extensive design text or independent consumption. Whether to split plan.md follows “Implementation arrangements and plan.md” in [Record conventions](../../shared/records.md); main records retain current explanation and references. Epic holds shared cross-Task design; Task holds concrete arrangements for this delivery.
 
-需要长期生效的规则按范围更新当前 Spec 总览及相应领域来源，并与声明基线的实现事实分开；仅选定未来实现方案不自动变成当前能力。设计改变完整方向或成果安排时按[变更处理](../flow/references/change-work.md#4-同步真正受影响的内容)写回当前 Vision/Roadmap；局部设计仍归原工作。未来旁支归停车场，有价值经验按需进入 Notes。
+Long-term rules update current Spec overview and corresponding domain sources by scope, separately from implementation facts of declared baselines; choosing future implementation alone does not become current capability. When design changes complete direction or outcome arrangements, write back current Vision/Roadmap under [Change handling](../flow/references/change-work.md#4-synchronize-actually-affected-content); local design remains with original work. Future branches go to parking lots; valuable experience enters Notes as needed.
 
-检查目标、方案、材料、计划和验证是否互相对应；检查是否重复维护状态或同义正文。当前范围改变、被替代或暂停时，按[flow 变更规则](../flow/references/change-work.md)保存去向，保留有效历史。
+Check correspondence among goals, solutions, materials, plans and verification, and duplicated state or equivalent primary text. For changed, replaced or paused scope, save destinations under [Flow change rules](../flow/references/change-work.md), retaining valid history.
 
-交付 PDP 时核对已采用方案的承诺覆盖、Epic/Stage 数量与唯一表一致、承接归属、真实/拟建工作分明及必要检查可定位；复杂实施使用 PDP 不表示必须预建全部远期 Task。产品成果安排落在当前 Roadmap，阶段编排归 PDP，原设计和工作内容以精确引用连接。
+For PDP delivery, check commitment coverage of adopted solutions, Epic/Stage counts matching the sole table, ownership, clear real/proposed work distinctions and locatable necessary checks. Using PDP for complex implementation does not require precreating every distant Task. Product outcome arrangements belong to current Roadmap; stage orchestration belongs to PDP; precise references connect original design and work content.
 
-## 6. 明确现在可以推进什么
+<a id="6-明确现在可以推进什么"></a>
+## 6. State what can advance now
 
-交付当前设计及下一动作：原目标/工作、实际根与基线、有效规则和输入材料、该动作的安排与验收、尚影响它的缺口。使用原记录和[共同交接约定](../../shared/records.md)，不另建一份动态设计状态账本。
+Deliver current design and next action: original goal/work, actual roots and baseline, effective rules and input materials, arrangements/acceptance for that action and gaps still affecting it. Use original records and [Common handoff conventions](../../shared/records.md), without another dynamic design state ledger.
 
-设计结论应限定范围，例如“可以开始房间连通灰盒”或“正式动作生产仍缺锚点约定”，不能笼统宣布“整个项目已准备好”。已授权后续工作且关键输入足够时，工程实现交给 [develop](../develop/SKILL.md)，内容制作交给 [assets](../assets/SKILL.md)，在原工作中继续；只请求设计时到设计交付结束。
+Scope design conclusions, such as “room-connectivity grayboxing can begin” or “formal action production still lacks anchor conventions”; do not broadly declare “the entire project is ready”. With authorized subsequent work and sufficient key inputs, hand engineering implementation to [develop](../develop/SKILL.md) and content production to [assets](../assets/SKILL.md), continuing within original work; design-only requests end at design delivery.
 
-技术上可以推进与本轮获准执行分别说明。关键事实还未核实的动作，下一步先调查该事实或做已授权的试验，不一边声明关键输入缺失一边宣称正式实施已就绪。结束本轮设计回复也不自动关闭原 Task：原工作承诺实现/生产时仍保留未完成项，独立设计 Task 才按其自身交付条件判断关闭。
+State technical readiness and current execution authorization separately. For actions with unverified key facts, first investigate or perform authorized experiments; do not declare missing key inputs and formal implementation readiness simultaneously. Ending this design response does not automatically close the original Task: implementation/production commitments retain unfinished items; independent design Tasks alone judge closure by their own delivery conditions.
 
-判断关闭时读 Task 的实际交付承诺，不能只看 kind 或“后面还有步骤”。例如目标仅是交付受击动作生产方案，方案满足约定并已交付/留存后，可按规则关闭该设计 Task；尚未生成动画不属于它自动新增的欠项。目标是完成正式动作接入的 Task 则仍需生产、接受与接入的相应结果。设计自身尚缺必须确定的关键结论时保留未完成，但理由应是设计未满足承诺，而非后续实施尚未发生。
+For closure, read actual Task delivery commitments, not just kind or “there are later steps”. For example, a goal only to deliver a hit-reaction production solution may close under rules after the solution fulfills agreements and is delivered/retained; missing generated animation is not an automatically added deficit. A Task completing formal action integration still needs corresponding production, acceptance and integration results. Design missing mandatory key conclusions remains unfinished because it fails design commitments, rather than because later implementation has not happened.

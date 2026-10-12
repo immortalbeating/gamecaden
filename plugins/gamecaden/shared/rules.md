@@ -1,62 +1,67 @@
-# 规则来源、适用范围与加载时机
+<a id="规则来源适用范围与加载时机"></a>
+# Rule Sources, Applicability, and Loading Times
 
-在接入项目、形成设计，或实现/验证发现新的引擎与领域影响时读取。共用规则选择机制，不为每个 Skill 复制规范正文。
+Read this when adopting a project, forming a design, or when implementation/verification identifies new engine or domain impacts. Use a shared rule-selection mechanism rather than copying rule bodies into every Skill.
 
-规则用于帮助 AI 从有效开发经验和规范中作出更好的游戏设计、工程、内容与验证判断。按 [profiles 的纳入原则](../profiles/README.md)区分可靠依据、当前适用条件和候选推论；通用指导可提前避免已知弯路，具体要求仍由本次目标与真实对象触发。市场背景或平台案例不能自行扩大支持范围。
+Rules help AI make better game-design, engineering, content, and verification judgments from effective development experience and standards. Following the [profile inclusion principles](../profiles/README.md), distinguish reliable grounds, current applicability, and candidate inferences. General guidance can prevent known detours early, while specific requirements are still triggered by the current goal and real objects. Market context or platform examples cannot expand the support scope on their own.
 
-## 1. 按当前工作选择来源
+<a id="1-按当前工作选择来源"></a>
+## 1. Select Sources for Current Work
 
-先依据有效项目指引、[工作区映射](workspace.md)、本次目标和实际工程确认作用对象。有 rule_sources 时据此定位；没有映射时直接读取现有有效规范，不以缺少登记文件为由忽略它们。
+First identify the objects affected using effective project guidance, the [workspace mapping](workspace.md), the current goal, and the actual project. Use rule_sources to locate sources when present; without a mapping, directly read existing effective standards rather than ignoring them because registration files are missing.
 
-从以下来源选取命中本次范围的部分，而非全部预读：
+Select portions matching the current scope from the following sources rather than prereading everything:
 
-- 通用规则：目标、事实来源、状态责任、记录和证据的基本约定。
-- 游戏领域：本次玩法、角色、地图、UI、动画/音频、存档等领域真正涉及的契约；缺少方向、生产或交接输入时从[材料职责](material-requirements.md)直达相关用途与等效来源，不把候选目录整体转成要求。
-- 引擎/框架/平台：按实际运行根、已确认版本与目标选择；浏览器可组合 Phaser、Three.js 或 Godot/Unity/Cocos Creator 等引擎浏览器产物。其它目标查真实运行/构建条件与可靠资料，预览和实际交付分别取证。
-- 项目规范：当前生效的具体约定、已采用参考和历史问题形成的适用规则。
+- Common rules: basic conventions for goals, factual sources, state ownership, records, and evidence.
+- Game domains: contracts actually involved in current gameplay, characters, maps, UI, animation/audio, saves, and other domains. When direction, production, or handoff inputs are missing, go directly from [material responsibilities](material-requirements.md) to relevant purposes and equivalent sources; do not turn the entire candidate catalog into requirements.
+- Engines/frameworks/platforms: select by actual runtime root, confirmed version, and target; browser targets may combine Phaser, Three.js, or browser outputs of engines such as Godot/Unity/Cocos Creator. For other targets, check actual runtime/build conditions and reliable sources; collect preview and actual-delivery evidence separately.
+- Project standards: currently effective specific conventions, adopted references, and applicable rules derived from historical issues.
 
-Godot 游戏附带 HTML 审批面板时，分别对游戏与面板选择规则；不能将旁侧工具判为游戏主引擎。新项目尚未选定引擎时，只用通用和已明确的领域要求比较方案；不能把未来选项写成已采用 profile。
+When a Godot game includes an HTML approval panel, select rules separately for the game and panel; do not identify a side tool as the main game engine. If a new project has no selected engine yet, use only common and confirmed domain requirements to compare options; do not record future options as adopted profiles.
 
-需要通用工程、目录或引擎/平台规则时，从 [profiles 选择入口](../profiles/README.md)读取当前分支。已有版本和范围仍有效时直接复用；引擎、目标平台、消费者或交付动作变化时重新判断命中项，不让每次 quick 全量加载。
+When common engineering, directory, or engine/platform rules are needed, read the current branch from the [profile selection entry](../profiles/README.md). Reuse existing versions and scopes while they remain applicable; reassess matching items when the engine, target platform, consumer, or delivery action changes, without loading everything for every quick task.
 
-## 2. 明确规则的性质
+<a id="2-明确规则的性质"></a>
+## 2. Identify the Nature of Rules
 
-能说明所引用内容的来源、适用对象/版本，以及它是生效要求、默认建议还是带条件的经验。
+Be able to explain the source, applicable objects/version, and whether cited content is an effective requirement, default recommendation, or conditional experience.
 
-| 规则性质 | 使用方式 |
+| Rule nature | Usage |
 |---|---|
-| 必要条件 | 触发成立后，为兑现当前有效目标必须满足的结果或技术机制；方法按工程选择。局部缺项只影响依赖它的动作。 |
-| 默认做法 | 在没有更合适的有效约定时采用；模型可选等效方法，就近说明有实质影响的取舍，无需例外审批。 |
-| 待采纳经验 | 提示调查方向或条件候选；历史问题、项目数字和专属生产顺序不自动成为其他项目门禁。 |
+| Necessary condition | Once triggered, a result or technical mechanism necessary to fulfill the current effective goal; choose methods according to the project. A local gap affects only actions that depend on it. |
+| Default practice | Use when no more suitable effective convention exists; the model may choose an equivalent method and explain material tradeoffs nearby, without exception approval. |
+| Experience awaiting adoption | Suggests investigation directions or conditional candidates; historical issues, project numbers, and specialized production sequences do not automatically become gates in other projects. |
 
-规则性质与采用状态分开：提议中的必要条件仍不是当前生效门禁，默认方法也不能降低已生效结果要求。[governance](governance.md)中的 authority/strength 只有在实际定义本项目条件时使用；不把所有 profile 条目自动转成 required 条件。
+Rule nature and adoption state are separate: a proposed necessary condition is not yet an effective gate, and default methods cannot lower effective result requirements. Use authority/strength from [governance](governance.md) only when actually defining conditions for this project; do not automatically convert every profile item into a required condition.
 
-- 用户当前明确要求与有效宿主指引约束本次工作；已有授权沿用。
-- 用户明确改变项目要求或给予例外时，在其指定的本轮对象/动作范围内执行并记入原工作；仅在明确要求长期调整时修改长期规则。范围仍不清且会改变实际动作时再澄清，已有明确例外不重复求批；宿主更高优先级的约束仍适用。
-- 已生效的项目具体约定用于落实本项目要求，通用 profile 的默认建议据此调整。
-- 历史 Notes、候选方案和他项目经验是判断依据，只有明确采用后才成为本项目要求。
-- 引擎实际能力、版本限制与数据事实需要核实；文档与事实冲突时查明差异，不能靠某份文档“优先级更高”就假设技术事实改变。
+- The user's current explicit requirements and effective host guidance constrain this work; existing authorization carries forward.
+- When the user explicitly changes project requirements or grants an exception, act within their specified object/action scope for this round and record it in the original work; change long-term rules only when long-term adjustment is explicitly requested. Clarify only if scope remains unclear and would change actual actions; do not seek repeated approval for an explicit exception. Higher-priority host constraints still apply.
+- Effective specific project conventions implement this project's requirements, with default recommendations in common profiles adjusted accordingly.
+- Historical Notes, candidate plans, and other-project experience inform judgments; they become project requirements only after explicit adoption.
+- Verify actual engine capabilities, version limits, and data facts. When documents conflict with facts, investigate the difference rather than assuming technical facts change because one document has “higher priority.”
 
-同一范围的生效要求冲突时，查来源和已有决定；能依据现有授权解决的直接处理，真实产品取舍无法推断时再澄清。规则缺失或版本不适用时，补查本地实际证据与官方资料；需要新规范时按范围提出或保存，不能声称不存在的 profile 已经加载。
+When effective requirements conflict within the same scope, check sources and prior decisions; resolve directly when existing authorization suffices, and clarify only when actual product tradeoffs cannot be inferred. If rules are missing or versions do not apply, investigate actual local evidence and official sources; propose or save new standards within scope when needed, without claiming a nonexistent profile was loaded.
 
-改变本项目已生效要求时，在原 Spec/规则或原 Task 保存新旧范围与理由；需要独立决定的情况沿用 [records](records.md)。变更规则、消费者或技术版本后，复核实际受影响的设计、材料和依据；读取同一未变版本、换会话或无关文件更新不触发全量重验。接受范围的调整不会把未运行或失败的证据改成通过。
+When changing effective project requirements, save old/new scopes and reasons in the original Spec/rule or Task; follow [records](records.md) when an independent decision is needed. After changing rules, consumers, or technical versions, review actually affected designs, materials, and supporting grounds; rereading the same unchanged version, changing sessions, or unrelated file updates does not trigger full revalidation. Changing acceptance scope does not turn unexecuted or failed evidence into passes.
 
-## 3. 何时读取与如何交接
+<a id="3-何时读取与如何交接"></a>
+## 3. When to Read and How to Hand Off
 
-| 动作 | 规则使用 |
+| Action | Rule use |
 |---|---|
-| flow / init | 定位来源和适用运行根；接入时登记已有规则与选择，不复制整套正文 |
-| brainstorm | 当约束影响目标、范围或选项时读取相关内容 |
-| design | 在形成方案之前读取影响结构、内容生产、兼容与接受结果的要求，并用于方案和验证安排 |
-| develop / assets | 在实际操作前读取命中的具体执行规则；输入、引擎或范围变化时补载和复核 |
-| verify / close | 依据同一范围的承诺与有效规则判断覆盖、实际结果和同步；不临时增加另一套门禁 |
+| flow / init | Locate sources and applicable runtime roots; register existing rules and selections during adoption, without copying entire bodies |
+| brainstorm | Read relevant content when constraints affect goals, scope, or options |
+| design | Before forming a plan, read requirements affecting structure, content production, compatibility, and acceptance outcomes; use them in the plan and verification arrangements |
+| develop / assets | Before actual operations, read matching specific execution rules; load additional rules and review when inputs, engines, or scope change |
+| verify / close | Assess coverage, actual results, and synchronization against commitments and effective rules for the same scope; do not temporarily add another set of gates |
 
-design 可以按需调用目标环境中实际可用的专业 Skill，获取本次需要的设计判断。只请求设计时仍遵守设计范围；专业工具的存在不等于获准运行生产。专用 Skill 的记录产物映射回本流程原记录，避免引入第二套 Task/日志。
+design may call professional Skills actually available in the target environment as needed to obtain design judgments for this work. A design-only request still stays within design scope; available professional tools do not authorize production. Map specialized Skill record outputs back to original workflow records to avoid introducing a second Task/log system.
 
-在原 Task/设计的依据或约束位置引用影响本次判断的来源，并说明关键结果，例如“角色比例继承采用参考，新增受击动作沿用现有锚点约定”。无需复制全部规范，也不另建动态规则加载日志。没有变化且仍适用的已读材料直接复用。
+In the grounds or constraints section of the original Task/design, cite sources affecting this judgment and explain key results, for example, “Character proportions inherit the adopted reference; the new hit reaction follows the existing anchor convention.” There is no need to copy all standards or create a separate dynamic rule-loading log. Reuse already read materials that remain unchanged and applicable.
 
-## 4. 提供范围与验证边界
+<a id="4-提供范围与验证边界"></a>
+## 4. Provided Scope and Verification Boundaries
 
-现有 shared 与 design references 提供记录和材料职责；[profiles](../profiles/README.md)集中维护通用工程、项目结构、引擎/框架与浏览器的候选和版本边界。专业执行能力仍使用当前真实可用的 Skill/工具，具体 API 按实际版本查证。
+Existing shared contracts and design references provide record and material responsibilities; [profiles](../profiles/README.md) centrally maintain candidates and version boundaries for common engineering, project structure, engines/frameworks, and browsers. Specialized execution still uses currently available Skills/tools; verify specific APIs against actual versions.
 
-规则、调用指引和文档一致性核对不等于引擎适配实跑。安装、升级、宿主发现与已有新旧项目有界试点的覆盖见[发行验证记录](https://github.com/immortalbeating/gamecaden/blob/v0.1.3/docs/validation.md)；各结果保留其原版本与范围，不外推为所有引擎、宿主或项目均已通过。本次执行仍按真实消费者、环境和交付承诺取证。
+Rules, calling guidance, and document-consistency checks are not actual engine-adaptation runs. See [release validation records](https://github.com/immortalbeating/gamecaden/blob/v0.1.3/docs/validation.md) for installation, upgrades, host discovery, and bounded pilots with existing new and old projects; each result retains its original version and scope, without extrapolation to all engines, hosts, or projects. Current execution still collects evidence for real consumers, environments, and delivery commitments.

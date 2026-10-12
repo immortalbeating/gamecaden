@@ -1,43 +1,49 @@
-# Cocos Creator 工程 profile
+<a id="cocos-creator-工程-profile"></a>
+# Cocos Creator engineering profile
 
-## 触发与版本边界
+<a id="触发与版本边界"></a>
+## Triggers and version boundaries
 
-实际运行根采用 Cocos Creator，或当前设计已经选定它时读取。先查实际 Creator/engine 版本、入口场景、模块、渲染/物理设置、插件和目标平台。本轮机制资料使用 3.8 LTS；2.x、4.x 或其他现场版本先核对对应机制，不要求升级。
+Read this when the actual runtime root uses Cocos Creator, or the current design has selected it. First check the actual Creator/engine version, entry scene, modules, rendering/physics settings, plugins and target platform. Mechanism documentation in this round uses 3.8 LTS; check corresponding mechanisms first for 2.x, 4.x or other local versions, without requiring an upgrade.
 
-目标平台与引擎分别确认。浏览器目标叠加 [Web](../platforms/web.md)，其它明确目标核对现场构建/运行条件和对应官方资料，预览与实际产物分别留证。Cocos2d-x 与 Creator 也不凭名称合并为同一种工程。
+Confirm target platform and engine separately. Browser targets add [Web](../platforms/web.md); for other explicit targets, check local build/runtime conditions and corresponding official documentation, retaining separate evidence for preview and actual outputs. Do not merge Cocos2d-x and Creator into one project type based on their names.
 
-## 需现场识别的事实
+<a id="需现场识别的事实"></a>
+## Facts to identify in the project
 
-- 当前项目配置、实际编辑器与运行引擎版本、启动 Scene、构建目标和输出；只交设计且尚无工程时保留这些运行事实未知。
-- 当前对象是 Scene/Prefab 资源、Node/Component 实例、共享 Asset、普通 TS 模型还是构建适配代码；编辑来源与真实消费者是什么。
-- 节点/组件启停、场景切换、池化、外部事件、平台前后台、动态加载和资源持有的实际关系。
-- 命中资源的 `.meta`、UUID/子资源、属性接线、Bundle/路径/类型、远程资源与平台缓存来源。
+- Current project configuration, actual editor and runtime engine versions, startup Scene, build target and output; when delivering only a design without a project, retain these runtime facts as unknown.
+- Whether the current object is a Scene/Prefab resource, Node/Component instance, shared Asset, ordinary TS model or build adaptation code; its editing source and actual consumer.
+- Actual relationships among node/component enable/disable, scene switching, pooling, external events, platform foreground/background behavior, dynamic loading and resource ownership.
+- Affected resources' `.meta`, UUID/sub-assets, property wiring, Bundle/path/type, remote resources and platform cache sources.
 
-## 条件规则
+<a id="条件规则"></a>
+## Conditional rules
 
-规则性质按 [shared/rules](../../shared/rules.md)。必要结果在命中时成立；默认组织允许满足同一用途的替代方法。
+Rule nature follows [shared/rules](../../shared/rules.md). Required outcomes apply when triggered; default organization permits alternatives serving the same purpose.
 
-| ID | 性质与触发 | 要求或默认做法 | 可观察核对 |
+| ID | Nature and trigger | Requirement or default approach | Observable checks |
 |---|---|---|---|
-| COCOS-ROOT | 必要：接入或确认实际工程 | 从真实配置/Editor、入口与目标识别版本和运行根；不能用预定引擎或安装目录替代工程事实。 | 可定位当前来源和目标产物；没有工程时只报告选定的设计目标。 |
-| COCOS-COMPOSITION | 必要：新 Scene/Prefab、复用对象或结构变化 | 按[结构专题](../references/cocos-structure.md)区分保存资源、Node、Component 与普通模型；明确装配、依赖、编辑和实际类型。 | 保存/重新加载、Prefab 实例接线与必要独立实例符合设计；目录/节点数量不作为合格证明。 |
-| COCOS-STATE | 必要：共享配置、跨场景或多实例状态 | 区分共享 Asset/定义与每实例/本局可变状态；常驻节点或已有局模型按实际寿命持有，明确新局重置。 | 修改一实例不会误改其他实例；切换和新局保留/清零符合原设计。 |
-| COCOS-LIFE | 必要：启停、池化、切场景、监听或异步变化 | 区分 onLoad/start、onEnable/onDisable、onDestroy 与普通对象/平台作业；按真实活动范围管理自己的外部回调和晚到结果。 | 禁用/重启、入池/取出、切换后调用次数及旧结果符合设计；销毁请求与实际回收分别确认。 |
-| COCOS-IDENTITY | 必要：资源移动、改名、复制或导入 | 保持原资产的 `.meta`/UUID 与实际子资源引用；新独立资产副本取得独立身份。查明缺失/冲突后按可靠编辑/恢复流程处理。 | 受影响 Scene/Prefab/组件字段和动态加载仍指向正确资源，无意外缺失或重复身份。 |
-| COCOS-ASSETS | 必要：动态加载、Bundle 或释放共享资产 | 定位 path/type/Bundle/消费者，区分预加载、加载、实例化与接入。按静态/动态引用和共享寿命选择持有与释放；直接 release 系列不能当安全引用检查。 | 晚到/失败/重进不回写旧消费者；退出一方后其他消费者仍有效，需要释放的对象/资源不累积。 |
-| COCOS-UI | 必要：UI 布局、相机、输入或适配变化 | 按 Canvas/RenderRoot2D、UITransform、Widget/Layout、Camera/layer 等实际职责组织；布局、显示和输入各有清楚来源。 | 目标尺寸、安全区域、遮罩/弹窗、相机和触摸下位置及命中正确；仅挂 Canvas 不证明可见或可操作。 |
-| COCOS-TARGET | 必要：本次承诺目标产物或平台接入 | 对照现场版本与实际目标核对构建、模块、资源和命中能力，Editor/Web 预览、目标构建与交付入口分别留证。 | 从真实交付入口观察本次用户路径，证据标明版本、环境与实际覆盖。 |
+| COCOS-ROOT | Required: adopting or confirming an actual project | Identify version and runtime root from actual configuration/Editor, entry and target; a planned engine or installation directory cannot substitute for project facts. | Current sources and target outputs can be located; without a project, report only the selected design target. |
+| COCOS-COMPOSITION | Required: new Scene/Prefab, reusable objects or structural changes | Distinguish saved resources, Node, Component and ordinary models according to the [structure topic](../references/cocos-structure.md); clarify assembly, dependencies, editing and actual types. | Save/reload, Prefab instance wiring and necessary independent instances match the design; directory/node counts do not prove compliance. |
+| COCOS-STATE | Required: shared configuration, cross-scene or multi-instance state | Distinguish shared Asset/definitions from per-instance/current-session mutable state; persistent nodes or existing session models hold it according to actual lifetime, with explicit new-session reset. | Modifying one instance does not unintentionally change others; retention/clearing on switching and new sessions follows the original design. |
+| COCOS-LIFE | Required: enable/disable, pooling, scene switching, listener or asynchronous changes | Distinguish onLoad/start, onEnable/onDisable, onDestroy and ordinary objects/platform jobs; manage own external callbacks and late results according to actual active scope. | After disable/restart, pool return/retrieval and switching, call counts and old results match the design; confirm destruction requests and actual reclamation separately. |
+| COCOS-IDENTITY | Required: moving, renaming, copying or importing resources | Preserve the original asset's `.meta`/UUID and actual sub-asset references; new independent asset copies receive independent identity. Investigate missing/conflicting identities, then use a reliable editing/recovery process. | Affected Scene/Prefab/component fields and dynamic loading still point to correct resources, without unexpected missing resources or duplicate identities. |
+| COCOS-ASSETS | Required: dynamic loading, Bundle or releasing shared assets | Locate path/type/Bundle/consumers; distinguish preloading, loading, instantiation and integration. Choose retention/release based on static/dynamic references and shared lifetime; direct release methods are not safe reference checks. | Late/failed/re-entry results do not write back to old consumers; other consumers remain valid after one exits, and objects/resources that require release do not accumulate. |
+| COCOS-UI | Required: UI layout, camera, input or adaptation changes | Organize by actual responsibilities of Canvas/RenderRoot2D, UITransform, Widget/Layout, Camera/layer, etc.; layout, display and input each have clear sources. | Position and hit detection are correct at target sizes, safe areas, masks/dialogs, cameras and touch conditions; merely attaching Canvas does not prove visibility or operability. |
+| COCOS-TARGET | Required: this commitment includes target outputs or platform integration | Check builds, modules, resources and relevant capabilities against the local version and actual target; retain separate evidence for Editor/Web previews, target builds and delivery entry. | Observe this user path from the actual delivery entry, with evidence identifying version, environment and actual coverage. |
 
-## 与现有职责交接
+<a id="与现有职责交接"></a>
+## Handoff to existing responsibilities
 
-init 定位真实或预定引擎及平台；design 把命中的组成/寿命/编辑与观察写入原设计，读取[结构专题](../references/cocos-structure.md)。develop/assets 修改真实制作源与消费者，按[资产交接](../../shared/asset-handoff.md)保留候选、接受、选用与运行接入的范围。verify/close 复用原 Task/Evidence/Decision，补实际变更涉及的保存、实例、启停、切换及目标产物证据。
+init locates the actual or planned engine and platform; design writes relevant composition/lifetime/editing/observation into the original design and reads the [structure topic](../references/cocos-structure.md). develop/assets modify actual production sources and consumers, preserving the scope of candidate, acceptance, selection and runtime integration under [asset handoff](../../shared/asset-handoff.md). verify/close reuse original Task/Evidence/Decision records and add evidence for saves, instances, enable/disable, switching and target outputs affected by actual changes.
 
-已有工程与编辑方法能完成本次交付时复用；缺陷来自错误状态或寿命边界时，就近处理必要范围。纯文字快改只取显示与原收尾要求，不全量重建场景/Bundle/平台链。
+Reuse existing projects and editing methods when they can deliver this work; when a defect comes from incorrect state or lifetime boundaries, address the necessary scope locally. Text-only quick changes take only display and original closeout requirements, without rebuilding the entire scene/Bundle/platform chain.
 
-## 官方来源与本轮范围
+<a id="官方来源与本轮范围"></a>
+## Official sources and scope of this round
 
-- [节点和组件](https://docs.cocos.com/creator/3.8/manual/zh/concepts/scene/node-component.html)、[项目结构](https://docs.cocos.com/creator/3.8/manual/zh/getting-started/project-structure/index.html)、[资源工作流](https://docs.cocos.com/creator/3.8/manual/zh/asset/asset-workflow.html)：对象、制作来源与资产身份。
-- [生命周期](https://docs.cocos.com/creator/3.8/manual/zh/scripting/life-cycle-callbacks.html)、[场景切换](https://docs.cocos.com/creator/3.8/manual/zh/scripting/scene-managing.html)、[资源释放](https://docs.cocos.com/creator/3.8/manual/zh/asset/release-manager.html)：回调、常驻范围与资源引用机制。
-- [Canvas](https://docs.cocos.com/creator/3.8/manual/zh/ui-system/components/editor/canvas.html)：UI/相机边界；具体构建目标在其实际承诺成立后核对对应版本资料。
+- [Nodes and components](https://docs.cocos.com/creator/3.8/manual/zh/concepts/scene/node-component.html), [Project structure](https://docs.cocos.com/creator/3.8/manual/zh/getting-started/project-structure/index.html), [Asset workflow](https://docs.cocos.com/creator/3.8/manual/zh/asset/asset-workflow.html): objects, production sources and asset identity.
+- [Lifecycle](https://docs.cocos.com/creator/3.8/manual/zh/scripting/life-cycle-callbacks.html), [Scene switching](https://docs.cocos.com/creator/3.8/manual/zh/scripting/scene-managing.html), [Resource release](https://docs.cocos.com/creator/3.8/manual/zh/asset/release-manager.html): callbacks, persistence scope and resource reference mechanisms.
+- [Canvas](https://docs.cocos.com/creator/3.8/manual/zh/ui-system/components/editor/canvas.html): UI/camera boundaries; check version-specific documentation for a particular build target once it becomes an actual commitment.
 
-资料核对日期：2026-10-01。事实来源如上，组织默认和验收选择属于 Gamecaden；本轮没有运行 Creator/游戏、构建目标包或验证平台 SDK，也不证明市场使用排名。
+Documentation checked: 2026-10-01. Factual sources are listed above; organizational defaults and acceptance choices belong to Gamecaden. This round did not run Creator/games, build target packages or validate platform SDKs, and does not establish market usage rankings.

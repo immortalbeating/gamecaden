@@ -52,7 +52,7 @@ def build_relations(gov):
                 step_key = 'step:' + hashlib.sha256(canonical([row['path'], definition['id'], step['id']]).encode()).hexdigest()
                 item = {k: step[k] for k in ('id', 'title', 'action')}
                 item.update(key=step_key, group=step.get('group'), target_key=None,
-                            status='unknown', reason='尚未定义前提', condition_keys=[],
+                            status='unknown', reason='Prerequisites are not defined', condition_keys=[],
                             predecessor_keys=[], affected_keys=[], requires=None)
                 flow['steps'].append(item)
                 gov.add({**item, 'kind': 'step', 'source_key': flow['source_key'],
@@ -88,8 +88,8 @@ def build_relations(gov):
                         seen.add(current);frontier.extend(graph[current])
             visiting, done = [], set(cycles)
             for identity in cycles:
-                steps[identity].update(status='unknown',reason='步骤前提存在循环')
-                gov.diagnostic('cyclic_steps','流程步骤前提存在循环',steps[identity]['key'])
+                steps[identity].update(status='unknown',reason='Step prerequisites contain a cycle')
+                gov.diagnostic('cyclic_steps','Flow step prerequisites contain a cycle',steps[identity]['key'])
 
             def expression(expr, step):
                 kind = next(iter(expr))
@@ -98,7 +98,7 @@ def build_relations(gov):
                 if kind in ('all', 'any'):
                     children = [expression(child, step) for child in value]
                     result[kind] = children
-                    result.update(state=combine(kind, [c['state'] for c in children]), reason='按声明组合当前适用前提')
+                    result.update(state=combine(kind, [c['state'] for c in children]), reason='Combine currently applicable prerequisites as declared')
                 elif kind == 'condition':
                     key = resolve(value, base, flow['source_key']); result['key'] = key
                     condition = conditions.get(key)
@@ -106,17 +106,17 @@ def build_relations(gov):
                         step['condition_keys'].append(key)
                         gov.edge(step['key'], key, 'requires')
                     if condition is None:
-                        result['reason'] = '引用未定位到当前条件'
+                        result['reason'] = 'Reference does not resolve to a current condition'
                     elif condition['authority'] != 'effective' or condition['strength'] != 'required':
-                        result['reason'] = '条件不是生效的必要约束'
+                        result['reason'] = 'Condition is not an effective required constraint'
                     elif step['target_key'] not in condition['applies_to'] or condition['action'] != step['action']:
-                        result['reason'] = '条件对象或动作与本步骤不匹配'
+                        result['reason'] = 'Condition subject or action does not match this step'
                     else:
                         result.update(state=condition['state'], reason=condition['reason'])
                 else:
                     predecessor = steps.get(value)
                     if predecessor is None:
-                        result['reason'] = '同一流程中缺少引用步骤'
+                        result['reason'] = 'Referenced step is missing from the same flow'
                         gov.diagnostic('unresolved_step', result['reason'] + ': ' + value, step['key'])
                     else:
                         result['key'] = predecessor['key']
@@ -131,7 +131,7 @@ def build_relations(gov):
                     return
                 if step_id in visiting:
                     cycles.update(visiting[visiting.index(step_id):])
-                    gov.diagnostic('cyclic_steps', '流程步骤前提存在循环', steps[step_id]['key'])
+                    gov.diagnostic('cyclic_steps', 'Flow step prerequisites contain a cycle', steps[step_id]['key'])
                     return
                 visiting.append(step_id)
                 step = steps[step_id]
@@ -140,12 +140,12 @@ def build_relations(gov):
                     step['requires'] = expression(expr, step)
                     step.update(status=step['requires']['state'], reason=step['requires']['reason'])
                 if step_id in cycles:
-                    step.update(status='unknown', reason='步骤前提存在循环')
+                    step.update(status='unknown', reason='Step prerequisites contain a cycle')
                 if flow['authority'] != 'effective':
-                    step.update(status='unknown', reason='流程尚非生效定义')
+                    step.update(status='unknown', reason='Flow definition is not effective')
                 target = gov.nodes.get(step['target_key'], {})
                 if target.get('kind') not in ('task', 'epic', 'asset'):
-                    step.update(status='unknown', reason='步骤没有匹配的真实作用对象')
+                    step.update(status='unknown', reason='Step has no matching actual subject')
                 visiting.pop(); done.add(step_id)
 
             # Mark the whole cyclic component before evaluating any expression;
@@ -154,7 +154,7 @@ def build_relations(gov):
                 expr=definitions[step_id].get('requires')
                 if expr:
                     steps[step_id]['requires']=expression(expr,steps[step_id])
-                    steps[step_id]['requires'].update(state='unknown',reason='步骤前提存在循环')
+                    steps[step_id]['requires'].update(state='unknown',reason='Step prerequisites contain a cycle')
             for step_id in steps:
                 evaluate(step_id)
             # Affected means transitive reference, never an automatic blocking action.

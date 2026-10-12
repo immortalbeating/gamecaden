@@ -1,65 +1,71 @@
-# 执行中的范围变化、暂缓与废弃
+<a id="执行中的范围变化暂缓与废弃"></a>
+# Scope changes, deferral and abandonment during execution
 
-在用户向已有工作增加要求、修改目标、要求暂停或废弃时读取。先理解这条消息与原交付的关系；讨论可能性不自动改变承诺，明确要求增加/修改则按新要求处理，不重复询问同一个决定。
+Read when users add requirements, change goals, request a pause or abandonment of existing work. First understand this message's relationship to original delivery; discussing a possibility does not automatically change commitments. An explicit addition/modification request follows the new requirement, without asking again about the same decision.
 
-先识别变化对象是目标、范围、实现方案还是执行时机。废弃一个方案而保留交付目标时，原 Task 继续换方案；不能只看到“废弃”二字就取消整个工作。对象含义清楚时自行分类，只有实质歧义才澄清。
+First identify whether the changed object is a goal, scope, implementation solution or timing. When a solution is abandoned but the delivery goal retained, continue the original Task with another solution; seeing “abandon” alone does not cancel the entire work. Classify clear objects yourself; clarify only substantive ambiguity.
 
-## 1. 先处理正在发生的工作
+<a id="1-先处理正在发生的工作"></a>
+## 1. Handle ongoing work first
 
-保留用户没有撤销的原目标。对已被明确废弃、暂停或替代的动作，在可控的下一安全点停止推进；有本任务发起的进行中操作时，核对其身份后按工具能力中断或记录返回结果，不影响其他工作。
+Retain original goals that the user has not revoked. Stop advancing explicitly abandoned, paused or replaced actions at the next controllable safe point; for operations started by this task that are still running, check their identity, then interrupt according to tool capability or record returned results, without affecting other work.
 
-新增范围如果与当前动作独立，当前已授权工作可以继续；如果会使当前实现失去意义，先保存现场并重排下一动作。之后把关键变更写回原工作，再推进受影响的新实现。
+When added scope is independent of the current action, currently authorized work can continue; when it makes current implementation meaningless, first save the situation and reorder the next action. Then write key changes back to original work before advancing affected new implementation.
 
-## 2. 同一 Task 还是新 Task
+<a id="2-同一-task-还是新-task"></a>
+## 2. Same Task or a new Task
 
-| 变化性质 | 处理 |
+| Nature of change | Handling |
 |---|---|
-| 澄清要求、修复、补验或改变实现方式，仍是同一个可交付结果 | 更新原 Task，不另建同目标任务 |
-| 增加紧密相关的必要内容，仍适合一起交付和验收 | 扩充原 Task 的范围/验收，保留原 ID；管理需要实质改变时按共同模式规则重判 |
-| 新内容能独立交付、验收或交接 | 建立独立 Task；有共同范围与集成需要时由 Epic 统筹，不因“顺便”混入原任务 |
-| 原来一个工作扩展成多个独立结果 | 按真实交付拆分；需要时建 Epic，原 Task 可保留为一个明确子交付，记录拆分对应 |
-| 原交付被另一件事替代，继续沿用原 ID 会混淆其含义 | 未完成的原 Task 记录 cancelled 和替代去向，新目标建立适当 Task；已完成旧任务保留历史完成 |
-| 用户明确不要整个未完成交付 | 原 Task 取消，保留已发生结果、原因及受影响依赖 |
-| 只取消原 Task 的一部分 | 更新原范围和剩余验收，保留仍应完成的工作，不自动取消整个 Task |
+| Clarifying requirements, repairing, supplementing verification or changing implementation method while retaining the same deliverable result | Update the original Task; do not create another task with the same goal |
+| Adding closely related necessary content still suitable for joint delivery and acceptance | Expand original Task scope/acceptance and retain its ID; reassess under common mode rules when management needs materially change |
+| New content can be independently delivered, accepted or handed off | Create an independent Task; coordinate through an Epic when common scope and integration require it; do not mix it into the original task merely because it is “while you are at it” |
+| One original work expands into multiple independent results | Split according to actual delivery; create an Epic if needed. The original Task may remain one explicit subdelivery; record the split mapping |
+| Another work replaces the original delivery and retaining its ID would confuse its meaning | Record cancelled and the replacement destination in unfinished original Task, with an appropriate Task for the new goal; preserve historical completion of completed old tasks |
+| User explicitly no longer wants the entire unfinished delivery | Cancel the original Task, retaining results already obtained, reasons and affected dependencies |
+| Only part of the original Task is cancelled | Update original scope and remaining acceptance; retain work still required without automatically cancelling the entire Task |
 
-依据是交付是否仍然相同、能否独立验收以及协调需要，不按修改文件数、字数或开发时长机械分类。大幅改实现也可能仍是同一交付；只加一句要求也可能引入一个独立系统。
+Judge whether delivery remains the same, whether it can be independently accepted and what coordination requires; do not mechanically classify by file count, word count or development time. Major implementation changes may still be the same delivery; a single added requirement may introduce an independent system.
 
-来自旧系统的工作按其真实生命周期表达相同含义，不强行套用新格式。调整工作归属不自动扩大对其他任务或目录的修改授权。
+Express the same meaning through the actual lifecycle of work from old systems, without forcing new formats. Changing work ownership does not automatically expand authorization to modify other tasks or directories.
 
-## 3. 暂缓与取消分别保存
+<a id="3-暂缓与取消分别保存"></a>
+## 3. Save deferral and cancellation separately
 
-暂缓表示工作仍保留，但当前不得按原计划继续。沿用现有 planned/active 生命周期，在原 Task 的“当前续接/推进限制”写明用户指示、范围和恢复条件；必要时在重要历史中保留这个决定。不为此新增另一套暂停任务或把状态伪装成 closed。
+Deferral means work remains, but currently must not continue under its original plan. Retain the existing planned/active lifecycle and state the user instruction, scope and resumption conditions in the original Task's “Current continuation/advancement constraints”; retain this decision in important history as needed. Do not create another set of paused tasks or disguise status as closed.
 
-暂缓的已承诺工作仍由原 Task/Epic 承接，不能丢进停车场后变成可做可不做的想法。
+Deferred committed work still belongs to its original Task/Epic; do not put it into a parking lot and make it an optional idea.
 
-例：`推进限制：用户暂缓本任务，明确恢复该项前不继续其实现；恢复后先核对当前候选与接入现场。`
+Example: `Advancement constraint: The user deferred this task; do not continue its implementation until explicitly resumed. After resumption, first check the current candidate and integration situation.`
 
-恢复选择不能只看 active。泛泛的“继续项目”不自动解除对某项工作的明确暂缓；用户明确说继续该任务时，可以解除该用户暂缓，但原本适用的验证、接受等条件仍需判断。
+Resumption selection cannot rely on active alone. A general “continue the project” does not automatically lift explicit deferral of particular work; explicit continuation of that task can lift the user deferral, but originally applicable conditions such as verification and acceptance must still be judged.
 
-取消表示不再兑现该未完成目标，默认保留 Task 及历史并使用 cancelled。取消不自动删除代码/素材、回滚已采用内容、撤销另一范围的批准或清理脏工作区。用户同时明确要求撤销本任务改动时，核对实际差异与归属后处理指定范围，保留其他修改。
+Cancellation means the unfinished goal will no longer be fulfilled; retain the Task and history by default and use cancelled. Cancellation does not automatically delete code/materials, roll back adopted content, revoke approval in another scope or clean a dirty workspace. When users also explicitly request reversal of this task's changes, check actual differences and ownership before handling the specified scope, preserving other changes.
 
-用户后来明确恢复同一个被取消的交付时，可以重开原 Task 并保存恢复理由、当前范围与原取消历史；若后来要做的已是另一种交付，则使用新 Task。两者都不会由泛泛的“继续项目”自动推断。
+When users later explicitly resume the same cancelled delivery, reopen the original Task as appropriate and save reasons, current scope and original cancellation history; if the later work is a different delivery, use a new Task. Neither is inferred automatically from a general “continue the project”.
 
-## 4. 同步真正受影响的内容
+<a id="4-同步真正受影响的内容"></a>
+## 4. Synchronize actually affected content
 
-在原 Task 中简记原范围到新范围的关键变化、依据和去向；同步当前目标、验收、计划和下一步。普通局部变化无需另建 Decision 文件；具有独立适用/追溯需求的决定按共同记录规则保存。
+Briefly record key changes from original to new scope, grounds and destinations in the original Task; synchronize current goals, acceptance, plan and next step. Ordinary local changes do not need another Decision file; save decisions with independent applicability/traceability needs under common record rules.
 
-- 当前任务的方案变更：更新本 Task/设计/唯一计划。
-- 大型方案的 Epic 分解或 Stage 编排改变：更新原 [PDP](../../../shared/phased-development.md) 与受影响工作，保留旧新去向；实施方法变化不自动重写 Vision 或产品里程碑。
-- 跨 Task 的共同约定或长期生效规则改变：对齐相关 Epic/当前 Spec 及领域来源的范围与决定，并协调受影响工作；目标方案与实现基线分别说明。
-- 完整游戏目标、核心体验、设计支柱或边界改变：更新 index 指定的当前 Vision，检查真正受影响的 Spec、Roadmap 和工作；原输入方案保留其版本/历史身份。
-- 承诺成果、先后或必要前提改变：更新当前 Roadmap，实施步骤与任务状态仍归原工作。局部功能/角色/关卡设计只在实际改变上层方向或成果安排时更新这些正文。
-- 有效检查/采用结果改变产品成果或当前整体判断：同步 Roadmap 摘要和原 Evidence/Decision 引用，不等全部 Epic 收尾才校准；Stage 内结果仍归原工作与对应 PDP。
-- 尚在讨论的方向：保存为候选或原工作未决项，确定采用后才更新当前结论；已明确承诺但尚未实现的目标继续归 Vision/Roadmap。
-- 版本、输入或验收改变：重新判断相关 Evidence/Decision 的适用性，保留历史结果，不把旧通过直接改成新通过。
-- 取消或拆分影响下游：明确哪些承诺不再提供、哪些已交付结果仍可使用，以及需要改指向的依赖；不因取消一个任务就抹去其全部有效历史。
+- Solution changes in the current task: update this Task/design/sole plan.
+- Changed Epic decomposition or Stage arrangement of a large solution: update original [PDP](../../../shared/phased-development.md) and affected work, retaining old/new destinations; implementation method changes do not automatically rewrite Vision or product milestones.
+- Changed shared agreements across Tasks or long-term effective rules: align scope and decisions in relevant Epic/current Spec and domain sources, coordinating affected work; state target solutions and implementation baselines separately.
+- Changed complete game goal, core experience, design pillars or boundaries: update current Vision designated by index and check actually affected Spec, Roadmap and work; original input solutions retain their version/historical identity.
+- Changed committed outcomes, ordering or necessary prerequisites: update current Roadmap; implementation steps and task status still belong to original work. Local feature/character/level design updates these primary documents only when it actually changes upper-level direction or outcome arrangements.
+- Valid check/adoption results change product outcomes or current overall judgment: synchronize Roadmap summaries and original Evidence/Decision references promptly, without waiting for every Epic to close; results within a Stage still belong to original work and corresponding PDP.
+- Directions still under discussion: save as candidates or unresolved points in original work; update current conclusions only after adoption is determined. Explicitly committed but unimplemented goals remain in Vision/Roadmap.
+- Changed version, input or acceptance: reassess applicability of relevant Evidence/Decision, retain historical results, and do not directly change an old pass into a new pass.
+- Cancellation or splitting affects downstream work: specify which commitments are no longer supplied, which delivered results remain usable and which dependencies need new targets; cancelling one task does not erase all valid history.
 
-用户已经明确要求的变化直接落到相应记录。只有影响含义、边界或权限的关键歧义仍无法查明时才澄清；文件名、记录 ID 等常规维护由模型处理。
+Changes explicitly requested by the user go directly into corresponding records. Clarify only when key ambiguity affecting meaning, boundaries or permissions cannot be ascertained; the model handles ordinary maintenance such as filenames and record IDs.
 
-未指定的局部表现或实现细节不自动成为用户必须决策的门槛。先调查现有约定，能够用合理默认满足原结果的就直接选择并说明必要取舍；只有不同选择会实质改变用户结果、兼容性或约定成本时才询问。用户已经要求更换实现方案时，沿用相应设计实现授权，不再要求一次笼统的“授权模型自行选择”。
+Unspecified local presentation or implementation details do not automatically become a gate requiring user decisions. Investigate existing agreements first; directly select reasonable defaults that satisfy original results and explain necessary tradeoffs. Ask only when choices materially change user outcomes, compatibility or agreed costs. When users already request a replacement implementation, retain corresponding design/implementation authorization without requesting blanket “authorization for the model to choose for itself” again.
 
-## 5. 让下一次会话看见新要求
+<a id="5-让下一次会话看见新要求"></a>
+## 5. Make new requirements visible to the next session
 
-范围改变、明确暂缓或取消时及时保存原 Task 的当前说明，不能只在聊天中说“收到”。保存应在推进受影响实现之前完成；紧急停止时优先停止不再允许的副作用，再补记录。
+Promptly save the original Task's current description at scope changes, explicit deferral or cancellation; saying “received” only in chat is insufficient. Save before advancing affected implementation; for an emergency stop, stop disallowed side effects first, then complete records.
 
-意外中断前尚未保存的讨论或结果可能无法完整恢复。下次从最后保存的记录和实际改动核对；可访问的原对话用于补充，无法查证的关键事实如实标明，不猜测用户已经批准或取消。
+Discussion or results unsaved before an unexpected interruption may not be fully recoverable. Next time, check against last saved records and actual changes; accessible original conversation supplements them. Mark unverifiable key facts honestly without guessing that users approved or cancelled anything.

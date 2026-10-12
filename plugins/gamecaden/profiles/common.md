@@ -1,45 +1,50 @@
-# 通用游戏工程规则
+<a id="通用游戏工程规则"></a>
+# Common game engineering rules
 
-用于本次确实改变游戏行为、内容接入或运行交付的工作。按下面触发条件选择条目；工程规模、文件数、Task 模式不单独决定验证深度。纯讨论先形成相应设计，执行已获授权时继续落实实际结果。
+For work that actually changes game behavior, content integration or runtime delivery. Select entries using the triggers below; project size, file count and Task mode alone do not determine validation depth. Pure discussion first forms the corresponding design; when execution is authorized, continue to implement actual results.
 
-材料要求由 [material-requirements](../shared/material-requirements.md) 拥有；记录和验证语义见 [records](../shared/records.md)、[verification](../shared/verification.md)。此处补充游戏工程容易遗漏的消费者、状态和时序约束。
+[material-requirements](../shared/material-requirements.md) owns material requirements; see [records](../shared/records.md) and [verification](../shared/verification.md) for record and validation semantics. This page adds consumer, state and timing constraints easily missed in game engineering.
 
-这些条目把可迁移的开发经验与适用机制转为判断依据，帮助设计和实现朝已定玩法/体验推进。纳入、来源与当前有效性按 [profiles](README.md)复核；必要结果保持清楚，方法由项目与模型选择。格式齐全、场景拆分或技术通过只支持对应范围，目标游戏是否符合预期还需其实际机制、玩家路径及必要接受。
+These entries turn transferable development experience and applicable mechanisms into a basis for judgment, helping design and implementation advance toward established gameplay/experience. Review inclusion, sources and current applicability under [profiles](README.md); keep required outcomes clear while projects and models choose methods. Complete formatting, scene separation or technical success supports only the corresponding scope; whether the target game meets expectations still requires its actual mechanisms, player paths and necessary acceptance.
 
-## 工程与玩法
+<a id="工程与玩法"></a>
+## Engineering and gameplay
 
-| ID | 触发 | 要求或默认做法 | 可观察核对 |
+| ID | Trigger | Requirement or default approach | Observable checks |
 |---|---|---|---|
-| GAME-OWNER | 新机制、跨界面/场景状态或同一数据有多个消费者 | **必要**：能从玩家输入追到唯一写入责任、状态变化及显示/保存消费者。表现状态可局部拥有；**默认**以清楚的接口组合职责，不限定 ECS、MVC、事件总线或固定场景数量。 | 改动入口确实触发目标状态；其他读取方获得同一事实；局部视图销毁不错误清空应保留的游戏数据。 |
-| GAME-LIFETIME | 进入/退出、失败重试、暂停、重复加载或异步返回 | **必要**：本轮/场景/全局对象的存活范围清楚；创建方管理自己增加的外部订阅、异步作业与临时状态，按引擎真实自动清理语义处理。 | 再次进入、重开或取消后不会重复触发、残留输入、旧回调覆盖新状态；退出时处理当前需保留的结果。 |
-| GAME-TIME | 移动、战斗、计时、动画驱动事件、暂停或离线成长受影响 | **必要**：说明谁拥有规则时间，表现与规则如何同步，暂停/恢复怎样处理。**默认**使用适合本玩法的引擎时序；固定步长、确定性重放或离线补算只有实际需要时引入。 | 在本次相关的帧率、暂停、后台或重开条件下，检查结果符合规则；用实际触发验证音画与命中，不以动画存在证明事件已接线。 |
-| GAME-SPACE | 地图、相机、碰撞、导航、角色尺度或输入坐标受影响 | **必要**：设计空间、运行坐标及显示转换能对应；素材外观与碰撞/导航各有可核对来源。 | 在实际入口、能力状态和相机下走目标路线；局部位置注入可诊断，验收自然可达性时仍需真实玩家路径。 |
-| GAME-STRUCTURE | 新独立页面/关卡、复用主体、跨生命周期状态或编辑方式变化 | **必要**：在相关实现前，明确真实类型与组成、状态权威来源、创建/结束/重置、外部依赖及编辑/观察方法；已有有效设计可复用。具体表达按[结构约定](references/structure-contract.md)，引擎机制由对应专题落实。 | 对照真实保存/声明来源与运行消费者，按命中范围查多实例、切换、重入和编辑能力；不凭文件数或空管理器判断模块化。 |
+| GAME-OWNER | New mechanics, cross-interface/scene state or multiple consumers of the same data | **Required**: Player input can be traced to a single writing responsibility, state changes and display/save consumers. Presentation state may be locally owned; **default**: compose responsibilities through clear interfaces, without mandating ECS, MVC, event buses or a fixed scene count. | The changed entry actually triggers target state; other readers receive the same fact; destroying a local view does not incorrectly clear game data that should persist. |
+| GAME-LIFETIME | Entry/exit, failure retry, pause, repeated loading or asynchronous return | **Required**: Current-session/scene/global object lifetimes are clear; creators manage the external subscriptions, asynchronous jobs and temporary state they add, following the engine's actual automatic cleanup semantics. | Re-entry, restart or cancellation does not cause duplicate triggers, leftover input or old callbacks overwriting new state; handle results that currently need retention on exit. |
+| GAME-TIME | Movement, combat, timing, animation-driven events, pause or offline progression is affected | **Required**: Explain who owns rule time, how presentation and rules synchronize, and how pause/resume is handled. **Default**: use engine timing suitable for this gameplay; introduce fixed timesteps, deterministic replay or offline catch-up only when actually needed. | Under relevant frame-rate, pause, background or restart conditions, results follow the rules; validate audiovisual effects and hits through actual triggers, rather than treating animation existence as proof of event wiring. |
+| GAME-SPACE | Maps, cameras, collision, navigation, character scale or input coordinates are affected | **Required**: Design space, runtime coordinates and display conversions correspond; asset appearance and collision/navigation each have checkable sources. | Follow the target route through actual entry, ability state and camera; local position injection may diagnose issues, but acceptance of natural reachability still needs actual player paths. |
+| GAME-STRUCTURE | New independent pages/levels, reusable entities, cross-lifecycle state or editing changes | **Required**: Before relevant implementation, clarify actual types and composition, authoritative state sources, creation/end/reset, external dependencies and editing/observation methods; reuse valid existing designs. Expression follows the [structure contract](references/structure-contract.md), with engine mechanisms implemented by corresponding topics. | Compare actual saved/declared sources with runtime consumers; check multi-instance, switching, re-entry and editing capabilities within applicable scope; file counts or empty managers do not establish modularity. |
 
-重复进入并非固定跑任意 N 次的门禁；次数、对象数量和观察点应足以暴露本次相关的残留与串扰。没有跨场景状态的简单游戏也无需预建全局状态服务。
+Repeated entry is not a gate requiring an arbitrary fixed N runs; repetition count, object count and observation points should suffice to expose relevant residual behavior and interference. Simple games without cross-scene state need not prebuild a global state service.
 
-## 内容、体验与持久化
+<a id="内容体验与持久化"></a>
+## Content, experience and persistence
 
-| ID | 触发 | 要求或默认做法 | 可观察核对 |
+| ID | Trigger | Requirement or default approach | Observable checks |
 |---|---|---|---|
-| GAME-CONTENT | 更换/生成用于运行的角色、地图、动作、特效、声音、模型或配置 | **必要**：按 [资产交接](../shared/asset-handoff.md)关联具体候选、用途与消费者；预览和实际运行分别检查。替换视觉/音频不应顺带改变未获调整的命中范围、资源键、时序或玩法数值。 | 实际消费者加载正确版本，比例/方向/锚点/时间或附着位置符合当前设计；旧引用和回退行为在受影响范围内可解释。 |
-| GAME-EXPERIENCE | 玩家旅程、UI 层级、控制方式或反馈变化 | **必要**：关键动作能被发现、执行并得到结果，返回/暂停/取消有一致归属；按真实目标设备和显示条件检查。**默认**用最少且充分的路径覆盖本次变化。 | 从用户实际入口经过本次操作到可观察结果；静态图只支持画面主张，不能证明后续交互。 |
-| GAME-PERSISTENCE | 存档、成长、奖励、装备、经济或跨关卡结果受影响 | **必要**：清楚区分运行状态、持久存储和重建视图；保存/加载/重置及重复操作的语义由既有规则决定。旧数据格式变化时说明兼容、迁移或回退。 | 用隔离测试数据走变更→保存→重载→实际消费者，检查相关中断/重复路径。涉及防重复领取时验证重复请求；不能只看内存数值或假存储。 |
-| GAME-SUPPLY | 引入第三方内容、插件、生成服务或新增生产链影响交付 | **必要**：保留来源、适用许可/使用条件和实际加工关系，识别输入、生成物与运行产物的拥有者。费用、外部写入和工具使用按已有授权处理。 | 文件可追溯并能被本项目使用；生成日志/许可文本不代替文件与消费者检查。纯自制局部修复不增加采购审查。 |
+| GAME-CONTENT | Replacing/generating runtime characters, maps, actions, effects, sounds, models or configuration | **Required**: Link specific candidates, uses and consumers under [asset handoff](../shared/asset-handoff.md); check preview and actual runtime separately. Visual/audio replacement should not incidentally alter hit areas, resource keys, timing or gameplay values without authorization. | Actual consumers load the correct version; scale/direction/anchor/time or attachment positions match current design; old references and fallback behavior are explainable within affected scope. |
+| GAME-EXPERIENCE | Changes to player journey, UI hierarchy, controls or feedback | **Required**: Key actions can be discovered, performed and produce results; return/pause/cancel have consistent ownership; check actual target devices and display conditions. **Default**: cover these changes with the fewest sufficient paths. | Follow the user's actual entry through this operation to observable results; static images support only visual claims, without proving subsequent interaction. |
+| GAME-PERSISTENCE | Saves, progression, rewards, equipment, economy or cross-level results are affected | **Required**: Clearly distinguish runtime state, persistent storage and reconstructed views; existing rules determine save/load/reset and repeated-operation semantics. Explain compatibility, migration or fallback when old data formats change. | Use isolated test data through change → save → reload → actual consumer, checking relevant interruption/repetition paths. Verify repeated requests when preventing duplicate claims; in-memory values or fake storage alone are insufficient. |
+| GAME-SUPPLY | Third-party content, plugins, generation services or new production pipelines affect delivery | **Required**: Retain sources, applicable licenses/usage conditions and actual processing relationships; identify owners of inputs, generated outputs and runtime outputs. Costs, external writes and tool use follow existing authorization. | Files are traceable and usable by this project; generation logs/license text do not replace file and consumer checks. Purely self-made local fixes do not add procurement review. |
 
-概念探索的消费者可以是设计讨论或风格选择；只有请求包含运行接入时才要求引擎消费者。独立原画工作不因尚无运行场景而被阻止，也不会自动成为正式运行资产。
+Consumers for concept exploration may be design discussion or style selection; require engine consumers only when the request includes runtime integration. Standalone concept-art work is not blocked by absence of runtime scenes and does not automatically become formal runtime assets.
 
-## 规模与交付
+<a id="规模与交付"></a>
+## Scale and delivery
 
-| ID | 触发 | 要求或默认做法 | 可观察核对 |
+| ID | Trigger | Requirement or default approach | Observable checks |
 |---|---|---|---|
-| GAME-SCALE | 明确性能目标，或新增规模、加载/内存压力会影响承诺 | **必要**：目标规模、场景、平台与测量条件匹配当前主张；实际瓶颈决定优化。**默认**先做能回答问题的局部测量，再覆盖已承诺规模。 | 小规模 smoke 只支持小规模；无法执行目标条件时说明缺口，不把降低目标当成优化通过。其他项目单位数/GPU型号不成为本项目阈值。 |
-| GAME-DELIVERY | 请求涉及发行包、目标设备、部署或升级兼容 | **必要**：检查实际交付产物、资源和启动路径；开发服务器/编辑器、导出/构建、外部运行与发布分别留证。 | 从交付入口启动受影响路径，识别产物、平台、依赖与未覆盖范围；普通开发修复不因此全平台打包。Git 动作按 [git-policy](../shared/git-policy.md)处理。 |
+| GAME-SCALE | Explicit performance targets, or added scale/loading/memory pressure affects commitments | **Required**: Target scale, scenario, platform and measurement conditions match the current claim; actual bottlenecks determine optimization. **Default**: first use local measurements that answer the question, then cover committed scale. | Small-scale smoke checks support only small scale; when target conditions cannot be executed, state the gap without treating reduced targets as successful optimization. Other projects' unit counts/GPU models are not this project's thresholds. |
+| GAME-DELIVERY | The request concerns release packages, target devices, deployment or upgrade compatibility | **Required**: Check actual delivery outputs, resources and startup paths; retain evidence separately for development server/editor, export/build, external runtime and release. | Start affected paths from the delivery entry; identify outputs, platforms, dependencies and uncovered scope; routine development fixes do not thereby require all-platform packaging. Git actions follow [git-policy](../shared/git-policy.md). |
 
-## 怎样成为本项目约束
+<a id="怎样成为本项目约束"></a>
+## How these become project constraints
 
-本表说明触发成立时要保住的结果。具体镜头、世界尺度、图件数量、帧数、设备、延迟或性能数值由当前设计和工程事实确定；需要长期固化时写入原 Spec/规则，短期试验假设留在原 Task。
+This table states the outcomes to preserve when triggers apply. Specific cameras, world scales, diagram counts, frame counts, devices, latency or performance values come from current design and engineering facts; write them into original Spec/rules when lasting constraints are needed, while short-term experimental assumptions remain in original Tasks.
 
-某条检查失败时，先判断它是否表达现行有效要求。例如资产数增加后，旧的“总数必须恰好 N”检查应回到必需资产集合和消费者核对；不能删除有效内容来满足过时计数。检查方法与工具可调整，当前承诺及其必要覆盖仍需满足。
+When a check fails, first determine whether it expresses a currently valid requirement. For example, after adding assets, an old "total must equal exactly N" check should return to the required asset set and consumer checks; do not delete valid content to satisfy outdated counts. Check methods and tools may change, but current commitments and their required coverage still must be met.
 
-可复用的已有材料与证据直接引用，仅复核变化真正影响的部分。缺少角色正式生产材料不阻断无关文案快改；对规则的例外和变更沿用 [rules](../shared/rules.md) 的判断与记录位置。
+Reference reusable existing materials and evidence directly, reviewing only genuinely affected parts. Missing formal character production materials do not block unrelated text fixes; exceptions and rule changes follow judgment and recording locations in [rules](../shared/rules.md).

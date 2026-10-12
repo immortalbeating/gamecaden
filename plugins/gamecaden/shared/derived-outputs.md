@@ -1,31 +1,37 @@
-# 派生视图与交接快照
+<a id="派生视图与交接快照"></a>
+# Derived Views and Handoff Snapshots
 
-原 Vision、Spec、Roadmap、PDP、Task/Epic、台账及证据拥有事实。本页统一派生输出的用途、路径和刷新责任，供需要总览、导出或独立交接时读取。
+Original Vision, Spec, Roadmap, PDP, Task/Epic, ledgers, and evidence own the facts. This page unifies the purposes, paths, and refresh responsibilities of derived outputs; read it when an overview, export, or standalone handoff is needed.
 
-## 视图与 views/
+<a id="视图与-views"></a>
+## Views and views/
 
-视图是组织来源的展示；`views/` 是按需保存派生文件的位置。平时通过面板或工具读取实际来源；用户需要分享、离线材料、交接或比较时再保存快照。打开面板不要求先生成文件，初始化和每个 Task 收尾也不默认导出。
+A view presents and organizes sources; `views/` is the location for saving derived files on demand. Normally read actual sources through the panel or tools; save snapshots when the user needs sharing, offline materials, handoff, or comparison. Opening the panel does not require generating files first, and initialization or each Task closure does not export by default.
 
-新输出采用 JSON 数据与 HTML 展示，不增加 Markdown 视图。现有工具 `view.build` 提供 Progress/Timeline/Assets 的 JSON 读模型：不传 output_path 只返回数据，传入受保护的 `.json` 路径才保存。Progress 的 Task/Epic 汇总不等于完整的 Roadmap/PDP 成果树；面板治理模型的读取与适用范围见 [panel-workflow](panel-workflow.md)。不同模型的导出注明其类型和覆盖，不冒称与整个面板相同。
+New outputs use JSON data and HTML presentation, without adding Markdown views. The existing `view.build` tool provides JSON read models for Progress/Timeline/Assets: without output_path it only returns data; it saves only when given a protected `.json` path. Progress Task/Epic summaries are not a complete Roadmap/PDP outcome tree; see [panel-workflow](panel-workflow.md) for reading and applicability of the panel governance model. Exports from different models identify their type and coverage rather than claiming equivalence to the whole panel.
 
-HTML 沿用现有实时面板。独立静态 HTML 导出是单列能力，须由实际支持的导出器从相应快照数据生成并验证范围；当前 view.build 不提供完整面板 HTML 导出。需要 JSON/HTML 对照时使用同批数据、来源版本和解释规则。
+HTML uses the existing live panel. Standalone static HTML export is a separate capability: an actually supported exporter must generate it from the corresponding snapshot data and verify its scope; current view.build does not provide complete panel HTML export. When JSON/HTML comparison is needed, use the same batch of data, source versions, and interpretation rules.
 
-新 JSON 汇总默认可保存为 `views/<view>.json`；用于比较/交接的冻结结果使用 `views/snapshots/<日期时间>-<范围>-<view>.json`，工具保护该目录内的已有文件，新轮次另选路径。真正已有的视图沿用原路径和生成方式，旧 Markdown 汇总可继续读取，不为新输出规则迁移它。未产生文件时不创建空目录或无效链接。
+New JSON summaries may by default be saved as `views/<view>.json`; frozen results for comparison/handoff use `views/snapshots/<date-time>-<scope>-<view>.json`. Tools protect existing files within that directory; choose a different path for a new round. Actual existing views retain their original paths and generation methods; old Markdown summaries may still be read and are not migrated for the new output rules. Do not create empty directories or invalid links when no file has been produced.
 
-输出注明实际项目/范围、模型类型、生成时点、来源修订、诊断和未确认项。所谓最新是最近成功读取的来源版本；读取失败、来源缺失或版本不一致时显示限制/滞后，不标为已是最新。
+Outputs identify the actual project/scope, model type, generation time, source revisions, diagnostics, and unconfirmed items. “Latest” means the most recent successfully read source versions; show limitations/lag when reads fail, sources are missing, or versions are inconsistent, rather than marking them current.
 
-## 刷新与留存
+<a id="刷新与留存"></a>
+## Refresh and Retention
 
-面板沿 [来源更新](panel-workflow.md#阅读与来源更新)检查版本，未变复用、变化合并刷新。持久化的当前汇总在相关来源改变且仍有实际使用时重建；冻结快照保留当时版本，需要新比较时另存轮次。AI 写原事实，生成器写派生文件，不设另一项人工同步任务。
+The panel checks versions following [source updates](panel-workflow.md#reading-and-source-updates), reusing unchanged data and coalescing refreshes on changes. Rebuild persisted current summaries when related sources change and the summaries remain in actual use; frozen snapshots retain their versions at the time, with new rounds saved separately when a new comparison is needed. AI writes source facts and generators write derived files, without another manual synchronization task.
 
-收尾只刷新真正存在且受影响的当前视图；仅可重建视图刷新失败时标明滞后，不据此推翻已满足的原交付。视图本身是本次承诺时按该承诺判断。快照、截图或汇总标签不替代原要求、Evidence/Decision 和实际消费者结果。
+Closure refreshes only current views that actually exist and are affected. Mark a rebuildable view as lagging if its refresh fails; this does not overturn an already satisfied original delivery. If the view itself is a commitment for this work, assess it against that commitment. Snapshots, screenshots, and summary labels do not replace original requirements, Evidence/Decision, or actual consumer results.
 
-## 独立 handoff
+<a id="独立-handoff"></a>
+## Standalone handoff
 
-普通续接及时更新原 Task/Epic 的结果、限制和下一步即可。用户明确需要独立交接材料，或有效项目约定要求独立交接时，从已更新原记录生成 Markdown 快照，使用 [handoff 模板](../templates/handoff.md.tpl)。本节的 Markdown 交接与视图导出分属不同用途。
+For ordinary continuation, promptly update results, limitations, and next steps in the original Task/Epic. When the user explicitly needs standalone handoff material, or an effective project convention requires it, generate a Markdown snapshot from updated original records using the [handoff template](../templates/handoff.md.tpl). Markdown handoffs in this section serve a different purpose from view exports.
 
-默认位置为工作流目录的 `handoffs/<日期>-<安全标题或范围>-<时间>[-序号].md`；工具生成名称使用 UTC，正文明确实际快照时间与时区。已有明确位置或用户指定位置优先复用。同日同范围再次生成另存时间/序号版本，不覆盖旧快照；相同 request_id 的操作重放仍回到原文件。
+The default location is `handoffs/<date>-<safe-title-or-scope>-<time>[-sequence].md` under the workflow directory; tool-generated names use UTC, and the body states the actual snapshot time and timezone. Prefer an existing explicit location or user-specified location. Another generation on the same day for the same scope saves a separate time/sequence version rather than overwriting the old snapshot; operation replay with the same request_id still returns to the original file.
 
-内容包括实际项目/工作树与基线、原工作及来源、已达成/尚未达成、证据覆盖与必要接受、下一动作及有效限制。record.create 的 handoff 提供真实 source_refs 和 snapshot_scope；工具核对这些来源并绑定其读版本，相关来源有未结算写入时先恢复/核对原操作，不把旧字节作为新的完整快照。保存后回读确认路径和引用，index 只链接确实需要导航且实际存在的快照。
+The tool stamps the actual UTC time in metadata.snapshot_time and returns that value. It preserves the caller's body without appending a fixed-language time label. Use a localized label or reference to that stamped value in the body rather than inventing another time; schema keys and ISO timestamps remain unchanged. Existing snapshots and frozen recovery bytes retain their original content.
 
-handoff 不分配新管理 ID，不是新的 Task 或当前状态账本。后续更新原记录，恢复时先回查原来源与实际现场；快照保留生成时点的身份。目录名不把历史移交 JSON 或其他附件自动变成现行交接记录。
+Content includes the actual project/worktree and baseline, original work and sources, achieved/unachieved outcomes, evidence coverage and necessary acceptance, next actions, and effective limitations. A record.create handoff provides real source_refs and snapshot_scope; the tool checks those sources and binds their read versions. When related sources have unsettled writes, first recover/check the original operation rather than using old bytes as a new complete snapshot. Read back after saving to confirm paths and references; index only links snapshots that actually exist and truly need navigation.
+
+handoff receives no new management ID and is neither a new Task nor a current-state ledger. Subsequent updates go to original records; recovery first checks original sources and the actual environment. A snapshot retains its identity at generation time. A directory name does not automatically turn historical handover JSON or other attachments into current handoff records.

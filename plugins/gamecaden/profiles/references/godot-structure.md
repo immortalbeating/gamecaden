@@ -1,83 +1,92 @@
-# Godot 场景、节点与状态组织
+<a id="godot-场景节点与状态组织"></a>
+# Godot scene, node and state organization
 
-新增页面/关卡、可复用场景、跨场景状态，或修改节点、UI 空间、编辑/保存方式时读取。先应用 [结构共同约定](structure-contract.md)，只核对命中的专题；技术参考使用 Godot 4.6 文档，项目实际版本、语言和插件决定适用细节。
+Read this when adding pages/levels, reusable scenes, cross-scene state, or modifying nodes, UI space or editing/save methods. First apply the [shared structure contract](structure-contract.md), checking only relevant topics; technical references use Godot 4.6 documentation, with the project's actual version, language and plugins determining applicable details.
 
-## 场景文件与运行树
+<a id="场景文件与运行树"></a>
+## Scene files and runtime tree
 
-**引擎事实**：场景具有一个根节点，可以保存、加载和实例化；多个场景实例进入运行时 SceneTree。主场景是项目入口，不规定所有代码和状态必须归其脚本，也不要求每个子模块都有单独文件。[节点与场景](https://docs.godotengine.org/en/4.6/getting_started/step_by_step/nodes_and_scenes.html)、[SceneTree](https://docs.godotengine.org/en/4.6/tutorials/scripting/scene_tree.html)。
+**Engine fact**: A scene has one root node and can be saved, loaded and instantiated; multiple scene instances enter the runtime SceneTree. The main scene is the project entry and does not require all code/state to belong to its script or every submodule to have a separate file. [Nodes and scenes](https://docs.godotengine.org/en/4.6/getting_started/step_by_step/nodes_and_scenes.html), [SceneTree](https://docs.godotengine.org/en/4.6/tutorials/scripting/scene_tree.html).
 
-**本工作流默认**：按独立编辑、生命周期和复用需求选择场景边界，职责清楚的脚本/数据模块也可承担非可视职责。一个运行树包含许多节点并不表示架构错误；只把文件拆开、运行时仍依赖未声明的上层细节，也不算满足模块边界。
+**Workflow default**: Choose scene boundaries by independent editing, lifecycle and reuse needs; script/data modules with clear responsibilities can serve nonvisual responsibilities. Many nodes in one runtime tree do not imply incorrect architecture; splitting files while still depending on undeclared parent details at runtime does not satisfy module boundaries either.
 
-需要保存的节点明确真实类型及对应脚本。`Main`、`CurrentScreen`、`GameSession`、`WorldRoot`、`Level`、`Actors`、`Systems` 都是可选职责名称；`Node`、`Node2D`、`Node3D`、`Control` 等才是引擎类型。自定义类型只有已有实现与注册方式时才引用。`Autoload` 是加载机制，`.tscn` 是场景格式，不能当节点类名。
+Specify actual types and corresponding scripts for nodes to save. `Main`, `CurrentScreen`, `GameSession`, `WorldRoot`, `Level`, `Actors` and `Systems` are optional responsibility names; `Node`, `Node2D`, `Node3D`, `Control`, etc. are engine types. Reference custom types only when implementation and registration methods exist. `Autoload` is a loading mechanism and `.tscn` a scene format; neither is a node class name.
 
-## 触发与检查
+<a id="触发与检查"></a>
+## Triggers and checks
 
-| 命中问题 | 必须满足的结果 | 默认安排与可选方法 | 反例与验收 |
+| Applicable issue | Required outcome | Default arrangement and alternatives | Counterexamples and acceptance |
 |---|---|---|---|
-| 新页面/复用场景（GODOT-SCENE） | 根类型、编辑来源、实例化入口和必要依赖可定位 | 独立职责形成场景/组件，由拥有关系的上下文注入数据/引用；信号表达发生的动作，明确方法发起行为；按项目接口选择 | 分出 Menu.tscn 却依赖固定的 `../../Main/Inventory`。给定真实所需依赖后在另一个宿主或第二实例中核对行为，不以 F6 无依赖启动作为普遍门禁 |
-| 关卡/页面替换（GODOT-LIFETIME） | 创建、释放、保留/重置关系与当前设计一致 | 根据父节点释放时子对象是否也应释放选归属；长期状态可由上层对象或合适模型持有 | 跨关卡玩家挂在待销毁关卡下；把全部状态移到 Main。实际替换关卡/返回页面，确认哪些节点消失、状态保留、监听不重复 |
-| 角色/资源多实例（GODOT-RESOURCE） | 共享定义与实例可变状态有明确关系 | 按 [Godot profile](../engines/godot.md)的 Resource 条目选择共享/复制/实例数据；非节点状态可以由普通对象持有 | 两个角色改同一份配置的血量。创建两个实例并修改其中一个，核对设计要求的独立/共享结果 |
-| UI、相机或坐标变化（GODOT-SPACE／GODOT-INPUT） | 世界对象、屏幕 HUD、世界内 UI 的空间/输入关系正确 | 按下节选择实际节点类型、变换、布局和焦点；目标设备决定检查范围 | 相机移动使 HUD 跟随地图；透明遮罩吞掉按钮或玩法输入。核对相机、尺寸变化、弹窗与暂停后的实际输入路径 |
-| 编辑或保存场景（GODOT-SAVE-SCENE） | 保存范围、节点 owner、脚本/资源引用和承诺的编辑入口成立 | 稳定可视内容默认可在场景中调整；程序化内容保留生成入口与预览；修改实际制作源 | 内存里 `add_child()` 可见却未保存在目标 PackedScene；场景是空壳且无独立编辑/预览方法。保存后重新加载/实例化，核对关键节点、布局与引用 |
+| New pages/reusable scenes (GODOT-SCENE) | Root types, editing sources, instantiation entries and necessary dependencies are locatable | Independent responsibilities form scenes/components; the relationship-owning context injects data/references; signals express actions that occurred, explicit methods initiate behavior; choose according to project interfaces | Separating Menu.tscn while depending on fixed `../../Main/Inventory`. With actual necessary dependencies supplied, check behavior in another host or a second instance, without making dependency-free F6 startup a universal gate |
+| Level/page replacement (GODOT-LIFETIME) | Creation, release and retention/reset match current design | Choose ownership by whether child objects should end when parents are freed; higher-level objects or suitable models may hold lasting state | Cross-level players under levels to be destroyed; moving all state into Main. Actually replace levels/return to pages and confirm which nodes disappear, state retention and absence of duplicate listeners |
+| Multiple character/resource instances (GODOT-RESOURCE) | Shared definitions and mutable instance state have explicit relationships | Choose sharing/duplication/instance data under the Resource entry of the [Godot profile](../engines/godot.md); ordinary objects may hold non-node state | Two characters change health in the same configuration. Create two instances and modify one, checking required independent/shared outcomes |
+| UI, camera or coordinate changes (GODOT-SPACE/GODOT-INPUT) | Spatial/input relationships among world objects, screen HUD and in-world UI are correct | Choose actual node types, transforms, layout and focus using the following section; target devices determine check scope | Camera movement makes HUD follow the map; transparent masks swallow button/gameplay input. Check actual input paths after camera/size changes, dialogs and pause |
+| Editing or saving scenes (GODOT-SAVE-SCENE) | Save scope, node owner, script/resource references and promised editing entries are valid | Stable visual content is editable in scenes by default; procedural content retains generation entries and previews; modify actual production sources | In-memory `add_child()` is visible but absent from target PackedScene; shell scenes have no independent editing/preview method. Reload/instantiate after saving to check key nodes, layout and references |
 
-### 归属、依赖与保存
+<a id="归属依赖与保存"></a>
+### Ownership, dependencies and saving
 
-**官方最佳实践**以对象之间的关系选择树结构：场景尽可能自足，必要的外部依赖由拥有关系的上下文配置；是否随父对象结束，是父子关系的重要判断依据。这支持默认方案，不构成唯一节点树或固定命名要求。[Scene organization](https://docs.godotengine.org/en/4.6/tutorials/best_practices/scene_organization.html)。
+**Official best practice** chooses tree structure by relationships between objects: scenes are as self-contained as possible, with necessary external dependencies configured by the relationship-owning context; whether an object should end with its parent is an important basis for parent-child relationships. This supports the default arrangement without requiring one node tree or fixed naming. [Scene organization](https://docs.godotengine.org/en/4.6/tutorials/best_practices/scene_organization.html).
 
-**引擎事实**：释放父节点会释放其子节点；`owner` 则表达随哪个场景打包保存的关系，二者不能互换。编辑器工具或生成器创建需持久化的节点时，仅 `add_child()` 不足以证明目标 PackedScene 会包含它们；按目标保存范围设置并重新读回。普通运行时临时节点不因此全部加入持久场景。[Node.owner](https://docs.godotengine.org/en/4.6/classes/class_node.html#class-node-property-owner)、[PackedScene](https://docs.godotengine.org/en/4.6/classes/class_packedscene.html)。
+**Engine fact**: Freeing a parent frees its children; `owner` instead expresses which scene packages/saves a node, and the two are not interchangeable. When editor tools or generators create nodes needing persistence, `add_child()` alone does not prove target PackedScene inclusion; configure according to target save scope and read back. This does not require adding all ordinary temporary runtime nodes to persistent scenes. [Node.owner](https://docs.godotengine.org/en/4.6/classes/class_node.html#class-node-property-owner), [PackedScene](https://docs.godotengine.org/en/4.6/classes/class_packedscene.html).
 
-### 信号接收者与退出范围
+<a id="信号接收者与退出范围"></a>
+### Signal receivers and exit scope
 
-GDScript 的 Signal/Callable 连接在所关联的接收对象真正释放后会失效；不能仅凭信号来自常驻 EventBus，就认定释放页面后一定残留。先核对真实 Callable/接收者、连接次数和释放范围；`remove_child()` 只移出父子关系，不释放节点，排队释放也需确认实际完成。接收者仍常驻、被池化保留或逻辑订阅寿命短于对象寿命时，按真实退出边界解除自己的连接，或调整实际所有者。[Signal.connect](https://docs.godotengine.org/en/4.6/classes/class_signal.html#class-signal-method-connect)、[Node.remove_child](https://docs.godotengine.org/en/4.6/classes/class_node.html#class-node-method-remove-child)。
+GDScript Signal/Callable connections become invalid after their associated receiving objects are actually freed; a persistent EventBus signal alone does not establish leftovers after freeing a page. First check actual Callable/receivers, connection counts and freeing scope; `remove_child()` removes parent-child relationships without freeing nodes, and queued freeing also needs confirmation of completion. When receivers remain persistent or pooled, or logical subscription lifetimes are shorter than object lifetimes, disconnect own connections at actual exit boundaries or adjust actual ownership. [Signal.connect](https://docs.godotengine.org/en/4.6/classes/class_signal.html#class-signal-method-connect), [Node.remove_child](https://docs.godotengine.org/en/4.6/classes/class_node.html#class-node-method-remove-child).
 
-C# 的事件接入另核对实际方式：接收者释放时，捕获变量的 lambda 或使用 `+=` 接入自定义信号等情况不能套用上述自动断连判断。按语言 API 保留并配对解除自己的委托；不要以新建一个 lambda 代替原回调身份。[C# signals](https://docs.godotengine.org/en/4.6/tutorials/scripting/c_sharp/c_sharp_signals.html#disconnecting-automatically-when-the-receiver-is-freed)。实际重进后还需核对发出次数、连接与回调次数，避免把重复发出误判为残留订阅。
+Check actual C# event integration separately: cases such as lambdas capturing variables or custom signals connected with `+=` cannot use the automatic-disconnection judgment above when receivers are freed. Retain and pair removal of own delegates according to the language API; a new lambda does not substitute for original callback identity. [C# signals](https://docs.godotengine.org/en/4.6/tutorials/scripting/c_sharp/c_sharp_signals.html#disconnecting-automatically-when-the-receiver-is-freed). After actual re-entry, also check emission, connection and callback counts to avoid mistaking repeated emission for residual subscriptions.
 
-### 世界、HUD 与布局
+<a id="世界hud-与布局"></a>
+### World, HUD and layout
 
-| 本次用途 | 引擎机制与默认选择 | 实际核对 |
+| Current use | Engine mechanisms and default choice | Actual checks |
 |---|---|---|
-| 2D/3D 世界与角色 | 选择符合机制的 Node2D/Node3D 派生类型；需要物理能力时再用相应物理对象，不按 `Actor` 名称猜类型 | 相机、坐标、变换与碰撞/导航消费者符合项目设计 |
-| 固定屏幕 HUD/菜单 | CanvasLayer 可提供独立二维绘制层；Control 承担 UI 矩形、锚点与 GUI 输入；层级与视口按设计选取 | 相机变换后 HUD 仍在要求的位置，焦点/鼠标过滤与暂停策略正确 |
-| 世界内 UI | 明确其跟随对象、相机/视口和坐标转换；可在世界中组织，也可将目标投影到覆盖层 | 角色移动、遮挡或投影变化后位置与命中符合本次用途，不把一切 UI 自动固定到屏幕 |
-| UI 自动布局 | 使用 VBoxContainer/HBoxContainer/GridContainer 等适合的 Container 子类，调整对应布局参数与子 Control 的尺寸策略 | 改变内容或窗口尺寸后布局成立；受容器管理的布局不与手写位置相互争抢 |
+| 2D/3D worlds and characters | Choose Node2D/Node3D derived types suited to the mechanism; use corresponding physics objects when physics is needed, without guessing types from the `Actor` name | Cameras, coordinates, transforms and collision/navigation consumers match project design |
+| Fixed screen HUD/menus | CanvasLayer provides an independent 2D drawing layer; Control handles UI rectangles, anchors and GUI input; choose hierarchy and viewport according to design | HUD stays in required position after camera transforms, with correct focus/mouse filtering and pause strategy |
+| In-world UI | Specify followed objects, camera/viewport and coordinate conversion; organize in-world or project targets to an overlay | Position and hit detection match current use after character movement, occlusion or projection changes; do not automatically fix all UI to the screen |
+| Automatic UI layout | Use suitable Container subclasses such as VBoxContainer/HBoxContainer/GridContainer, adjusting corresponding layout parameters and child Control size policies | Layout works after content/window-size changes; container-managed layout does not compete with handwritten positioning |
 
-CanvasLayer 负责其二维绘制层，可用于 HUD 或背景，不负责自动布局；Control 与 Container 的职责和具体参数见官方 [CanvasLayer](https://docs.godotengine.org/en/4.6/classes/class_canvaslayer.html)、[Control](https://docs.godotengine.org/en/4.6/classes/class_control.html)、[Container](https://docs.godotengine.org/en/4.6/classes/class_container.html)。绘制顺序、层级、z_index 和输入过滤仍须按实际目标核对，职责拆分不能代替它们。
+CanvasLayer owns its 2D drawing layer and can serve HUD or backgrounds, without providing automatic layout; see official [CanvasLayer](https://docs.godotengine.org/en/4.6/classes/class_canvaslayer.html), [Control](https://docs.godotengine.org/en/4.6/classes/class_control.html) and [Container](https://docs.godotengine.org/en/4.6/classes/class_container.html) for responsibilities and specific parameters. Drawing order, hierarchy, z_index and input filtering still require checking against actual targets; responsibility separation cannot replace them.
 
-### 常驻与本局状态
+<a id="常驻与本局状态"></a>
+### Persistent and current-session state
 
-**引擎事实**：Autoload 可使节点/脚本在普通场景切换间常驻，可保存共享状态或处理场景切换；它并不自动保证逻辑上的唯一实例。[Autoload](https://docs.godotengine.org/en/4.6/tutorials/scripting/singletons_autoload.html)。
+**Engine fact**: Autoload can keep nodes/scripts alive across ordinary scene changes, retain shared state or manage scene switching; it does not automatically guarantee a logically unique instance. [Autoload](https://docs.godotengine.org/en/4.6/tutorials/scripting/singletons_autoload.html).
 
-**本工作流默认**：对需要跨场景常驻或全局访问的服务/状态说明理由与重置行为。已由适当上层对象持有的状态可以继续使用；工具函数不因可被多处调用就需要 Autoload。局部敌人、页面选中项和本关临时规则留在其合理存活范围。`GameSession` 可由 Node、Resource/其他对象组合实现，但始终区分定义与本局可变数据。
+**Workflow default**: Explain reasons and reset behavior for services/state requiring cross-scene persistence or global access. State already held by a suitable higher-level object can continue there; utility functions do not require Autoload merely because multiple places call them. Local enemies, page selections and temporary level rules remain within appropriate lifetimes. `GameSession` may be composed from Node, Resource/other objects, but always distinguish definitions from mutable current-session data.
 
-## 选择结构的例子
+<a id="选择结构的例子"></a>
+## Examples of structural choices
 
-**有界单页试验**：只有一页、一个局部玩法循环，无跨页面状态或复用需求时，一个场景加相关脚本可以满足要求。若要给设计者调整静态 UI，就提供可编辑节点或已约定的代码编辑与预览途径；不能因是试验而忽略已经承诺的编辑能力。
+**Bounded single-page experiment**: With one page, one local gameplay loop and no cross-page state or reuse needs, one scene plus related scripts may satisfy requirements. If designers need to adjust static UI, supply editable nodes or agreed code-editing/preview methods; being an experiment does not excuse promised editing capabilities.
 
-**需要跨关卡保留玩家的 2D 游戏**：下面只画节点，是 Gamecaden 示例，不是官方固定模板；名称和节点类型按实际机制选择。另由 Main 或项目选定的装配者在局开始时创建 SessionState 普通对象，局结束按约定释放/重置；向玩法与 UI 提供其数据/动作接口。
+**2D game retaining a player across levels**: The following shows only nodes and is a Gamecaden example, not a fixed official template; choose names and node types according to actual mechanisms. Main or the project-selected assembler separately creates a SessionState ordinary object at session start, releases/resets it at session end as agreed, and supplies its data/action interfaces to gameplay and UI.
 
 ```text
-Main (Node，应用装配/切换)
+Main (Node, application assembly/switching)
 └── ScreenHost (Node)
     └── PlayScreen.tscn (Node)
         ├── World (Node2D)
-        │   ├── CurrentLevel (当前关卡场景)
-        │   │   └── 本关敌人（随关卡结束）
-        │   └── Player.tscn（当前设计要求跨关卡保留）
+        │   ├── CurrentLevel (current level scene)
+        │   │   └── Level enemies (end with the level)
+        │   └── Player.tscn (current design requires retention across levels)
         └── UILayer (CanvasLayer)
             └── HUD.tscn (Control)
-                └── 适合布局的 Container 子类
+                └── Suitable Container subclass for layout
 ```
 
-SessionState 的逻辑持有关系与节点树分别说明，避免将普通数据对象误当节点。关卡切换保留 Player，不代表返回主菜单或结束本局也要保留；各时机按本局约定处理。只有生命周期或可独立编辑的边界需要对应场景，不为图中每一行强制创建文件。
+Explain SessionState's logical ownership separately from the node tree to avoid treating ordinary data objects as nodes. Retaining Player across level changes does not imply retention when returning to the main menu or ending the session; handle each timing point under session agreements. Only lifecycle or independently editable boundaries need corresponding scenes; no file is mandatory for every line in the diagram.
 
-官方入门 [HUD 示例](https://docs.godotengine.org/en/4.6/getting_started/first_2d_game/06.heads_up_display.html)展示独立 HUD 场景，是可参考的组成方法；其节点名、UI 规格与教程规模不成为项目门禁。
+The official introductory [HUD example](https://docs.godotengine.org/en/4.6/getting_started/first_2d_game/06.heads_up_display.html) shows a separate HUD scene as a composition approach to consider; its node names, UI specifications and tutorial scale are not project gates.
 
-## 与工作流交接
+<a id="与工作流交接"></a>
+## Workflow handoff
 
-保存场景、增加第二实例、跨关卡保留或改变输入/资源接入时，先引用 `project.godot`、实际场景、Resource/动画资源、InputMap 和脚本接线，定位本次类型、来源、父子/owner、定义/实例及消费者关系；不手抄全量节点树或资源目录。来源可读仍不能代替未来目标：新增共享、独立、保留或编辑关系时，在原设计补现状到目标的差异。语义不足则补命中关系的说明或必要局部图/表，沿用[材料参考](../../skills/design/references/game-deliverables.md)选择表达。
+When saving scenes, adding second instances, retaining across levels or changing input/resource integration, first reference `project.godot`, actual scenes, Resource/animation resources, InputMap and script wiring to locate current type, source, parent-child/owner, definition/instance and consumer relationships; do not manually copy the full node tree or resource directory. Readable sources cannot replace future targets: when adding shared, independent, retained or editing relationships, supplement original design with current-to-target differences. Where semantics are insufficient, add relevant relationship explanations or necessary local diagrams/tables, selecting expression under [material references](../../skills/design/references/game-deliverables.md).
 
-只有已选 Godot、尚无工程时，先形成本次必要初始设计并标明原生来源待建立；预定类型、资源和接线不是已保存场景或运行结果。
+When Godot is selected but no project exists, first form necessary initial design and mark native sources as pending creation; planned types, resources and wiring are not saved scenes or runtime results.
 
-design 在原设计中说明命中的组成、生命周期与依赖，并定义验证观察点；develop/assets 落实真实场景、脚本和资源消费者；verify 对照保存后的组成与受影响的运行行为。跨实例、切关卡、页面退出/重进等检查按本次主张选择，记录仍归原 Evidence/Decision。
+design explains applicable composition, lifecycle and dependencies in original design and defines validation observation points; develop/assets implement actual scenes, scripts and resource consumers; verify compares saved composition with affected runtime behavior. Choose cross-instance, level-switching and page exit/re-entry checks according to current claims; original Evidence/Decision records still own results.
 
-来源核对日期：2026-10-01。技术机制和官方最佳实践见上述链接；触发条件、默认编辑方式、示例与验收安排属于本工作流设计。此文件不是某个真实工程已完成结构验证的证据。
+Sources checked: 2026-10-01. Technical mechanisms and official best practices are linked above; triggers, default editing methods, examples and acceptance arrangements are this workflow's design. This file is not evidence of completed structural validation in an actual project.

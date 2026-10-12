@@ -44,18 +44,18 @@ def fail(code, message, status=400):
 
 def fields(value, required, optional=()):
     if not isinstance(value, dict) or not set(required) <= value.keys() or value.keys() - set(required) - set(optional):
-        fail("invalid_request", "请求字段与此动作不匹配")
+        fail("invalid_request", "Request fields do not match this action")
 
 
 def string(value, name, maximum=300, empty=False):
     if not isinstance(value, str) or len(value) > maximum or (not empty and not value.strip()):
-        fail("invalid_request", f"{name} 必须是有效文本，最长 {maximum} 字符")
+        fail("invalid_request", f"{name} must be valid text, with a maximum of {maximum} characters")
     return value
 
 
 def identifier(value):
     if not isinstance(value, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,119}", value):
-        fail("invalid_request", "无效的 request_id 或项目 id")
+        fail("invalid_request", "Invalid request_id or project ID")
     return value
 
 
@@ -65,7 +65,7 @@ class Signer:
         folder = Path(state_dir).absolute() / "private"
         folder.mkdir(parents=True, exist_ok=True)
         if folder.is_symlink() or (hasattr(folder, "is_junction") and folder.is_junction()):
-            fail("invalid_host", "宿主状态目录不能是链接")
+            fail("invalid_host", "Host state directory must not be a link")
         # Secrets go into a dedicated directory, never a shared artifact directory.
         if os.name == "nt":
             from ctypes import wintypes
@@ -73,7 +73,7 @@ class Signer:
                                               "/user", "/fo", "csv", "/nh"], creationflags=subprocess.CREATE_NO_WINDOW)
             sid = list(csv.reader(output.decode("utf-8", errors="replace").splitlines()))[0][-1]
             if not re.fullmatch(r"S-1-[0-9-]+", sid):
-                fail("invalid_host", "无法确定本机启动身份")
+                fail("invalid_host", "Cannot determine the local launch identity")
             advapi = ctypes.WinDLL("advapi32", use_last_error=True)
             kernel = ctypes.WinDLL("kernel32", use_last_error=True)
             convert = advapi.ConvertStringSecurityDescriptorToSecurityDescriptorW
@@ -101,13 +101,13 @@ class Signer:
             fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
         except FileExistsError:
             if path.is_symlink():
-                fail("invalid_host", "签名密钥不能是链接")
+                fail("invalid_host", "Signing key must not be a link")
         else:
             with os.fdopen(fd, "wb") as stream:
                 stream.write(secrets.token_bytes(32))
         self.key = path.read_bytes()
         if len(self.key) != 32:
-            fail("invalid_host", "签名密钥格式无效")
+            fail("invalid_host", "Invalid signing key format")
 
     def sign(self, payload):
         data = canonical(payload).encode("utf-8")
@@ -127,7 +127,7 @@ class Signer:
                 raise ValueError()
             return payload
         except (ValueError, UnicodeError):
-            fail("invalid_ticket", "操作快照无效，请重新读取来源", 403)
+            fail("invalid_ticket", "Invalid operation snapshot; read the source again", 403)
 
 
 class Binding:
@@ -139,16 +139,16 @@ class Binding:
         self.kind = "external" if self.data.external_sources else "native"
         write = config.get("write", {})
         if not isinstance(write, dict) or write.keys() - set(CAPS.values()) or any(type(v) is not bool for v in write.values()):
-            fail("invalid_host", "write 必须是明确的动作开关")
+            fail("invalid_host", "write must explicitly enable or disable actions")
         self.caps = {k: self.kind == "native" and write.get(v, False) for k, v in CAPS.items()}
         self.actor = config.get("reviewer")
         if self.actor is not None:
             fields(self.actor, ("kind", "id"))
             if self.actor["kind"] not in ("tool", "agent", "user"):
-                fail("invalid_host", "未知记录者类型")
+                fail("invalid_host", "Unknown actor kind")
             string(self.actor["id"], "actor.id", 120)
         if any(self.caps.values()) and self.actor is None:
-            fail("invalid_host", "写入需要启动方绑定记录者身份")
+            fail("invalid_host", "Writes require an actor identity bound by the launcher")
         self.identity_source = config.get("identity_source", "local-launch" if self.actor else "read-only")
         self.signer = signer
         self.lock = threading.RLock()
@@ -169,7 +169,7 @@ class Binding:
 
     def require(self, capability):
         if not self.caps[capability]:
-            fail("read_only", "此来源未开启该写入动作", 403)
+            fail("read_only", "This write action is not enabled for the source", 403)
 
     def context(self):
         context = {"project_root": str(self.data.root), "base_dir": str(self.data.root)}
@@ -189,7 +189,7 @@ class Binding:
     def thaw(self, token, kind):
         facts = self.signer.read(token)
         if facts.get("type") != kind or facts.get("binding_id") != self.binding_id or facts.get("actor") != self.actor:
-            fail("invalid_ticket", "快照不属于当前项目、身份或动作", 403)
+            fail("invalid_ticket", "Snapshot does not belong to the current project, identity, or action", 403)
         return facts
 
     def prepare_task(self, body):
@@ -197,9 +197,9 @@ class Binding:
         fields(body, ("key", "revision"))
         record = self.data.read(string(body["key"], "key"))
         if record["record_type"] != "task" or record["interpretation"] != "native" or "record.update" not in record["capabilities"]:
-            fail("read_only", "只有可写原生 Task 正文可编辑", 403)
+            fail("read_only", "Only writable native Task bodies can be edited", 403)
         if record["revision"] != body["revision"]:
-            fail("revision_conflict", "正文来源已变化，输入会保留；请重新读取后核对", 409)
+            fail("revision_conflict", "Body source changed; input is retained. Read the source again and review it", 409)
         return self.freeze("task", {"key": body["key"], "target": record["ref"], "path": record["path"],
                                     "title": record["title"], "source_revision": record["revision"]})
 
@@ -211,18 +211,18 @@ class Binding:
         candidate = self.data.candidate(string(body["asset_key"], "asset_key"),
                                         string(body["candidate_id"], "candidate_id"))
         if candidate["ledger_revision"] != body["expected_revision"] or candidate["version"] != body["expected_version"]:
-            fail("revision_conflict", "资产来源或候选版本已变化，不能以新版本替代当前预览", 409)
+            fail("revision_conflict", "Asset source or candidate version changed; a new version cannot replace the current preview", 409)
         if candidate["check"]["status"] != "verified":
-            fail("candidate_invalid", "候选内容校验未通过，不能提交本次当前版本操作", 409)
+            fail("candidate_invalid", "Candidate content validation failed; this operation cannot be submitted for the current version", 409)
         use_id = body.get("use_id")
         use = None
         if use_id:
             string(use_id, "use_id")
             use = next((u for u in candidate["all_uses"] if u["use_id"] == use_id), None)
             if use is None:
-                fail("invalid_scope", "用途必须来自已登记的用途")
+                fail("invalid_scope", "Use must be one of the registered uses")
         if kind == "selection" and use is None:
-            fail("invalid_scope", "指定候选需要已有用途")
+            fail("invalid_scope", "Candidate designation requires an existing use")
         if use is not None:
             guard = self.data._project()
             use = rebase(use, Path(candidate["reference_base"]), self.data.root, guard.path)
@@ -251,7 +251,7 @@ class Binding:
             condition_path = facts["path"]
         elif kind == "review":
             if body["conclusion"] not in ("accept", "revise", "reject"):
-                fail("invalid_request", "结论须为 accept、revise 或 reject；暂缓保留在草稿")
+                fail("invalid_request", "Conclusion must be accept, revise, or reject; deferred choices remain in the draft")
             note = string(body["note"], "note", 8000)
             event = {"event_id": "panel-" + rid, "actor": self.actor, "action": body["conclusion"],
                      "subjects": [facts["subject"]], "scope": facts["subject"]["scope"],
@@ -300,24 +300,24 @@ class Binding:
                 fields(body, ("request_id",))
                 rid = identifier(body["request_id"])
                 return {"result": self.workflow.execute(self.envelope("operation.status", {"request_id": rid}))}
-            fail("not_found", "未知面板动作", 404)
+            fail("not_found", "Unknown panel action", 404)
 
 
 class PanelHost:
     def __init__(self, config, state_dir):
         fields(config, ("version", "projects"), ("default_project_id",))
         if config["version"] != 1 or not isinstance(config["projects"], list) or not config["projects"]:
-            fail("invalid_host", "宿主配置需要 version=1 和项目列表")
+            fail("invalid_host", "Host configuration requires version=1 and a project list")
         self.signer = Signer(state_dir)
         self.projects = {}
         for item in config["projects"]:
             binding = Binding(item, self.signer)
             if binding.id in self.projects:
-                fail("invalid_host", "项目 id 重复")
+                fail("invalid_host", "Duplicate project IDs")
             self.projects[binding.id] = binding
         self.default_project = config.get("default_project_id", next(iter(self.projects)))
         if self.default_project not in self.projects:
-            fail("invalid_host", "默认项目未注册")
+            fail("invalid_host", "Default project is not registered")
         self.bootstrap = secrets.token_urlsafe(32)
         self.cookie_name = "workflow_" + secrets.token_hex(8)
         self.sessions = {}
@@ -327,7 +327,7 @@ class PanelHost:
     def connect(self, token):
         with self.lock:
             if self.bootstrap is None or not isinstance(token, str) or not hmac.compare_digest(self.bootstrap, token):
-                fail("authentication_required", "启动连接已使用或失效，请从宿主获取新连接", 401)
+                fail("authentication_required", "Launch link was used or expired; obtain a new link from the host", 401)
             self.bootstrap = None
             session = {"id": secrets.token_urlsafe(32), "csrf": secrets.token_urlsafe(32),
                        "expires": time.time() + 12 * 3600}
@@ -343,7 +343,7 @@ class PanelHost:
             value = None
         session = self.sessions.get(value.value if value else "")
         if session is None or session["expires"] < time.time():
-            fail("authentication_required", "请通过本机宿主启动连接", 401)
+            fail("authentication_required", "Connect through the local host launch link", 401)
         return session
 
     def session_info(self, session):
@@ -355,7 +355,7 @@ class PanelHost:
         try:
             return self.projects[pid]
         except KeyError:
-            fail("not_found", "项目未注册", 404)
+            fail("not_found", "Project is not registered", 404)
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -392,26 +392,26 @@ class Handler(BaseHTTPRequestHandler):
 
     def check_origin(self, mutation=False):
         if self.headers.get("Host") != urlsplit(self.host.origin).netloc:
-            fail("invalid_host", "Host 不属于本机面板", 403)
+            fail("invalid_host", "Host does not belong to the local panel", 403)
         origin = self.headers.get("Origin")
         if (mutation and origin != self.host.origin) or (origin is not None and origin != self.host.origin):
-            fail("cross_origin", "只允许本面板来源", 403)
+            fail("cross_origin", "Only this panel origin is allowed", 403)
         if self.headers.get("Sec-Fetch-Site") == "cross-site":
-            fail("cross_origin", "不允许跨站请求", 403)
+            fail("cross_origin", "Cross-site requests are not allowed", 403)
 
     def body(self):
         if self.headers.get_content_type() != "application/json" or self.headers.get("Transfer-Encoding"):
-            fail("invalid_request", "请求须为有界 JSON", 415)
+            fail("invalid_request", "Request must be bounded JSON", 415)
         try:
             length = int(self.headers.get("Content-Length", "-1"))
         except ValueError:
             length = -1
         if not 0 <= length <= MAX_BODY:
-            fail("request_too_large", "请求超过限制或缺少长度", 413)
+            fail("request_too_large", "Request exceeds the limit or lacks a content length", 413)
         try:
             return json_load(self.rfile.read(length).decode("utf-8"))
         except (ValueError, UnicodeError, WorkflowError):
-            fail("invalid_request", "JSON 内容无效")
+            fail("invalid_request", "Invalid JSON content")
 
     def route(self, method):
         self.check_origin(method == "POST")
@@ -424,7 +424,7 @@ class Handler(BaseHTTPRequestHandler):
                       "/domain-reader.mjs": ("domain-reader.mjs", "text/javascript; charset=utf-8"),
                       "/relation-layout.mjs": ("relation-layout.mjs", "text/javascript; charset=utf-8"), "/vendor/elk.bundled.js": ("vendor/elk.bundled.js", "text/javascript; charset=utf-8")}
             if path not in public:
-                fail("not_found", "文件未注册", 404)
+                fail("not_found", "File is not registered", 404)
             name, mime = public[path]
             return self.send(200, (FRONTEND / name).read_bytes(), mime)
         body = self.body() if method == "POST" else None
@@ -435,12 +435,12 @@ class Handler(BaseHTTPRequestHandler):
                              headers={"Set-Cookie": self.host.cookie_name + "=" + session["id"] + "; Path=/api/; HttpOnly; SameSite=Strict; Max-Age=43200"})
         session = self.host.session(self.headers.get("Cookie"))
         if method == "POST" and not hmac.compare_digest(self.headers.get("X-CSRF-Token", ""), session["csrf"]):
-            fail("csrf_required", "缺少当前会话请求令牌", 403)
+            fail("csrf_required", "Current session request token is missing", 403)
         if method == "GET" and path == "/api/session":
             return self.send(200, self.host.session_info(session))
         parts = path.split("/")
         if len(parts) < 5 or parts[1:3] != ["api", "projects"]:
-            fail("not_found", "未知接口", 404)
+            fail("not_found", "Unknown endpoint", 404)
         binding = self.host.project(unquote(parts[3]))
         action = "/".join(parts[4:])
         if method == "POST":
@@ -453,16 +453,16 @@ class Handler(BaseHTTPRequestHandler):
             if action == "governance":
                 query = parse_qs(url.query)
                 if query.keys() - {"focus"}:
-                    fail("invalid_request", "未知治理视图参数")
+                    fail("invalid_request", "Unknown governance view parameter")
                 return self.send(200, Governance(binding.data).build(query.get("focus", [None])[0]))
             if action == "snapshot":
                 query = parse_qs(url.query)
                 if query.keys() - {"cursor", "limit"}:
-                    fail("invalid_request", "未知查询参数")
+                    fail("invalid_request", "Unknown query parameter")
                 try:
                     limit = int(query.get("limit", ["100"])[0])
                 except ValueError:
-                    fail("invalid_request", "limit 无效")
+                    fail("invalid_request", "Invalid limit")
                 return self.send(200, binding.data.snapshot(query.get("cursor", [None])[0], limit))
             if len(parts) == 6 and parts[4] == "records":
                 return self.send(200, binding.data.read(unquote(parts[5])))
@@ -476,16 +476,16 @@ class Handler(BaseHTTPRequestHandler):
                 if requested_range:
                     match = re.fullmatch(r"bytes=(\d*)-(\d*)", requested_range)
                     if not match or not any(match.groups()):
-                        fail("invalid_range", "只支持单段媒体范围", 416)
+                        fail("invalid_range", "Only a single media range is supported", 416)
                     left, right = match.groups()
                     start = int(left) if left else max(0, len(data) - int(right))
                     end = min(int(right), len(data)-1) if left and right else len(data)-1
                     if not 0 <= start <= end < len(data):
-                        fail("invalid_range", "媒体范围超出内容", 416)
+                        fail("invalid_range", "Media range exceeds the content", 416)
                     headers["Content-Range"] = f"bytes {start}-{end}/{len(data)}"
                     return self.send(206, data[start:end+1], mime, headers)
                 return self.send(200, data, mime, headers)
-        fail("not_found", "未知接口", 404)
+        fail("not_found", "Unknown endpoint", 404)
 
     def handle_method(self, method):
         try:
@@ -495,7 +495,7 @@ class Handler(BaseHTTPRequestHandler):
         except (BrokenPipeError, ConnectionResetError, TimeoutError):
             pass
         except Exception:
-            self.send(500, {"error": {"code": "internal_error", "message": "读取或操作失败；保留原请求并查询回执"}})
+            self.send(500, {"error": {"code": "internal_error", "message": "Read or operation failed; retain the original request and query its receipt"}})
 
     def do_GET(self):
         self.handle_method("GET")
@@ -504,7 +504,7 @@ class Handler(BaseHTTPRequestHandler):
         self.handle_method("POST")
 
     def do_OPTIONS(self):
-        self.send(403, {"error": {"code": "cross_origin", "message": "不开放跨来源接口"}})
+        self.send(403, {"error": {"code": "cross_origin", "message": "Cross-origin endpoints are not available"}})
 
 
 def create_server(config, state_dir, port=8875):
@@ -527,7 +527,7 @@ def main():
     server = create_server(config, args.state_dir, args.port)
     connection = Path(args.connection_file).absolute() if args.connection_file else server.host.signer.folder / "connection.json"
     if connection.parent != server.host.signer.folder or connection.is_symlink():
-        fail("invalid_host", "连接文件必须直接放在宿主 state-dir/private 目录")
+        fail("invalid_host", "Connection file must be placed directly in the host state-dir/private directory")
     fd, temporary = tempfile.mkstemp(prefix="connection-", suffix=".tmp", dir=server.host.signer.folder)
     with os.fdopen(fd, "w", encoding="utf-8") as stream:
         json.dump({"url": server.host.origin + "/#connect=" + server.host.bootstrap,

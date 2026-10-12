@@ -1,58 +1,63 @@
 ---
 name: verify
-description: 仅在用户明确要求本次使用 Gamecaden，或当前项目有效指引已采用 Gamecaden 时使用。核验明确交付、变更、资产或里程碑，判断要求覆盖、证据适用性、实际运行结果及必要接受。用于检查是否达到承诺、独立评审或补足验收证据；按本次范围复用有效结果，不自动扩大为全项目审计或发布。
+description: Use only when the user explicitly requests Gamecaden for this work, or effective guidance in the current project has adopted Gamecaden. Verify explicit deliveries, changes, assets or milestones; judge requirement coverage, evidence applicability, actual runtime results and necessary acceptance. Use to check fulfilled commitments, independently review or supplement acceptance evidence; reuse valid results within current scope without automatically expanding into full-project audits or release.
 ---
 
 # Verify
 
-先核对上述适用条件；未满足时沿原项目指引处理。边界说明见[工作流适用条件](../../shared/workspace.md)。
+First check the applicability conditions above; when they are not met, follow original project guidance. See [Workflow applicability](../../shared/workspace.md) for boundaries.
 
-回答当前对象哪些承诺已经成立、哪些未通过或尚未证实，以及依据是什么。与实现和关闭共用[验证约定](../../shared/verification.md)，检查结果回到原记录。
+Answer which commitments of the current object hold, which failed or remain unproven, and the grounds. Share [Verification conventions](../../shared/verification.md) with implementation and closure; check results return to original records.
 
-本文相对链接以本 SKILL.md 所在目录解析；../../shared/ 位于共同技能包根目录。
+Resolve relative links from this SKILL.md's directory; ../../shared/ is in the common skill package root.
 
-## 1. 确定核验目标和允许动作
+<a id="1-确定核验目标和允许动作"></a>
+## 1. Establish verification goals and allowed actions
 
-按[工作区约定](../../shared/workspace.md)定位实际项目/运行根、原 Task/Epic、要求与已有证据。分清用户要的是局部检查、完整交付核验、独立审阅、体验接受准备还是发布判断。
+Locate actual project/runtime roots, original Task/Epic, requirements and existing evidence under [Workspace conventions](../../shared/workspace.md). Distinguish local checks, complete-delivery verification, independent review, experience-acceptance preparation and release judgment.
 
-只询问状态或明确要求只读时，按该范围读取并报告；允许实际验证时运行相应检查和生成必要证据。核验权限不自动包含修改生产实现、清空玩家存档、发布或操作其他项目。
+For status-only or explicit read-only requests, read/report within scope; when actual verification is allowed, run corresponding checks and produce necessary evidence. Verification permission does not automatically include production implementation changes, clearing player saves, publishing or operations on other projects.
 
-使用[规则选择](../../shared/rules.md)读取本次命中的有效条件。用户已明确的范围与接受决定直接沿用；不能以“重新验收”为由增加一轮普遍批准或削减目标。
+Read matching effective conditions through [Rule selection](../../shared/rules.md). Retain explicit scope and acceptance decisions directly; “reacceptance” does not justify another general approval round or reduced goals.
 
-## 2. 对照要求审查现有证据
+<a id="2-对照要求审查现有证据"></a>
+## 2. Review existing evidence against requirements
 
-先读原始要求与实际对象，再核对开发检查、内容报告和已有结论。简短工作直接说明对应关系；复杂交付在原记录/已有报告中组织必要覆盖，不另建平行验收台账。
+Read original requirements and actual objects first, then development checks, content reports and conclusions. Brief work states correspondence directly; complex deliveries organize necessary coverage in original records/existing reports, without parallel acceptance ledgers.
 
-依据共同验证约定判断哪些结论可以复用、哪些失效或缺失。核对版本、消费者、环境、输入和覆盖；报告标题、完成百分比、素材数量或子任务状态不独自证明目标成立。
+Judge reusable, invalid or missing conclusions under common verification conventions. Check versions, consumers, environments, inputs and coverage; report titles, completion percentages, material counts or subtask status alone do not prove goals.
 
-对未覆盖或存疑部分选择足够的检查。涉及游戏输入、场景、资产、存档、性能或目标平台时，按需读[游戏检查范围](references/game-checks.md)。与本次主张无关的领域不展开。
+Choose sufficient checks for uncovered/doubtful parts. For game inputs, scenes, assets, saves, performance or target platforms, read [Game check scope](references/game-checks.md) as needed. Do not expand unrelated domains.
 
-材料缺项按[材料职责](../../shared/material-requirements.md)关联到实际动作；需由面板定位条件时按[面板续接](../../shared/panel-workflow.md)回读原要求和证据，不将派生状态当作验证结果。
+Associate material gaps with actual actions under [Material responsibilities](../../shared/material-requirements.md); locate conditions through the panel under [Panel continuation](../../shared/panel-workflow.md) and read back original requirements/evidence, without treating derived status as verification results.
 
-## 3. 完成必要检查或独立核验
+<a id="3-完成必要检查或独立核验"></a>
+## 3. Complete necessary checks or independent verification
 
-使用当前工程真实可用的命令、工具、场景和用户路径；需要专业能力时调用适用 Skill，并保持当前任务与证据归属。运行前确认目标实例与测试数据，保护已有修改和玩家数据。
+Use actual available project commands, tools, scenes and user paths; call applicable specialized Skills when needed, retaining task/evidence ownership. Confirm target instances and test data before runs, protecting existing changes and player data.
 
-验证可以产生报告、缓存或隔离测试材料，应使用适用位置并说明相关副作用。严格只读要求下不运行会写文件的检查。生产实现保持被测基线，不能边改结果边将同一观察称为已验证；实际修复交回相应执行职责后重新核验。
+Verification may produce reports, caches or isolated test materials; use applicable locations and explain relevant side effects. Strict read-only requirements prohibit file-writing checks. Production implementation retains the tested baseline; do not modify outcomes while calling the same observation verified. Hand actual repairs back to corresponding execution responsibility, then reverify.
 
-按共同约定判断是否需要独立执行者；普通工作不因使用 verify 就必然派另一个代理。真实要求独立核验时，保留执行者、基线与覆盖依据；能力缺失就说明该条件尚缺，不伪造独立结论。
+Judge need for independent executors under common conventions; ordinary use of verify does not necessarily delegate another agent. When independent verification is genuinely required, retain executor, baseline and coverage grounds; absent capabilities mean missing conditions, not fabricated independent conclusions.
 
-检查通过后，只有新的变化、失败或具体未覆盖要求才扩大或重复验证。检查无法运行时记录原因与替代证据能覆盖的范围，不能用一份待执行清单冒充结果。
+After passes, expand/repeat only for new changes, failures or specific uncovered requirements. For unavailable checks, record reasons and alternative-evidence coverage; a pending checklist cannot masquerade as results.
 
-## 4. 给出范围准确的判断
+<a id="4-给出范围准确的判断"></a>
+## 4. Give accurately scoped judgments
 
-对当前必要要求给出通过、未通过、尚无法判定或未检查等事实，区分既有失败与本次回归，并说明哪些问题阻断当前交付。
+For current necessary requirements, state passes, failures, undecidable or unchecked facts; distinguish existing failures and current regressions, explaining blockers to current delivery.
 
-技术结果与必要的人类判断分别说明。需要用户接受时准备可检查的对象、版本和方面；已有决定适用时直接引用。用户改变接受安排时保留真实未验部分和调整依据，不能改写旧证据。
+State technical results and necessary human judgment separately. Prepare reviewable objects, versions and aspects for user acceptance; cite applicable existing decisions directly. When users change acceptance arrangements, retain actual untested parts and adjustment grounds without rewriting old evidence.
 
-总体结论只覆盖本次已核验范围。局部通过、机器通过或模型审阅通过不能被转述为整款游戏、全部体验或发布已完成。
+Overall conclusions cover verified scope only. Local, machine or model-review passes cannot be restated as completion of the entire game, all experience or release.
 
-## 5. 保存结论并继续原工作
+<a id="5-保存结论并继续原工作"></a>
+## 5. Save conclusions and continue original work
 
-按[留存、索引与版本](../../shared/records.md#留存索引与版本)保存本轮结论及 Evidence/Decision 引用并回写原 Task/Epic；影响产品成果或整体判断时同步 Roadmap，影响 [PDP](../../shared/phased-development.md) Stage 编排时同步原计划，摘要引用真实依据。只读或明确不落盘时在对话交付。正式出口、独立复核或比较版本使用可定位报告，已有完整报告直接引用。
+Save current conclusions and Evidence/Decision references under [Retention, indexing and versions](../../shared/records.md#retention-indexing-and-versions), writing back original Task/Epic. Synchronize Roadmap for product outcome/overall judgment impacts and original [PDP](../../shared/phased-development.md) for Stage orchestration impacts; summaries cite actual grounds. Deliver in conversation for read-only or explicit no-persistence requests. Formal exits, independent reviews or version comparisons use locatable reports; cite complete existing reports directly.
 
-核验 Stage/里程碑时回查其范围内的实际条件与必要组合结果。相同条件引用原 Task/Epic，独有条件在对应 PDP/Roadmap 判断；数量和已建记录不是通过依据。Stage/PDP 不调用 record.transition，也不为每项新增人工接受。
+For Stage/milestone verification, recheck actual conditions and necessary combined results within scope. Shared conditions cite original Task/Epic; unique conditions are judged in corresponding PDP/Roadmap. Counts and created records do not prove passes. Stage/PDP do not call record.transition or add human acceptance per item.
 
-原请求包括实现时，失败按原因返回 [develop](../develop/SKILL.md) 或 [assets](../assets/SKILL.md)，在原工作内修复和补验；只有检查请求则报告问题与建议。设计/范围确需改变时局部回到对应职责，独立可做的工作继续。
+For implementation-inclusive requests, return failures by cause to [develop](../develop/SKILL.md) or [assets](../assets/SKILL.md), repairing and supplementing verification in original work; check-only requests report problems/recommendations. Return locally to corresponding responsibility for necessary design/scope changes, continuing independent work.
 
-本次工作的全部必要条件满足后，原请求明确要求收尾或已授权完整交付时，按 [close](../close/SKILL.md) 继续；只要求核验或明确暂不关闭时报告检查结论并保留该范围，不自动修改工作生命周期。verify 的通过结论本身不自动关闭 Task、Epic 或发布版本。
+After all necessary conditions are met, continue under [close](../close/SKILL.md) when closure is explicitly requested or complete delivery authorized. For verification-only or explicitly no-closure requests, report conclusions and retain scope without automatic lifecycle changes. A verify pass does not itself close a Task, Epic or release version.

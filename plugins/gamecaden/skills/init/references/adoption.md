@@ -1,69 +1,76 @@
-# 旧项目接入、修复与移交
+<a id="旧项目接入修复与移交"></a>
+# Adoption, repair and handover of old projects
 
-先确定本次范围和真实来源。目录中存在旧工作流不等于必须迁移，目录中有两个系统也不必立即停止所有工作；关键是本次对象是否存在重叠写入责任。
+Establish current scope and actual sources first. An old workflow in a directory does not mean migration is required; two systems in one directory do not require immediately stopping all work. What matters is whether this object has overlapping write responsibilities.
 
-## 当前情况导航
+<a id="当前情况导航"></a>
+## Navigation by current situation
 
-按当前请求选择入口，只读取本次命中的部分。
+Choose the entrypoint from the current request; read only matching parts.
 
-| 当前情况 | 下一动作与依据 |
+| Current situation | Next action and grounds |
 |---|---|
-| 继续已有工作或局部修复 | 从原工作恢复，按[续接参考](../../flow/references/resume.md)核对当前结果、推进限制与相关来源。 |
-| 目标根或权威来源尚不清楚 | 先按 [init 的 inspect](../SKILL.md) 只读识别实际现场。 |
-| 已要求建立 Gamecaden 接入关系 | 按下文 [adopt](#adopt整理当前正文并保留原来源) 形成当前入口、登记维护责任，复用有效内容。 |
-| 已登记的入口或映射失效 | 按下文 [repair](#repair依据实际缺口修复) 查明并修复具体缺口。 |
-| 已授权切换记录的维护责任 | 按下文 [migrate](#migrate只移交获授权范围) 移交指定对象，保留原身份和历史。 |
-| 当前设计或生产材料不足 | 按[材料职责](../../../shared/material-requirements.md)定位受影响的动作，在原工作中补齐相关输入。 |
+| Continue existing work or local repair | Restore from original work, checking current results, advancement constraints and relevant sources under [Continuation reference](../../flow/references/resume.md). |
+| Target roots or authoritative sources remain unclear | First identify actual circumstances read-only through [init inspect](../SKILL.md). |
+| Establishing Gamecaden adoption has been requested | Use [adopt](#adopt-organize-current-primary-documents-and-retain-original-sources) below to form current entrypoints, register maintenance responsibility and reuse valid content. |
+| Registered entrypoints or mappings are invalid | Investigate and repair specific gaps under [repair](#repair-repair-according-to-actual-gaps) below. |
+| Switching maintenance responsibility of records is authorized | Transfer specified objects under [migrate](#migrate-transfer-only-authorized-scope), retaining original identity and history. |
+| Current design or production materials are insufficient | Locate affected actions under [Material responsibilities](../../../shared/material-requirements.md), completing relevant inputs in original work. |
 
-## 识别已有来源
+<a id="识别已有来源"></a>
+## Identify existing sources
 
-从当前指引和实际入口查相关目标、规格、路线、活动工作、台账、证据与决定。内容判断以文件正文和实际消费者为据，不以名称、已勾复选框或日期单独推断。
+Find relevant goals, specifications, routes, active work, ledgers, evidence and decisions from current guidance and actual entrypoints. Judge content from file bodies and actual consumers, not names, checked checkboxes or dates alone.
 
-概念图、角色设定/模型、关卡图、玩法与背景资料也可承担材料职责；按[用途参考](../../design/references/game-deliverables.md)核对本次需要的信息，保留原章节、配置和制作源。不同名称或一份资料承担多用途时仍可复用；未来目标与现状不同只补相关差异。需持续追踪的独立候选按原资产合同处理，不把所有设计资料强制登记为资产。
+Concept art, character designs/models, level diagrams, gameplay and background materials can also fulfill material responsibilities. Check information required here under [Use reference](../../design/references/game-deliverables.md), retaining original sections, configuration and production sources. Reuse remains possible under different names or multiple purposes in one material; when future targets differ from current state, supplement only relevant differences. Handle independent candidates needing sustained tracking under original asset contracts, without forcing all design materials into asset registration.
 
-同名 Issue/Task 可通过“来源系统＋原标识＋原路径”区分。旧 YAML 写在代码块、嵌套 Epic 目录或其他格式时保持兼容读取，不先强制转换再理解内容。
+Distinguish identically named Issues/Tasks through “source system + original identifier + original path”. Read old YAML in code blocks, nested Epic directories or other formats compatibly; do not force conversion before understanding content.
 
-迁移前，原 Task/Issue 的目标、生命周期、续接和批准仍在原来源。新入口可以链接这些资料，但不能再创建同目标、同状态的副本。
+Before migration, original Task/Issue goals, lifecycle, continuation and approvals remain in original sources. A new entrypoint may link them, but cannot create another copy with identical goals and status.
 
-## adopt：整理当前正文并保留原来源
+<a id="adopt整理当前正文并保留原来源"></a>
+## adopt: organize current primary documents and retain original sources
 
-- 按[材料职责](../../../shared/material-requirements.md)在本次范围逐项标记可复用、缺项、冲突、未知或不适用；混合文件按原职责、章节/字段、版本与适用范围理解。缺项可由[governance 派生视图](../../../shared/governance.md)呈现。
-- 按[项目级当前正文](../../../shared/records.md#项目级当前正文)从已采用要求整理 Vision、必要 Spec 总览；项目级持续开发默认建立 Roadmap，保留真实成果和未定范围。大型方案的 Stage 编排按 [PDP](../../../shared/phased-development.md)独立登记或精确引用。原材料继续提供详细设计/历史依据，当前方向与目标/实际能力分别表达。
-- 按来源系统登记活动工作集合及维护责任；只在新工作默认来源明确后创建新 Task。
-- 原输入保留位置和版本引用；详细领域规范、图件、数据与台账可继续由原来源维护，总览说明具体生效范围与消费者。历史建议或候选在相应范围明确采纳后才成为生效要求。
-- 接入指引要说明哪些对象仍由旧流程管理。用户没有授权切换旧对象时，保持原责任。
+- Under [Material responsibilities](../../../shared/material-requirements.md), mark each item within scope reusable, missing, conflicting, unknown or inapplicable; understand mixed files through original responsibility, sections/fields, versions and applicable scope. Gaps may appear through [Governance derived views](../../../shared/governance.md).
+- Organize Vision and necessary Spec overview from adopted requirements under [Current project primary documents](../../../shared/records.md#current-project-level-bodies); default to a Roadmap for project-level sustained development, retaining real outcomes and unresolved scope. Register Stage arrangements of large solutions independently or cite precisely under [PDP](../../../shared/phased-development.md). Original materials continue supplying detailed design/historical grounds; express current direction and target/actual capabilities separately.
+- Register active work collections and maintenance responsibility by source system; create new Tasks only after their default source is clear.
+- Original inputs retain locations and version references; detailed domain conventions, diagrams, data and ledgers may remain maintained by original sources, with overview explaining specific effective scope and consumers. Historical advice or candidates become effective requirements only after explicit adoption in the corresponding scope.
+- Adoption guidance explains which objects remain managed by old processes. Without user authorization to switch old objects, retain original responsibility.
 
-接入结果须能定位当前愿景、规则/基线、必要路线及各自后续写回位置，并说明原材料还维护什么。已采用但未实现的目标继续保留承诺，未采用候选不因整理成为要求。仅给资料列表或把所有内容搬入一个 Spec，均未完成职责整理。
+Adoption results must locate current vision, rules/baseline, necessary route and each subsequent writeback location, explaining what original materials still maintain. Adopted but unimplemented goals retain commitments; unadopted candidates do not become requirements through organization. Merely listing materials or moving all content into one Spec does not complete responsibility organization.
 
-新增入口允许在新旧范围明确分开的情况下并存。若两套指令或自动入口会改写同一工作，先处理这个具体重叠，再切换该对象；其余独立工作可以继续。
+New entrypoints may coexist when old and new scopes are clearly separate. If two instruction sets or automatic entrypoints rewrite the same work, handle that specific overlap before switching the object; other independent work can continue.
 
-只映射与本次交付及已确认项目范围有关的来源，按[集合范围](../../../shared/workspace.md#2-便携字段)选正文/索引及窄集合，报告入口按[留存与索引](../../../shared/records.md#留存索引与版本)登记。scope 不会筛掉回执或历史载荷。需要面板辅助定位时按[面板续接](../../../shared/panel-workflow.md)读派生结果，再回读原文；视图没有自动采纳效力。
+Map only sources related to this delivery and confirmed project scope; choose primary documents/indexes and narrow collections under [Collection scope](../../../shared/workspace.md#2-portable-fields), and register report entrypoints under [Retention and indexing](../../../shared/records.md#retention-indexing-and-versions). scope does not filter out receipts or historical payloads. For panel-assisted location, read derived results under [Panel continuation](../../../shared/panel-workflow.md), then original text; views do not automatically adopt anything.
 
-## repair：依据实际缺口修复
+<a id="repair依据实际缺口修复"></a>
+## repair: repair according to actual gaps
 
-区分首次使用的空集合、被移动的文件、确实丢失的记录和旧配置。结合当前引用、内容和可用项目历史定位，不把原有活跃任务目录的消失当作“从未有任务”。
+Distinguish empty collections at first use, moved files, genuinely lost records and old configuration. Locate using current references, content and available project history; do not treat disappearance of an originally active task directory as “there have never been tasks”.
 
-修改被确认失效的映射或链接，保留无关约定。权限、工具或文件缺失时指出影响的动作，不为修复一个入口重置整个项目。
+Modify confirmed invalid mappings or links, preserving unrelated conventions. When permissions, tools or files are missing, identify affected actions; do not reset the entire project to repair one entrypoint.
 
-本次已要求修复主要文档职责时，按 adopt 整理受影响正文并对齐原来源；普通续接不因缺少新入口自动转为全项目修复。包更新不会自行迁移项目或更改原事实拥有者。
+When repairing primary document responsibilities has been requested, organize affected documents under adopt and align original sources; ordinary continuation does not automatically become full-project repair because a new entrypoint is absent. Package updates do not independently migrate projects or change original fact owners.
 
-## migrate：只移交获授权范围
+<a id="migrate只移交获授权范围"></a>
+## migrate: transfer only authorized scope
 
-移交前列明本次对象、原位置/ID、原责任、新责任及需要调整的入口。为真实转换工作保留可追踪的执行记录；无需转换内容的简单归属调整可就近保存决定。
+Before handover, list current objects, original locations/IDs, original responsibility, new responsibility and entrypoints needing adjustment. Retain traceable execution records for actual conversion; simple ownership adjustment without content conversion can save the decision nearby.
 
-移交时：
+During handover:
 
-1. 保留原内容、状态语义、历史结果和批准范围，说明新旧身份的对应。
-2. 修改本次作用域的写入来源和必要指引，处理真正重叠的自动恢复/记录/归档入口。
-3. 旧位置保留可定位的历史身份或指向有效入口的引用；只有确有需要且已获授权才搬文件。
-4. 回读迁移对象与引用，确认每项只有一个活动状态源。原本未完成的工作不能在迁移中变成完成。
+1. Preserve original content, status semantics, historical results and approval scope; explain old/new identity mappings.
+2. Modify write sources and necessary guidance in this scope, handling genuinely overlapping automatic restoration/recording/archiving entrypoints.
+3. Retain locatable historical identity or a reference to an effective entrypoint at the old location; move files only when genuinely needed and authorized.
+4. Read back migrated objects and references, confirming each has one active status source. Unfinished work cannot become complete through migration.
 
-源码、资源、代码分支、远端和发行状态不因记录迁移自动改变。若原指令允许相关工程动作，仍按该实际交付处理。
+Source code, resources, code branches, remotes and release state do not automatically change through record migration. Engineering actions allowed by original instructions still follow that actual delivery.
 
-## 宿主项目指引与重复执行
+<a id="宿主项目指引与重复执行"></a>
+## Host project guidance and repeated execution
 
-先检查本次目标范围内当前宿主的项目指引、override和已有托管段；Codex使用AGENTS.md，Claude Code使用CLAUDE.md。有效位置可能是根文件或更近的覆盖文件；不能只新增一个被忽略的根指引就宣布接入完成。
+First check project guidance, override and existing managed sections for the current host within target scope; Codex uses AGENTS.md and Claude Code uses CLAUDE.md. Effective locations may be root or nearer override files; merely adding an ignored root guide cannot establish completed adoption.
 
-只更新本流程自己的有边界段落；用户已授权修改的冲突规则按相应范围明确调整，保留其他约定。边界标记不完整、多个候选段含义冲突时先查明内容，不用宽范围替换猜测覆盖。
+Update only this workflow's bounded sections; explicitly adjust conflicting rules within user-authorized scope, preserving other conventions. With incomplete boundary markers or conflicting candidate sections, investigate content first instead of guessing through broad replacement.
 
-第二次执行读取已有登记，只补相关差异。已经明确的授权和选择继续使用；路径相同或文件存在不等于内容正确，仍做与本次变化相称的回读。
+On a second execution, read existing registration and supplement relevant differences only. Retain established authorization and choices; identical paths or file existence do not prove content correctness. Still read back in proportion to current changes.

@@ -8,4 +8,4 @@ sources: []
 default_task_source: null
 default_epic_source: null
 rule_sources: []
-# 只登记实际存在/明确新建的来源；路径相对于本文件；format 声明真实格式。
+# Register only sources that actually exist or are explicitly being created; paths are relative to this file, and format states the actual format.

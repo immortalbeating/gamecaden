@@ -1,69 +1,76 @@
-# 再次进入与续接
+<a id="再次进入与续接"></a>
+# Re-entry and continuation
 
-仅在继续、恢复或核对已有工作时读取。恢复使用项目原始记录，聊天历史和交接文件补充背景。
+Read only when continuing, restoring or checking existing work. Restore from original project records; chat history and handoff files supplement context.
 
-## 0. 怎样进入恢复，以及能够保证什么
+<a id="0-怎样进入恢复以及能够保证什么"></a>
+## 0. How restoration starts and what it can guarantee
 
-在正确项目中开始处理请求后，宿主加载有效项目指引，已安装的 Skill 可按描述匹配，也可由用户显式选择。项目指引应明确开发/续接请求先进入 flow；这是一条可验证的读取路径，不是强制自动执行的运行器。
+After a request starts in the correct project, the host loads effective project guidance; installed Skills may match their descriptions or be explicitly selected by the user. Project guidance should state that development/continuation requests enter flow first; this is a verifiable reading path, not a runner that forces automatic execution.
 
-用户通常只需说“继续之前的工作”或“继续 T-012”，不必重讲整个项目。只有项目未绑定、工作无法定位或存在实质选择时才补问。Skill 未安装、指引未被有效加载或记录未保存时，不能承诺这条自动读取路径已经可用。
+Users usually need only say “continue the previous work” or “continue T-012”, without retelling the whole project. Ask further only when the project is unbound, work cannot be located or a substantive choice exists. When a Skill is not installed, guidance is not effectively loaded or records are not saved, do not promise that this automatic reading path is available.
 
-空白会话本身不启动实现。只查询进度时恢复足以回答的上下文；要求继续时才按有效任务与范围推进。需要显式兜底时，用户可以选择实际已安装的 flow Skill 或提供项目/Task 路径，不能引用一个尚未安装的命令冒充自动能力。
+A blank session alone does not start implementation. For progress queries, restore enough context to answer; advance according to effective tasks and scope only when continuation is requested. For explicit fallback, users can select an actually installed flow Skill or provide a project/Task path; do not cite an uninstalled command as if it were an automatic capability.
 
-任务记录应在重要结果、范围改变、暂缓/取消和交接时及时保存。突然中断只能可靠恢复已落盘内容及能从当前现场核实的事实；未保存的对话、临时状态和决定不能保证自动找回。持久记录、有效入口和新会话恢复验证需要分别检查。
+Save task records promptly at important results, scope changes, deferral/cancellation and handoff. After abrupt interruption, only persisted content and facts verifiable from the current situation can be reliably restored; automatic recovery of unsaved conversation, temporary state or decisions cannot be guaranteed. Check persistent records, effective entrypoints and new-session restoration verification separately.
 
-Quick 虽可完成后简记，但预计要等待、切换会话或执行易中断的持续动作时，先留足够的 active/续接记录。若在第一次留存前就意外中断，只能根据实际改动和可访问来源重建已知情况，不能假装已有完整任务记录。
+Quick work can be briefly recorded after completion, but when waiting, session switching or interruptible sustained actions are expected, first leave sufficient active/continuation records. If an unexpected interruption occurs before the first saved record, reconstruct known circumstances only from actual changes and accessible sources; do not pretend complete task records already exist.
 
-## 1. 定位哪项工作
+<a id="1-定位哪项工作"></a>
+## 1. Locate the work
 
-优先顺序：本轮明确 Task/Issue/路径 → 当前未结束工作的明确上下文 → 请求目标与相关活跃工作匹配。Progress 可导航，最终回到原记录。
+Priority: explicit Task/Issue/path in this turn → clear context for current unfinished work → match the request's goal to relevant active work. Progress can navigate; return to original records ultimately.
 
-有多个候选时，比较目标、作用范围、运行根和原管理来源，不按最后修改日期选择。仍存在实质歧义才给出简短选项，列真实工作标识及差异。
+With multiple candidates, compare goals, scope, runtime roots and original management sources, rather than selecting by last-modified date. Offer concise choices only when substantive ambiguity remains, listing actual work identifiers and differences.
 
-同时读取原 Task 当前推进限制：明确暂缓或取消的工作不能仅因仍在列表中就自动执行。已有优先级、依赖与本次意图足以确定下一项时直接选择；多个候选本身不必然要求提问。明确恢复某 Task 可解除该项用户暂缓，其他必要条件继续适用。
+Also read the original Task's current advancement constraints: explicitly deferred or cancelled work cannot execute automatically merely because it remains in a list. Select directly when existing priorities, dependencies and current intent suffice; multiple candidates alone do not necessarily require a question. Explicit resumption of a Task can lift that user deferral; other necessary conditions continue to apply.
 
-当前请求可能只是查询状态，也可能修改原范围。活跃执行中的状态追问不自动撤销原实施请求；独立的只读状态请求也不自动授予后续实施。
+The current request may only query status or may change original scope. A status question during active execution does not automatically revoke the original implementation request; an independent read-only status request does not automatically authorize subsequent implementation.
 
-## 2. 核对当前现场
+<a id="2-核对当前现场"></a>
+## 2. Check the current situation
 
-按 workspace 映射解析实际项目根、运行根和相关路径。检查与本任务有关的当前代码、资源、工作树/分支和未提交差异。
+Resolve actual project roots, runtime roots and relevant paths through workspace mappings. Check current code, resources, worktree/branch and uncommitted differences related to this task.
 
-恢复或切换工作树时，对照本次实际生效指引/入口、shell 工作目录和本地 I/O 的 project_root，使其对应明确的目标检出。工作树附着信息不能单独证明默认命令目录已经改变；必要时显式指定工作目录和项目根。入口失效时按具体缺口修复，不重复全项目 init。
+When restoring or switching worktrees, compare currently effective guidance/entrypoints, shell working directory and local I/O project_root so they refer to the explicit target checkout. Worktree attachment alone cannot prove the default command directory has changed; specify working directory and project root explicitly as needed. Repair an invalid entrypoint according to its specific gap, without repeating full-project init.
 
-- 相同项目在不同工作树中可以有不同候选和规则；使用本次明确目标，保留其范围标识。
-- 旧进程、端口、桥接文件和缓存不能证明本次运行目标；需要引擎操作时先核对实际连接项目。
-- 无关脏改动保留。若与本次修改重叠且意图无法判断，澄清具体冲突，不清理整个工作区。
-- 链接指向本次授权范围外的项目时，先核对其用途；来源映射不扩大写入授权。
+- The same project in different worktrees may have different candidates and rules; use the explicitly targeted one and retain its scope identifiers.
+- Old processes, ports, bridge files and caches do not prove the current runtime target; check the actual connected project before engine operations.
+- Preserve unrelated dirty changes. If they overlap current changes and intent cannot be determined, clarify the specific conflict; do not clean the entire workspace.
+- When a link points to a project outside current authorization, check its purpose first; source mappings do not expand write authorization.
 
-## 3. 恢复足够上下文
+<a id="3-恢复足够上下文"></a>
+## 3. Restore sufficient context
 
-先读 Task 当前结果、待完成项和下一步，再读相关 Epic/Spec/设计及本次动作依赖的证据/决定。需要解释差异时才读历史；不以恢复为由全量加载所有 Task、日志和停车场。
+Read the Task's current results, unfinished items and next step first, then relevant Epic/Spec/design and evidence/decisions required by the current action. Read history only when differences need explanation; restoration does not justify loading every Task, log and parking lot.
 
-原工作引用 [PDP](../../../shared/phased-development.md) 时，只读当前 Stage 与必要相邻前提，沿原 Task 的 Epic 归属继续。来源缺失影响阶段/版本路线安排时补齐相关入口，独立局部修复不因此迁移全项目。
+When original work cites [PDP](../../../shared/phased-development.md), read only the current Stage and necessary adjacent prerequisites, continuing under the original Task's Epic ownership. Complete relevant entrypoints when missing sources affect stage/version route arrangements; independent local repairs do not thereby migrate the entire project.
 
-需要理解游戏方向、生效规则或成果安排时，从 index 找相应当前正文，再沿具体引用读详细材料。旧映射仍可支持局部续接；主要文档的整理在正式接入或已要求的相关修复中处理，缺少新正文不自动扩大本次任务。
+To understand game direction, effective rules or outcome arrangements, find the corresponding current primary documents through index, then follow specific references to detailed materials. Old mappings can still support local continuation; organize primary documents during formal adoption or explicitly requested related repair. Missing new primary documents does not automatically expand this task.
 
-把“已做”“已验证”“已接受”“已实际接入”分开理解。核对记录对应的对象、版本、用途和基线；报告生成日期或旧 PASS 不能单独证明当前适用。
+Distinguish “done”, “verified”, “accepted” and “actually integrated”. Check the object, version, use and baseline corresponding to records; a report generation date or old PASS alone does not prove current applicability.
 
-## 4. 根据差异继续
+<a id="4-根据差异继续"></a>
+## 4. Continue according to differences
 
-| 情况 | 下一动作 |
+| Situation | Next action |
 |---|---|
-| 目标、对象和前提未变，原证据仍适用 | 复用并继续下一动作 |
-| 只部分输入变化 | 补受影响检查或决定，保留无关的有效结果 |
-| 原 Task 仍 active，只有普通小修 | 原 Task 内继续 |
-| 原工作当时确已完成，后来新增需求/回归 | 使用负责新变化的现有工作或新 Task，保留历史关闭 |
-| 查明原关闭时就未满足承诺 | 同一工作中说明误判并按需要重开，保留旧关闭事件 |
-| 用户明确改变目标、暂缓或废弃 | 按变更处理参考更新范围与推进限制，保存受影响工作的去向 |
-| 必要接受尚缺 | 说明具体对象和缺口，继续不依赖该接受的工作 |
-| 源记录缺失 | 查现有指针/历史；无法核实时保留未知，不补造完成状态 |
+| Goals, objects and prerequisites are unchanged; original evidence still applies | Reuse and continue the next action |
+| Only some inputs changed | Supplement affected checks or decisions; retain unrelated valid results |
+| Original Task remains active with only an ordinary small repair | Continue in the original Task |
+| Original work was truly complete then; new requirements/regressions arose later | Use existing work responsible for the new change or a new Task; retain historical closure |
+| Investigation establishes that commitments were unmet at original closure | Explain the mistaken judgment within the same work and reopen as needed; retain the old closure event |
+| User explicitly changes goals, defers or abandons work | Update scope and advancement constraints under the change-handling reference; save affected work's destination |
+| Necessary acceptance is missing | Explain the specific object and gap; continue work independent of that acceptance |
+| Source records are missing | Check existing pointers/history; retain unknowns when unverifiable, without fabricating completion status |
 
-旧流程仍拥有该工作时，按其实际记录和关闭规则推进。新 workflow 入口不构成管理权移交。
+When an old process still owns the work, advance using its actual records and closure rules. A new workflow entrypoint does not transfer management authority.
 
-实际发生增补、修改、暂缓或取消时，读取[变更处理](change-work.md)；普通恢复不需要加载全部变更细则。
+When additions, modifications, deferral or cancellation actually occur, read [Change handling](change-work.md); ordinary restoration does not need all change details.
 
-## 5. 输出与持久化
+<a id="5-输出与持久化"></a>
+## 5. Output and persistence
 
-执行时使用一个当前上下文：实际根、工作来源/标识、当前目标、下一动作、适用证据、未决点。这是工作中的理解，不要求保存 context.json 或另建 HANDOFF。
+Use one current context during execution: actual roots, work source/identifier, current goal, next action, applicable evidence and unresolved points. This is working understanding; it does not require context.json or another HANDOFF.
 
-取得新结果、遇到需暂停的阻塞、交接或收尾时回写原 Task。确需独立交接文件时按[派生输出](../../../shared/derived-outputs.md#独立-handoff)从已更新原记录导出快照，保留实际范围/基线、原依据和默认路径；重复生成另存版本，恢复仍以原记录推进。
+Write back to the original Task when obtaining new results, encountering a blocker requiring a pause, handing off or closing. When an independent handoff file is genuinely needed, export a snapshot from updated original records under [Derived outputs](../../../shared/derived-outputs.md#standalone-handoff), retaining actual scope/baseline, original grounds and default path. Save repeated generations as separate versions; restoration still advances from original records.

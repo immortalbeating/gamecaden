@@ -1,58 +1,64 @@
-# 工程结构：组成、状态、生命周期与验收
+<a id="工程结构组成状态生命周期与验收"></a>
+# Engineering structure: composition, state, lifecycle and acceptance
 
-新增独立页面/关卡、跨界面状态、可复用主体、跨生命周期监听，或改变内容的编辑方式时读取。它落实 [GAME-OWNER、GAME-LIFETIME](../common.md) 和 [LAYOUT-BOUNDARY](../project-structure.md)；引擎/框架机制从 [profiles 的专题入口](../README.md)选择。普通错字、局部数值调整和已有清楚边界内的修复只复核实际影响。
+Read this when adding independent pages/levels, cross-interface state, reusable entities, cross-lifecycle listeners, or changing how content is edited. It implements [GAME-OWNER, GAME-LIFETIME](../common.md) and [LAYOUT-BOUNDARY](../project-structure.md); choose engine/framework mechanisms from [profiles topic entries](../README.md). Routine typos, local value adjustments and fixes within already clear boundaries review only actual effects.
 
-## 何时先确定结构
+<a id="何时先确定结构"></a>
+## When to establish structure first
 
-以下变化需要在其相关实现前说明组成与责任，可以直接复用已有有效设计：
+The following changes need composition and responsibilities explained before their relevant implementation; valid existing designs can be reused directly:
 
-- 首次引入能独立进入/退出的页面、关卡或游戏模式。
-- 同一单位/界面要在不同位置实例化，或配置需要复用但状态应各自独立。
-- 角色、库存、本局进度等状态需要跨页面/关卡保留，或新增重开/结算/读档入口。
-- 外部订阅、异步返回或后台作业可能晚于创建它的对象结束。
-- 已承诺通过编辑器/面板调整稳定内容，或原来的编辑与预览方法无法支持本次修改。
+- First introducing pages, levels or game modes that can be entered/exited independently.
+- Instantiating the same unit/interface in different locations, or reusing configuration while keeping state independent.
+- Retaining character, inventory, current-session progress or other state across pages/levels, or adding restart/settlement/load-save entries.
+- External subscriptions, asynchronous returns or background jobs may outlast the objects that created them.
+- Adjusting stable content through an editor/panel has been promised, or original editing/preview methods cannot support this change.
 
-新项目在首个涉及这些关系的可玩切片里就确定边界。一个只有单页和局部状态的有界试验可以保持简单；试验继续扩展到上述范围时，补齐对应设计再推进。文件行数、场景数量和 quick/standard 标签不单独决定结构是否合格。
+New projects establish boundaries in their first playable slice involving these relationships. A bounded experiment with one page and local state can stay simple; when it expands to the scope above, complete the corresponding design before continuing. File line counts, scene counts and quick/standard labels alone do not determine structural compliance.
 
-旧项目先查实际所有者、读取方和已生效规则。现有结构能承担本次交付时复用；若本次缺陷或新增行为正来自混淆的生命周期、共享状态或隐藏依赖，相关边界调整属于本次实现。把旧项目暂保单场景的安排带到新项目，会延迟必要设计；这类安排只保留原适用范围。规则冲突按 [规则约定](../../shared/rules.md)处理。
+For existing projects, first check actual owners, readers and effective rules. Reuse structure when it can support this delivery; if this defect or added behavior comes from confused lifecycles, shared state or hidden dependencies, relevant boundary adjustment belongs to this implementation. Carrying an existing project's temporary single-scene arrangement into a new project delays necessary design; such arrangements retain only their original scope. Handle rule conflicts under the [rules contract](../../shared/rules.md).
 
-## 表达在原设计里
+<a id="表达在原设计里"></a>
+## Express it in the original design
 
-简单关系可以直接写在 Task/既有设计章节。多对象关系用一张组成图和必要的生命周期表，或者使用能承担相同职责的现有资料。长期约定归原 Spec/规则，本次安排归原 Task/design；不新建同义架构台账，也不为每个子模块新增 Task。
+Simple relationships can go directly in Task/existing design sections. For multi-object relationships, use a composition diagram and necessary lifecycle table, or existing materials serving the same responsibilities. Lasting agreements belong in original Spec/rules, current arrangements in original Task/design; do not create synonymous architecture ledgers or additional Tasks for every submodule.
 
-| 需要能回答的问题 | 表达内容 | 容易遗漏的反例 |
+| Question that needs an answer | What to express | Easily missed counterexample |
 |---|---|---|
-| 哪些部分组成当前功能？ | 编辑/声明来源、实例化/装配入口、实际类型和对外接口；区分源码模块、保存资源与运行实例 | 把自定义名称当引擎类型；仅列目录却看不出实际消费者 |
-| 哪份状态是权威来源？ | 配置、实例状态、会话状态、存档和表现状态分别由谁更新/读取 | UI 重建时重置库存；实例修改共享定义；全局对象复制局部视图真源 |
-| 谁创建、谁终止、何时重置？ | 进入、退出、替换、重试、池化或异步完成的存活范围；本次实际相关的分支 | 随关卡销毁跨关卡玩家；每次进入重复注册外部回调 |
-| 外部依赖如何到达消费者？ | 明确引用、输入数据、事件与装配者；标清必需依赖及未满足时的行为 | 子模块隐式搜索某条祖先路径，换宿主或实例化第二份即失效 |
-| 内容怎样编辑和观察？ | 编辑器资源、代码组件/工厂或数据生成器的维护入口及可用预览 | 为可视化编辑交付空壳场景，稳定页面全部藏在一个分支脚本里且无独立预览 |
-| 凭什么确认符合约定？ | 对象与基线、保存/实例化/进入退出/消费者检查的对应观察点 | 按场景数量认定模块化；只有类型解析通过却宣称生命周期已正确 |
+| Which parts compose the current feature? | Editing/declaration sources, instantiation/assembly entries, actual types and external interfaces; distinguish source modules, saved resources and runtime instances | Mistaking custom names for engine types; listing only directories without showing actual consumers |
+| Which state is authoritative? | Who updates/reads configuration, instance state, session state, saves and presentation state respectively | UI reconstruction resets inventory; instances modify shared definitions; global objects duplicate a local view's source of truth |
+| Who creates, who ends, and when is reset performed? | Lifetimes for entry, exit, replacement, retry, pooling or asynchronous completion; actually relevant branches | Destroying a cross-level player with a level; registering external callbacks again on every entry |
+| How do external dependencies reach consumers? | Explicit references, input data, events and assemblers; identify required dependencies and behavior when unmet | Submodules implicitly search an ancestor path and fail under a different host or second instance |
+| How is content edited and observed? | Maintenance entries and available previews for editor resources, code components/factories or data generators | Delivering shell scenes for visual editing while hiding every stable page in one branching script without independent preview |
+| What confirms conformance? | Objects and baselines, corresponding observation points for save/instantiation/entry-exit/consumer checks | Calling scene counts proof of modularity; claiming lifecycle correctness from type parsing alone |
 
-只写命中的信息；已有配置和代码可作为明确引用，不手抄第二份依赖表。未知项指出影响哪一个动作，模型能调查的事实继续调查。复杂图件不是所有任务的必交文件。
+Write only applicable information; existing configuration/code can be explicit references without manually copying a second dependency table. Identify which action an unknown affects, and continue investigating facts the model can investigate. Complex diagrams are not required deliverables for every task.
 
-## 默认组织与允许替代
+<a id="默认组织与允许替代"></a>
+## Default organization and permitted alternatives
 
-本工作流默认按独立职责、编辑/复用需求和生命周期组织模块，让接口和状态归属能直接定位。项目可以采用组件、纯数据模型、ECS、代码生成或其他结构；选择须仍满足本次需要的编辑、集成与验证结果。
+This workflow defaults to organizing modules by independent responsibility, editing/reuse needs and lifecycle, so interfaces and state ownership are directly locatable. Projects may use components, pure data models, ECS, code generation or other structures; choices must still meet editing, integration and validation outcomes needed now.
 
-稳定页面、角色或可独立调整内容优先使用引擎适合的场景/Prefab/组件编辑途径。程序化内容提供可定位的生成器、输入及符合本次用途的预览/检查；已经选用代码驱动 UI 时，保持页面/组件职责、输入接口和可观察路径清楚。不要为了满足默认样例制造空目录、空管理器或形式化拆分。
+For stable pages, characters or independently adjustable content, prefer suitable engine scene/Prefab/component editing methods. Procedural content supplies locatable generators, inputs and previews/checks appropriate to this use; when code-driven UI is already selected, keep page/component responsibilities, input interfaces and observable paths clear. Do not manufacture empty directories, empty managers or formalistic separation to match default examples.
 
-状态的唯一权威来源不等于全部状态放入 Main，不等于系统里只能有一个更新函数。各状态具有清楚的更新责任和一致的消费者，临时选中项等表现状态可以局部拥有。
+A single authoritative source for state does not mean putting all state in Main or allowing only one update function in the system. Each state has clear update responsibilities and consistent consumers; presentation state such as temporary selection may be locally owned.
 
-## 从设计到实际验收
+<a id="从设计到实际验收"></a>
+## From design to actual acceptance
 
-| 当前交付 | 需要的核对 | 可报告的结果 |
+| Current delivery | Checks needed | Reportable results |
 |---|---|---|
-| 只交设计方案 | 组成/生命周期/依赖能互相对应；实际引擎事实已查或明确为假设；形成所需表达与验证安排 | 本次设计完成或哪项设计仍待调查，不能写成已保存场景、运行通过 |
-| 实现/接入结构 | 真实保存或声明来源与运行对象对应；所需依赖和编辑入口可用 | 文件/引用检查的实际结果与仍需运行核对的部分 |
-| 主张运行结构符合约定 | 按命中范围验证多实例、切换、退出/重进、暂停/输入及应保留/重置的状态 | 绑定当前对象、版本、观察条件的 Evidence；静态通过只覆盖静态主张 |
+| Design only | Composition/lifecycle/dependencies correspond; actual engine facts are checked or explicitly assumptions; required expression and validation arrangements exist | Design complete for this scope, or which design needs investigation; do not report saved scenes or runtime success |
+| Implementing/integrating structure | Actual saved/declared sources correspond to runtime objects; necessary dependencies and editing entries are available | Actual file/reference check results and areas still requiring runtime checks |
+| Claiming runtime structure conforms | Validate multi-instance, switching, exit/re-entry, pause/input and state retention/reset within applicable scope | Evidence tied to current objects, versions and observation conditions; static success covers only static claims |
 
-独立模块可以在显式提供依赖的测试宿主里验证，不要求每个模块都在无依赖条件下单独启动。检查共享配置时证明预期共享；检查实例隔离时证明不串状态。视觉/玩法接受继续使用真实 Decision，不由结构检查代替。
+Independent modules may be validated in test hosts with explicitly supplied dependencies; every module need not start alone without dependencies. Shared-configuration checks establish intended sharing; instance-isolation checks establish absence of state interference. Visual/gameplay acceptance still uses actual Decisions and is not replaced by structural checks.
 
-已有同基线证据可复用，新增内容只补影响部分。无法运行某引擎时保留未验证范围，设计和静态检查仍可独立完成。错误归属尚未解决时，阻断依赖它的实现/接受动作，不阻断无关的快改。
+Reuse same-baseline evidence; add only affected coverage for new content. When an engine cannot run, retain unverified scope while independently completing design and static checks. Unresolved incorrect ownership blocks implementation/acceptance actions depending on it, without blocking unrelated quick changes.
 
-## 来源与采用
+<a id="来源与采用"></a>
+## Sources and adoption
 
-这些触发和表达安排是 Gamecaden 的工作流选择，依据既有项目经验与交付要求；具体引擎事实由对应专题中的官方来源核对。采用项目经验时区分有效做法、失败反例与当时的成本折衷，保存其条件；源码中存在某种结构不证明它值得推广。
+These triggers and expression arrangements are Gamecaden workflow choices based on existing project experience and delivery requirements; official sources in corresponding topics check specific engine facts. When adopting project experience, distinguish effective approaches, failure counterexamples and cost compromises at the time, retaining conditions; a structure's presence in source code does not prove it merits broader adoption.
 
-项目采用范围、来源版本和差异沿用 [profiles 约定](../README.md)。需要共享追踪的具体结构前提就近由原拥有者表达，面板只消费已定义的条件；本参考不自动生成全项目 Gate 或另一套完成状态。
+Project adoption scope, source versions and differences follow the [profiles contract](../README.md). Concrete structural prerequisites needing shared tracking are expressed by their original owners nearby; the panel consumes only defined conditions. This reference does not automatically generate project-wide Gates or another completion-state system.

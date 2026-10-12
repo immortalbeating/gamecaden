@@ -52,7 +52,7 @@ def build_navigation(gov):
                             body=body[:start]+body[end:]
             node['headings']=headings(body)
             blocks=annotation_blocks(body)
-            if len(blocks)>1: raise ValueError('每个来源记录最多一个治理块')
+            if len(blocks)>1: raise ValueError('Each source record may contain at most one governance block')
             if not blocks: continue
             model=json_load(blocks[0])
             if 'navigation' not in model: continue
@@ -65,20 +65,20 @@ def build_navigation(gov):
     for key,nav in declarations.items():
         if 'parent' not in nav: continue
         try:
-            if gov.nodes[key]['kind']!='document': raise ValueError('文档父子归属仅适用于 document')
+            if gov.nodes[key]['kind']!='document': raise ValueError('Document parent relations apply only to document nodes')
             row=rows.get(key); base=Path(row['reference_base'] or row['path']).parent if row and not row['reference_base'] else Path(row['reference_base']) if row else Path(gov.nodes[key]['path']).parent
             ref=nav['parent']
             if 'path' in ref:
                 path=gov.guard.path(ref['path'],base)
                 if not any(n.get('record_key') and n['path']==str(path) for n in gov.nodes.values()):
-                    raise ValueError('父文档不在已读取来源中')
+                    raise ValueError('Parent document is absent from the read sources')
             record=gov.guard.resolve(ref,base)
             if ref.get('id') and record.id!=ref['id']: raise ValueError('Parent record ID does not match qualified path')
             matches=[n['key'] for n in gov.nodes.values() if n['key'].startswith('record:') and n.get('record_key') and n['path']==str(record.path) and n['ref'].get('id')==record.id]
-            if len(matches)!=1: raise ValueError('父文档不在已读取来源中或来源不唯一')
+            if len(matches)!=1: raise ValueError('Parent document is absent from the read sources or is not unique')
             parent=matches[0]
-            if gov.nodes[parent]['kind']!='document': raise ValueError('父对象不是 document')
-            if parent==key: raise ValueError('文档不能引用自身为父对象')
+            if gov.nodes[parent]['kind']!='document': raise ValueError('Parent node is not a document')
+            if parent==key: raise ValueError('A document cannot reference itself as its parent')
             candidates[key]=parent
         except (WorkflowError,PanelDataError,ValueError,TypeError) as exc:
             gov.diagnostic('invalid_navigation_parent',str(exc),key)
@@ -90,6 +90,6 @@ def build_navigation(gov):
                 cyclic.update(chain[chain.index(current):]); break
             chain.append(current); current=candidates[current]
     for key,parent in candidates.items():
-        if key in cyclic: gov.diagnostic('navigation_cycle','文档父子归属存在循环',key)
+        if key in cyclic: gov.diagnostic('navigation_cycle','Document parent relations contain a cycle',key)
         else: gov.nodes[key]['navigation_parent_key']=parent
 

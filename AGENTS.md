@@ -1,14 +1,15 @@
-# 维护入口
+# Maintenance entry
 
-本仓库维护 Gamecaden 工具包。先读取 [README](README.md) 和当前任务范围，保留已有工作树修改，仅修改本次负责的文件。
+This repository maintains the Gamecaden toolkit. Read [README](README.md) and the current task scope first. Preserve existing worktree changes and modify only files owned by this work.
 
-- 修改职责或触发规则时，读取对应 `plugins/gamecaden/skills/*/SKILL.md` 和其引用的 `shared/` 合同；详细行为以包内合同为准。
-- 修改来源、I/O 或面板时，读取 [架构](docs/architecture.md) 与对应共享合同，保持原来源权威、修订检查和恢复语义。
-- 根 `tests/`、`scripts/` 是维护入口；`plugins/gamecaden/` 是公共插件，`dist/` 是构建产物。
-- 按影响运行 `python scripts/check.py --suite core` 或 `--suite distribution`；发行前运行 `--suite all`。检查方式见 [验证说明](docs/validation.md)。
-- 报告实际执行命令、结果及未验证部分。程序检查、模型行为、运行采用和用户接受分别说明。
-- 公共材料仅使用匿名示例；连接凭据、本机路径、私有日志和业务项目资料留在公共包外。
+- For responsibilities or trigger changes, read the corresponding `plugins/gamecaden/skills/*/SKILL.md` and referenced `shared/` contracts; package contracts define detailed behavior.
+- For sources, I/O, or panel changes, read [architecture](docs/architecture.md) and the relevant shared contracts. Preserve original source authority, revision checks, and recovery semantics.
+- Root `tests/` and `scripts/` are maintenance entries; `plugins/gamecaden/` is the public plugin, and `dist/` holds build artifacts.
+- Run `python scripts/check.py --suite core` or `--suite distribution` according to impact; run `--suite all` before release. See [validation](docs/validation.md) for coverage.
+- Maintain code interfaces, schemas, workflow contracts, references, and templates in English. Project materials follow the user's selected language under [language preferences](plugins/gamecaden/shared/workspace.md#6-language-preferences); English templates must not force English outputs.
+- Report actual commands, results, and unverified scope. Keep program checks, model behavior, runtime adoption, and user acceptance separate.
+- Public material uses anonymous examples only. Credentials, local paths, private logs, business-project records, and complete local Chinese rule comparisons stay outside the public package and history.
 
-维护本工具包不自动授权运行游戏、修改外部项目、提交、推送或发布。
+Maintaining this toolkit does not automatically authorize running games, modifying external projects, committing, pushing, or publishing.
 
 The sole active repository is immortalbeating/gamecaden. Preserve archived private history locally; never push private history refs or internal evidence into this public repository.

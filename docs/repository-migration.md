@@ -1,12 +1,16 @@
-# 统一维护与发行仓库
+<a id="统一维护与发行仓库"></a>
 
-Gamecaden现统一在[immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden)维护和公开发行。此前immortalbeating2/gamecaden已转移归属，旧地址可能由GitHub跳转；不再作为独立维护源。
+# Unified Maintenance and Release Repository
 
-0.1.2更新公开安装来源、repository元数据和发布者名称；技能、记录协议和运行逻辑沿用已验证的0.1.1。自有内容继续MIT，第三方许可证和原版权声明保留。0.1.0与0.1.1的tag和发行资产不覆盖。
+Gamecaden is now maintained and publicly released at [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden). Ownership of the former immortalbeating2/gamecaden has transferred; GitHub may redirect the old address, which is no longer an independent maintenance source.
 
-## 更新
+0.1.2 updated public installation sources, repository metadata, and publisher names; Skills, record protocols, and runtime logic retained the validated 0.1.1 implementation. First-party content remains MIT, with third-party licenses and original copyright notices retained. Tags and release assets for 0.1.0 and 0.1.1 are not overwritten.
 
-已有Codex公开来源名为gamecaden时，先替换来源登记，再安装：
+<a id="更新"></a>
+
+## Updates
+
+When an existing public Codex source is named gamecaden, first replace source registration, then install:
 
 ```sh
 codex plugin marketplace remove gamecaden
@@ -14,8 +18,8 @@ codex plugin marketplace add immortalbeating/gamecaden
 codex plugin add gamecaden@gamecaden --json
 ```
 
-已有Claude Code来源也按其marketplace remove/add更换为immortalbeating/gamecaden，再按原scope重新plugin install（例如用户范围：`claude plugin install gamecaden@gamecaden --scope user`）；独立Skills安装从[当前仓库完整包](https://github.com/immortalbeating/gamecaden/tree/main/plugins/gamecaden)安装或更新。具体步骤见[安装说明](installation.md)。
+For existing Claude Code sources, likewise use marketplace remove/add to switch to immortalbeating/gamecaden, then repeat plugin install under the original scope (for example, user scope: `claude plugin install gamecaden@gamecaden --scope user`). Install or update standalone Skills from the [current repository's complete package](https://github.com/immortalbeating/gamecaden/tree/main/plugins/gamecaden). See [installation instructions](installation.md) for specific steps.
 
-本地已采用项目如固定了版本、摘要或工具缓存路径，需增量同步这些字段；保留原任务、接受和历史记录。更新后新开会话核对实际入口，不重新初始化项目或重跑完整游戏。
+Locally adopted projects with pinned versions, digests, or tool-cache paths need incremental synchronization of those fields; retain original tasks, acceptance, and historical records. After updates, open a new session to check actual entry points rather than reinitializing projects or rerunning complete games.
 
-内部维护历史另有受保护的只读归档；当前公开仓库使用原公开父链，不包含内部记录或本机回执。
+Internal maintenance history has a separate protected read-only archive; the current public repository uses the original public ancestry without internal records or local receipts.

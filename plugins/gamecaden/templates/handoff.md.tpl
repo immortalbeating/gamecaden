@@ -1,16 +1,19 @@
 # {{handoff_title}}
 
-快照时间：{{actual_snapshot_time_and_timezone}}
+Snapshot time:{{actual_snapshot_time_and_timezone}}
 
-适用范围与基线：{{snapshot_scope_and_actual_baseline}}
+Scope and baseline:{{snapshot_scope_and_actual_baseline}}
 
-## 来源与工作位置
+<a id="来源与工作位置"></a>
+## Sources and work locations
 {{project_worktree_original_work_and_source_refs}}
 
-## 已达到与尚未达到
+<a id="已达到与尚未达到"></a>
+## Achieved and outstanding results
 {{actual_results_evidence_limits_and_pending_acceptance}}
 
-## 继续动作与限制
+<a id="继续动作与限制"></a>
+## Next actions and restrictions
 {{next_action_and_current_restrictions}}
 
-本文件是从原记录导出的交接快照。后续更新原 Task/Epic，不另维护本快照的当前状态；再次交接另存版本。
+This file is a handoff snapshot derived from the original records. Update the original Task/Epic afterwards rather than maintaining a separate current state here; save a new version for the next handoff.

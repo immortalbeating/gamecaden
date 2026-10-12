@@ -1,45 +1,51 @@
-# 架构边界、计划与可推进条件
+<a id="架构边界计划与可推进条件"></a>
+# Architecture boundaries, plans and advancement conditions
 
-在本次设计涉及共享状态、场景/页面拆分、生命周期、跨系统接线或需要处理关键未知时读取。普通局部改动不因此升级为全仓架构审计。
+Read when current design involves shared state, scene/page separation, lifecycle, cross-system wiring or key unknowns. Ordinary local changes do not thereby become full-repository architecture audits.
 
-## 1. 沿真实路径明确责任
+<a id="1-沿真实路径明确责任"></a>
+## 1. Establish responsibility along actual paths
 
-从本次玩家输入/事件出发，定位状态由谁持有、谁修改、谁消费以及如何显示/保存。说明进入、退出、重新进入、取消/失败时的行为，避免重复注册、旧状态回写或多个独立真源。
+From current player inputs/events, locate who owns, modifies and consumes state, and how it displays/saves. Explain entry, exit, re-entry and cancellation/failure behavior, avoiding duplicate registration, old-state writeback or multiple independent sources of truth.
 
-区分运行数据、表现状态与派生视图。图件、配置、场景和模型哪一个是实际消费者输入，要从工程读取关系判断；不是所有项目都需要同一种分层方式。
+Distinguish runtime data, presentation state and derived views. Determine actual consumer inputs among diagrams, configuration, scenes and models from engineering reading relationships; not every project needs the same layering.
 
-单一状态来源不表示所有状态都集中到 Main。库存、探索进度等游戏数据各有唯一写入责任；焦点、选中项、滚动位置等局部表现状态可以由对应视图拥有。已有页面路由状态也需明确由谁修改和同步，不能在不同组件复制两套独立的当前页面。具体边界仍服从本项目已生效约定。
+A single state source does not centralize all state in Main. Game data such as inventory or exploration progress each have sole write responsibility; local presentation state such as focus, selection and scroll position may belong to corresponding views. Existing page-route state also needs explicit modification/synchronization ownership, without two independent current-page copies in different components. Concrete boundaries still follow effective project agreements.
 
-新增独立页面/关卡、复用主体、跨生命周期状态或编辑方式时，按[结构共同约定](../../../profiles/references/structure-contract.md)把实际组成、类型、权威状态、存活/重置、外部依赖与编辑/预览写入原设计；简单关系用文字，复杂关系再配组成图和生命周期表。已有材料足够时直接引用；在相关实现前需要明确边界，不等到文件庞大才考虑。
+For new independent pages/levels, reusable entities, state across lifecycles or editing approaches, write actual composition, types, authoritative state, survival/reset, external dependencies and editing/preview into original design under [Common structural conventions](../../../profiles/references/structure-contract.md). Use text for simple relationships, composition diagrams and lifecycle tables for complex ones. Cite sufficient existing materials directly; establish boundaries before related implementation rather than waiting for oversized files.
 
-## 2. 映射到引擎和现有工程
+<a id="2-映射到引擎和现有工程"></a>
+## 2. Map to engines and existing engineering
 
-按 [profiles 入口](../../../profiles/README.md)分别选择当前引擎/库和实际目标：保存场景与运行树、组件/渲染对象、页面/会话寿命、共享资源与输入分别取对应机制。预览、设计安排与实际交付各有范围；平台背景不能扩大当前承诺。新建或调整目录时读取结构参考，不重抄一套引擎规则。
+Select current engine/library and actual target separately through [Profiles entrypoint](../../../profiles/README.md): saved scenes/runtime trees, components/render objects, page/session lifetimes, shared resources and input each use corresponding mechanisms. Preview, design arrangements and actual delivery each have scope; platform background cannot expand commitments. Read structure references for directory creation/adjustment without copying another set of engine rules.
 
-实际场景/节点、Prefab/组件或 Scene/显示对象的组织发生变化时，从 profile 进入对应结构专题；区分引擎机制、默认示例与项目自己的采用方案。只有设计交付时，核对组成一致性与验证安排；实现和运行结果需要各自的现场证据。
+When organization of actual scenes/nodes, Prefabs/components or Scenes/display objects changes, enter corresponding structural topics through profiles; distinguish engine mechanisms, default examples and project adoption. For design-only delivery, check composition consistency and verification arrangements; implementation/runtime results require their own evidence.
 
-先复用仍适用的组件和接口。结构调整若是正确实现/验证本次目标的必要条件，纳入本次安排；无关清理不混入。项目还没有工程时给出明确的设计选择，而非声称这些模块已经存在。
+Reuse still-applicable components and interfaces first. Include structural adjustments necessary for correctly implementing/verifying current goals; exclude unrelated cleanup. Without engineering yet, give explicit design choices rather than claiming these modules exist.
 
-## 3. 图、数据与工程之间的关系
+<a id="3-图数据与工程之间的关系"></a>
+## 3. Relationships among diagrams, data and engineering
 
-设计要让实施者知道：采用哪些版本和关系、哪些只是示意、从哪里生成或编辑，以及在哪里检查一致性。只有一处拥有同一运行事实，其他表达引用或派生。
+Design tells implementers which versions/relationships are adopted, which are illustrative, where generation/editing happens and where consistency is checked. One location owns each runtime fact; other expressions reference or derive from it.
 
-当蓝图是设计合同时，定义与实际场景的对应检查；当蓝图数据就是运行输入时，直接维护该数据并生成需要的展示。图文有实质冲突时先消歧，不能默认某种文件扩展名更权威。
+When blueprints are design contracts, define correspondence checks against actual scenes; when blueprint data is runtime input, maintain data directly and generate needed presentations. Resolve substantive diagram/text conflicts first, without assuming a file extension is more authoritative.
 
-## 4. 组织实施与试验
+<a id="4-组织实施与试验"></a>
+## 4. Organize implementation and experiments
 
-计划围绕可观察结果和真实依赖组织，步骤不自动变成 Task。主记录与 plan.md 只留一份内部清单；上位 [PDP](../../../shared/phased-development.md) 拥有 Stage 编排、引用真实工作。跨 Task 执行依赖仍归依赖方，整体出口归 Epic/里程碑，Stage 仅维护其特有组合检查，其他条件引用原定义。
+Organize plans around observable results and actual dependencies; steps do not automatically become Tasks. Keep one internal checklist across main records and plan.md; upper-level [PDP](../../../shared/phased-development.md) owns Stage arrangements and references real work. Cross-Task execution dependencies remain with dependent work; overall exits belong to Epic/milestone; Stage maintains only its unique combination checks, referencing original definitions for other conditions.
 
-不确定点先判断能否从现有代码/配置/证据查明。确需试验时说明：要验证的问题、当前假设、允许操作的范围、需要的输入，以及什么观察足以改变后续选择。
+For unknowns, first determine whether existing code/configuration/evidence can establish them. When experiments are necessary, explain the question, current assumption, permitted operation scope, needed inputs and observations sufficient to change subsequent choices.
 
-只要求方案时交付试验安排；已经授权实施时，可先做相关有界试验再扩展。试验范围不自动减少最终产品承诺，结果也不自动锁为长期合同。
+For solution-only requests, deliver experiment arrangements; with authorized implementation, run relevant bounded experiments before expanding as appropriate. Experimental scope does not reduce final product commitments automatically, and results do not automatically lock in long-term contracts.
 
-## 5. 对下一动作作出明确判断
+<a id="5-对下一动作作出明确判断"></a>
+## 5. Make explicit judgments for the next action
 
-能推进某动作时，说明其目标、关键输入、具体安排和预期验证；有缺口时指出阻断的动作、原因及可继续部分。
+When an action can advance, explain its goal, key inputs, concrete arrangements and expected verification; for gaps, identify blocked actions, causes and parts that can continue.
 
-例如可以开始拓扑灰盒，并不意味着可以批量生产正式背景；一份文字角色设定足以继续讨论，但未必足以制造可复用动作。反过来，未来章节的表情和配音尚未设计，不应阻断当前已明确的移动机制。
+For example, topology grayboxing readiness does not imply batch production readiness for formal backgrounds; a textual character description may suffice for discussion but not reusable actions. Conversely, undesigned expressions/voice for future chapters should not block established movement mechanics now.
 
-设计完成的判据是对本次承诺提供可用的方案/安排或明确的调查结果。运行通过、人工接受、正式采用和发布需要各自的真实记录，不能由设计文件的完整程度替代。
+Design completion means providing usable solutions/arrangements or explicit investigation results for this commitment. Runtime passes, human acceptance, formal adoption and release each need actual records; document completeness cannot replace them.
 
-区分“下一步应该先查明什么”“已经具备哪一步的输入”与“本轮被允许执行什么”。没有碰撞体、触发器或实际消费者资料时，可以给带假设的候选方案和核查安排；不能把几何推断直接写成玩家路径已经可达。若本次验收要求给出经核实的最终设计，相关缺口仍须补齐，不能以调查清单代替已承诺的结论。
+Distinguish “what should be established first”, “which step has sufficient inputs” and “what this round allows”. Without collider, trigger or actual consumer materials, offer candidate solutions with assumptions and checking arrangements; geometry inference does not establish player reachability. If acceptance requires verified final design, relevant gaps still need completion; investigation lists cannot replace committed conclusions.

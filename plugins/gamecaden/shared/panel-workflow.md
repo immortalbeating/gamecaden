@@ -1,36 +1,40 @@
-# 面板定位、读回与续接
+<a id="面板定位读回与续接"></a>
+# Panel Navigation, Readback, and Continuation
 
-供 flow/init/design/develop/assets/verify/close 在需要跨记录定位 Task、候选或条件时使用。规则语义见 [材料职责](material-requirements.md) 与 [governance 合同](governance.md)；本页只说明如何把派生视图用于当前工作。面板仍按 [panels/README.md](../panels/README.md) 启动，是现有职责 Skill 的入口，不是第九个 Skill 或新进度库。
+Used by flow/init/design/develop/assets/verify/close when locating Tasks, candidates, or conditions across records. See [material responsibilities](material-requirements.md) and the [governance contract](governance.md) for rule semantics; this page only explains how to use derived views in current work. Launch the panel according to [panels/README.md](../panels/README.md). It is an entry point for existing responsibility Skills, not a ninth Skill or a new progress store.
 
-## 取得本次范围的视图
+<a id="取得本次范围的视图"></a>
+## Obtain a View for the Current Scope
 
-确认实际项目及已注册的来源后，从面板 `GET /api/projects/<id>/governance?focus=T-003` 读取派生只读图、材料和条件；按当前 Task/候选及其关系阅读。`focus` 定位对象，不删去图中其他来源。无面板或需命令行时使用 `scripts/workflow_governance.py --project-root ... [--workspace ...] --focus T-003` 取得同一派生模型。输出报告适用条件状态，不自动授权执行、接受、关闭或改变原记录。
+After confirming the actual project and registered sources, read the derived read-only graph, materials, and conditions from `GET /api/projects/<id>/governance?focus=T-003` in the panel; read according to the current Task/candidate and its relationships. `focus` locates an object without removing other sources from the graph. Without a panel, or when a command line is needed, use `scripts/workflow_governance.py --project-root ... [--workspace ...] --focus T-003` for the same derived model. The output reports applicable condition states; it does not automatically authorize execution, acceptance, closure, or changes to original records.
 
-面板无需先保存 views 文件。按需 JSON 快照、现有 HTML 展示、模型覆盖及历史留存统一见[派生输出](derived-outputs.md)；Roadmap/PDP 的自由正文仍是原文，只有实际声明的结构关系进入成果/推进图，不从 S/M 编号推断达成。
+The panel does not require saving views files first. See [derived outputs](derived-outputs.md) for on-demand JSON snapshots, existing HTML display, model coverage, and historical retention. Free-form Roadmap/PDP bodies remain original text; only explicitly declared structural relationships enter outcome/progression graphs, without inferring achievement from S/M identifiers.
 
-面板可定位到 `#project=<id>&view=overview|assets|review|documents&task=T-003&asset=A-002&candidate=C-001`；只带当前需要的参数。`connect=` 仍只用于一次连接认证，不作为可复制的工作深链接。项目 ID、Task、资产和候选均应来自已登记真实对象；片段不能指定新项目根或扩展权限。
+The panel supports positioning through `#project=<id>&view=overview|assets|review|documents&task=T-003&asset=A-002&candidate=C-001`; include only parameters currently needed. `connect=` remains exclusively for one-time connection authentication, not a copyable work deep link. Project IDs, Tasks, assets, and candidates must come from registered real objects; fragments cannot specify a new project root or extend permissions.
 
-| 当前职责 | 视图用法 |
+| Current responsibility | View use |
 |---|---|
-| flow / init | 找到原 Task、权威来源和相关材料缺口；旧项目只映射本次范围，按原来源继续 |
-| design | 对当前动作筛选材料职责和条件，点回设计/规格章节，形成必要方案 |
-| develop / assets | 定位待接入候选、用途、消费者和当前条件；读回原 Task、台账、Decision/manifest 后执行 |
-| verify / close | 由条件定位原要求与实际 Evidence/Decision，判断覆盖、接受和关闭；视图结论不代替核验 |
+| flow / init | Find the original Task, authoritative sources, and related material gaps; map only the current scope in legacy projects and continue from original sources |
+| design | Filter material responsibilities and conditions for the current action, follow links back to design/specification sections, and form the necessary plan |
+| develop / assets | Locate candidates awaiting integration, uses, consumers, and current conditions; execute after reading back the original Task, ledger, Decision/manifest |
+| verify / close | Follow conditions to original requirements and actual Evidence/Decision, then assess coverage, acceptance, and closure; view conclusions do not replace verification |
 
-## 阅读与来源更新
+<a id="阅读与来源更新"></a>
+## Reading and Source Updates
 
-领域内部默认使用文档树阅读器，左侧按实际收录关系选择文档，右侧读取实际章节正文；可切换焦点关系图，继续按原文标题、治理 id 与逐项关系回读。树是阅读组织，不是另一份任务清单或门禁。说明与范围见[阅读器与刷新设计](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/panel.md)和[本轮核验](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/validation.md)。
+Within each domain, the document tree reader is the default: select documents on the left according to their actual inclusion relationships and read actual section bodies on the right. Switch to a focus relationship graph as needed and continue reading back by original headings, governance ids, and individual relationships. The tree organizes reading; it is not another task list or gate. See [reader and refresh design](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/panel.md) and [verification for that round](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/docs/validation.md) for explanation and scope.
 
-面板回到前台（窗口 focus / 页面 visible）时调用 `GET /api/projects/<id>/revisions` 检查已登记物理来源版本。只有 complete 为 true、digest 非空才比较；未变化不加载完整视图，变化时合并刷新，成功写回更新受影响记录。全量读取前后版本不一致、来源缺失或检查失败时保留提示，不认定已是最新。编辑、对话框和 busy 时延后自动刷新，原草稿基准及冻结请求不改；当前会话阅读选择、章节、展开和位置按项目 binding 隔离。无需每推进一次就手工维护面板事实，仍按原记录职责保存真正变化。轻量检查不扫描引擎运行根，也不证明实际工程、素材字节或 Git 已同步；这些仍须显式读取和对应证据核验。
+When the panel returns to the foreground (window focus / page visible), it calls `GET /api/projects/<id>/revisions` to check versions of registered physical sources. Compare only when complete is true and digest is nonempty; unchanged versions do not load full views, changes receive a coalesced refresh, and successful writes update affected records. If versions differ before and after a full read, sources are missing, or checks fail, retain the notice and do not claim the view is current. Defer automatic refresh while editing, in dialogs, or busy; keep original draft baselines and frozen requests unchanged. Isolate current-session reading selections, sections, expansion, and positions by project binding. There is no need to manually maintain panel facts after every progression step; save real changes according to original record responsibilities. Lightweight checks do not scan engine runtime roots or prove that the actual project, material bytes, or Git are synchronized; those still require explicit reads and corresponding evidence verification.
 
-## 读回后继续
+<a id="读回后继续"></a>
+## Continue After Readback
 
-需要多层前提或规范职责时，使用[关系视图](relation-views.md)。推进图读取已声明的流程与条件组合，来源图保持原关系方向；它们均不自动执行、接受或关闭。没有流程定义时保留未核实，沿用现有条件与原文。
+Use [relationship views](relation-views.md) when multi-level prerequisites or specification responsibilities are needed. The progression graph reads declared flows and condition combinations; the source graph retains original relationship directions. Neither automatically executes, accepts, or closes anything. Without flow definitions, retain the unverified status and use existing conditions and source text.
 
-打开面板记录或 CLI 结果后，回读所引用的原 Task、材料章节、资产台账、Decision、Evidence 与实际工程状态；核对来源版本和本次工作树。派生结果可能过时或只覆盖登记来源，诊断和未知项应保留。面板不运行引擎，也不自动唤醒 Agent。
+After opening a panel record or CLI result, read back the referenced original Task, material sections, asset ledger, Decision, Evidence, and actual project state; check source versions and the current worktree. Derived results may be stale or cover only registered sources; retain diagnostics and unknowns. The panel does not run engines or automatically wake Agents.
 
-旧格式来源仅登记为只读且没有可解释的结构化定义时，面板可显示原资料并提示治理未识别；不能由此推断没有材料或条件，也不能声称门禁通过。材料 `located` 只说明来源可定位，条件 `satisfied` 也须核对其对象、版本、证据覆盖和当前授权。
+When legacy-format sources are registered only as read-only and have no interpretable structured definitions, the panel may display source materials and indicate that governance is unrecognized. This does not imply that there are no materials or conditions, nor that gates have passed. Material `located` only means the source can be located; condition `satisfied` still requires checking its object, version, evidence coverage, and current authorization.
 
-可复制续接摘要应带项目与原记录定位、来源/版本、当前范围、观察到的条件与缺口、下一动作及深链接。它是交接线索；接手 Agent 仍从原记录和现场重读后继续已有授权，不把摘要或页面状态写成第二个权威进度。若视图与原文冲突，以原始来源调查并修正映射或派生问题；没有明确结果时不推断通过。
+A copyable continuation summary should include project and original-record locations, sources/versions, current scope, observed conditions and gaps, next action, and a deep link. It is a handoff lead; the receiving Agent still rereads original records and the actual environment before continuing existing authorization, and does not write the summary or page state as a second authoritative progress record. If a view conflicts with source text, investigate from original sources and fix the mapping or derivation issue; do not infer a pass without an explicit result.
 
-有明确项目约束或用户条件时必须识别并用于对应动作；普通 quick 只处理命中的条件。用户已授权的工作可在读回后继续，面板状态本身不新增审批或阶段。
+Identify explicit project constraints or user conditions and apply them to corresponding actions; ordinary quick work handles only matching conditions. Authorized work may continue after readback; panel state itself adds no approvals or stages.

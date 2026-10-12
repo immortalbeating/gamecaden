@@ -1,60 +1,70 @@
-# 通用安装兼容与验证范围
+<a id="通用安装兼容与验证范围"></a>
 
-维护与公开发行已统一到 [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden)。当前迁移版为0.1.2；旧0.1.0/0.1.1保持原内容。原账号地址仅保留GitHub兼容跳转。
+# General Installation Compatibility and Validation Scope
 
-Gamecaden的通用入口是包含SKILL.md、八个职责及共同文档/工具的完整包。Codex和Claude Code另有原生插件入口；支持标准Agent Skills的其他宿主可使用完整目录安装。
+Maintenance and public releases are unified at [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden). The current version is 0.2.0; published 0.1.x versions retain their original content. The former account address remains only as a GitHub compatibility redirect.
 
-## 当前安装目标
+Gamecaden's general entry point is a complete package containing SKILL.md, eight responsibilities, and common documents/tools. Codex and Claude Code also have native plugin entry points; other hosts supporting standard Agent Skills can use complete-directory installation.
 
-| 宿主 | Skills CLI参数 | 本轮已观察的最低兼容依据 |
+<a id="当前安装目标"></a>
+
+## Current Installation Targets
+
+| Host | Skills CLI parameter | Minimum compatibility grounds observed in that round |
 | --- | --- | --- |
-| OpenCode | opencode | 项目级安装与完整资源通过；原生debug skill实际列出总入口及八职责，共九项 |
-| Antigravity CLI（agy） | antigravity-cli | 项目级安装与完整资源通过；原生validator识别包内八职责。工作区自动发现全部入口未另行运行模型核验 |
-| Cursor IDE／CLI | cursor | 项目级安装与完整资源通过；官方技能路径、元数据和本地CLI扫描实现已对照。未读取独立原生技能列表或运行模型核验 |
-| Pi | pi | 项目级Copy安装与完整资源通过；原生目录加载器读取gamecaden总入口，零诊断；八职责另行解析通过 |
-| oh my pi（OMP） | 完整目录复制 | 原生项目技能目录复制与完整资源通过；原生目录加载器读取gamecaden总入口，零警告；八职责另行解析通过 |
+| OpenCode | opencode | Project-level installation and complete resources passed; native debug skill actually listed the main entry and eight responsibilities, nine entries total |
+| Antigravity CLI (agy) | antigravity-cli | Project-level installation and complete resources passed; native validator recognized the eight bundled responsibilities. Automatic workspace discovery of all entries was not separately verified by running a model |
+| Cursor IDE / CLI | cursor | Project-level installation and complete resources passed; official Skill paths, metadata, and local CLI scanning implementation were compared. No separate native Skill list was read and no model verification was run |
+| Pi | pi | Project-level Copy installation and complete resources passed; native directory loader read the gamecaden main entry with zero diagnostics; the eight responsibilities separately passed parsing |
+| oh my pi (OMP) | Complete-directory copy | Native project Skill-directory copying and complete resources passed; native directory loader read the gamecaden main entry with zero warnings; the eight responsibilities separately passed parsing |
 
-2026-10-07的检查使用不变的v0.1.1包，每份安装副本150资源且与原包摘要一致。宿主版本为OpenCode1.18.32、agy1.3.0、Cursor CLI2026.10.01-e373342；Cursor IDE3.20.21仅作为现有环境定位。表格说明安装/格式/解析范围，不声称三者都完成了游戏项目或模型工作流实跑。
+Checks on 2026-10-07 used the unchanged v0.1.1 package, with 150 resources in each installation copy and digests matching the original package. Host versions were OpenCode 1.18.32, agy 1.3.0, and Cursor CLI 2026.10.01-e373342; Cursor IDE 3.20.21 served only to locate the existing environment. The table describes installation/format/parsing coverage and does not claim all three completed actual game-project or model-workflow runs.
 
-`antigravity-cli`对应命令agy；`antigravity`另指Antigravity IDE。本轮增加的终端安装目标选择agy。
+`antigravity-cli` corresponds to the agy command; `antigravity` separately refers to Antigravity IDE. The terminal installation target added in that round selects agy.
 
-Pi与OMP的2026-10-07补测分别使用Pi1.0.4和已有OMP18.2.11，仍为同一v0.1.1完整包，每份150资源。检查调用宿主实际的离线目录加载器，不启动模型、登录或项目开发；未测试用户级真实安装或会话行为。
+Pi and OMP supplementary checks on 2026-10-07 used Pi 1.0.4 and existing OMP 18.2.11 respectively, still with the same complete v0.1.1 package and 150 resources per copy. Checks called the hosts' actual offline directory loaders without starting models, login, or project development; actual user-level installation or session behavior was not tested.
 
-## 为什么不逐宿主跑完整项目
+<a id="为什么不逐宿主跑完整项目"></a>
 
-安装兼容只需核对目的目录、合法元数据、可观察的原生解析/发现、完整共同资源、安装范围和更新入口。相同工作流正文、记录合同和公共工具复用已通过的包级检查。
+## Why Complete Projects Are Not Run in Every Host
 
-目录安装和离线格式检查不需要模型登录；实际调用模型时，再按宿主要求完成认证与配置。
+Installation compatibility needs only checks of destination directories, valid metadata, observable native parsing/discovery, complete common resources, installation scope, and update entry points. The same workflow bodies, record contracts, and public tools reuse passed package-level checks.
 
-遇到宿主实际差异时，再补对应的小检查，例如项目指引没有加载、文件操作被拒绝或会话恢复规则不同。模型是否正确路由、开发结果和跨会话续接属于下一层行为验证；本轮未将完整游戏开发流程设为各宿主安装的必经门槛。
+Directory installation and offline format checks need no model login; authenticate and configure under host requirements when actually calling a model.
 
-## 安装
+When actual host differences arise, supplement with corresponding small checks, such as project guidance not loading, rejected file operations, or different session-recovery rules. Correct model routing, development outcomes, and cross-session continuation belong to the next layer of behavioral verification; that round did not make complete game development a mandatory installation threshold for every host.
 
-以OpenCode用户级安装为例：
+<a id="安装"></a>
+
+## Installation
+
+Example user-level OpenCode installation:
 
 ```sh
 npx skills add https://github.com/immortalbeating/gamecaden/tree/main/plugins/gamecaden --skill gamecaden --agent opencode --global
 ```
 
-agy改为`--agent antigravity-cli`，Cursor改为`--agent cursor`。省略global安装到当前项目；本轮实际安装检查采用项目级Copy模式，全局目的路径按安装器的当前配置解析。可添加`--copy`使用完整目录复制。
+Change to `--agent antigravity-cli` for agy or `--agent cursor` for Cursor. Omit global to install into the current project; actual installation checks in that round used project-level Copy mode, while the installer's current configuration resolves global destination paths. Add `--copy` for complete-directory copying.
 
-安装后用本宿主可用的Skill入口或文件阅读入口处理明确的Gamecaden请求，再按需要接入项目。项目指引在实际生效的位置合并：这三个宿主支持AGENTS.md，AGY也支持GEMINI.md。安装不自动改写已有项目记录。
+After installation, use available host Skill or file-reading entry points for explicit Gamecaden requests, then adopt projects as needed. Merge project guidance at actually effective locations: these three hosts support AGENTS.md, and AGY also supports GEMINI.md. Installation does not automatically rewrite existing project records.
 
-独立安装更新使用`npx skills update gamecaden --global`，项目级换为`--project`。完整说明见[安装与更新](installation.md)。
+Update standalone installations with `npx skills update gamecaden --global`, replacing it with `--project` for project-level scope. See [installation and updates](installation.md) for complete instructions.
 
 <a id="pi-omp"></a>
 
-## Pi与oh my pi
+<a id="pi与oh-my-pi"></a>
 
-Pi可使用Skills CLI的`pi`目标：
+## Pi and oh my pi
+
+Pi can use the Skills CLI `pi` target:
 
 ```sh
 npx skills add https://github.com/immortalbeating/gamecaden/tree/main/plugins/gamecaden --skill gamecaden --agent pi --global
 ```
 
-用户级目录为`~/.pi/agent/skills/gamecaden`；省略`--global`写入当前项目的`.pi/skills/gamecaden`。Pi也支持标准`.agents/skills`位置。项目技能加载遵循Pi自身的项目信任设置；不要同时安装多个相同入口副本。
+The user-level directory is `~/.pi/agent/skills/gamecaden`; omit `--global` to write to the current project's `.pi/skills/gamecaden`. Pi also supports standard `.agents/skills` locations. Project Skill loading follows Pi's own project-trust settings; do not install multiple copies of the same entry at once.
 
-OMP使用完整目录复制，用户级为`~/.omp/agent/skills/gamecaden`，项目级为`.omp/skills/gamecaden`。当前Skills CLI没有已确认的`oh-my-pi`目标，不使用猜测的agent参数。克隆本仓库后，在目标项目执行以下PowerShell示例，源路径换为实际克隆位置：
+OMP uses complete-directory copying, with `~/.omp/agent/skills/gamecaden` for user scope and `.omp/skills/gamecaden` for project scope. The current Skills CLI has no confirmed `oh-my-pi` target; do not guess agent parameters. After cloning this repository, run the following PowerShell example in the target project, replacing the source path with the actual clone location:
 
 ```powershell
 $gcSource = Resolve-Path -LiteralPath 'C:\path\to\gamecaden\plugins\gamecaden'
@@ -64,8 +74,8 @@ New-Item -ItemType Directory -Path (Split-Path -Parent $gcTarget) -Force | Out-N
 Copy-Item -LiteralPath $gcSource.Path -Destination $gcTarget -Recurse
 ```
 
-OMP用户级安装将`$gcTarget`换为`Join-Path $env:USERPROFILE '.omp/agent/skills/gamecaden'`；启用profile或自定义agent目录时，使用其有效agent目录下的`skills/gamecaden`。该示例适用于Windows；其他系统将完整目录复制到上面的用户/项目路径即可。OMP也支持标准`.agents/skills`目录。手动副本更新沿用Git拉取后核对并替换自己维护的完整副本，不能用宿主自身升级命令替代Gamecaden更新。
+For user-level OMP installation, replace `$gcTarget` with `Join-Path $env:USERPROFILE '.omp/agent/skills/gamecaden'`; with profiles or custom agent directories enabled, use `skills/gamecaden` under the effective agent directory. This example is for Windows; on other systems, copy the complete directory into user/project paths above. OMP also supports the standard `.agents/skills` directory. To update manual copies, pull through Git, then check and replace the complete copy you maintain; host self-upgrade commands do not replace Gamecaden updates.
 
-两者使用总入口`gamecaden`；技能命令启用时可调用`/skill:gamecaden`，例如`/skill:gamecaden 使用init接入本项目`，也可直接明确要求以Gamecaden处理本次工作。此次原生加载均只注册总入口；内部八职责由入口按相对路径读取，不承诺出现Codex/Claude插件的八个命名空间命令。`AGENTS.md`仍承载项目采用指引，安装本身不接入或改写游戏项目。
+Both use the `gamecaden` main entry. When Skill commands are enabled, call `/skill:gamecaden`, for example `/skill:gamecaden 使用init接入本项目`, or explicitly request Gamecaden for current work. Native loading in those checks registered only the main entry; it reads the eight internal responsibilities by relative paths, without promising eight Codex/Claude-plugin-style namespaced commands. `AGENTS.md` still carries project-adoption guidance; installation itself does not adopt or rewrite game projects.
 
-依据：[Skills CLI目标列表](https://github.com/vercel-labs/skills#supported-agents)、[OpenCode Skills](https://opencode.ai/docs/skills/)、[AGY迁移和技能路径](https://antigravity.google/docs/cli/gcli-migration/)、[Cursor Skills](https://cursor.com/docs/skills)、[Pi Skills](https://pi.dev/docs/latest/skills)、[OMP Skills](https://github.com/can1357/oh-my-pi/blob/main/docs/skills.md)。
+Sources: [Skills CLI target list](https://github.com/vercel-labs/skills#supported-agents), [OpenCode Skills](https://opencode.ai/docs/skills/), [AGY migration and Skill paths](https://antigravity.google/docs/cli/gcli-migration/), [Cursor Skills](https://cursor.com/docs/skills), [Pi Skills](https://pi.dev/docs/latest/skills), [OMP Skills](https://github.com/can1357/oh-my-pi/blob/main/docs/skills.md).

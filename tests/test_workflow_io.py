@@ -17,7 +17,7 @@ import unittest
 from unittest.mock import patch
 
 from workflow_formats import Document, json_load, plain, revision, validate, yaml_dump, yaml_load
-from workflow_io import Workflow
+from workflow_io import Workflow, extraction_origin_note
 from workflow_storage import Store, filesystem_path
 
 
@@ -157,7 +157,8 @@ class Integration(unittest.TestCase):
             self.assertNotEqual(first["data"]["path"], second["data"]["path"])
             self.assertEqual(Path(first["data"]["path"]).read_bytes(), original)
             self.assertEqual(self.run_request(request)["data"]["path"], first["data"]["path"])
-        self.assertIn("UTC", original.decode())
+        self.assertEqual(self.read({"path": first["data"]["path"]})["metadata"]["snapshot_time"],
+                         "2026-10-12T12:34:56Z")
         self.assertIn("2026-10-12T12:34:56Z", original.decode())
         for metadata in ({}, {"snapshot_scope": "Current", "source_refs": [{"path": "missing.md"}]}):
             self.run_request(self.request("record.create", {"record_type": "handoff",
@@ -193,6 +194,27 @@ class Integration(unittest.TestCase):
         result = self.run_request(request, "conflict")
         self.assertFalse(path.exists())
         self.assertEqual(result["data"]["path"], str(path))
+
+    def test_handoff_preserves_user_language_and_stamps_metadata_only(self):
+        for title,body in (("交接", "# 当前交接\n\n快照时间以文首 snapshot_time 为准，时区 UTC。\n"),
+                           ("Handoff", "# Current handoff\n\nThe header snapshot_time is authoritative, in UTC.\n"),
+                           ("Relevo", "# Relevo actual\n\nLa hora es snapshot_time en la cabecera, zona UTC.\n")):
+            with self.subTest(title=title), patch("workflow_io.now",return_value="2026-10-12T12:34:56Z"):
+                request=self.request("record.create", {"record_type":"handoff","metadata":{
+                    "title":title,"snapshot_scope":"Current delivery","source_refs":[{"id":"T-002"}],
+                    "snapshot_time":"1900-01-01T00:00:00Z"},"body":body}, [])
+                created=self.run_request(request)
+                path=Path(created["data"]["path"])
+                original=path.read_bytes()
+                read=self.read({"path":str(path)})
+                self.assertEqual(read["body"],body)
+                self.assertEqual(read["metadata"]["title"],title)
+                self.assertEqual(read["metadata"]["snapshot_time"],"2026-10-12T12:34:56Z")
+                self.assertEqual(created["data"]["snapshot_time"],"2026-10-12T12:34:56Z")
+                self.assertNotIn("Snapshot time (UTC):",read["body"])
+                replay=self.run_request(request)
+                self.assertTrue(replay["replayed"])
+                self.assertEqual(path.read_bytes(),original)
 
     def test_handoff_rejects_unsettled_referenced_work_only(self):
         pending = self.request("record.update", {"target": {"id": "T-002"},
@@ -367,6 +389,51 @@ class Integration(unittest.TestCase):
         req["preconditions"][0] = self.condition("tasks/T-002-feedback.md")
         self.run_request(req, "rejected")
         self.assertFalse((self.root / "game-workflow/evidence/EV-001.md").exists())
+
+    def test_material_language_is_preserved_by_native_io(self):
+        for title, body in (("暂停检查", "## 当前续接\n继续核验暂停后的计时。\n"),
+                            ("Pause check", "## Current continuation\nCheck time after resuming.\n"),
+                            ("Comprobación de pausa", "## Próximo paso\nComprobar el tiempo después de reanudar.\n")):
+            with self.subTest(title=title):
+                request = self.task_create(title=title)
+                request["payload"]["body"] = body
+                created = self.run_request(request)["data"]["ref"]
+                read = self.read(created)
+                self.assertEqual(read["metadata"]["title"], title)
+                self.assertEqual(read["body"], body)
+                self.assertEqual(read["metadata"]["status"], "active")
+                self.assertEqual(read["metadata"]["mode"], "quick")
+
+    def test_extraction_provenance_does_not_force_document_language(self):
+        original_body = self.read({"id": "EV-001"})["body"]
+        self.run_request(self.extraction())
+        body = self.read({"id": "EV-001"})["body"]
+        self.assertTrue(body.startswith(original_body))
+        self.assertIn('"unrebased_relative_reference_base": "../tasks/"', body)
+        self.assertNotIn("未另行声明基准", body)
+
+    def test_legacy_partial_extraction_recovers_without_rewriting_target(self):
+        request = self.extraction()
+        def stop(stage, value):
+            if stage == "after_write:0":
+                raise OSError("Pause after the legacy extraction target was saved")
+        def legacy_note(base, *, legacy=False):
+            return extraction_origin_note(base, legacy=True)
+        with patch("workflow_io.extraction_origin_note", legacy_note):
+            self.run_request(request, "partial", Workflow(self.root, fault=stop))
+        destination = self.root / "game-workflow/evidence/EV-001.md"
+        legacy_bytes = destination.read_bytes()
+        source = self.root / "game-workflow/tasks/T-001-copy.md"
+        source.write_bytes(source.read_bytes() + b"\nUser-added context after interruption.\n")
+        settled = self.run_request(request, "partial")
+        self.assertEqual(settled["receipt"]["phase"], "settled")
+        repair = self.request("record.extract", {"target": {"path": "tasks/T-001-copy.md", "fragment": "EV-001"},
+                              "destination": "evidence/EV-001.md", "recovery_of": request["request_id"]},
+                              [self.condition("tasks/T-001-copy.md"), self.condition("evidence/EV-001.md")])
+        self.run_request(repair)
+        self.assertEqual(destination.read_bytes(), legacy_bytes)
+        self.assertIn(b"User-added context after interruption.", source.read_bytes())
+        self.assertEqual(Path(self.read({"id": "EV-001"})["path"]), destination)
 
     def test_crash_after_replace_then_query_and_resume(self):
         req = self.extraction()

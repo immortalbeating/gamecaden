@@ -5,22 +5,27 @@ mode: "{{actual_mode}}"
 kind: "{{kind}}"
 status: "{{actual_status}}"
 epic: null
-# 按实际需要添加 depends_on、related；没有依赖时省略。
+# Add depends_on and related as actually needed; omit dependencies when none exist.
 ---
 
 # {{title}}
 
-## 目标与边界
+<a id="目标与边界"></a>
+## Goal and boundaries
 {{observable_goal_and_scope}}
 
-## 当前理解与实施安排
+<a id="当前理解与实施安排"></a>
+## Current understanding and implementation arrangements
 {{current_model_and_plan_or_reference}}
 
-## 验收要求
+<a id="验收要求"></a>
+## Acceptance requirements
 {{acceptance_and_required_decisions}}
 
-## 执行与验证记录
+<a id="执行与验证记录"></a>
+## Execution and verification record
 {{meaningful_results_and_evidence_refs}}
 
-## 当前续接
+<a id="当前续接"></a>
+## Current continuation
 {{current_results_remaining_work_restrictions_and_next_action}}

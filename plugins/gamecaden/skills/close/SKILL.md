@@ -1,64 +1,70 @@
 ---
 name: close
-description: 仅在用户明确要求本次使用 Gamecaden，或当前项目有效指引已采用 Gamecaden 时使用。按有效交付承诺收尾 Task 或 Epic，核对证据与必要接受、同步当前事实、处理遗留归属并保存关闭结论。用于明确收尾或已授权工作的完整交付；仅询问可否关闭时先判断，不自动改状态或发布。
+description: Use only when the user explicitly requests Gamecaden for this work, or effective guidance in the current project has adopted Gamecaden. Close Tasks or Epics against effective delivery commitments, check evidence and necessary acceptance, synchronize current facts, handle remaining ownership and save closure conclusions. Use for explicit closure or complete delivery of authorized work; when only asked whether closure is possible, judge first without automatically changing status or publishing.
 ---
 
 # Close
 
-先核对上述适用条件；未满足时沿原项目指引处理。边界说明见[工作流适用条件](../../shared/workspace.md)。
+First check the applicability conditions above; when they are not met, follow original project guidance. See [Workflow applicability](../../shared/workspace.md) for boundaries.
 
-让工作记录准确表达交付结果，让后续会话能从当前事实继续。关闭依据是该工作的有效承诺、适用证据和必要同步，沿用[共同记录约定](../../shared/records.md)。
+Make work records accurately express delivery results so subsequent sessions can continue from current facts. Closure rests on effective commitments, applicable evidence and necessary synchronization, retaining [Common record conventions](../../shared/records.md).
 
-本文相对链接以本 SKILL.md 所在目录解析；../../shared/ 位于共同技能包根目录。
+Resolve relative links from this SKILL.md's directory; ../../shared/ is in the common skill package root.
 
-## 1. 确定收尾对象与当前意图
+<a id="1-确定收尾对象与当前意图"></a>
+## 1. Establish closure objects and current intent
 
-定位实际项目、原始来源及用户要求的 Task/Epic/里程碑范围，读取当前目标、验收、结果、未决项和已有决定。只关闭本次范围；不因一个 Task 完成就自动关闭其 Epic 或所有关联工作。
+Locate actual projects, original sources and requested Task/Epic/milestone scope; read current goals, acceptance, results, unresolved matters and decisions. Close current scope only; one completed Task does not automatically close its Epic or all related work.
 
-Git 项目涉及仓库变更或 Git 交付时，读取[Git 交付与收尾](references/git-delivery.md)，沿用项目已采用策略并核对本次明确例外与交付落点。当前成果、分支和远端状态查实际 Git，不在每次收尾重新问一遍策略，也不把未采用的推荐视为授权。
+For repository changes or Git delivery in Git projects, read [Git delivery and closure](references/git-delivery.md), retaining adopted policy and checking explicit current exceptions and delivery destinations. Check actual Git for results, branches and remote state, without asking policy again at each closure or treating unadopted recommendations as authorization.
 
-只问是否可以关闭、明确只读或只检查时，给出判断和所缺条件。明确收尾或原请求已包含完整交付时，继续相应记录动作，不追加统一的“允许我关闭吗”。已有明确要求的审批仍按其对象和范围执行。
+For closure-possibility questions, explicit read-only or check-only requests, provide judgment and missing conditions. For explicit closure or original complete-delivery requests, continue corresponding records without a uniform extra “may I close it?”. Existing explicit approvals still follow their objects and scope.
 
-用户明确放弃、替换或暂缓时使用 flow 的[变更处理](../flow/references/change-work.md)，如实表达 cancelled 或推进限制；不能把未兑现的目标改写成成功完成。
+For explicit abandonment, replacement or deferral, use flow's [Change handling](../flow/references/change-work.md), honestly expressing cancelled or advancement constraints; unmet goals cannot become successful completion.
 
-## 2. 核对关闭条件
+<a id="2-核对关闭条件"></a>
+## 2. Check closure conditions
 
-按[验证约定](../../shared/verification.md)检查本次必要要求与证据是否对应。足够且仍有效的结果直接复用；确有缺口时读取 [verify](../verify/SKILL.md) 补足相关判断，不为关闭再跑一遍无变化的全部检查。
+Check correspondence of necessary requirements and evidence under [Verification conventions](../../shared/verification.md). Reuse sufficient still-valid results directly; read [verify](../verify/SKILL.md) for actual gaps, without rerunning unchanged full checks for closure alone.
 
-涉及材料条件时按[材料职责](../../shared/material-requirements.md)限定本次必要范围；面板条件可依[面板续接](../../shared/panel-workflow.md)定位原要求与证据，关闭结论仍以原记录为准。
+Limit material conditions to current necessary scope under [Material responsibilities](../../shared/material-requirements.md); locate original requirements/evidence for panel conditions through [Panel continuation](../../shared/panel-workflow.md). Closure conclusions still rest on original records.
 
-区分设计交付、内容包、工程实现、运行采用与发布的实际承诺。Task 只承担自己范围内的结果；范围内必要接受或验证仍缺时保留未完成。具体范围变更、Epic 与历史关闭情况见[关闭与同步](references/closure-and-sync.md)。
+Distinguish actual commitments for design delivery, content packages, engineering implementation, runtime adoption and release. Tasks own their scoped results only; retain unfinished work for missing necessary scoped acceptance/verification. See [Closure and synchronization](references/closure-and-sync.md) for specific scope changes, Epics and historical closure.
 
-用户已明确调整范围或接受安排时，保存原要求、调整依据及后续归属，再按新条件判断；未验证仍是未验证，原失败仍保留。一般“收尾”不自动等于豁免所有尚缺条件。
+For explicit scope/acceptance adjustments, save original requirements, adjustment grounds and later ownership before judging new conditions; unverified remains unverified and original failures remain. General “close out” does not waive every missing condition automatically.
 
-必要人工接受尚缺时，先复用或准备可检查的当前对象、版本与具体方面，再请求相应决定；材料不足时先补材料，不直接要求用户批准一个无法检视的结果。
+For missing human acceptance, first reuse or prepare reviewable current objects, versions and specific aspects, then request corresponding decisions. Complete missing materials first, rather than asking users to approve uninspectable results.
 
-## 3. 处理遗留与整体结果
+<a id="3-处理遗留与整体结果"></a>
+## 3. Handle remaining work and overall results
 
-区分本次必须完成的欠项、有效范围已明确调整的后续工作，以及与本次无关的新发现。把欠项移给另一个 Task 不能自行满足当前承诺；有真实范围决定或原条件本就允许后续完成时才按其处理。
+Distinguish deficits mandatory here, subsequent work under explicitly adjusted effective scope and unrelated new discoveries. Moving deficits to another Task does not fulfill current commitments itself; do so only with actual scope decisions or original conditions allowing later completion.
 
-Epic 读取自己的整体出口、必要集成条件和实际引用结果；子 Task 全 closed 只说明各自状态。多个版本或消费者的局部成功也不能直接拼成整体成功。需要新增工作时按原授权和记录来源创建/关联，不另建关闭任务或影子进度表。
+Read Epic's own overall exits, necessary integration conditions and actual referenced results; all child Tasks closed means their individual status only. Local successes across versions/consumers cannot simply combine into overall success. Create/link needed new work under original authorization and sources, without closure tasks or shadow progress lists.
 
-## 4. 同步受影响的当前事实
+<a id="4-同步受影响的当前事实"></a>
+## 4. Synchronize affected current facts
 
-读取当前权威正文后，核对本次实际改变了什么，保留其他并行工作的新内容。按声明基线更新相应 Spec 的能力、限制和有效规则；已在执行中同步且仍正确的内容直接保留。
+Read authoritative current text before checking actual changes; preserve new content from parallel work. Update capabilities, limits and effective rules in corresponding Spec by declared baseline; retain already-synchronized correct content directly.
 
-稳定现状写成可独立理解的正文，证据和深入背景保留引用；不把整个 Task 历史复制进 Spec，也不只用一个已关闭任务链接代替当前说明。仅在某工作树/候选版本成立的行为，不能写成主线或发行版本已采用。
+Express stable state as independently understandable text, citing evidence and detailed background; do not copy entire Task history into Spec or replace current explanation with a closed-task link alone. Behavior established only in a worktree/candidate version cannot become adopted mainline/release behavior.
 
-资产选择、技术事实、接受和运行接入继续按[资产交接](../../shared/asset-handoff.md)分工。Notes 只在形成有依据的可复用认识时提炼；未来未承诺想法归停车场。Vision/Roadmap/Epic 仅更新确实受影响的内容，不因关闭一项工作重写所有文档。
+Asset selection, technical facts, acceptance and runtime integration retain divisions under [Asset handoff](../../shared/asset-handoff.md). Extract Notes only for grounded reusable understanding; uncommitted future ideas belong to parking lots. Update actually affected Vision/Roadmap/Epic content only, without rewriting every document for one closure.
 
-原结果影响产品成果/当前整体判断时同步 Roadmap 摘要及原依据；影响 [PDP](../../shared/phased-development.md) 的 Stage 安排时同步其对应部分。Stage/里程碑只保存范围内判断，不引入新生命周期。已存在视图的刷新和确需独立 handoff 的路径、版本按[派生输出](../../shared/derived-outputs.md)，普通收尾不默认导出。
+Synchronize Roadmap summaries and original grounds when results affect product outcomes/current overall judgment; synchronize corresponding [PDP](../../shared/phased-development.md) parts for Stage arrangements. Stage/milestone save scoped judgments only without new lifecycles. Existing-view refresh and genuinely needed independent handoff paths/versions follow [Derived outputs](../../shared/derived-outputs.md); ordinary closure does not export by default.
 
-## 5. 保存结案与核对写入
+<a id="5-保存结案与核对写入"></a>
+## 5. Save closure and check writes
 
-在原记录保留清楚的结论：交付及基线、必要验证/接受的依据、真实未做部分或范围调整、同步位置及遗留去向。按[证据留存与索引](../../shared/records.md#留存索引与版本)核对当前引用，Quick 可以简短完成，无需另建独立 closeout.md 或 Note。
+Retain clear conclusions in original records: delivery/baseline, necessary verification/acceptance grounds, actual undone parts or scope adjustments, synchronized locations and remaining destinations. Check current references under [Evidence retention and indexing](../../shared/records.md#retention-indexing-and-versions); Quick may finish briefly without independent closeout.md or Note.
 
-关闭所需的权威回写及本次要求的 Git 交付满足后更新生命周期，并回读确认；结案记录自身需要提交/同步时按同一策略收口。新格式保留 ID 和主入口路径；旧管理来源按真实约定处理，不因关闭强行迁移。文件写入、集成或同步只部分完成时保留已发生事实与待补步骤，不宣称全部收尾成功。
+Update lifecycle after necessary authoritative writebacks and required Git delivery are satisfied, then read back to confirm; commit/synchronize closure records themselves under the same policy when needed. New formats retain IDs and main entrypoint paths; old management sources follow real conventions without forced migration at closure. For partial writes, integration or synchronization, retain actual facts and pending steps without claiming full closure success.
 
-Progress/Timeline 等视图在原记录更新后派生。视图刷新失败与权威关闭失败分别报告，具体恢复按关闭与同步参考处理。
+Derive Progress/Timeline and similar views after original record updates. Report view-refresh failure separately from authoritative closure failure; restoration follows the closure/synchronization reference.
 
-## 6. 交付收尾结果
+<a id="6-交付收尾结果"></a>
+## 6. Deliver closure results
 
-向用户说明本次实际关闭或未关闭的对象、理由、事实同步及剩余义务；提供原记录入口。实际交付满足而收尾写回未完成时，也要分别说明。
+Explain objects actually closed or not closed, reasons, fact synchronization and remaining obligations; provide original record entrypoints. Distinguish fulfilled actual delivery and incomplete closure writeback.
 
-说明成果实际留在本地、任务分支、目标分支还是远端，Git 动作按交付参考逐项核对。目录整理、工作树清理、打包和发布按各自真实要求与授权推进；原请求包含这些动作时继续完成相应部分，不能停在修改状态。
+Explain whether results actually remain local, on task branches, target branches or remotes; check Git actions individually under delivery reference. Directory organization, worktree cleanup, packaging and publishing each follow actual requirements and authorization; when original requests include them, continue corresponding parts instead of stopping at status changes.

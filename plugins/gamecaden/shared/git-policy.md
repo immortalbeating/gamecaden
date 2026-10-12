@@ -1,57 +1,62 @@
-# 项目 Git 策略：选择、保存与沿用
+<a id="项目-git-策略选择保存与沿用"></a>
+# Project Git Policy: Selection, Storage, and Reuse
 
-init 建立约定，develop 使用已授权的检查点提交，close 完成本任务要求的 Git 交付。项目使用或明确准备采用 Git、需要判断策略时读取；这份工作流说明本身不为任何具体仓库选择方案或授权远端写入。
+init establishes conventions, develop uses authorized checkpoint commits, and close completes Git delivery required by the Task. Read this when a project uses or explicitly plans to adopt Git and policy must be determined; this workflow description itself chooses no policy for a specific repository and authorizes no remote writes.
 
-## 1. 先查事实和既有规则
+<a id="1-先查事实和既有规则"></a>
+## 1. Check Facts and Existing Rules First
 
-定位实际仓库/工作树、当前分支或 detached 状态、已有暂存与未提交变化、远端/跟踪关系、集成分支约定及适用的 PR/保护规则。用户可以决定目标；能从仓库查到的事实由模型调查，不把一串技术查询交给用户填写。
+Locate the actual repository/worktree, current branch or detached state, existing staged and uncommitted changes, remote/tracking relationships, integration-branch conventions, and applicable PR/protection rules. Users may determine goals; the model investigates facts available from the repository rather than handing users a series of technical questions to fill in.
 
-优先读取已有项目规则及用户当前明确指示。inspect 只说明现状与建议；adopt/repair/migrate 才按对应授权保存或调整约定。仅有远端、示例配置或推荐选项不表示已授权提交、合并或推送。
+Prioritize existing project rules and the user's current explicit instructions. inspect only reports current conditions and recommendations; adopt/repair/migrate saves or adjusts conventions under corresponding authorization. A remote, example configuration, or recommended option alone does not authorize commits, merges, or pushes.
 
-| 现场 | 处理 |
+| Situation | Handling |
 |---|---|
-| 已有清楚、适用的策略 | 直接沿用并说明来源，不重新询问全部选项 |
-| 用户本次已经明确所需 Git 动作与范围 | 按本轮授权直接安排；未要求长期改变时，不重写项目策略 |
-| 本轮需要 Git，但相关权限或目标尚不明确 | 只解决当前动作缺少的选择；其他未选定部分保持未定 |
-| 确需建立或修改长期 Git 策略 | 基于已查事实给出方案与推荐，等待实际选择后保存项目级约定 |
-| 新会话、普通续接或再次 init | 读取已保存约定，核对现场变化，不把策略重置为默认值 |
-| 原策略冲突、失效或用户要求修改 | 只处理具体冲突/变化，保留未改变部分及适用范围 |
-| 当前无 Git，或只做概念探索 | 继续对应工作；不为 init/close 强制创建仓库或提 Git 问卷 |
+| Clear, applicable existing policy | Reuse directly and state its source; do not ask all options again |
+| User has already specified Git actions and scope for this work | Arrange directly under this round's authorization; do not rewrite project policy without a request for long-term change |
+| This round needs Git, but relevant permissions or targets are unclear | Resolve only choices missing for the current action; leave other unselected parts undecided |
+| A long-term Git policy actually needs establishment or change | Provide options and recommendations grounded in checked facts; save project-level conventions after an actual selection |
+| New session, ordinary continuation, or repeated init | Read saved conventions and check changes in actual conditions; do not reset policy to defaults |
+| Original policy conflicts, is invalid, or user requests changes | Handle only specific conflicts/changes, retaining unchanged portions and applicability |
+| No current Git, or concept exploration only | Continue corresponding work; do not force repository creation or a Git questionnaire for init/close |
 
-长期策略尚未确定时，本次已授权且目标明确的 Git 动作仍可执行，本轮安排沿用原工作记录；设计、实现和验证继续按原范围推进。当前 Git 动作确需而尚缺的权限或目标先查明，无法依据已有授权确定的部分才澄清；已有保护条件照常遵守。普通局部工作不因缺少完整项目接入文件而被迫重跑 init。
+Even while long-term policy is undecided, currently authorized Git actions with clear targets may proceed; keep this round's arrangements in the original work record. Design, implementation, and verification continue within original scope. First establish permissions or targets actually needed and missing for the current Git action; clarify only what existing authorization cannot determine. Existing protection conditions still apply. Ordinary local work does not require rerunning init because complete project-adoption files are missing.
 
-## 2. 需要长期策略时提供方案
+<a id="2-需要长期策略时提供方案"></a>
+## 2. Provide Options When Long-term Policy Is Needed
 
-确需建立或调整长期交付策略时，可用以下方案说明选项，也允许自定义。仅补本轮提交、集成或推送安排时，只解决当前缺少的选择，不要求完整长期策略。推荐应依据实际项目；单人项目已有明确集成目标与远端时，通常可推荐自动交付。推荐或预选不等于用户已经选择。
+When long-term delivery policy genuinely needs establishment or adjustment, the following options may explain choices; custom policies are also allowed. When only this round's commit, integration, or push arrangements need supplementation, resolve current missing choices without requiring a complete long-term policy. Base recommendations on the actual project; for a solo project with clear integration targets and remotes, automatic delivery is usually a reasonable recommendation. Recommendations or preselection do not mean the user has chosen.
 
-| 方案 | 长期采用时的行为 |
+| Option | Behavior when adopted long-term |
 |---|---|
-| 自动交付 | 按任务形成有意义提交，按约定方式集成到目标分支，完成必要验证，再同步约定远端 |
-| 仅自动提交 | 形成可追溯提交；不默认合并或推送，说明成果实际所在分支 |
-| 手动 Git | 完成文件、验证和工作记录，提供 Git 状态与建议；Git 写入由用户或其指定流程处理 |
+| Automatic delivery | Form meaningful commits by task, integrate into the target branch in the agreed manner, complete necessary verification, then synchronize the agreed remote |
+| Automatic commits only | Form traceable commits; do not merge or push by default, and state the branch where results actually reside |
+| Manual Git | Complete files, verification, and work records; provide Git status and recommendations, leaving Git writes to the user or their designated process |
 
-可自定义为“提交并推送任务分支、经 PR 评审再集成”等。自动交付中的直接合并/PR 路线、目标分支、推送对象和临时工作树清理应明确；不要假定 main/origin 或把清理、发布包含在方案名称中。
+Custom policies may specify “commit and push the task branch, then integrate after PR review,” for example. For automatic delivery, specify direct-merge/PR routes, target branches, push destinations, and temporary-worktree cleanup; do not assume main/origin or include cleanup and release merely through the option name.
 
-先填入可查的事实和已有决定，再请用户选择真正未定部分。已有 PR 审查/保护条件照常满足；若推送会触发已知部署/发布，说明关联效果并使策略范围明确。自动交付不绕过必要验收或仓库保护。
+First fill in discoverable facts and existing decisions, then ask the user to choose genuinely undecided parts. Continue satisfying existing PR review/protection conditions; if pushing triggers known deployment/release, explain linked effects and clarify policy scope. Automatic delivery does not bypass necessary acceptance or repository protections.
 
-## 3. 一处保存静态约定
+<a id="3-一处保存静态约定"></a>
+## 3. Store Static Conventions in One Place
 
-优先沿用既有 AGENTS/项目规范等权威位置中的 Git 约定；不复制另一份活动策略。新项目需要独立正文时默认放在工作流目录的 rules/git.md，由 workspace.rule_sources 或实际项目入口引用。已有短规则足够时可以保留在原位置。
+Prefer Git conventions in existing authoritative locations such as AGENTS/project standards; do not copy another active policy. When a new project needs a standalone body, default to rules/git.md within the workflow directory, referenced by workspace.rule_sources or the actual project entry. Existing short rules may remain in their original location when sufficient.
 
-项目级策略只保存已明确采用的长期范围，包括方案、允许动作、集成/推送对象或确定规则、PR/保护条件、清理范围及采用依据。本轮 Git 安排列在已有原工作记录；直接 init 没有原 Task 时在当前接入结果中说明，不为此新建 Task，也不自动提升为长期约定。未知如实保留，不将模板示例填成项目事实。机器 schema 留实际工具协议确定，本页不要求增加 Task frontmatter 字段。
+Project-level policy stores only explicitly adopted long-term scope, including option, permitted actions, integration/push destinations or determination rules, PR/protection conditions, cleanup scope, and adoption grounds. Put this round's Git arrangements in the existing original work record; for direct init without an original Task, explain them in the current adoption result without creating a Task or automatically promoting them to long-term conventions. Keep unknowns truthful rather than filling template examples as project facts. Leave machine schemas to actual tool protocols; this page requires no new Task frontmatter fields.
 
-当前分支、ahead/behind、未提交差异、执行进度和操作结果从 Git/原 Task 读取，不复制成另一份动态 Git 台账。AGENTS 与 index 只保留必要入口和不变量，不再重复完整规则。
+Read current branch, ahead/behind, uncommitted differences, execution progress, and operation results from Git/original Tasks rather than copying another dynamic Git ledger. AGENTS and index retain only necessary entry points and invariants, without repeating complete rules.
 
-部署配置等一次检查所得的现场事实，只作为有来源的采用依据；后续有相关变化时重新核对。策略保存允许的外部效果范围，不能把“采用时未发现部署任务”写成永久不会部署的保证。
+Facts found through one-time checks, such as deployment configuration, are only sourced adoption grounds; recheck on relevant later changes. Policy stores the scope of permitted external effects; “no deployment task found during adoption” cannot become a permanent guarantee that deployment will never occur.
 
-新策略与同范围旧条款不一致时，明确采用了哪项变化，并在授权范围内更新旧正文或其生效说明，避免两个活动规则互相冲突。用户明确的新指示直接沿用；含义尚不清时只询问该分歧。不把一个项目的选择扩大到其他仓库或全局规则。
+When a new policy differs from old provisions in the same scope, identify the adopted change and update old bodies or their effective-state explanations within authorization to avoid conflicting active rules. Follow explicit new user instructions directly; if their meaning remains unclear, ask only about that disagreement. Do not expand one project's choices to other repositories or global rules.
 
-## 4. 每项工作怎样执行
+<a id="4-每项工作怎样执行"></a>
+## 4. Execution for Each Work Item
 
-结合项目策略和 Task 目标，明确本次交付落点。当前用户明确的例外（如“这次只提交，不推送”）用于本次 Task，保存到原工作；没有要求长期改变时，不重写项目默认策略。
+Combine project policy and Task goals to identify this delivery's destination. Current explicit user exceptions (such as “commit only this time; do not push”) apply to the current Task and are saved in original work; without a request for long-term change, do not rewrite project defaults.
 
-已有策略足以覆盖的动作直接执行，不逐项再次询问。具体目标或权限缺失、实质冲突、未覆盖的外部效果等才需要补充选择。所有实际操作仍限于本次拥有的变更，保护其他暂存/未提交工作。
+Execute actions sufficiently covered by existing policy directly, without asking again for each action. Supplement choices only for missing specific targets or permissions, substantive conflicts, uncovered external effects, and similar gaps. All actual operations remain limited to changes owned by this work, protecting others' staged/uncommitted work.
 
-策略决定 Git 动作的允许范围，不能悄悄削减业务承诺。原任务明确要求主线集成或远端交付而当前策略尚未覆盖时，说明具体差异并处理缺少的决定；不能只完成分支提交就宣称原目标达成。
+Policy determines permitted Git-action scope; it cannot silently reduce business commitments. When the original task explicitly requires mainline integration or remote delivery beyond current policy coverage, explain the specific difference and resolve the missing decision; a branch commit alone cannot be claimed as fulfillment of the original goal.
 
-操作与中断恢复按 close 的[Git 交付与收尾](../skills/close/references/git-delivery.md)执行。
+Follow close's [Git delivery and closure](../skills/close/references/git-delivery.md) for operations and interrupted recovery.

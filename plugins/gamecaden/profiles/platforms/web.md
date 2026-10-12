@@ -1,48 +1,55 @@
-# Web 浏览器平台 profile
+<a id="web-浏览器平台-profile"></a>
+# Web browser platform profile
 
-## 触发与版本边界
+<a id="触发与版本边界"></a>
+## Triggers and version boundaries
 
-实际运行目标包含浏览器页面时叠加本页：原生 HTML/JS、Phaser、Three.js、Godot/Unity/Cocos Creator 的浏览器产物等都适用。先按[规则选择](../../shared/rules.md)确认运行根、目标浏览器与发布方式；非浏览器运行不加载。这里是平台规则，不决定游戏引擎，也不要求 Node、Vite、React 或 TypeScript。浏览器行为以目标环境实测为准；具体打包器或引擎版本另查相应 profile 与本项目配置。
+Add this page when actual runtime targets include browser pages: native HTML/JS, Phaser, Three.js and browser outputs of Godot/Unity/Cocos Creator all apply. First confirm runtime roots, target browsers and release methods under [rule selection](../../shared/rules.md); do not load for non-browser runtime. These are platform rules, without choosing game engines or requiring Node, Vite, React or TypeScript. Browser behavior is determined by actual target-environment tests; consult corresponding profiles and project configuration separately for particular bundler/engine versions.
 
-WebGL/WebGPU 的选择、对象/资源和渲染循环分别取实际框架条目：[Three.js](../frameworks/threejs.md) 或当前其它技术栈。其它目标按真实运行环境核对 API、资源与交付条件，浏览器证据保持自己的范围。
+For WebGL/WebGPU selection, objects/resources and render loops, use entries for the actual framework: [Three.js](../frameworks/threejs.md) or the current other stack. Check APIs, resources and delivery conditions for other targets against actual runtime environments; browser evidence retains its own scope.
 
-## 需现场识别的事实
+<a id="需现场识别的事实"></a>
+## Facts to identify in the project
 
-- 当前是直接加载 HTML、开发服务器、预览服务器，还是已部署页面；页面的 origin、base path、资源 URL 与构建输出位置各是什么。
-- 游戏画面/DOM 覆盖层的尺寸、缩放、滚动、设备像素比和输入焦点由谁管理；目标设备与指针、键盘、触摸需求是什么。
-- 状态是否跨刷新保存；实际存储介质、版本、恢复入口和失败时用户可见行为是什么。
-- 任务承诺涉及的浏览器、后台/前台、音频启动、离线或部署条件；没有命中则不扩大检查。
+- Whether HTML loads directly, through development/preview servers or as deployed pages; page origin, base path, asset URLs and build-output locations.
+- Who manages game display/DOM overlay size, scaling, scrolling, device pixel ratio and input focus; target devices and pointer, keyboard and touch requirements.
+- Whether state persists across refresh; actual storage medium, version, recovery entry and user-visible failure behavior.
+- Committed browsers, background/foreground, audio startup, offline or deployment conditions; do not expand checks when unaffected.
 
-## 条件规则
+<a id="条件规则"></a>
+## Conditional rules
 
-规则性质沿用 [rules](../../shared/rules.md)：必要条件在触发成立时适用，默认做法可按有效设计调整。每行只对命中的消费者取证。
+Rule nature follows [rules](../../shared/rules.md): required conditions apply when triggered; default approaches may change according to valid designs. Each row collects evidence only for applicable consumers.
 
-| ID | 性质与触发 | 要求或默认做法 | 可观察验证 |
+| ID | Nature and trigger | Requirement or default approach | Observable validation |
 |---|---|---|---|
-| WEB-RUNTIME | 必要：确认浏览器游戏运行根 | 从实际入口和构建/部署配置确认页面、脚本、资产与服务路径；sidecar 网页面板另识别为自己的产品面。 | 指向真实入口及其资源请求；本地项目树有文件不等于页面可加载。 |
-| WEB-COORD | 必要：输入、画面或 DOM 覆盖层涉及坐标 | 确认 CSS/画布缩放、视口变化和输入坐标转换的所有者，保持命中区域与可见位置一致。 | 在目标尺寸、缩放与触摸/指针路径上，实际点击、拖动或命中同一目标。 |
-| WEB-FOCUS | 必要：键盘、触摸或页面控件共同参与 | 定义游戏焦点、表单焦点、暂停/恢复和默认浏览器行为的边界；只拦截本次需要的输入。 | 从页面控件回到游戏、切标签再返回后，输入不丢失、不误触发。 |
-| WEB-VISIBILITY | 默认：时间推进、音频或网络行为受后台影响 | 依据页面可见性和实际计时源决定暂停、限幅、追赶或继续策略；恢复时避免未经设计的大跨度模拟。 | 隐藏标签一段时间再返回，计时、动画和状态符合本次规则。 |
-| WEB-AUDIO | 必要：本次有带声音媒体/音频 | 按浏览器自动播放限制设计首次用户交互后的启动和失败回退，不把初始化成功当已发声。 | 新会话首次进入、用户操作后和被拒绝时均有可观察结果。 |
-| WEB-STORAGE | 必要：本次承诺本地存档/设置 | 读取、写入、版本解析和损坏/拒绝存储的处理由实际消费者负责；不要把调用成功或文件存在当恢复完成。 | 按真实 UI 路径保存、刷新并恢复；测试拒绝/损坏时不会伪称成功。 |
-| WEB-DEPLOY | 必要：交付可部署浏览器版本 | 用目标服务 base path 和实际产物核对资源 URL、路由/刷新、字体/音频等本次依赖；开发服务器通过不足以证明发布产物。 | 从交付路径启动实际产物，观察网络请求、首屏与目标用户路径。 |
-| WEB-INPUT-MODES | 默认：目标含触屏与桌面 | 以已确定的设备集检查指针类型、手势、触摸滚动和可触区域；无需为未承诺设备做全平台认证。 | 代表性设备或模拟条件下走完本次自然输入路径。 |
-| WEB-REAL-PATH | 必要：本次交付主张涉及真实页面表现或用户路径 | 检查支持本次结果的实际页面路径，尤其是受影响的跨页面/刷新、首帧、黑屏与覆盖层。静态/模拟测试已有充分覆盖的其他部分直接复用。 | Evidence 指明浏览器、URL、构建基线与实际用户路径；不以测试数量替代。 |
+| WEB-RUNTIME | Required: confirming browser game runtime roots | Confirm page, script, asset and service paths from actual entries and build/deployment configuration; identify sidecar Web panels separately as their own product surfaces. | Point to actual entries/resource requests; files in local project trees do not prove pages can load. |
+| WEB-COORD | Required: input, display or DOM overlays involve coordinates | Confirm owners of CSS/canvas scaling, viewport changes and input-coordinate conversion; keep hit areas aligned with visible positions. | Actual clicks, drags or hits reach the same targets at target sizes, zoom and touch/pointer paths. |
+| WEB-FOCUS | Required: keyboard, touch or page controls participate together | Define game focus, form focus, pause/resume and default browser-behavior boundaries; intercept only input needed now. | Returning from page controls to game or switching tabs and back does not lose or incorrectly trigger input. |
+| WEB-VISIBILITY | Default: background affects time advancement, audio or network behavior | Use page visibility and actual time sources to choose pause, clamping, catch-up or continuation strategies; avoid undesigned large simulation jumps on recovery. | After hiding tabs for a time and returning, timing, animation and state follow current rules. |
+| WEB-AUDIO | Required: this work includes audible media/audio | Design startup after first user interaction and failure fallback according to browser autoplay limits; successful initialization does not establish audible output. | First entry in new sessions, after user actions and rejection all have observable outcomes. |
+| WEB-STORAGE | Required: local saves/settings are promised | Actual consumers own reading, writing, version parsing and corrupt/denied-storage handling; successful calls or file existence do not establish recovery. | Save, refresh and restore through actual UI paths; denial/corruption tests do not falsely claim success. |
+| WEB-DEPLOY | Required: delivering deployable browser versions | Check resource URLs, routing/refresh, fonts/audio and relevant dependencies using target-service base paths and actual outputs; development-server success does not prove release outputs. | Start actual outputs from delivery paths and observe network requests, initial screen and target user paths. |
+| WEB-INPUT-MODES | Default: targets include touchscreens and desktop | Check pointer types, gestures, touch scrolling and touchable areas against the established device set; all-platform certification for uncommitted devices is unnecessary. | Complete current natural input paths under representative devices or simulated conditions. |
+| WEB-REAL-PATH | Required: delivery claims involve actual page presentation or user paths | Check actual page paths supporting current results, especially affected cross-page/refresh, first-frame, black-screen and overlay behavior. Reuse other areas sufficiently covered by static/simulated tests directly. | Evidence identifies browser, URL, build baseline and actual user paths, without substituting test counts. |
 
-## 路径与状态责任
+<a id="路径与状态责任"></a>
+## Path and state responsibilities
 
-平台不指定 `src/`、`public/`、`dist/` 等目录。记录的是项目自身入口、输出目录、部署前缀和资源消费者；目录建议见[项目结构](../project-structure.md)，共同工作方式见[profiles 总览](../README.md)与[共同边界](../common.md)。浏览器 `localStorage` 按 origin 隔离且可能被策略拒绝；页面草稿、缓存或本地反馈都按[资产交接](../../shared/asset-handoff.md)核对是否进入权威来源。
+This platform does not prescribe directories such as `src/`, `public/` or `dist/`. Record the project's entries, output directories, deployment prefixes and resource consumers; see [project structure](../project-structure.md) for directory suggestions and the [profiles overview](../README.md)/[common boundaries](../common.md) for shared working methods. Browser `localStorage` is isolated by origin and may be denied by policy; check whether page drafts, caches or local feedback enter authoritative sources under [asset handoff](../../shared/asset-handoff.md).
 
-## 与 Skill 阶段交接
+<a id="与-skill-阶段交接"></a>
+## Handoff to Skill stages
 
-- `flow/init`：识别浏览器运行根与项目有效规则；旧项目只登记相关来源，不迁移所有目录。
-- `brainstorm/design`：只有本次承诺受输入、尺寸、存档、后台、音频或部署影响时，写清用户路径、所有者和可观察结果。路径/部署复用构建与页面配置、实际 URL；画布/DOM 输入复用布局与运行实现；存储恢复复用原数据和恢复入口。已有来源足够则引用，目标变化或焦点、恢复、路径含义不清时，在原设计补变化关系，必要时形成局部流程或时序表达，不另抄配置表。
-- `develop/assets`：按真实消费者接线；浏览器预览只证明预览范围，资产采纳和正式接入按共享规则处理。
-- `verify/close`：复用同一基线的有效证据，仅补目标浏览器/交付路径缺口；结论边界见[验证约定](../../shared/verification.md)。沿用原 Task/Evidence/Decision，不另建 Web 状态账。
+- `flow/init`: Identify browser runtime roots and effective project rules; existing projects register only relevant sources, without migrating every directory.
+- `brainstorm/design`: Specify user paths, owners and observable outcomes only when current commitments are affected by input, size, saves, background, audio or deployment. Paths/deployment reuse build/page configuration and actual URLs; canvas/DOM input reuses layout/runtime implementation; storage recovery reuses original data and recovery entries. Reference sufficient existing sources; when targets change or focus, recovery or path meanings are unclear, add changed relationships to original design, forming local flow/timing expressions when needed, without another copied configuration table.
+- `develop/assets`: Wire actual consumers; browser previews prove only preview scope, with asset adoption/formal integration following shared rules.
+- `verify/close`: Reuse valid same-baseline evidence and add only target-browser/delivery-path gaps; see the [verification contract](../../shared/verification.md) for conclusion boundaries. Use original Task/Evidence/Decision records, without another Web state ledger.
 
-上述浏览器共同条件在本页集中维护，框架专题只补自身机制。尚无工程但已选浏览器目标时可先形成初始安排，配置和运行来源标为待建立；预定 URL、接线与恢复策略不代表已部署或运行通过。相关交互、存档与平台用途可按需取[游戏材料参考](../../skills/design/references/game-deliverables.md)。
+The browser common conditions above are maintained centrally here; framework topics add only their own mechanisms. With no project but a selected browser target, form initial arrangements first and mark configuration/runtime sources as pending creation; planned URLs, wiring and recovery strategies do not represent deployment or runtime success. Take related interaction, save and platform uses from [game material references](../../skills/design/references/game-deliverables.md) as needed.
 
-## 官网依据与未验证范围
+<a id="官网依据与未验证范围"></a>
+## Official basis and unverified scope
 
-- MDN：[Page Visibility API](https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API)（后台标签计时可能受限）、[Pointer Events](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events)、[localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)（按 origin 且可能抛出 `SecurityError`）、[Autoplay](https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Autoplay)。
-- 本页的目录、验证路径与状态责任是工作流判断，不声称 MDN 要求特定架构。本轮仅核对资料和既有项目经验，未启动浏览器、构建或部署任何真实项目；浏览器兼容性仍须按目标版本实测。
+- MDN: [Page Visibility API](https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API) (background-tab timing may be throttled), [Pointer Events](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events), [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) (origin-scoped and may throw `SecurityError`), [Autoplay](https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Autoplay).
+- Directories, validation paths and state responsibilities here are workflow judgments, without claiming MDN requires a particular architecture. This round checked only documentation and existing project experience, without starting browsers, building or deploying actual projects; browser compatibility still requires tests against target versions.

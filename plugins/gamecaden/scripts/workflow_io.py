@@ -34,6 +34,18 @@ def now():
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
+def extraction_origin_note(original_base, *, legacy=False):
+    """Preserve unrebased path provenance without imposing a narrative language.
+
+    The old Chinese form is recognized only for explicit recovery of previously
+    written partial extractions; new documents receive language-neutral data.
+    """
+    if legacy:
+        return f"\n\n<!-- workflow:extraction-origin -->\n未另行声明基准、且未被重定位的代码/自由文本相对路径，仍以本文件旁的 `{original_base}/` 为原始基准。\n"
+    provenance = json.dumps({"unrebased_relative_reference_base": original_base + "/"}, ensure_ascii=False)
+    return "\n\n<!-- workflow:extraction-origin -->\n```json\n" + provenance + "\n```\n"
+
+
 class Workflow:
     """Bound root/identity are host inputs, never trusted from the JSON request.
 
@@ -414,7 +426,6 @@ class Workflow:
                 self.pending_for(self.project.resolve(ref))
             self.snapshot_time = now()
             metadata["snapshot_time"] = self.snapshot_time
-            body = body.rstrip() + "\n\nSnapshot time (UTC): " + self.snapshot_time + "\n"
         if kind in PREFIXES:
             require(isinstance(metadata, dict), "invalid_record", "Typed record requires metadata")
             metadata["id"] = self.allocate(kind, metadata.get("id"))
@@ -542,13 +553,14 @@ class Workflow:
             self.new_destination(destination, record.kind)
         require(destination.suffix == ".md", "unsupported_format", "Extraction destination must be Markdown")
         metadata = rebase(record.metadata, record.path.parent, destination.parent, self.project.path)
-        body = rebase_markdown(record.body, record.path.parent, destination.parent, self.project.path)
+        original_body = rebase_markdown(record.body, record.path.parent, destination.parent, self.project.path)
         original_base = Path(os.path.relpath(record.path.parent, destination.parent)).as_posix()
-        body += f"\n\n<!-- workflow:extraction-origin -->\n未另行声明基准、且未被重定位的代码/自由文本相对路径，仍以本文件旁的 `{original_base}/` 为原始基准。\n"
+        body = original_body + extraction_origin_note(original_base)
         target = ("---\n" + yaml_dump(metadata) + "---\n" + body + "\n").encode("utf-8")
         Document(destination, target, True, record.kind)
         if destination.exists():
-            require(plain(target_doc.main.metadata) == plain(metadata) and target_doc.main.body.rstrip() == body.rstrip(),
+            expected_bodies = {body.rstrip(), (original_body + extraction_origin_note(original_base, legacy=True)).rstrip()}
+            require(plain(target_doc.main.metadata) == plain(metadata) and target_doc.main.body.rstrip() in expected_bodies,
                     "revision_conflict", "Interrupted target differs; inspect it instead of overwriting")
             target = target_doc.data
         self.write(destination, target)

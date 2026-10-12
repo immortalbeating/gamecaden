@@ -1,58 +1,64 @@
-# 关闭、范围调整与事实同步
+<a id="关闭范围调整与事实同步"></a>
+# Closure, scope adjustment and fact synchronization
 
-在遗留未完成、父子工作、多个基线、历史关闭或写回中断时读取相应部分。
+Read corresponding parts for unfinished items, parent/child work, multiple baselines, historical closure or interrupted writeback.
 
-## 1. 依据自己的交付承诺
+<a id="1-依据自己的交付承诺"></a>
+## 1. Follow the work's own delivery commitments
 
-| 情形 | 关闭判断 |
+| Situation | Closure judgment |
 |---|---|
-| Quick 已实现且必要检查齐备 | 原记录简记并按条件关闭，不强制独立审查或长结案报告 |
-| 设计 Task 已交付合格设计 | 按设计条件关闭；未来代码未实现不自动成为它的欠项 |
-| 内容包已满足包自身检查/接受 | 按包范围关闭；实际采用由承诺该结果的工作承担 |
-| 承诺实际运行接入，却只有文件或导入结果 | 相应运行义务仍未满足 |
-| 约定的人工接受/独立核验尚缺 | 保留欠项；除非用户已明确调整这项安排，不能自行豁免 |
-| 原始目标仍未完成，只是分配给后续 Task | 去向明确但当前承诺未兑现，保持原工作未完成 |
-| 用户明确把当前工作收窄为已完成部分，将另一交付移后 | 保存范围变化与后续拥有者，按修改后的条件收尾；后续/里程碑要求继续保留 |
-| 用户明确不再需要未完成交付 | 按取消/替代记录，不记为成功完成 |
+| Quick implemented with necessary checks complete | Briefly record and close under conditions; no mandatory independent review or lengthy closure report |
+| Design Task delivered qualified design | Close against design conditions; unimplemented future code is not automatically its deficit |
+| Content package meets its own checks/acceptance | Close against package scope; actual adoption belongs to work committing that result |
+| Actual runtime integration committed, with only files/import results | Corresponding runtime obligations remain unmet |
+| Agreed human acceptance/independent verification missing | Retain deficits; do not waive unless users explicitly adjusted arrangements |
+| Original goal incomplete, merely allocated to subsequent Task | Clear destination does not fulfill current commitments; original work stays unfinished |
+| Users explicitly narrow work to completed parts and defer another delivery | Save scope change/later owners and close against revised conditions; retain later/milestone requirements |
+| Users explicitly no longer need unfinished delivery | Record cancellation/replacement, not successful completion |
 
-人工判断延后时，记录它确实尚未发生以及由谁承接；不能写“用户已验收”。用户允许在已知限制下交付时，保留限制和允许范围，验证事实仍按实际结果表达。
+When human judgment is deferred, record its actual absence and owner; do not write “accepted by the user”. For delivery permitted with known limits, retain limits and allowed scope; verification facts still follow actual results.
 
-## 2. Epic 与里程碑
+<a id="2-epic-与里程碑"></a>
+## 2. Epics and milestones
 
-先读取整体出口，再看各 Task 交付。共享输入、版本兼容、端到端集成和整体体验等条件，可能不属于任一子 Task 的独立验收；需要其对应证据或决定。
+Read overall exits first, then Task deliveries. Shared inputs, version compatibility, end-to-end integration and overall experience may not belong to any child's independent acceptance; they need corresponding evidence/decisions.
 
-Roadmap 的 M 与 PDP 的 S 各按原范围判断，相同条件精确引用 Epic/Task 的原出口，范围不同的组合条件不能仅拼接局部通过。有效结果影响整体判断时同步路线/计划摘要和原依据；阶段没有另一套可关闭状态。PDP 细节见[分阶段开发](../../../shared/phased-development.md)。
+Roadmap M and PDP S each follow original scope; identical conditions precisely cite original Epic/Task exits. Combined conditions of different scope cannot merely concatenate local passes. Synchronize route/plan summaries and original grounds when valid results affect overall judgment; stages have no other closable state. See [Phased development](../../../shared/phased-development.md) for PDP details.
 
-所有子 Task closed 不代表 Epic 自动 closed；某个共享 Task 未行政关闭也不必然阻断已满足前提的独立工作。依赖实际结果与状态由其拥有者定义，不能只按计数/标签推断。
+All child Tasks closed does not automatically close Epic; administrative nonclosure of a shared Task does not necessarily block independent work with satisfied prerequisites. Owners define dependency on actual results/status; do not infer from counts/labels alone.
 
-某必要项转交后仍属于当前 Epic 承诺时，Epic 保持未完成。明确的范围改变才能改变其出口，其他引用同一结果的里程碑或 Epic 需分别判断，不能一并自动放行。
+When transferred necessary items remain current Epic commitments, keep Epic unfinished. Only explicit scope changes alter exits; separately judge other milestones/Epics referencing the same result instead of automatically allowing all.
 
-正确关闭的子 Task 保留历史。新的集成缺陷由实际责任范围承接，不为了让状态整齐而把全部子任务重开。
+Correctly closed child Tasks retain history. Actual responsible scopes handle new integration defects; do not reopen all children to make status tidy.
 
-## 3. 过去正确与过去误判分别处理
+<a id="3-过去正确与过去误判分别处理"></a>
+## 3. Distinguish correct historical closure and past misjudgment
 
-旧任务在原基线确实满足承诺，后来因新需求或新回归失效时，保留旧关闭事实，当前变化由适当工作承接并链接历史。
+When old tasks genuinely met commitments at original baseline but later new requirements/regressions invalidate results, retain old closure facts; appropriate current work owns changes and links history.
 
-若核实原关闭时就缺少必需交付、误用了证据或错误宣称接受，保存纠正理由与原记录，按需要重开原任务处理；不改写旧报告，让错误看起来从未发生。
+When investigation confirms missing mandatory deliveries, misused evidence or false acceptance at original closure, save correction reasons and original records, reopening original tasks as needed. Do not rewrite old reports to make mistakes appear never to have occurred.
 
-证据仅因范围不明、年代久或暂时找不到就不足以断言历史关闭错误。先查当时承诺与可用材料；仍无法核实时说明不确定，当前需要的结果可以补验。
+Unclear scope, age or temporarily unfindable evidence alone cannot establish erroneous historical closure. Investigate past commitments and available materials first; explain remaining uncertainty, supplementing current required verification as appropriate.
 
-## 4. 同步范围与写入顺序
+<a id="4-同步范围与写入顺序"></a>
+## 4. Synchronization scope and write order
 
-1. 读当前来源，列清本次确需写回的事实、声明基线和拥有者；其他工作已经更新的内容保留。
-2. 把仍有效的当前行为/限制写回相应 Spec，明确目标规则与实际实现的区别；不把未合入主线的候选结果当作主线能力。
-3. 按需要同步资产引用、受影响 Epic/Roadmap、经验或后续承接，不复制执行流水。
-4. 核对本次交付落点，保存原 Task/Epic 的结案依据并更新生命周期，回读确认；涉及 Git 时按[Git 交付参考](git-delivery.md)完成必要动作及结案记录的版本控制/同步，本流程默认不移动主入口。
-5. 按[派生输出](../../../shared/derived-outputs.md)刷新真正存在且受影响的当前视图，保留来源、范围与时点，冻结快照另存轮次。沿用实际路径和生成方式；普通收尾不生成空视图包，默认位置只用于真正的新建需求。
+1. Read current sources and list facts, declared baselines and owners actually requiring writeback; preserve content updated by other work.
+2. Write still-valid current behavior/limits back to corresponding Spec, distinguishing target rules and actual implementation; candidate results unmerged to mainline are not mainline capabilities.
+3. Synchronize asset references, affected Epic/Roadmap, experience or later ownership as needed, without copying execution streams.
+4. Check delivery destinations, save original Task/Epic closure grounds and update lifecycle, reading back to confirm; for Git, complete necessary actions and version-control/synchronization of closure records under [Git delivery reference](git-delivery.md). This process does not move main entrypoints by default.
+5. Refresh actually existing affected current views under [Derived outputs](../../../shared/derived-outputs.md), retaining sources, scope and time; frozen snapshots save separate rounds. Retain actual paths/generation methods; ordinary closure does not generate empty view packages, and defaults apply only to genuine new creation.
 
-这是逻辑顺序，不表示当前已经有跨文件事务工具。源在期间被他人修改时先重新核对并合并本次范围，不能用旧快照覆盖新正文；有效工具提供原子写回或版本检查时按其协议使用。
+This is logical order, not a claim that cross-file transaction tools exist. When others change sources in between, recheck and merge current scope instead of overwriting new text with old snapshots; use effective atomic-write/version-check protocols when tools offer them.
 
-必要的权威回写失败时，说明交付事实已到哪里、关闭尚缺哪一步，保留可恢复状态。若已先写 closed 而必要同步未完成，应纠正不一致的收尾记录并保存原因，不能以状态字段证明关闭全过程成功。
+For failed necessary authoritative writeback, explain how far delivery facts reached and the missing closure step, retaining recoverable state. If closed was written before necessary synchronization completed, correct inconsistent closure records and save reasons; status fields do not prove successful full closure.
 
-权威记录和必要同步均已完成，仅可重建的 Progress/Timeline 刷新失败时，通常保持真实关闭结论并标明视图滞后，修复投影即可；若更新该视图本身就是当前 Task 的必要交付，则按该承诺判断。
+When authoritative records and necessary synchronization are complete but reconstructable Progress/Timeline refresh alone fails, usually retain actual closure conclusions and mark views lagging, repairing projection only; if updating the view itself is mandatory Task delivery, judge against that commitment.
 
-## 5. 收尾不隐含清理或发布
+<a id="5-收尾不隐含清理或发布"></a>
+## 5. Closure does not imply cleanup or release
 
-关闭记录不会删除候选、证据、已采用文件或脏工作树；保留仍被引用材料和其他人的修改。需要清理时查真实来源和引用，执行用户已授权范围。
+Closing records does not delete candidates, evidence, adopted files or dirty worktrees; retain referenced materials and others' changes. For needed cleanup, check actual sources/references and execute user-authorized scope.
 
-代码完成、已提交、已合并、已打包和已发布分别有事实。原工作目标只到代码交付时不添加发布门禁；原目标包含发行结果时，也不能仅凭 Task closed 宣称发行完成。
+Code completion, committed, merged, packaged and published each have facts. Do not add release gates when original goals stop at code delivery; when goals include release, Task closed alone cannot establish completed release.

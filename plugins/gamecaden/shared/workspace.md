@@ -1,60 +1,65 @@
-# 工作区与来源约定
+<a id="工作区与来源约定"></a>
+# Workspace and Source Conventions
 
-供 flow 定位和 init 登记，并由本工作流其他 Skill 读取来源。原生映射的 v1 字段由[格式合同](formats-v1.md)与[可校验 schema](../schemas/workflow-v1.schema.json)定义；本页维护接入职责与用法。来源登记、包安装与后续宿主加载分别核验，实际覆盖以对应验证记录为准。
+Used by flow for location and init for registration, and by other Skills in this workflow to read sources. The [format contract](formats-v1.md) and [validatable schema](../schemas/workflow-v1.schema.json) define native mapping v1 fields; this page maintains adoption responsibilities and usage. Source registration, package installation, and later host loading are verified separately, with actual coverage determined by corresponding validation records. Project communication and document languages follow [language preferences](#6-language-preferences).
 
-## 工作流适用条件
+<a id="工作流适用条件"></a>
+## Workflow Applicability
 
-使用Gamecaden职责前确认本次依据，满足以下任一条件即可：
+Before using Gamecaden responsibilities, confirm the grounds for this work; either condition is sufficient:
 
-- 用户明确要求以Gamecaden或其命名职责处理本次工作，或明确要求项目接入Gamecaden。同一尚未结束的授权工作及flow按该授权选择的后续职责沿用这个依据，无需用户逐一点名。
-- 当前项目有效指引明确采用Gamecaden。按指引的实际作用范围恢复原入口与原记录，并根据本次请求选择职责。
+- The user explicitly requests Gamecaden or one of its named responsibilities for this work, or explicitly requests project adoption of Gamecaden. The same unfinished authorized work and subsequent responsibilities selected by flow under that authorization retain these grounds without the user naming each one.
+- Effective guidance in the current project explicitly adopts Gamecaden. Restore original entry points and records within the guidance's actual scope, then select responsibilities for the current request.
 
-普通未采用项目沿用其有效指引、原记录与专业工具完成请求。技能可见、目录元数据介绍、仅提及名称、任务属于游戏开发、历史讨论或发现同名目录，都不构成使用或采用依据；历史归档、其他项目及仅作参考的材料也不替代当前指引。没有上述依据时不自动选择本工作流，也不以要求接入代替用户原任务。
+Ordinary projects without adoption complete requests under effective guidance, original records, and professional tools. Skill visibility, directory metadata descriptions, name mentions alone, game-development tasks, historical discussion, or a same-named directory do not constitute grounds for use or adoption; historical archives, other projects, and reference-only materials do not replace current guidance. Without the grounds above, do not automatically select this workflow or replace the user's original task with an adoption requirement.
 
-仅阅读、解释或评审技能本身时，可把正文作为待分析材料，不因此执行其项目职责。单次显式调用按本次范围沿用已有资料，完整接入/迁移仍遵循init的独立授权与来源约定。适用条件不扩大写入、实施或发布权限；只读和进行中工作的授权边界照常生效。
+When only reading, explaining, or reviewing the Skills themselves, treat their bodies as material for analysis without executing project responsibilities. A single explicit invocation reuses existing materials within current scope; complete adoption/migration still follows init's separate authorization and source conventions. Applicability does not expand write, implementation, or release permissions; read-only boundaries and authorization for ongoing work remain effective.
 
-## 1. 位置与解析
+<a id="1-位置与解析"></a>
+## 1. Locations and Resolution
 
-优先使用用户指定或有效项目指引明确引用的工作流入口。新项目默认 game-workflow/，其中 workspace.yaml 记录映射、index.md 负责阅读导航。已接入项目保留自己的映射路径。
+Prioritize workflow entry points specified by the user or explicitly referenced by effective project guidance. New projects default to game-workflow/, with workspace.yaml recording mappings and index.md providing reading navigation. Adopted projects retain their mapping paths.
 
-workspace.yaml 中所有 path、root、marker 均相对于该 YAML 所在目录解析。写入前结合本次明确目标解析实际路径，核对项目、工作树与作用范围。相对路径使同一项目可以在不同 checkout 中使用；实际运行结果仍记录本次具体基线。
+All path, root, and marker values in workspace.yaml resolve relative to the YAML directory. Before writing, resolve actual paths against explicit current goals and check project, worktree, and affected scope. Relative paths let the same project work across checkouts; actual runtime results still record this round's specific baseline.
 
-同名项目、目录或分支不是写入目标证明。映射指向范围外的资料可以作为相关引用；它不会扩展本次对其他目录的修改授权。
+Matching project, directory, or branch names do not prove write targets. Mappings pointing to materials outside scope may provide related references but do not extend authorization to modify other directories.
 
-用户明确调用 flow 完成具体交付，实际目标已唯一确定，且核实没有既有工作来源时，可在该项目 game-workflow/tasks/ 保存必要 Task 记录；这是本次交付的留存，不等于全项目接入或旧流程迁移。无真实需要时无需为此先生成 workspace/index/AGENTS。下次没有映射但存在该默认集合时，核对其 Task 格式、目标和项目现场后读取；遇到已被其他用途占用或互相冲突的入口再解决具体冲突。
+When the user explicitly calls flow for a concrete delivery, the actual target is uniquely determined, and no existing work sources are found after verification, necessary Task records may be saved in that project's game-workflow/tasks/. This retains current delivery and does not mean whole-project adoption or migration of old workflows. Without actual need, do not first generate workspace/index/AGENTS. On later occasions without mappings but with this default collection, check Task format, goals, and actual project conditions before reading it; resolve specific conflicts if entry points are occupied by other uses or conflict with one another.
 
-## 2. 便携字段
+<a id="2-便携字段"></a>
+## 2. Portable Fields
 
-| 字段 | 含义 |
+| Field | Meaning |
 |---|---|
-| schema_version | 本稿格式版本，当前为 1 |
-| project.id | 稳定项目身份；沿用已有明确标识或首次登记时分配，不随分支/显示名称改变 |
-| project.name | 人可读名称 |
-| project.root | 本项目实际根的相对位置 |
-| runtime_roots | 已确认的运行根列表；没有运行入口时允许为空 |
-| runtime_roots[].id/path/engine/marker | 运行用途标识、目录、已识别引擎和实际标识文件；engine 不代表运行已验证 |
-| sources | 原始文档或记录集合；每项有 id、role、kind、path、owner，必要时 scope/format/adapter |
-| default_task_source | 新 Task 的唯一默认来源 id；尚未决定时可为空，现有任务仍按原来源操作 |
-| default_epic_source | 新 Epic 的默认来源；无需要或尚未决定时可为空 |
-| rule_sources | 真正生效的项目规范/profile 来源及适用范围；仅登记可定位的材料，使用时按[规则选择与加载](rules.md)判断 |
+| schema_version | Format version of this specification, currently 1 |
+| project.id | Stable project identity; reuse an existing explicit identifier or assign on first registration, without changes for branch/display-name changes |
+| project.name | Human-readable name |
+| project.root | Relative location of the project's actual root |
+| runtime_roots | Confirmed runtime roots; may be empty when no runtime entry exists |
+| runtime_roots[].id/path/engine/marker | Runtime-purpose identifier, directory, identified engine, and actual marker file; engine does not mean runtime has been verified |
+| sources | Original documents or record collections; each has id, role, kind, path, owner, and scope/format/adapter when needed |
+| default_task_source | Sole default source id for new Tasks; may be empty when undecided, while existing tasks still operate through original sources |
+| default_epic_source | Default source for new Epics; may be empty when unnecessary or undecided |
+| rule_sources | Actually effective project standard/profile sources and applicability; register only locatable materials, then judge usage under [rule selection and loading](rules.md) |
 
-sources 的 role 使用 vision、spec、roadmap、development-plan、task、epic、asset-ledger、evidence、decision、notes、parking-lot。kind 为 file 或 collection。role 表示信息类别，不自动证明正文职责充分或要求生效。scope 说明适用范围，不是工具的章节筛选器。owner 表示维护约定，例如 flow、codestable、trellis、project；它不是操作系统权限，也不强制必须存在同名工具。
+sources role uses vision, spec, roadmap, development-plan, task, epic, asset-ledger, evidence, decision, notes, parking-lot. kind is file or collection. role indicates information category and does not automatically prove sufficient body responsibilities or effective requirements. scope describes applicability and is not a tool section filter. owner indicates maintenance conventions, such as flow, codestable, trellis, project; it is not operating-system permission and does not require a tool of the same name.
 
-format/adapter 说明实际形态与适配线索，省略时先识别；声明适配器不等于已有写入能力。新建时按需使用[workspace 模板](../templates/workspace.yaml.tpl)，旧来源不会因为登记映射而自动转换。
+format/adapter describes actual form and adaptation leads; identify first when omitted. Declaring an adapter does not imply write capability exists. Use the [workspace template](../templates/workspace.yaml.tpl) as needed for creation; registering mappings does not automatically convert legacy sources.
 
-collection 会递归枚举支持的记录后缀，scope 不会过滤文件。登记时优先选择需要导航的正文/索引文件和边界清楚的窄集合；原始测量、回执、冻结载荷及历史附件由相关报告精确引用，不把整个输出树登记为 Notes 来获得索引。目录混合用途时采用已有入口或少量 file 来源，来源角色按实际信息职责选择。证据留存与升级见[记录约定](records.md#留存索引与版本)；同一路径不叠加互相冲突的集合解释。
+collection recursively enumerates supported record suffixes, and scope does not filter files. During registration, prioritize bodies/index files needing navigation and narrow collections with clear boundaries; related reports precisely reference raw measurements, receipts, frozen payloads, and historical attachments rather than registering whole output trees as Notes to obtain indexing. Use existing entry points or a few file sources for mixed-purpose directories, selecting roles by actual information responsibility. See [record conventions](records.md#retention-indexing-and-versions) for evidence retention and upgrades; do not overlay conflicting collection interpretations on the same path.
 
-首次登记的管理 ID 和常规存放位置可以由模型按约定选择并保存，无需让用户逐个命名。新 Task/Epic 集合默认 owner 为 flow，其他新项目文档默认 project；已有系统或生成器的来源沿用真实维护约定。分配管理标识与推断产品事实不同，不能因此编造目标、引擎入口或批准。
+The model may choose and save first-registration management IDs and regular storage locations under conventions without asking the user to name each one. New Task/Epic collections default to owner flow, and other new-project documents to project; sources owned by existing systems/generators retain actual maintenance conventions. Assigning management identifiers differs from inferring product facts and cannot justify inventing goals, engine entry points, or approvals.
 
-同一作用范围的同一事实只能有一个维护来源。多个 task 集合可以并存，但各自的实际对象/范围应明确。有 workspace 映射时，新任务使用明确的 default_task_source；无映射的单次 flow 交付按第一节约定留存。默认来源尚未确定且确需新建工作时，先依据用户要求、现有管理范围和默认位置补齐；只有仍有实质冲突才澄清。已有任务依据其原来源继续，不能被默认新来源重新收编。
+The same fact in the same affected scope must have only one maintenance source. Multiple task collections may coexist, but actual objects/scopes must be clear. With workspace mappings, new tasks use explicit default_task_source; single flow deliveries without mappings retain records under Section 1. When default sources are undecided and new work is truly needed, first fill in gaps from user requirements, existing management scope, and default locations; clarify only remaining substantive conflicts. Continue existing tasks through original sources rather than reassigning them to new defaults.
 
-文件来源应指向实际存在且可解释其职责的正文。collection 可以表示按需创建的新记录位置；未产生内容时不必建空目录。若已有任务引用却找不到集合，按缺失记录处理，不能直接当空项目初始化。
+File sources point to existing bodies whose responsibilities can be explained. collection may represent an on-demand new-record location; no empty directory is needed before content exists. If existing tasks reference a missing collection, treat it as missing records rather than initializing an empty project.
 
-采用包内工程 profiles 时使用 [profile 接入约定](../profiles/README.md)：规则选择及项目差异保存到原 Spec/规则，rule_sources 只登记本项目根内的实际文件；需要可移植的固定正文才保存有来源版本的本地快照。包更新不自动改写项目已生效规则。新建/迁移目录职责见 [project-structure](../profiles/project-structure.md)。
+When adopting bundled engineering profiles, use the [profile adoption convention](../profiles/README.md): save rule selections and project differences in original Spec/rules, while rule_sources registers only actual files inside this project's root; save sourced-version local snapshots only when portable fixed bodies are needed. Package updates do not automatically rewrite effective project rules. See [project-structure](../profiles/project-structure.md) for new/migrated directory responsibilities.
 
-## 3. 新项目示例
+<a id="3-新项目示例"></a>
+## 3. New Project Example
 
-这是一个已有 Godot 标识及规格的新项目登记示例，不得照抄为其他项目的事实。
+This registers a new project with existing Godot markers and specifications; do not copy it as facts about other projects.
 
 ```yaml
 schema_version: 1
@@ -100,47 +105,64 @@ default_epic_source: epics
 rule_sources: []
 ```
 
-尚无工程的新项目可使用 runtime_roots: []；预定引擎记录在目标材料中。旧项目可将 task 来源映射到 .trellis/tasks 或 codestable 的实际集合，owner 保留原系统；复杂嵌套来源以真实入口和 scope 说明，不假定全都采用本稿 Task frontmatter。
+New projects without an actual project yet may use runtime_roots: []; record intended engines in goal materials. Legacy projects may map task sources to .trellis/tasks or codestable's actual collections, retaining original-system owners; describe complex nested sources with actual entry points and scope, without assuming all use this specification's Task frontmatter.
 
-workspace 不存当前 Task 状态、完成百分比、进程/端口、临时登录信息、批准副本或 package 命令副本。scope 只说明职责和适用范围；当前检查结果与完成判断回原正文/证据，不写进来源说明。实际命令读项目配置，历史与续接读原记录。
+workspace does not store current Task states, completion percentages, processes/ports, temporary login information, approval copies, or package command copies. scope describes only responsibilities and applicability; current check results and completion judgments return to original bodies/evidence, not source descriptions. Read actual commands from project configuration and history/continuation from original records.
 
-项目 Git 策略作为适用规则由 rule_sources/实际入口引用，选择与保存见[Git 策略约定](git-policy.md)。沿用已有权威位置；新项目必要时使用 rules/git.md。仓库当前分支、远端差异和执行进度从 Git/原 Task 获取，不加一份动态镜像。
+Project Git policy is referenced as applicable rules through rule_sources/actual entry points; see [Git policy conventions](git-policy.md) for selection and storage. Reuse existing authoritative locations; use rules/git.md for new projects when needed. Obtain current branches, remote differences, and execution progress from Git/original Tasks rather than adding dynamic mirrors.
 
-## 4. index 和宿主指引
+<a id="4-index-和宿主指引"></a>
+## 4. index and Host Guidance
 
-### 新建资料的默认位置
+<a id="新建资料的默认位置"></a>
+### Default Locations for New Materials
 
-正式接入时，按[项目级当前正文](records.md#项目级当前正文)在当前工作流目录建立 vision.md、必要的 spec/index.md；采用项目级持续开发时默认建立 roadmap.md。用户明确指定其他位置时沿用其要求并登记唯一入口。重复接入保留已确定位置，只补本次差异；已有旧映射的读取和局部续接保持兼容，相关修复才整理其职责。
+During formal adoption, create vision.md and necessary spec/index.md in the current workflow directory under [project-level current bodies](records.md#current-project-level-bodies); default to creating roadmap.md when adopting sustained project-level development. Follow explicit user locations and register sole entry points. Repeated adoption retains determined locations and fills only current differences; reading and local continuation of legacy mappings remain compatible, with responsibilities organized only during relevant repairs.
 
-vision 来源指向当前愿景正文，Spec 总览与 Roadmap 指向相应当前入口；详细领域规范仍可登记独立来源。大型方案的分阶段实施按 [PDP](phased-development.md)登记 development-plan 来源，默认使用 plans/ 窄集合或实际 file 入口，owner 为 project；它可独立于 Epic/Task 创建。混合输入按章节/字段、版本和采用范围引用，不因含有目标、规则或阶段表就整份登记为当前主要文档。历史/候选登记仅用于定位，不成为另一份生效正文。
+vision sources point to current vision bodies, and Spec overview/Roadmap to corresponding current entry points; detailed domain specifications may still register independent sources. Register development-plan sources under [PDP](phased-development.md) for phased implementation of large plans, defaulting to narrow plans/ collections or actual file entry points with owner project; they may be created independently of Epic/Task. Reference mixed inputs by sections/fields, versions, and adopted scope rather than registering whole files as current primary documents because they contain goals, rules, or stage tables. Historical/candidate registration serves only location and does not become another effective body.
 
-其他新资料默认放在 parking-lot.md、notes/、assets/ledger.yaml，以及按需的 plans/、evidence/、decisions/、views/、handoffs/，有真实职责时再创建。PDP 默认 plans/<安全标题>.md；视图与独立交接的生成、命名、刷新和版本留存统一见[派生输出](derived-outputs.md)。Task/Epic、账本和检查/决定保留原身份及维护来源。未来候选由独立 parking-lot.md 维护，Vision 引用它。默认新 Task 使用 `tasks/T-编号-短名/task.md`，专属材料按需同目录或子目录保存；Epic 位置沿用共同记录规则。旧平铺 Task 和已明确的原路径继续复用。
+Other new materials default to parking-lot.md, notes/, assets/ledger.yaml, and on-demand plans/, evidence/, decisions/, views/, handoffs/, created when actual responsibilities exist. PDP defaults to plans/<safe-title>.md; see [derived outputs](derived-outputs.md) for generation, naming, refresh, and version retention for views and standalone handoffs. Task/Epic, ledgers, checks/decisions retain original identities and maintenance sources. Independent parking-lot.md maintains future candidates and is referenced by Vision. New Tasks default to `tasks/T-<number>-<short-name>/task.md`, with dedicated materials saved in the same directory or subdirectories as needed; Epic locations follow common record rules. Continue reusing old flat Tasks and explicit original paths.
 
-### 入口正文与宿主段落
+<a id="入口正文与宿主段落"></a>
+### Entry-point Bodies and Host Sections
 
-index 应简述本项目及工作流入口，分别指明当前项目级正文、原工作/规则的维护入口，以及详细/输入/历史材料的用途和范围。先由当前正文理解方向与生效范围，再按本次问题读取详细来源；不复写动态进度。只链接已经存在的文件；尚未创建的集合可以说明用途，不把不存在的正文写成有效链接。
+index briefly describes the project and workflow entry points, separately identifying current project-level bodies, maintenance entry points for original work/rules, and purposes/scopes of detailed/input/historical materials. First understand direction and effective scope from current bodies, then read detailed sources for the current question; do not rewrite dynamic progress. Link only existing files; describe purposes of not-yet-created collections without making nonexistent bodies active links.
 
-在实际生效的项目指引中合并本流程的短段落，路径按项目实际位置改写。Codex默认使用AGENTS.md，Claude Code使用CLAUDE.md；其他宿主沿其实际指引入口。默认示意（技能名称以Codex插件为例，按实际宿主回读改写）：
+Merge a short workflow section into actually effective project guidance, adapting paths to actual project locations. Codex defaults to AGENTS.md, Claude Code uses CLAUDE.md, and other hosts use actual guidance entry points. Default illustration (Skill names use the Codex plugin as an example; reread and adapt for the actual host):
 
 ```markdown
 <!-- game-workflow:begin -->
-## 游戏工作流（Gamecaden）
-- 本项目采用 Gamecaden。工作流入口为 game-workflow/index.md，项目根、运行根与来源映射为 game-workflow/workspace.yaml。
-- 新会话处理本项目的开发、续接、验收或收尾请求时，先使用实际安装的 gamecaden:flow 定位相关入口与原工作记录。
-- 用户要求继续时，依据原 Task 当前结果、推进限制和实际工作区定位下一动作；只读状态请求按只读处理，多项工作无法按目标/前提确定时再澄清。
-- 根据本次目标、变更对象和实际消费者，读取相关规则、设计与实施安排；已有有效依据直接复用。
-- 沿用各记录的维护来源；执行结果、范围变化、推进限制与下一步写回原工作，汇总视图读取原事实。
+## Game Workflow (Gamecaden)
+- This project adopts Gamecaden. The workflow entry point is game-workflow/index.md, and project root, runtime roots, and source mappings are in game-workflow/workspace.yaml.
+- When a new session handles development, continuation, acceptance, or closure requests for this project, first use the actually installed gamecaden:flow to locate relevant entry points and original work records.
+- When the user asks to continue, locate the next action from current original Task results, progression restrictions, and the actual workspace; handle read-only status requests as read-only, and clarify multiple work items only when goals/prerequisites cannot determine the choice.
+- Read relevant rules, designs, and implementation arrangements according to current goals, changed objects, and actual consumers; directly reuse effective existing grounds.
+- Retain each record's maintenance source; write execution results, scope changes, progression restrictions, and next steps back to original work, while aggregate views read original facts.
+- Follow explicit current language instructions and effective project preferences; otherwise use the user's language for replies and new material documents. Preserve existing documents' language when maintaining them unless conversion is requested.
 <!-- game-workflow:end -->
 ```
 
-只在实际提供本流程 Skill 的环境中写入相应技能指针，使用其真实可发现名称。未安装时可先提供文件阅读入口，并说明技能发现尚未验证，不能留下一个声称可调用的虚构命令。
+Write corresponding Skill pointers only in environments actually providing these workflow Skills, using genuinely discoverable names. Before installation, provide file-reading entry points and state that Skill discovery is unverified; do not leave fictitious commands claimed to be callable.
 
-保留已有规则。检查 override、嵌套作用域和当前宿主来源，避免新增被覆盖的无效入口。文件写入与后续会话实际加载分别报告；不为本项目接入修改全局用户指引或宿主配置。
+Preserve existing rules. Check overrides, nested scopes, and current host sources to avoid ineffective new entry points that are overridden. Report file writes separately from actual loading in later sessions; do not modify global user guidance or host configuration for project adoption.
 
-安装与项目接入后，需要在正确项目的新会话中分别检验自然语言“继续”、显式 Skill 调用和只读状态请求，观察实际加载来源、所选原工作与写入行为。没有做过这类宿主验证时，只能声明指引和文件已准备，不能声称每次必然自动调用或自动执行。
+After installation and project adoption, separately test natural-language “continue,” explicit Skill invocation, and read-only status requests in a new session in the correct project, observing actual loaded sources, selected original work, and write behavior. Without such host validation, claim only prepared guidance and files, not guaranteed automatic invocation or execution every time.
 
-## 5. 接入结果与复用
+<a id="5-接入结果与复用"></a>
+## 5. Adoption Results and Reuse
 
-init 返回：本次实际根、运行根、来源/规则引用、实际写入、仍相关的缺口和下一动作。它们构成当前上下文，不另存第二份动态 context/state 文件。
+init returns actual roots, runtime roots, source/rule references, actual writes, still-relevant gaps, and next actions for this work. These form current context without a second dynamic context/state file.
 
-回读相关文件和路径；重复接入优先复用已确定的来源与授权。任何一步只部分完成时说明已发生与未完成内容，下一次从这些实际结果恢复，不无条件从零重建。
+Read back related files and paths; repeated adoption prioritizes reuse of determined sources and authorization. When any step is only partially complete, explain what occurred and what remains unfinished; next time recover from actual results rather than unconditionally rebuilding from scratch.
+
+## 6. Language Preferences
+
+Gamecaden has one plugin identity and one set of workflow rules. The package's English authoring language does not select the project's communication or output language.
+
+Communication language and document language may be specified separately by the user or effective project guidance. Explicit instructions for this work take precedence over earlier preferences. Without an explicit preference, use the user's current language both for replies and newly created material documents, including Vision, Spec, Roadmap, PDP, designs, Tasks, Evidence, and handoffs. English Skills/templates, English input references, and the language of other project files do not establish an English output preference. Maintain an existing document in its language unless conversion is requested. Apply the same scope, verification, and acceptance requirements in every language.
+
+Treat English templates as structural guidance, not text to copy verbatim. Prose and explanations default to the selected document language; adapt headings, section labels, table headers, placeholder prompts, and notes as needed for the user's reading and maintenance. Preserve schema keys, identifiers, enums, API names, paths, and executable commands. Follow established usage for professional terms and familiar labels, adding a local-language explanation when helpful. Translate human-readable values where their meaning permits; retain existing scope/coverage/version values when used as exact-match binding qualifiers, explaining them in the selected language rather than silently rewriting the binding. No new locale field or mandatory language interview is needed.
+
+Apply the same default to newly authored human-readable metadata, including titles, purpose, snapshot_scope, reasons, and conclusions. Storage in YAML/JSON does not by itself select English; a new scope description is not an exact-match binding merely because its key contains "scope". On read-back, assess whether the actual document's prose, explanations, structure, and new readable values suit the selected language, rather than judging from reply language alone. Do not pursue documents with no English, mechanically translate established terms or every label, or make isolated English labels a verification or acceptance gate. Language preferences do not add a separate approval requirement.
+
+When an ongoing language preference is actually selected during adoption or configuration, save it in the existing effective AGENTS.md/CLAUDE.md or agreed project guidance. Keep communication and document preferences distinguishable, and preserve unrelated guidance. An English package update does not translate existing project materials or change their maintenance sources.

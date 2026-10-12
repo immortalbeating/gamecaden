@@ -1,15 +1,20 @@
-# {{work_title}} · 设计
+<a id="work_title--设计"></a>
+# {{work_title}} · Design
 
-原工作：{{owning_work_ref}}
+Owning work:{{owning_work_ref}}
 
-## 本次目标、依据与现状
+<a id="本次目标依据与现状"></a>
+## Current goal, basis, and state
 {{goal_sources_current_model}}
 
-## 方案与责任边界
+<a id="方案与责任边界"></a>
+## Design and responsibility boundaries
 {{interfaces_state_data_and_consumer_flow}}
 
-## 必要材料与实施安排
+<a id="必要材料与实施安排"></a>
+## Required materials and implementation arrangements
 {{materials_versions_and_single_plan_ref_or_inline_steps}}
 
-## 验证与可推进范围
+<a id="验证与可推进范围"></a>
+## Verification and executable scope
 {{checks_unknowns_and_next_action_conditions}}

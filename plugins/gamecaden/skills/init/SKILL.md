@@ -1,89 +1,95 @@
 ---
 name: init
-description: 仅在用户明确要求本次使用 Gamecaden，或当前项目有效指引已采用 Gamecaden 时使用。识别、接入、补齐或迁移项目，建立真实运行根、权威文档与任务来源映射，并合并项目指引。用于明确接入需求或 flow 发现相关映射缺口时；已有有效入口的日常执行直接复用。
+description: Use only when the user explicitly requests Gamecaden for this work, or effective guidance in the current project has adopted Gamecaden. Identify, adopt, complete or migrate projects; establish actual runtime roots, authoritative documents and task source mappings, and merge project guidance. Use for explicit adoption needs or relevant mapping gaps found by flow; reuse effective existing entrypoints for daily execution.
 ---
 
 # Init
 
-先核对上述适用条件；未满足时沿原项目指引处理。边界说明见[工作流适用条件](../../shared/workspace.md)。
+First check the applicability conditions above; when they are not met, follow original project guidance. See [Workflow applicability](../../shared/workspace.md) for boundaries.
 
-使后续工作能定位正确项目、适用规则和唯一写入源。普通初始化维护接入关系；游戏功能、资产生产和引擎工程搭建仍按实际交付处理。
+Enable subsequent work to locate the correct project, applicable rules and sole write source. Ordinary initialization maintains adoption relationships; game features, asset production and engine setup still follow actual delivery.
 
-本文相对链接以本 SKILL.md 所在目录解析；../../shared/ 指向共同技能包根目录的 shared/。
+Resolve relative links from this SKILL.md's directory; ../../shared/ points to shared/ in the common skill package root.
 
-## 1. 选择本次方式
+<a id="1-选择本次方式"></a>
+## 1. Choose the current mode
 
-| 方式 | 使用条件 |
+| Mode | Conditions for use |
 |---|---|
-| inspect | 需要查明目标根、入口或原记录来源，先只读识别 |
-| adopt | 用户已要求项目使用本工作流或建立新项目工作流 |
-| repair | 现有接入中的相关映射、入口或指引需要修复 |
-| migrate | 用户已授权切换指定记录的维护范围或管理流程 |
+| inspect | Establish target roots, entrypoints or original record sources through read-only identification first |
+| adopt | User requested using this workflow for the project or establishing a new project workflow |
+| repair | Relevant mappings, entrypoints or guidance in existing adoption need repair |
+| migrate | User authorized switching maintenance scope or management process of specified records |
 
-识别可以自动进行；写入沿用本次已有接入、修复或迁移授权。只读询问和普通旧任务修复不自动变成迁移。含义冲突时先准备具体范围、来源和影响，再澄清相关选择。
+Identification can happen automatically; writing retains existing adoption, repair or migration authorization for this work. Read-only questions and ordinary old-task repairs do not automatically become migration. When meanings conflict, prepare concrete scope, sources and impacts first, then clarify relevant choices.
 
-## 2. 识别实际现场
+<a id="2-识别实际现场"></a>
+## 2. Identify the actual situation
 
-读取[工作区约定](../../shared/workspace.md)。从用户指定位置与本次实际目录开始，检查生效指引、现有工作流入口、相关 README/配置、运行标识和任务来源。
+Read [Workspace conventions](../../shared/workspace.md). Start from the user-specified location and actual current directory; check effective guidance, existing workflow entrypoints, relevant README/configuration, runtime identifiers and task sources.
 
-- 分清项目目录、实际运行根、设计资料包和工具/面板。多个运行入口分别识别用途，只选择本次需要的目标。
-- 有 Git 时核对当前仓库/工作树及相关差异；无 Git 时仍可接入，不为登记强制初始化版本库或提交。
-- 新目录没有运行入口时明确保留未知。预定引擎和未来功能属于目标材料，不能写成已验证运行能力。
-- 多个候选根或相互冲突的权威来源不能靠目录名/时间猜测。继续可做的只读识别，仅在需要决定写入目标时澄清。
+- Distinguish project directory, actual runtime root, design material package and tools/panel. Identify purposes of multiple runtime entrypoints separately, selecting only targets needed here.
+- With Git, check current repository/worktree and relevant differences; adoption remains possible without Git, without forcing repository initialization or a commit for registration.
+- When a new directory has no runtime entrypoint, explicitly retain unknowns. Intended engines and future features are target materials, not verified runtime capabilities.
+- Do not guess multiple candidate roots or conflicting authoritative sources from directory names/times. Continue useful read-only identification; clarify only when a write target needs deciding.
 
-旧项目、冲突、repair 或 migrate 分支读取[接入与移交参考](references/adoption.md)；简单新项目不用预先加载全部迁移细节。
+Read [Adoption and handover reference](references/adoption.md) for old projects, conflicts, repair or migrate branches; simple new projects do not load all migration details in advance.
 
-接入涉及游戏材料职责或需在面板查看缺项时，按[材料职责](../../shared/material-requirements.md)与[面板续接](../../shared/panel-workflow.md)只处理本次相关来源；映射不等于采纳。
+When adoption involves game material responsibilities or viewing gaps through the panel, handle only relevant sources under [Material responsibilities](../../shared/material-requirements.md) and [Panel continuation](../../shared/panel-workflow.md); mapping does not equal adoption.
 
-新建/确认工程约定时，按 [profiles 入口](../../profiles/README.md)匹配实际或已明确选择的引擎、平台及当前动作；目录创建/迁移再读相应结构条目。已选但尚未建立的工程用于设计安排，运行事实保留未知。采用范围和项目差异写回既有 Spec/规则；包内参考不写成越界的 rule_sources 路径。
+When establishing/confirming engineering conventions, use the [Profiles entrypoint](../../profiles/README.md) to match actual or explicitly selected engine, platform and current action; read corresponding structural items when creating/migrating directories. Selected but unestablished engineering is used for design arrangements; runtime facts remain unknown. Write adopted scope and project differences back to existing Spec/rules; package references do not become out-of-scope rule_sources paths.
 
-新项目需要页面/关卡切换、复用主体、跨生命周期状态或明确的内容编辑能力时，带入[结构约定](../../profiles/references/structure-contract.md)供 design 形成相关方案；init 仍负责接入，不预建全套 Main/Manager/目录。旧项目登记的是已查明的当前结构与本次缺口，暂保旧单场景等局部安排不推广为新项目默认。
+For new projects needing page/level switching, reusable entities, state across lifecycles or explicit content editing capabilities, bring [Structural conventions](../../profiles/references/structure-contract.md) into design for corresponding solutions; init still handles adoption, without prebuilding an entire Main/Manager/directory set. Old-project registration records established current structure and present gaps; temporarily retained local single-scene arrangements do not become new-project defaults.
 
-项目已使用或明确准备采用 Git，需要建立/核对其交付约定时，读取[项目 Git 策略](../../shared/git-policy.md)。先调查已有事实和规则，沿用项目约定与本次明确指示；本轮 Git 动作已获准且目标明确时直接安排，仅澄清当前动作真正未定的部分。确需建立或调整长期策略时，再提供自动交付、仅自动提交、手动 Git 与自定义方式，等待实际选择后保存。当前无 Git 或只做概念探索时不强迫选择，也不因缺少长期策略阻断已授权工作。
+When the project already uses or explicitly intends Git and needs delivery conventions established/checked, read [Project Git policy](../../shared/git-policy.md). Investigate existing facts and rules first, retaining project conventions and explicit current instructions; directly arrange authorized Git actions with clear targets, clarifying only what is genuinely undecided for the current action. When long-term policy genuinely needs establishing or adjustment, offer automatic delivery, automatic commits only, manual Git and custom approaches, then save after an actual choice. Do not force a choice without Git or during conceptual exploration, or block authorized work because long-term policy is absent.
 
-## 3. 决定真实需要的写入
+<a id="3-决定真实需要的写入"></a>
+## 3. Decide which writes are actually needed
 
-inspect 只返回识别结果，不自动安装依赖或写项目指引。真正采用项目或首个本地 I/O 前，按[工具就绪与调用](../../shared/local-io.md#1-环境与调用)检查并准备环境，核对 ready 与真实调用结果；未就绪时报告原因及未完成范围，不能以手工写记录声称 I/O 已验证。其余方式在已授权范围内增量处理：
+inspect returns identification only, without automatically installing dependencies or writing project guidance. Before actual project adoption or first local I/O, check and prepare the environment under [Tool readiness and invocation](../../shared/local-io.md#1-environment-and-invocation), checking ready and actual invocation results. If unready, report reasons and unfinished scope; manual record writing cannot claim verified I/O. Other modes proceed incrementally within authorization:
 
-1. 确定工作流目录与唯一入口，优先沿用明确的既有位置；新项目默认 game-workflow/，占用用途冲突时不覆盖。
-2. 读取已给要求、设计包、规则与相关工作，区分完整目标、生效规则、实施安排、实际结果、候选与历史；按[项目级当前正文](../../shared/records.md#项目级当前正文)整理当前 Vision、必要 Spec 总览，项目级持续开发默认建立 Roadmap。引用具体范围并明确维护责任。
-3. 登记实际根、当前正文、原工作集合及新工作默认写入源；按[规则选择与加载](../../shared/rules.md)登记适用规范，详细原材料保留位置。多个职责的输入由当前正文引用，不整份代替主要文档。
-4. 建立可读 index，区分当前维护入口与详细/输入/历史来源，说明各自用途，不复写进度。
-5. 在当前宿主实际生效的位置合并简短项目指引：Codex使用AGENTS.md，Claude Code使用CLAUDE.md；保留现有用户规则和其他不相关内容。
+1. Establish the workflow directory and sole entrypoint, preferring explicit existing locations; new projects default to game-workflow/, without overwriting conflicting occupied uses.
+2. Read supplied requirements, design packages, rules and related work. Distinguish complete goals, effective rules, implementation arrangements, actual results, candidates and history; organize current Vision, necessary Spec overview and, by default for project-level sustained development, a Roadmap under [Current project primary documents](../../shared/records.md#current-project-level-bodies). Cite specific scopes and identify maintenance responsibility.
+3. Register actual roots, current primary documents, original work collections and the default write source for new work; register applicable conventions under [Rule selection and loading](../../shared/rules.md), retaining detailed original materials in place. Inputs for multiple responsibilities are referenced by current primary documents, rather than replacing them wholesale.
+4. Establish a readable index distinguishing current maintenance entrypoints from detailed/input/historical sources, explaining their purposes without duplicating progress.
+5. Merge concise project guidance where it actually takes effect in the current host: AGENTS.md for Codex and CLAUDE.md for Claude Code; preserve existing user rules and unrelated content.
 
-已明确采用的长期 Git 策略保存到原权威规范；新项目必要时使用工作流目录的 rules/git.md，并登记其来源。本轮 Git 安排沿用已有原工作记录；直接 init 没有原 Task 时在当前接入结果中说明，不为此新建 Task，也不自动改写项目策略。只记录已采用的方案、目标/方式及适用范围，不将推荐写成决定，不复制当前分支/远端进度。重复接入沿用既有选择，只处理实际变化或冲突。
+Save explicitly adopted long-term Git policy to original authoritative conventions; for new projects, use rules/git.md in the workflow directory when necessary and register its source. Current Git arrangements retain original work records; direct init without an original Task describes them in the current adoption result, without creating a Task or automatically rewriting project policy. Record only adopted solutions, targets/methods and applicable scope; recommendations are not decisions, and current branch/remote progress is not duplicated. Repeated adoption retains existing choices, handling actual changes or conflicts only.
 
-基本登记不自动创建初始化 Task、空 Epic、资产台账或全套目录。存在真实的批量转换、工程改动或需要追踪的迁移交付时，按[记录约定](../../shared/records.md)由相应工作承接。
+Basic registration does not automatically create an initialization Task, empty Epic, asset ledger or entire directory set. Real batch conversion, engineering changes or migration deliveries needing tracking are handled by corresponding work under [Record conventions](../../shared/records.md).
 
-需要创建新原生文档时，从[模板目录](../../templates/catalog.md)选择本次实际需要的项，并按[格式合同](../../shared/formats-v1.md)校验相应结构；删去无内容的可选章节，保留未知，不照抄样例事实。已有纯愿景等正文复用其内容形成确定入口；原资料及未移交工作保留身份，模板只指导当前正文的组织。
+When creating new native documents, choose only actually needed items from the [Template catalog](../../templates/catalog.md), validating corresponding structures under the [Format contract](../../shared/formats-v1.md). Remove empty optional sections, retain unknowns and do not copy sample facts. Reuse existing primary text such as pure vision to form a definite entrypoint; original materials and untransferred work retain identities. Templates guide only organization of current primary documents.
 
-使用[本地读写工具](../../shared/local-io.md)创建尚未登记的新来源时，核对返回的 source_registration_required/source_proposal，并在本次已授权接入范围用 workspace.configure 完成实际映射；创建文件与登记来源分别回读，未登记前不声称 ID 已能从现有入口解析。
+When [Local I/O tools](../../shared/local-io.md) create an unregistered new source, check returned source_registration_required/source_proposal and complete actual mapping through workspace.configure within this work's authorized adoption scope. Read back file creation and source registration separately; do not claim an ID resolves through existing entrypoints before registration.
 
-明确调用 flow 完成一个交付所需的任务记录，可以在目标唯一且无旧来源时按默认集合保存，不要求先执行完整 adopt。项目级长期指引、全局文档与旧来源切换仍按实际接入/迁移范围处理。
+Task records needed for an explicit flow delivery can be saved to the default collection when the target is unique and no old source exists, without full adopt first. Project-level long-term guidance, global documents and old-source switching still follow actual adoption/migration scope.
 
-## 4. 新项目引导
+<a id="4-新项目引导"></a>
+## 4. Guide new projects
 
-根据用户已给材料组织下一动作：正式接入的完整目标整理到当前 Vision，需持续维护的规则与可确认现状进入 Spec；项目级持续开发的 Roadmap 保存当前真实成果与未定安排，只有一个成果也可建立，方向未定时不凑阶段。已有大型方案需分阶段转为交付时，按 [PDP](../../shared/phased-development.md)登记原编排或交给 design 补齐；PDP 不冒充主要正文，也不借假 Epic 保存。候选与承诺分别表达。
+Organize the next action from supplied materials: put complete goals of formal adoption in current Vision, maintained rules and ascertainable current state in Spec. Roadmap for project-level sustained development saves current real outcomes and unresolved arrangements; even one outcome can have a Roadmap, without inventing stages when direction is undecided. For phased delivery of a large existing solution, register original arrangements under [PDP](../../shared/phased-development.md) or hand to design for completion; PDP does not masquerade as primary documents or use fictitious Epics for storage. State candidates and commitments separately.
 
-用户给出需求或可执行设计时直接使用，不要求再完成一轮 brainstorm。只有下一动作确实依赖尚未选定的关键方向时才澄清；按已有信息能做的工作继续。
+Use user requirements or executable designs directly, without requiring another brainstorm round. Clarify only when the next action truly depends on an unselected key direction; continue work supported by existing information.
 
-初始化只建立正确的入口和事实边界。若原请求同时要求制作游戏或实施功能，完成登记后把真实上下文交回 flow/当前执行者继续；不把创建几个文档当成原请求完成。
+Initialization only establishes correct entrypoints and factual boundaries. If the original request also requires making a game or implementing features, after registration return actual context to flow/the current executor to continue; creating a few documents does not complete the original request.
 
-## 5. 核对登记结果
+<a id="5-核对登记结果"></a>
+## 5. Check registration results
 
-按[工作区约定](../../shared/workspace.md)核对本次写入：
+Check current writes under [Workspace conventions](../../shared/workspace.md):
 
-- 实际目标和声明根一致；每个声明为现有的文件/运行标识可以定位。
-- 文件来源只有一个当前维护责任；多个集合的作用范围明确，新 Task 默认来源唯一或明确尚未决定。
-- 当前正文能直接回答方向、规则采用依据/基线及产品成果安排；已采用项目级持续开发的 Roadmap 有实际当前入口、条件/承接及未定范围。详细引用可定位，原材料没有重叠的活动维护责任；工程准备步骤不伪装为产品里程碑。冲突保持未确认，格式通过不替代内容判断。
-- 项目指引写在当前宿主实际生效的作用域内；已有 override/嵌套规则与旧管理器入口没有未处理的重叠。
-- 重复执行仅补确有变化的内容，不覆盖用户正文或制造第二入口。
-- 记录实际已保存、未完成或无法核实的部分；某一写入失败时不宣称整个接入成功。
+- Actual targets match declared roots; every file/runtime identifier declared existing can be located.
+- Each file source has one current maintenance responsibility; scopes of multiple collections are clear, and the default source for new Tasks is unique or explicitly undecided.
+- Current primary documents directly answer direction, grounds/baseline for rule adoption and product outcome arrangements; Roadmap in adopted project-level sustained development has an actual current entrypoint, conditions/ownership and unresolved scope. Detailed references resolve; original materials have no overlapping active maintenance responsibility; engineering preparation steps do not masquerade as product milestones. Conflicts remain unconfirmed; format passes do not replace content judgment.
+- Project guidance is written in the current host's actually effective scope; existing override/nested rules and old manager entrypoints have no unhandled overlap.
+- Repeated execution supplements only actual changes, without overwriting user text or creating a second entrypoint.
+- Record actually saved, unfinished or unverifiable parts; failure of one write does not permit claiming entire adoption succeeded.
 
-写入项目指引与宿主下一次实际加载是不同事实。按当前宿主可观察能力核对来源；没有实际加载证据时只报告文件已保存，不声称自动触发已经验证。
+Writing project guidance and the host actually loading it next time are different facts. Check sources using current host observability; without actual loading evidence, report only that files were saved, not that automatic triggering was verified.
 
-## 6. 返回到原请求
+<a id="6-返回到原请求"></a>
+## 6. Return to the original request
 
-简述目标根、实际记录来源、创建/更新的文件、仍影响下一动作的缺口和推荐动作。结果可以留在当前上下文，不新建另一个接入状态账本。
+Briefly describe target roots, actual record sources, created/updated files, gaps still affecting the next action and recommended actions. Results may remain in current context; do not create another adoption state ledger.
 
-调用者是 flow 时返回已识别/登记的事实；直接请求仅初始化时到此完成。原请求包含后续实施时继续该请求的下一动作，避免 init→flow→init 重复登记。
+When called by flow, return identified/registered facts; a direct initialization-only request ends here. If the original request includes implementation, continue its next action, avoiding repeated init→flow→init registration.

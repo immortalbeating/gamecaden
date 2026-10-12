@@ -1,40 +1,44 @@
-# 模板使用目录
+<a id="模板使用目录"></a>
+# Template catalog
 
-这些文件是按信息职责组织的写作蓝本，不是初始化时全部复制的骨架。先读取[格式合同](../shared/formats-v1.md)中对应对象，再根据实际目标填写并删去无内容的可选部分。正式接入的主要文档按[项目级当前正文](../shared/records.md#项目级当前正文)形成确定入口，复用原材料内容和具体引用；其他对象沿其真实维护来源。
+These files are writing guides organized by information responsibility, not a skeleton to copy in full during initialization. Read the corresponding object in the [format contract](../shared/formats-v1.md), then fill it for the actual goal and remove empty optional sections. The main documents created during formal adoption have definite entries under [current project documents](../shared/records.md#current-project-level-bodies), reusing original content and specific references; other objects follow their actual maintenance sources.
 
-`{{...}}` 表示待填位置，不能原样留在实际交付中。自动生成 YAML/JSON 字段时使用相应序列化器，处理引号、换行和类型；不把任意用户文本直接拼入 YAML。模板中的默认 null/空列表不是对项目现状的判断。
+`{{...}}` marks content to fill in and must not remain unchanged in an actual delivery. Use the appropriate serializer when generating YAML/JSON fields, handling quotes, newlines, and types; do not concatenate arbitrary user text directly into YAML. Default nulls/empty lists in templates are not judgments about the project's state.
 
-| 蓝本 | 何时使用 |
+Before filling a template, apply the project's [document-language convention](../shared/workspace.md#6-language-preferences) to its headings, labels, table headers, prompts, and prose. The English blueprint is not the output-language choice.
+
+| Template | When to use |
 |---|---|
-| [workspace](workspace.yaml.tpl) | 需要新建项目映射；仅填已知来源，未知保留 |
-| [工作流入口](index.md.tpl) | 新建项目阅读入口，引用实际存在资料 |
-| [Vision](vision.md.tpl) | 正式接入时整理当前愿景；已有纯愿景复用内容，未定方向如实表达 |
-| [Spec 总览](spec-index.md.tpl) | 已有需持续维护的规则/基线，形成确定的总览与领域入口 |
-| [领域 Spec](spec-page.md.tpl) | 保存生效合同和该基线的实际能力 |
-| [Roadmap](roadmap.md.tpl) | 正式采用项目级持续开发时默认建立；保留当前真实成果与未定范围，不为凑阶段编造承诺 |
-| [Phased Development Plan](development-plan.md.tpl) | 已选大型方案需分阶段转为一个/多个 Epic 的交付编排；按 [PDP 合同](../shared/phased-development.md)独立于工作记录保存 |
-| [停车场](parking-lot.md.tpl) | 出现值得保留但未承诺的未来想法 |
-| [Task 通用蓝本](task.md.tpl) | 先按真实需要选 quick/standard；正文保留有用部分，常规模式也可简记 |
-| [Task 轻量蓝本](quick-task.md.tpl) | 已选择 quick 时使用；开工记录目标与必要检查，结果按实际进展保存 |
-| [Epic](epic.md.tpl) | 多个相关交付需共同目标和整体出口 |
-| [Design](design.md.tpl) | 设计正文确需独立阅读/维护 |
-| [Plan](plan.md.tpl) | 原 Task 的唯一内部清单或已有 Epic 的界内安排；上位 PDP 使用独立蓝本 |
-| [详细历史](history.md.tpl) | 原工作历史妨碍阅读，需要拆出唯一正文 |
-| [交接快照](handoff.md.tpl) | 用户或有效项目约定需要独立交接；从原记录生成，路径与版本留存按 [派生输出](../shared/derived-outputs.md#独立-handoff) |
-| [Evidence](evidence.md.tpl) | 需要原生独立说明，或将同一形态嵌入原 Task；已有完整报告不复制 |
-| [Decision](decision.md.tpl) | 版本接受、批量决定或独立追踪事件；普通取舍可留正文 |
-| [Asset Ledger](asset-ledger.yaml.tpl) | 原生资产主台账，登记真实身份和选用关系 |
-| [备用 manifest](manifest.json.tpl) | 生产能力没有已有等效格式时，绑定实际文件集合 |
-| [Note](note.md.tpl) | 确有可复用认识及适用条件 |
-| [Git 策略](git-policy.md.tpl) | 方案已实际采用且需要独立保存；不是默认自动授权 |
-| [项目规则](project-rules.md.tpl) | 已选择适用规则且现有 Spec/规则无合适章节；记录采用范围、来源版本与项目差异，不复制整套 profile |
+| [Workspace](workspace.yaml.tpl) | Create a project mapping; fill only known sources and leave unknowns unknown |
+| [Workflow entry](index.md.tpl) | Create a project reading entry that references materials that actually exist |
+| [Vision](vision.md.tpl) | Organize the current vision during formal adoption; reuse content from an existing focused vision and state unresolved direction honestly |
+| [Spec overview](spec-index.md.tpl) | Maintain rules/baselines through a definite overview and domain entries |
+| [Domain Spec](spec-page.md.tpl) | Save the effective contract and actual capabilities at its baseline |
+| [Roadmap](roadmap.md.tpl) | Create by default when formally adopting project-wide ongoing development; retain real current outcomes and unresolved scope without inventing commitments to fill stages |
+| [Phased Development Plan](development-plan.md.tpl) | Arrange delivery across one or more Epics when an adopted large scheme needs phased implementation; save separately from work records under the [PDP contract](../shared/phased-development.md) |
+| [Parking lot](parking-lot.md.tpl) | Retain worthwhile future ideas that have not been committed |
+| [General Task](task.md.tpl) | Select quick/standard from actual needs first; retain useful body sections, and keep standard concise when appropriate |
+| [Lightweight Task](quick-task.md.tpl) | Use after selecting quick; record the goal and required checks at the start, then save results as work actually progresses |
+| [Epic](epic.md.tpl) | Related deliveries need a shared goal and overall exit conditions |
+| [Design](design.md.tpl) | Design content needs independent reading/maintenance |
+| [Plan](plan.md.tpl) | The original Task's sole internal checklist or arrangements within an existing Epic; an overarching PDP uses its separate template |
+| [Detailed history](history.md.tpl) | Original work history obstructs reading and needs a separate sole body |
+| [Handoff snapshot](handoff.md.tpl) | The user or effective project convention needs an independent handoff; derive it from original records, with paths/version retention under [derived outputs](../shared/derived-outputs.md#standalone-handoff) |
+| [Evidence](evidence.md.tpl) | Use an independent native explanation or embed the same form in the original Task; do not copy an existing complete report |
+| [Decision](decision.md.tpl) | Version acceptance, batch decisions, or independently tracked events; ordinary choices may remain in the body |
+| [Asset Ledger](asset-ledger.yaml.tpl) | A native asset ledger registers actual identities and selected uses |
+| [Fallback manifest](manifest.json.tpl) | Bind an actual file set when production has no equivalent existing format |
+| [Note](note.md.tpl) | A reusable lesson and its applicability actually exist |
+| [Git policy](git-policy.md.tpl) | A policy has actually been adopted and needs separate storage; the template grants no default authorization |
+| [Project rules](project-rules.md.tpl) | Applicable rules have been selected and the existing Spec/rules have no suitable section; record adoption scope, source version, and project differences without copying an entire profile |
 
-填充样例位于 [examples/v1](../examples/v1/index.md)，包含内嵌/独立记录、部分接入和请求/结果形态。样例的项目、时间和通过/接受状态都是演示材料，不代表真实游戏或用户判断。
+Filled [examples/v1](../examples/v1/index.md) cover embedded/independent records, partial adoption, and request/result forms. Their projects, times, and pass/acceptance states are demonstration data, not facts about a real game or user judgment.
 
-只读合同自检为 [check_contracts.py](../scripts/check_contracts.py)。它验证 schema、模板字段和样例/反例，不提供本协议的写入服务。
+The read-only contract check is [check_contracts.py](../scripts/check_contracts.py). It validates schemas, template fields, and positive/negative examples; it does not provide this protocol's write service.
 
-自检需要 Python、PyYAML 与 jsonschema；本轮使用环境中已有依赖，未将其安装为项目或插件运行时。
+The check requires Python, PyYAML, and jsonschema; the original validation used dependencies already present in the environment rather than installing them as a project or plugin runtime.
 
-## 可选的材料与条件标注
+<a id="可选的材料与条件标注"></a>
+## Optional material and condition annotations
 
-需要面板共享成果、材料职责、适用规则和推进条件时，使用[governance 合同](../shared/governance.md)中的同源标注及其 Schema。定义留在原 Spec、Roadmap、PDP、Epic 或 Task；不增加一份必建的 Gate/总进度文档。视图的读取、按需 JSON 保存与 HTML 能力范围见[派生输出](../shared/derived-outputs.md)。旧格式登记不等于采纳或迁移。
+When the panel needs shared outcomes, material responsibilities, applicable rules, and progression conditions, use annotations on the same source and their Schema under the [governance contract](../shared/governance.md). Definitions remain in the original Spec, Roadmap, PDP, Epic, or Task; this adds no mandatory Gate/overall-progress document. Reading views, optional JSON storage, and HTML capabilities are described in [derived outputs](../shared/derived-outputs.md). Registering an old format does not constitute its adoption or migration.

@@ -1,56 +1,61 @@
-# 游戏工作材料：按职责、领域与动作判断
+<a id="游戏工作材料按职责领域与动作判断"></a>
+# Game Work Materials: Judge by Responsibility, Domain, and Action
 
-本页供 init 接入、brainstorm 比较方向、design 形成方案、develop/assets 执行、verify/close 判断条件时按需读取。结合原 Task/Epic 的承诺、本次领域、实际消费者和下一动作，判断需要哪项信息；已明确的条目可以直接复用，不必遍历完整目录。材料是职责，不是每个项目都要复制的一套文件；用户或生效项目规则已有明确要求时保留其约束。
+Read this on demand for init adoption, brainstorm direction comparison, design planning, develop/assets execution, and verify/close condition judgments. Combine original Task/Epic commitments, current domains, actual consumers, and next actions to judge which information is needed; reuse clear items directly without traversing the entire catalog. Materials are responsibilities, not a set of files every project must copy; retain explicit requirements from users or effective project rules.
 
-## 共通职责
+<a id="共通职责"></a>
+## Common Responsibilities
 
-| 职责 | 何时需要 | 可用表达 |
+| Responsibility | When needed | Available expressions |
 |---|---|---|
-| 方向与边界 | 新项目方向、核心体验或范围会影响取舍时 | 当前 Vision 及其具体输入引用；正式接入按[当前正文](records.md#项目级当前正文)整理 north-star/设计包，旧项目局部续接可沿原 Task 和有效依据 |
-| 玩法规则 | 新增/改变玩家输入、状态、结果或失败恢复时 | Spec、现有配置及消费者代码、Task 设计、状态图；须分清已生效规则与目标方案 |
-| 架构与消费者 | 新独立页面/关卡、复用主体、跨场景/系统状态、资源接线或编辑需求影响实现时 | 原设计中的组成/类型、状态与生命周期、依赖/接口及编辑/预览；复杂关系配必要图表，具体深度按[结构约定](../profiles/references/structure-contract.md)，局部改动可直接指向实际消费者 |
-| 验证与接受 | 需要判断交付是否成立时 | 原要求、可观察路径、适用 Evidence 和必要 Decision；测试计划不能充当已运行结果 |
+| Direction and boundaries | When new-project direction, core experience, or scope affects tradeoffs | Current Vision and specific input references; formal adoption organizes north-star/design packages under [current bodies](records.md#current-project-level-bodies), while local legacy-project continuation may follow original Tasks and effective grounds |
+| Gameplay rules | When adding/changing player input, states, outcomes, or failure recovery | Spec, existing configuration and consumer code, Task design, state diagrams; distinguish effective rules from target plans |
+| Architecture and consumers | When new independent pages/levels, reusable entities, cross-scene/system states, resource wiring, or editing needs affect implementation | Composition/types, states and lifecycle, dependencies/interfaces, and editing/preview in original design; provide necessary diagrams for complex relationships, with depth under [structure conventions](../profiles/references/structure-contract.md); local changes may directly point to actual consumers |
+| Verification and acceptance | When judging whether delivery holds | Original requirements, observable paths, applicable Evidence, and necessary Decision; test plans cannot serve as executed results |
 
-同一材料可承担多项职责；一个职责也可由多个现有来源共同承担。引用时标明来源、章节/字段、对象或版本、当前生效范围与未定部分。文件名、图数和勾选项不自动证明内容足够。
+One material may fulfill multiple responsibilities; one responsibility may also be jointly fulfilled by existing sources. References identify source, section/field, object or version, currently effective scope, and undecided parts. Filenames, diagram counts, and checkboxes do not automatically prove content sufficiency.
 
-材料的多用途复用与项目级正文的维护分别判断：正式接入形成确定的 Vision、必要 Spec 总览/Roadmap，详细材料保留原职责和引用。混合文件包含所需信息，不等于整份可作为当前愿景、规格或路线。
+Judge multipurpose material reuse separately from maintaining project-level bodies: formal adoption establishes a defined Vision, necessary Spec overview/Roadmap, while detailed materials retain original responsibilities and references. A mixed file containing required information does not make the whole file a current vision, specification, or roadmap.
 
-工作流维护的是候选用途导航；原 Task/design 只在交接或真实依赖需要时保存本次输入与缺项，一句说明也可足够。源代码、配置、模型或原型可承担职责，但须能回答当前问题；现状可读仍需表达尚未实现的目标差异。必要空间/形体/时序表达实际形成或引用，缺项只影响依赖动作。
+The workflow maintains navigation to candidate uses; original Task/design saves current inputs and gaps only when handoff or actual dependencies require them, and one sentence may suffice. Source code, configuration, models, and prototypes may fulfill responsibilities but must answer the current question; readable current state still needs to express differences from unimplemented goals. Actually produce or reference necessary spatial/form/timing expressions; gaps affect only dependent actions.
 
-保留来源时判断用途与适用性；拟新增独立材料时再判断现有缺口、为何局部补充不足及维护收益。信息职责、表达方式、条件专项和发生后的事实分别处理，原型可承担设计表达；观察、生产清单和接受继续由其原来源拥有。
+When retaining sources, judge purpose and applicability; when proposing new standalone material, judge the existing gap, why local supplementation is insufficient, and maintenance benefit. Treat information responsibilities, expression forms, specialized conditions, and facts after events separately; prototypes may express designs, while observations, production inventories, and acceptance remain owned by original sources.
 
-需要结构化展示时按 [governance 合同](governance.md)只标注相应原来源：`materials` 的 `located` 只表示引用可定位，`missing` 表示已判定适用但尚无可定位材料，`unknown` 保留适用性或来源未明；内容是否足以执行由原要求、消费者与必要证据判断。`conditions` 只有 `effective` 且 `required` 才可能成为对应动作的生效前提；未绑定核对依据时状态仍为 `unknown`，不可写作已通过或已失败。
+For structured display, annotate only corresponding original sources under the [governance contract](governance.md): `materials` `located` means only that a reference can be located; `missing` means applicability is established but no locatable material exists; `unknown` preserves unclear applicability or source. Original requirements, consumers, and necessary evidence determine whether content is sufficient for execution. Only `effective` and `required` `conditions` may become effective prerequisites for corresponding actions; without bound check grounds, state remains `unknown`, never passed or failed.
 
-## 领域触发
+<a id="领域触发"></a>
+## Domain Triggers
 
-只检查本次承诺或实际变更命中的领域；具体内容与等效形式见 [游戏材料参考](../skills/design/references/game-deliverables.md)。
+Check only domains matched by current commitments or actual changes; see [game material references](../skills/design/references/game-deliverables.md) for concrete content and equivalent forms.
 
-| 领域 | 触发时需要回答的关键问题 | 用途入口 |
+| Domain | Key questions when triggered | Purpose entry |
 |---|---|---|
-| 方向/玩法 | 目标、循环、操作、战斗或行为变化怎样影响行动与结果 | [玩法与机制](../skills/design/references/game-deliverables.md#玩法与机制) |
-| 经济/成长 | 资源来源/消耗、奖励、能力获得和解锁关系如何变化 | [经济与成长](../skills/design/references/game-deliverables.md#经济与成长) |
-| 视觉/角色/可复用单位 | 目标视角下的结构比例、视觉身份，以及动作、方向、锚点/骨骼、显示条件等真实生产输入 | [视觉方向](../skills/design/references/game-deliverables.md#视觉方向)、[角色输入](../skills/design/references/game-deliverables.md#角色与可复用单位) |
-| 地图/关卡 | 入口出口、拓扑/尺度、可达路径、碰撞/导航、交互与状态条件；区分运行数据、施工蓝图和氛围图 | [地图与空间](../skills/design/references/game-deliverables.md#地图与空间关卡) |
-| 叙事/任务/对白 | 本次背景、人物、事件条件、内容及镜头需要怎样关联 | [叙事与内容](../skills/design/references/game-deliverables.md#叙事与内容) |
-| UI/玩家旅程 | 页面/状态关系、输入与焦点、返回/暂停、遮挡、关键反馈和实际组件归属 | [交互与适配](../skills/design/references/game-deliverables.md#ui-与玩家旅程) |
-| 动画/特效/音频 | 触发、时序、重复/取消、空间附着、优先关系与消费者引用；动态音乐等只在采用时展开 | [动作与音画](../skills/design/references/game-deliverables.md#动画特效与音频) |
-| 架构/存档/跨关卡 | 所有者、依赖和寿命；保存/恢复/重置时机、兼容与失败恢复 | [架构与数据](../skills/design/references/game-deliverables.md#架构与数据)、[持久化](../skills/design/references/game-deliverables.md#存档与跨关卡状态) |
-| 性能/联网/平台 | 只有目标或证据风险涉及它们时，确定规模/预算、权威与同步、目标平台限制及检查环境 | [专项条件](../skills/design/references/game-deliverables.md#性能联网与平台) |
+| Direction/gameplay | How changes to goals, loops, controls, combat, or behavior affect actions and outcomes | [Gameplay and mechanics](../skills/design/references/game-deliverables.md#gameplay-and-mechanics) |
+| Economy/progression | How resource sources/sinks, rewards, ability acquisition, and unlock relationships change | [Economy and progression](../skills/design/references/game-deliverables.md#economy-and-progression) |
+| Visuals/characters/reusable units | Structural proportions and visual identity in the target perspective, plus real production inputs such as actions, directions, anchors/skeletons, and display conditions | [Visual direction](../skills/design/references/game-deliverables.md#visual-direction), [character inputs](../skills/design/references/game-deliverables.md#characters-and-reusable-units) |
+| Maps/levels | Entrances/exits, topology/scale, reachable paths, collision/navigation, interactions and state conditions; distinguish runtime data, build blueprints, and mood images | [Maps and space](../skills/design/references/game-deliverables.md#maps-and-spatial-levels) |
+| Narrative/quests/dialogue | How current background, characters, event conditions, content, and camera shots must relate | [Narrative and content](../skills/design/references/game-deliverables.md#narrative-and-content) |
+| UI/player journeys | Page/state relationships, input and focus, back/pause, occlusion, key feedback, and actual component ownership | [Interaction and adaptation](../skills/design/references/game-deliverables.md#ui-and-player-journeys) |
+| Animation/effects/audio | Triggers, timing, repetition/cancellation, spatial attachment, priorities, and consumer references; expand dynamic music and similar topics only when adopted | [Motion and audiovisuals](../skills/design/references/game-deliverables.md#animation-effects-and-audio) |
+| Architecture/saves/cross-level | Owners, dependencies, and lifetimes; save/restore/reset timing, compatibility, and failure recovery | [Architecture and data](../skills/design/references/game-deliverables.md#architecture-and-data), [persistence](../skills/design/references/game-deliverables.md#saves-and-cross-level-state) |
+| Performance/networking/platforms | Only when goals or evidenced risks involve them: establish scale/budgets, authority and synchronization, target platform limits, and check environments | [Specialized conditions](../skills/design/references/game-deliverables.md#performance-networking-and-platforms) |
 
-## 动作与成熟度
+<a id="动作与成熟度"></a>
+## Actions and Maturity
 
-- **探索/设计表达**：草图、参考板、规则例子或原型能帮助方向比较或解释关系时，说明用途并按本次授权形成/引用。候选参考不自动生效；同一原型可表达方案，其运行观察另作证据。
-- **灰盒/有界试验**：需要足以回答试验问题的规则、空间或接口代理，并标明替代了什么。缺少正式视觉输入不阻止独立的灰盒；代理不成为正式资产或最终接受。
-- **正式生产**：在实际制作前核对命中领域的身份、结构、制造参数和消费者条件。可以继承已采纳参考或配置，但须能定位版本和适用范围；缺项只阻止依赖它的制作动作。
-- **工程接入**：核对当前候选版本、用途、允许范围、实际消费者与验证路径。素材完成、预览可见、技术校验和用户接受各自有范围；按 [资产交接](asset-handoff.md)判断正式采用。
-- **核验/收尾**：以原承诺和现有证据判断当前动作的必要条件。派生视图提示缺口，不增加统一批准或全项目门禁；quick 只承担本次相关条件。
+- **Exploration/design expression**: When sketches, reference boards, rule examples, or prototypes help compare directions or explain relationships, state purposes and produce/reference them under current authorization. Candidate references do not automatically take effect; a prototype may express a plan while runtime observations are separate evidence.
+- **Graybox/bounded experiments**: Need rule, spatial, or interface substitutes sufficient to answer the experiment question and identify what they replace. Missing formal visual inputs do not block independent grayboxes; substitutes do not become formal assets or final acceptance.
+- **Formal production**: Before actual production, check identity, structure, manufacturing parameters, and consumer conditions for matching domains. Adopted references/configuration may be inherited but versions and applicability must be locatable; gaps block only production actions depending on them.
+- **Engineering integration**: Check current candidate version, use, permitted scope, actual consumers, and verification paths. Material completion, visible previews, technical validation, and user acceptance each have scopes; judge formal adoption under [asset handoff](asset-handoff.md).
+- **Verification/closure**: Judge necessary conditions for current actions against original commitments and existing evidence. Derived views indicate gaps rather than adding uniform approval or whole-project gates; quick handles only related conditions for this work.
 
-旧项目接入时逐项判断 **可复用、缺项、冲突、未知、不适用**。可复用须指向原职责及具体章节/字段，核对版本和真实消费者；缺项可进入派生视图而不先造空文档；冲突要列出双方来源及影响范围；未知保留待查事实；不适用说明本次领域或动作为何未触发。映射仅让来源可定位，**明确采纳并在相应范围生效**后才可作为有效项目要求；历史提案、候选和他项目经验不自动生效。只登记与本次工作、已确认项目范围有关的来源，不把全仓资料无差别纳入。
+During legacy-project adoption, judge **reusable, missing, conflicting, unknown, and not applicable** individually. Reuse must point to original responsibilities and specific sections/fields and check versions and real consumers; gaps may enter derived views without creating empty documents first; conflicts list both sources and affected scope; unknowns retain facts awaiting investigation; not applicable explains why the current domain/action does not trigger it. Mapping only makes sources locatable; they become effective project requirements only after **explicit adoption and taking effect in the corresponding scope**. Historical proposals, candidates, and other-project experience do not automatically take effect. Register only sources relevant to current work and confirmed project scope rather than indiscriminately including the whole repository.
 
-### 三种判断示例
+<a id="三种判断示例"></a>
+### Three Judgment Examples
 
-| 场景 | 预期判断 |
+| Scenario | Expected judgment |
 |---|---|
-| 纯快改：修一个已定义按钮的文字 | 读原 Task/界面与现有检查路径；不要求新 Vision、角色图或完整 UI 蓝图。按实际影响验证并简记。 |
-| 新角色正式生产 | 先核对角色结构比例、视觉身份、动作/方向/锚点与目标消费者；可用已采纳参考和配置组合承担。缺少正式动作输入时仍可做获准灰盒；正式制作/接入尚不能声称条件通过，派生材料可显示 `missing`、条件保留 `unknown`。 |
-| 旧项目地图缺项 | 映射已有地图章节并核对运行数据；缺少路线/拓扑时标出缺项及受影响的施工或可达性验证。可继续独立工作，不把氛围图认作碰撞蓝图，也不因缺项全仓迁移。 |
+| Pure quick fix: change text on an already defined button | Read the original Task/interface and existing check paths; require no new Vision, character images, or complete UI blueprint. Verify actual impacts and record briefly. |
+| Formal production of a new character | First check structural proportions, visual identity, actions/directions/anchors, and target consumers; combinations of adopted references and configuration may fulfill these. Authorized grayboxing may proceed without formal action inputs; formal production/integration cannot yet be claimed to pass conditions, derived materials may show `missing`, and conditions remain `unknown`. |
+| Map gaps in a legacy project | Map existing map sections and check runtime data; flag missing routes/topology and affected construction or reachability checks. Independent work may continue; do not treat mood images as collision blueprints or migrate the whole repository because of gaps. |

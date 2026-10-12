@@ -1,44 +1,48 @@
-# 项目目录与文件职责
+<a id="项目目录与文件职责"></a>
+# Project directories and file responsibilities
 
-新建工程结构、增加模块/生产链、迁移路径或目录职责不清时读取。沿用 [workspace](../shared/workspace.md) 的项目/运行根与记录归属；不为目录整齐重排无关旧工程。
+Read this when creating project structure, adding modules/production pipelines, migrating paths, or when directory responsibilities are unclear. Follow [workspace](../shared/workspace.md) for project/runtime roots and record ownership; do not rearrange unrelated existing projects for tidy directories.
 
-## 应统一的边界
+<a id="应统一的边界"></a>
+## Boundaries to keep consistent
 
-| ID | 条件与要求 | 核对依据 |
+| ID | Conditions and requirements | Basis for checking |
 |---|---|---|
-| LAYOUT-ROOT | **必要**：每个实际运行根有可定位的引擎/启动标识；同仓游戏、离线工具、设计包和生成器说明各自用途。没有运行工程时保留目标选择，不伪造现有入口。 | 从已选入口到真实配置/源码/资源的读取关系；文档标题或仓库名不单独决定引擎。 |
-| LAYOUT-AUTHORITY | **必要**：工作记录、设计来源、运行内容、制作输入、生成输出能区分职责；同一事实有一个维护源。 | 编辑哪份内容会改变运行/设计；副本是快照、派生物还是独立候选，命名和来源足以区分。 |
-| LAYOUT-IDENTITY | **必要**：资源移动/改名保留实际引擎身份、大小写与引用，并复核受影响的导入、资源键、场景和构建路径。 | Godot 资源引用、Unity `.meta`/GUID、Creator `.meta`/UUID/子资源、Web URL/打包路径分别按对应 profile 检查。 |
-| LAYOUT-GENERATED | **必要**：可重建缓存与有身份意义的元数据分开处理；生成物有来源和生成方式，真实未保存输入不按缓存删除。 | 现有工具、引擎和版本控制约定；是否进入 Git/包由用途和项目政策决定，不仅凭文件夹名。 |
-| LAYOUT-BOUNDARY | **必要**：可复用单位或独立生命周期有可理解的入口/接口；**默认**按功能聚合，或者沿用已清楚的类型目录。 | 可定位地修改、实例化、退出和复用相关对象，不靠文件数/场景数判断模块化。 |
+| LAYOUT-ROOT | **Required**: Each actual runtime root has a locatable engine/startup identifier; games, offline tools, design packages and generators in one repository state their respective purposes. When no runtime project exists, retain the target choice without inventing an existing entry point. | Reading relationships from the selected entry to actual configuration/source/resources; a document title or repository name alone does not determine the engine. |
+| LAYOUT-AUTHORITY | **Required**: Work records, design sources, runtime content, production inputs and generated outputs have distinguishable responsibilities; each fact has one maintained source. | Which content changes runtime/design when edited; names and sources distinguish snapshots, derived copies and independent candidates. |
+| LAYOUT-IDENTITY | **Required**: Resource moves/renames preserve actual engine identity, case and references, and recheck affected imports, resource keys, scenes and build paths. | Check Godot resource references, Unity `.meta`/GUID, Creator `.meta`/UUID/sub-assets, and Web URL/build paths according to the respective profile. |
+| LAYOUT-GENERATED | **Required**: Treat rebuildable caches separately from metadata that carries identity; generated outputs have sources and generation methods, and actual unsaved inputs are not deleted as caches. | Existing tool, engine and version-control conventions; inclusion in Git/packages depends on purpose and project policy, not just folder names. |
+| LAYOUT-BOUNDARY | **Required**: Reusable units or independent lifecycles have understandable entry points/interfaces; **default**: group by feature, or retain clear existing type-based directories. | Related objects can be located for modification, instantiation, exit and reuse; file/scene counts do not establish modularity. |
 
-## 新项目的默认安排
+<a id="新项目的默认安排"></a>
+## Default arrangement for new projects
 
-以下是职责示意，不是必须创建的完整目录树：
+The following illustrates responsibilities; it is not a complete directory tree that must be created:
 
 ```text
-项目根/
-├── AGENTS.md                 已有入口或接入所需的简短指引
-├── game-workflow/            可配置：工作流映射、当前规则及工作记录
-├── <运行根>/                 可与项目根相同，内部服从实际引擎约定
-├── tools/                    存在项目工具/生成器时使用
-└── artifacts/                需要保存可重建报告/构建产物时使用
+project-root/
+├── AGENTS.md                 Existing entry or brief guidance needed for adoption
+├── game-workflow/            Configurable: workflow mapping, current rules and work records
+├── <runtime-root>/           May be the project root; follows actual engine conventions internally
+├── tools/                    Used when project tools/generators exist
+└── artifacts/                Used when rebuildable reports/build outputs need to be retained
 ```
 
-- 单运行根可直接在项目根，不强制增加 `game/`。Godot 的功能场景与资源、Unity/Creator 的引擎目录、Web 的已有构建/零构建结构分别保留。
-- 当前 Vision/必要 Spec 总览/Roadmap 按[工作区接入规则](../shared/workspace.md#新建资料的默认位置)形成确定入口；旧详细材料和已有 Task/Epic 保留原位置及维护范围。普通续接不因新默认位置自动迁移。
-- 制作源、候选和已采用内容可用不同目录，也可由可靠台账/manifest 区分；采用状态来自原记录，不从 `final/`、`approved/` 或文件时间猜测。
-- 团队/框架未有命名约定时，默认使用可移植、大小写一致且可搜索的名称；已有有效命名继续使用。真实跨平台冲突应修复，纯风格差异不触发全仓改名。
-- 输入、用户存档、API 配置和凭据按其实际宿主存储边界处理；工作流记录不能成为运行存档或私密配置的混合存放处。
+- A single runtime root may be the project root; adding `game/` is not mandatory. Retain Godot feature scenes/resources, Unity/Creator engine directories, and existing Web build/no-build structure respectively.
+- Establish definite entries for the current Vision/necessary Spec overview/Roadmap according to [workspace adoption rules](../shared/workspace.md#default-locations-for-new-materials); retain the locations and maintenance scopes of older detailed materials and existing Task/Epic records. Routine continuation does not automatically migrate them to new default locations.
+- Production sources, candidates and adopted content may use separate directories or a reliable ledger/manifest; adoption status comes from original records, not guesses based on `final/`, `approved/` or timestamps.
+- When the team/framework has no naming convention, default to portable, case-consistent, searchable names; continue using valid existing names. Fix actual cross-platform conflicts; stylistic differences alone do not trigger repository-wide renaming.
+- Handle inputs, user saves, API configuration and credentials within their actual host storage boundaries; workflow records must not become mixed storage for runtime saves or private configuration.
 
-## 新建与旧项目的处理
+<a id="新建与旧项目的处理"></a>
+## Handling new and existing projects
 
-init 只登记本次需要的路径、身份和采用规则，develop/assets 随实际产物出现创建目录。可以把简短的结构选择放入已有 Spec 或入口说明，不另建一份必填“目录总台账”。
+init registers only the paths, identities and adopted rules needed now; develop/assets create directories as actual outputs appear. Brief structural choices can go in an existing Spec or entry description, without another mandatory "directory master ledger".
 
-Task 专属证据、独立报告与共享材料的默认落盘/升级按[共同记录](../shared/records.md#留存索引与版本)；目标或下一步难找、重复维护和失效引用等[实际问题](../shared/records.md#8-按实际问题整理)触发整理。目录示意不代表要把正式证据当可重建缓存清理，旧平铺附件不要求为布局统一搬动。
+Default storage/promotion of Task-specific evidence, standalone reports and shared materials follows [shared records](../shared/records.md#retention-indexing-and-versions); [actual problems](../shared/records.md#8-organize-according-to-actual-problems), such as hard-to-find goals/next steps, duplicate maintenance and broken references, trigger organization. The directory illustration does not imply cleaning up formal evidence as rebuildable caches; older flat attachments need not be moved for layout consistency.
 
-旧布局能定位责任和消费者时直接使用。只有影响本次交付的引用、混淆或工具限制才纳入迁移；迁移前查真实读取方和资源身份，之后查受影响入口、导入及交付路径。既有未提交工作、候选与用户输入应保留。
+Use an existing layout directly when responsibilities and consumers can be located. Include migration only for references, confusion or tool limits affecting this delivery; check actual readers and resource identity beforehand, then affected entries, imports and delivery paths afterward. Preserve existing uncommitted work, candidates and user inputs.
 
-新独立页面/关卡、跨生命周期状态、复用单位或编辑需求变化时，按[工程结构约定](references/structure-contract.md)先说明边界。旧项目暂保某种布局的约定只在原范围解释；本次缺陷来自错误归属时，相关结构调整是交付需要，不能因“复用旧结构”而延后。组成方案比创建多少目录/场景更能说明责任。
+When new independent pages/levels, cross-lifecycle state, reusable units or editing needs change, first explain boundaries using the [engineering structure contract](references/structure-contract.md). An agreement to temporarily retain an existing layout applies only within its original scope; when this defect comes from incorrect ownership, relevant structural adjustment is needed for delivery and cannot be postponed on the grounds of "reusing the old structure". Composition explains responsibility better than directory/scene counts.
 
-独立发布的工具可有自己的技术栈、构建和规则范围；例如 Godot 仓库里的 HTML 面板遵循 Web 条目，不能据此把游戏引擎登记成 Web。
+Independently released tools may have their own stack, build and rule scope; for example, an HTML panel in a Godot repository follows Web entries, without registering the game engine as Web.

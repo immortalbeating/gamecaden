@@ -5,7 +5,7 @@ import shutil, tempfile, unittest
 from workflow_formats import yaml_dump, yaml_load, revision
 from workflow_io import Workflow
 from workflow_panel_data import PanelData
-from workflow_governance import Governance
+from workflow_governance import Governance, source_excerpt
 BUNDLE=(Path(__file__).resolve().parents[1] / "plugins" / "gamecaden")
 RUN=BUNDLE.parents[1]/"work/governance-eval/tests"
 
@@ -83,6 +83,47 @@ class GovernanceTests(unittest.TestCase):
         kinds={e["relation"] for e in v["edges"]}
         self.assertTrue({"contains","supports","requires","governed_by"} <= kinds)
         self.assertEqual(before,{str(p):revision(p.read_bytes()) for p in self.root.rglob("*") if p.is_file()})
+
+    def test_source_excerpt_preserves_document_language_and_governance(self):
+        path=self.root/"game-workflow/tasks/T-004-map.md"
+        original=path.read_text(encoding="utf-8")
+        baseline=self.view()
+        baseline_node=next(n for n in baseline["nodes"] if (n.get("ref") or {}).get("id")=="T-004")
+        for heading,content in (("Current approach","Passed is prose, not acceptance."),
+                                ("現在の計画","合格という文章から状態を推測しない。"),
+                                ("当前安排","通过只是正文，不是接受结论。")):
+            with self.subTest(heading=heading):
+                path.write_text(original.replace("## 当前安排\n灰盒可继续；正式地图尚需材料和当前蓝图检查。",
+                    "~~~~text\n## Fake heading\nFake content\n~~~~\n\n## Empty\n\n## "+heading+"\n"+content),encoding="utf-8")
+                before={str(p):revision(p.read_bytes()) for p in self.root.rglob("*") if p.is_file()}
+                view=self.view()
+                node=next(n for n in view["nodes"] if (n.get("ref") or {}).get("id")=="T-004")
+                self.assertEqual(node["excerpt"],{"heading":heading,"text":content,"kind":"source_excerpt"})
+                self.assertEqual(node["metadata"],baseline_node["metadata"])
+                self.assertEqual(node["status"],"active")
+                self.assertEqual(view["conditions"],baseline["conditions"])
+                self.assertEqual(before,{str(p):revision(p.read_bytes()) for p in self.root.rglob("*") if p.is_file()})
+
+    def test_source_excerpt_fenced_headings_and_markers_are_literal(self):
+        text="原文\n```text\n## Fake\n<!-- workflow:evidence -->\n```\n続き"
+        self.assertEqual(source_excerpt("## 日本語\n"+text+"\n<!-- workflow:governance -->\n## Hidden\nSecret"),
+                         {"heading":"日本語","text":text,"kind":"source_excerpt"})
+        self.assertIsNone(source_excerpt("~~~md\n## Fake\nExample\n~~~\n<!-- workflow:evidence -->\n## Hidden\nSecret"))
+
+    def test_source_excerpt_embedded_evidence_keeps_its_owner(self):
+        path=self.root/"game-workflow/tasks/T-004-map.md"
+        metadata=dict(PanelData(self.root)._project().resolve({"id":"EV-001"}).metadata)
+        metadata["id"]="EV-990"
+        embedded="<!-- workflow:record evidence EV-990 -->\n```yaml\n"+yaml_dump(metadata)+"```\n## Embedded result\nEvidence only.\n<!-- workflow:endrecord EV-990 -->\n"
+        path.write_text(path.read_text(encoding="utf-8").replace("## 当前安排",embedded+"\n## 当前安排"),encoding="utf-8")
+        before=path.read_bytes()
+        view=self.view()
+        outer=next(n for n in view["nodes"] if (n.get("ref") or {}).get("id")=="T-004")
+        evidence=next(n for n in view["nodes"] if (n.get("ref") or {}).get("id")=="EV-990")
+        self.assertEqual(outer["excerpt"]["heading"],"当前安排")
+        self.assertNotIn("Evidence only",outer["excerpt"]["text"])
+        self.assertEqual(evidence["excerpt"],{"heading":"Embedded result","text":"Evidence only.","kind":"source_excerpt"})
+        self.assertEqual(before,path.read_bytes())
 
     def test_evidence_scope_version_and_contradiction(self):
         wrong=copy.deepcopy(self.subject);wrong["scope"]="另一个范围"

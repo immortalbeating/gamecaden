@@ -1,64 +1,70 @@
-# 验证范围、证据适用性与结论
+<a id="验证范围证据适用性与结论"></a>
+# Verification Scope, Evidence Applicability, and Conclusions
 
-develop/assets 的开发检查、verify 核验和 close 的关闭判断共用本约定。Evidence 的存放与唯一职责仍见[共同记录](records.md)；本页不引入第二套任务生命周期或必建报告。
+Development checks in develop/assets, verification in verify, and closure judgments in close share this convention. See [common records](records.md) for Evidence storage and sole responsibility; this page introduces neither a second task lifecycle nor mandatory reports.
 
-新原生 Evidence/Decision 的具体形态见[格式合同](formats-v1.md)；已有完整报告继续直接引用。schema 通过只说明记录形态有效，不能代替本页要求的证据适用性判断。
+See the [format contract](formats-v1.md) for the concrete form of new native Evidence/Decision; continue directly referencing existing complete reports. Schema validation only establishes valid record shape and cannot replace the evidence-applicability judgments required here.
 
-## 1. 先确定正在证明什么
+<a id="1-先确定正在证明什么"></a>
+## 1. First Establish What Is Being Proven
 
-从用户请求、Task/Epic 的当前有效承诺及相关 Spec 读取要判断的结果、对象、条件和范围。局部检查可以只回答局部问题；宣称整个交付成立时需要覆盖其全部必要条件。实现者摘要、测试清单和派生进度只是线索，不能取代原始要求。
+Read the outcomes, objects, conditions, and scope to assess from the user request, current effective Task/Epic commitments, and related Spec. A local check may answer only a local question; a claim that the whole delivery holds must cover all its necessary conditions. Implementer summaries, test lists, and derived progress are leads and cannot replace original requirements.
 
-普通快改可以用简短说明关联要求与检查；跨系统、多个消费者或多项接受条件时，用原 Task 内的表或已有报告映射。无需为每个要求另建文档或人为增加全局编号。
+Ordinary quick fixes may connect requirements and checks in a brief explanation; for multiple systems, consumers, or acceptance conditions, map them in a table in the original Task or an existing report. There is no need to create a document per requirement or artificially add global numbering.
 
-检查方式围绕失败模式选择：有些要求需要静态数据，有些需要真实运行、自然输入、目标规模或用户判断。选择足以覆盖本次影响的方法，不能因某工具可用就扩大成无关全量审计，也不能因 quick 标签缩减必要覆盖。
+Choose checks around failure modes: some requirements need static data; others need actual execution, natural input, target scale, or user judgment. Choose methods sufficient for this work's impacts; do not expand into an unrelated full audit because a tool is available, or reduce necessary coverage because of a quick label.
 
-要求中的数据/图件/帧槽存在，只支持相应材料事实。主张规则已生效、视觉已还原或动作已完成时，沿真实消费者检查读取/接线和对应观察；实现或测法变化后，核对本轮证据是否覆盖最终基线。能够满足原承诺的静态检查仍可采用，不为补验统一要求所有工作运行游戏。
+The existence of required data/diagrams/frame slots supports only the corresponding material facts. To claim rules are active, visuals are reproduced, or actions are complete, check reading/wiring and corresponding observations along real consumers; after implementation or measurement changes, check whether this round's evidence covers the final baseline. Static checks that fulfill the original commitment remain valid; do not uniformly require all work to run the game for additional verification.
 
-## 2. 判断已有证据是否仍适用
+<a id="2-判断已有证据是否仍适用"></a>
+## 2. Assess Whether Existing Evidence Still Applies
 
-核对以下实际相关条件：
+Check actually relevant conditions:
 
-- 对象和范围：实现、资源版本、消费者、场景、平台或用户路径是否对应本次主张。
-- 基线和输入：代码、数据、配置、工具版本和环境中哪些会改变该结论；存在未提交修改时，单看 HEAD 不足以描述被测实现。
-- 方法和结果：报告是否真的执行，是否覆盖要求，原始结果、失败与限制能否查到。
-- 来源与独立性：谁执行、何时、在哪里；自检、工具检查、独立核验和用户接受分别归因。
+- Object and scope: whether the implementation, resource version, consumer, scene, platform, or user path matches the current claim.
+- Baseline and inputs: which code, data, configuration, tool versions, and environment properties can change this conclusion; with uncommitted changes, HEAD alone does not sufficiently describe the tested implementation.
+- Method and result: whether the report was actually executed and covers requirements, and whether raw results, failures, and limitations can be found.
+- Provenance and independence: who executed it, when, and where; attribute self-checks, tool checks, independent verification, and user acceptance separately.
 
-复用基于适用性，不按报告年龄或文件时间机械判断。仅会话变化、无关文档编辑或不影响该结论的文件变化，无需全量重验。运行环境/构建产物改变时，原环境结果可保留为历史支持，但不能证明新环境的对应行为。
+Reuse depends on applicability, not mechanical judgments based on report age or file time. Session changes, unrelated document edits, or file changes that do not affect the conclusion require no full revalidation. When runtime environments/build artifacts change, results from the original environment may remain historical support but cannot prove corresponding behavior in the new environment.
 
-变化影响某部分时补验该部分及实际关联面，保留其他仍有效结果。不同版本的部分结果只能证明各自对象；没有版本一致性或组合检查，不能拼成当前整体通过。
+When a change affects one part, recheck that part and actual related surfaces, retaining other still-valid results. Partial results from different versions prove only their own objects; without version consistency or combination checks, they cannot be assembled into an overall current pass.
 
-证据范围描述不清时先查原产物、命令和现场。无法补足关联的部分标为尚未证实，不靠改报告日期、标题或结果字段恢复可信度。
+When evidence scope is unclear, first inspect original artifacts, commands, and actual conditions. Mark connections that cannot be established as unproven; changing report dates, titles, or result fields does not restore credibility.
 
-## 3. 如实表达检查结论
+<a id="3-如实表达检查结论"></a>
+## 3. Report Check Conclusions Truthfully
 
-| 结论含义 | 需要说明 |
+| Conclusion meaning | Required explanation |
 |---|---|
-| 通过 | 具体要求、适用对象/基线，以及支持它的观察 |
-| 未通过 | 观察到的差异、重现条件与受影响要求 |
-| 无法判定/验证受阻 | 缺什么信息、环境或能力，影响哪项主张 |
-| 未执行/未覆盖 | 哪部分没有检查及原因；计划不是执行结果 |
-| 不适用 | 根据实际目标、平台或已明确范围判断的依据 |
+| Passed | Specific requirements, applicable object/baseline, and supporting observations |
+| Failed | Observed differences, reproduction conditions, and affected requirements |
+| Undetermined/verification blocked | Missing information, environment, or capability, and the claim affected |
+| Not executed/not covered | Which part was unchecked and why; plans are not execution results |
+| Not applicable | Grounds based on actual goals, platforms, or explicitly defined scope |
 
-以上表达检查事实，不是 Task 的新状态枚举。技术通过、用户接受、采用决定、工程接入与发布分别表达。整体结论按所有必要条件判断，不以通过数量或平均分代替缺失条件。
+These report check facts, not new Task state enums. Express technical passes, user acceptance, adoption decisions, engineering integration, and release separately. Judge overall conclusions against all necessary conditions; passing counts or averages cannot substitute for missing conditions.
 
-既有失败与本次新增回归分别记录。无关旧问题未必阻断局部交付；但它若使本次承诺无法实现，即使早已存在也仍是阻碍。例如“本次修改未引入启动错误”不足以证明一个要求可启动的发行包已经就绪。
+Record preexisting failures separately from new regressions in this work. Unrelated old issues need not block local delivery, but if an issue prevents the current commitment from being fulfilled, it remains an obstacle even if longstanding. For example, “This change introduced no startup errors” does not prove that a release package required to start is ready.
 
-## 4. 自检与独立核验
+<a id="4-自检与独立核验"></a>
+## 4. Self-checks and Independent Verification
 
-verify 是职责，独立核验是其中一种执行安排。已有足够自检证据的简单工作可直接作出判断；用户或有效规则要求独立核验，或当前风险确实需要第二个视角时，再安排匹配的独立执行者并说明覆盖。
+verify is a responsibility; independent verification is one possible execution arrangement within it. Simple work with sufficient self-check evidence can be judged directly; arrange a suitable independent executor and explain coverage when the user or effective rules require it, or when current risk truly needs a second perspective.
 
-独立执行者应先看原始要求、被测对象与有效证据，再把实现者解释作为调查线索。交付包包含实际根、对象/基线、要求来源、证据位置与已知限制；不只给实现者挑出的通过清单。
+Independent executors should first inspect original requirements, tested objects, and effective evidence, then use implementer explanations as investigation leads. The handoff package includes the actual root, object/baseline, requirement sources, evidence locations, and known limitations, not just an implementer-selected passing list.
 
-遵守宿主允许的代理角色与权限；视觉问题选择具备图像检查能力的角色。独立核验者保持被测实现不变，发现问题后返回位置、观察、影响和必要下一步。由实现者自己换一个提示词检查不能记成独立结果；不可用时如实说明该条件尚缺。
+Follow host-permitted agent roles and permissions; select a role capable of image inspection for visual issues. Independent verifiers keep the tested implementation unchanged and return locations, observations, impacts, and necessary next steps when issues are found. An implementer checking their own work with a different prompt cannot be recorded as an independent result; when independence is unavailable, state truthfully that the condition is still missing.
 
-新增问题必须对应有效要求或有证据的相关风险。审阅者偏好的无关重构不能成为临时关闭门禁；确有新风险则说明与本目标的联系，再按原范围处理或形成有归属的后续工作。
+New issues must correspond to effective requirements or evidenced relevant risks. Unrelated refactoring preferred by a reviewer cannot become a temporary closure gate; explain the connection to the current goal for a real new risk, then address it within original scope or create follow-up work with clear ownership.
 
-## 5. 接受、范围变化与失败后的动作
+<a id="5-接受范围变化与失败后的动作"></a>
+## 5. Acceptance, Scope Changes, and Actions After Failure
 
-人工接受仅在本次实际约定需要时成立。复用已有明确决定应核对对象、版本、用途和方面；机器 PASS 或模型观感不记成用户已经接受。需要用户判断时，先准备具体材料和已知差异，再提出相应问题。
+Human acceptance is required only when actually agreed for this work. Reusing explicit existing decisions requires checking object, version, use, and aspect; machine PASS or model impressions do not mean the user has accepted. When user judgment is needed, prepare concrete materials and known differences before asking the corresponding question.
 
-用户可以明确调整自己负责的交付范围、接受安排或风险承诺。保存修改依据和新旧关系后，按当前有效条件判断；未运行的检查仍是未运行，失败观察也不会因允许交付而变成通过。仅说“收尾”不自动撤销已约定的必要条件。
+Users may explicitly adjust delivery scope, acceptance arrangements, or risk commitments they own. After saving the grounds and old/new relationship, judge against currently effective conditions; unexecuted checks remain unexecuted, and failed observations do not become passes because delivery is allowed. Saying only “wrap up” does not automatically revoke agreed necessary conditions.
 
-发现实现或内容问题时，按原授权交给对应职责修复，修复后补验受影响范围。只要求检查时交付发现，不擅自改被测实现。需要改变需求时回到相应设计/变更处理。有效结果继续使用，不因发生一次失败清空整轮证据。
+When implementation or content problems are found, route repairs to the corresponding responsibility under original authorization, then recheck affected scope. For check-only requests, deliver findings without modifying the tested implementation. Return to corresponding design/change handling if requirements must change. Keep using effective results rather than clearing all evidence after one failure.
 
-连续重跑同一失败而没有新观察或实际修复不算进展。区分测试断言失败、执行设施故障和尚缺决定；能安全重试且已有授权覆盖的设施操作可继续，真实缺口则保留可恢复下一步。
+Repeatedly rerunning the same failure without new observations or actual repairs is not progress. Distinguish failed test assertions, execution infrastructure faults, and missing decisions; continue safely retryable infrastructure actions covered by existing authorization, while retaining recoverable next steps for real gaps.

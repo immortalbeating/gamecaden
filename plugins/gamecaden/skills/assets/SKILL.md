@@ -1,64 +1,70 @@
 ---
 name: assets
-description: 仅在用户明确要求本次使用 Gamecaden，或当前项目有效指引已采用 Gamecaden 时使用。制作、复用、修订和交付游戏内容与资产，维护可追溯版本、检查结果、接受范围和资产主台账，并与工程接入衔接。适用于图像、动画、地图素材、模型、音频及其他有明确消费者的内容交付。
+description: Use only when the user explicitly requests Gamecaden for this work, or effective guidance in the current project has adopted Gamecaden. Produce, reuse, revise and deliver game content and assets; maintain traceable versions, check results, acceptance scope and the asset master ledger, and connect to engineering integration. Use for images, animations, map materials, models, audio and other content deliveries with explicit consumers.
 ---
 
 # Assets
 
-先核对上述适用条件；未满足时沿原项目指引处理。边界说明见[工作流适用条件](../../shared/workspace.md)。
+First check the applicability conditions above; when they are not met, follow original project guidance. See [Workflow applicability](../../shared/workspace.md) for boundaries.
 
-按本次用途交付实际可用、可追溯的内容。复用专业生产能力；本 Skill 负责生产安排、记录归属和工程交接，不重新实现每种生成工具。
+Deliver actually usable, traceable content for this use. Reuse specialized production capabilities; this Skill owns production arrangements, record ownership and engineering handoff, without reimplementing every generation tool.
 
-本文相对链接以本 SKILL.md 所在目录解析；../../shared/ 位于共同技能包根目录。
+Resolve relative links from this SKILL.md's directory; ../../shared/ is in the common skill package root.
 
-## 1. 明确本次内容交付
+<a id="1-明确本次内容交付"></a>
+## 1. Establish this content delivery
 
-内容交付属于 [PDP](../../shared/phased-development.md) 的 Stage 时，继承当前段明确的生产输入、消费者和原工作；阶段出口不能替代候选接受或实际接入依据。已有独立资产工作不为 Stage 编号重新收编。
+When content delivery belongs to a [PDP](../../shared/phased-development.md) Stage, inherit explicit production inputs, consumers and original work from the current segment; stage exits cannot replace candidate acceptance or actual integration grounds. Existing independent asset work is not reassigned for Stage numbering.
 
-沿用原 Task、有效设计和授权，判断目标是候选探索、可复用内容包、修订已有素材，还是包含实际运行接入。按[工作区](../../shared/workspace.md)、[记录](../../shared/records.md)与[规则选择](../../shared/rules.md)定位真实来源；quick/standard 继续使用同一套 Task 规则。
+Retain original Task, effective design and authorization; judge whether goals are candidate exploration, reusable content packages, revision of existing materials or actual runtime integration. Locate real sources under [Workspace](../../shared/workspace.md), [Records](../../shared/records.md) and [Rule selection](../../shared/rules.md); quick/standard retain the same Task rules.
 
-核对消费者需要的身份、用途、表现/技术要求、允许继承的参考和已有接受范围。相关输入不足时先查事实；需要补生产设计时只回到 [design](../design/SKILL.md) 的相关部分，不重做已成立的全部设定。
+Check consumer-required identity, use, presentation/technical requirements, references permitted for inheritance and existing acceptance scope. Investigate facts first for insufficient inputs; supplement production design through relevant [design](../design/SKILL.md) parts only, without redoing established settings.
 
-正式生产或接入前按[材料职责](../../shared/material-requirements.md)核对本次领域所需输入；面板定位候选、用途及条件时按[面板续接](../../shared/panel-workflow.md)回读台账和原决定。
+Before formal production/integration, check domain inputs under [Material responsibilities](../../shared/material-requirements.md); for panel location of candidates, uses and conditions, read back ledgers and original decisions under [Panel continuation](../../shared/panel-workflow.md).
 
-本次要求正式交付时保留其完整范围；验证方法可以先小样再扩展，但小样不会自行替代完整交付。只请求探索时按探索目标提供候选与认识，不自动正式接入。
+Retain complete scope of formal delivery requests; verification may start with samples before expansion, but samples do not replace complete delivery themselves. Exploration-only requests provide candidates and understanding against exploration goals without automatic formal integration.
 
-## 2. 选择实际可用的生产方式
+<a id="2-选择实际可用的生产方式"></a>
+## 2. Select actually available production methods
 
-先检查已有素材、来源和变体，再选择复用、采购/引入、人工编辑、程序生成、AI 生成或混合加工。根据用户指定渠道、项目约定和宿主实际能力，读取匹配的专业 Skill；不因某工具被列在文档里就假定它可调用。
+Check existing materials, sources and variants first, then choose reuse, purchase/introduction, manual editing, procedural generation, AI generation or mixed processing. Read matching specialized Skills according to user-specified channels, project conventions and actual host capabilities; a tool listed in documentation is not assumed callable.
 
-二维角色/地图、动作视频、三维模型、音频和引擎原生资源分别交给合适能力，具体参数与接口沿用该能力和消费者约定。可保留的已有输出不重复生产。
+Assign 2D characters/maps, action videos, 3D models, audio and engine-native resources to suitable capabilities, retaining their parameters/interfaces and consumer conventions. Do not reproduce preservable outputs.
 
-涉及外部来源、付费作业或专业工具权限时，核对已有使用范围、成本约束和授权；只对尚未覆盖且确实影响动作的选择提出具体问题。不得默换用户指定来源、降低质量/规模或增加未授权费用来凑出结果。
+For external sources, paid jobs or specialized tool permissions, check existing use scope, cost constraints and authorization; ask specific questions only for uncovered choices actually affecting actions. Do not silently switch specified sources, reduce quality/scale or add unauthorized costs to obtain results.
 
-## 3. 生产、加工并检查实际结果
+<a id="3-生产加工并检查实际结果"></a>
+## 3. Produce, process and check actual results
 
-按[生产与审阅](references/production-and-review.md)读取本次命中的内容类型、批量或长作业规则。保持原始输入、候选和交付产物的可追溯关系；按项目存储政策保存源和必要依据，不要求所有原始大文件进 Git。
+Read matching content types, batch or long-job rules under [Production and review](references/production-and-review.md). Maintain traceable relationships among raw inputs, candidates and deliverables; save sources and necessary grounds under project storage policy without requiring every large raw file in Git.
 
-消费工具返回的实际文件并检查内容，完成本次所需的切帧、锚点/尺度、格式、音量、碰撞代理或其他加工。参数和检查由消费者决定，不照搬其他游戏的帧数、图数或像素阈值。
+Consume actual files returned by tools and inspect content; complete required frame extraction, anchors/scale, format, volume, collision proxies or other processing. Consumers determine parameters/checks; do not copy frame counts, image counts or pixel thresholds from other games.
 
-发现问题时修复造成它的来源或转换步骤，并重验受影响部分。确定性导出、归一化和数据转换优先沿用已有可靠工具；需要新脚本时按实际功能验证，不仅检查文件存在。
+Repair responsible sources or conversion steps when problems arise and recheck affected parts. Prefer reliable existing tools for deterministic export, normalization and data conversion; validate new scripts against actual functions rather than file existence alone.
 
-## 4. 形成可审阅的版本与准确记录
+<a id="4-形成可审阅的版本与准确记录"></a>
+## 4. Form reviewable versions and accurate records
 
-按[资产交接与采用](../../shared/asset-handoff.md)登记需要追踪的资产身份、候选版本、来源和 manifest/证据引用。资产族、变体与文件粒度按实际消费者和审阅需要确定，不为每一帧都创建 Task 或台账条目。
+Register asset identities needing tracking, candidate versions, sources and manifest/evidence references under [Asset handoff and adoption](../../shared/asset-handoff.md). Determine asset families, variants and file granularity by actual consumer/review needs, without a Task or ledger entry for every frame.
 
-审阅材料明确对象、版本、用途和请求判断的方面；可比较候选及已知缺陷直接展示。需要人工接受时，准备好材料后只询问真实选择；已有明确接受与采用授权直接沿用。模型自行选择时如实记录选择者与授权依据，不记成用户看过或批准过。
+Review materials specify objects, versions, uses and aspects requiring judgment; directly display comparable candidates and known defects. For human acceptance, prepare materials before asking about actual choices only; retain explicit acceptance and adoption authorization directly. When the model chooses, record actual selector and authorization grounds, without claiming users viewed or approved it.
 
-面板是同一来源的阅读/操作入口。浏览器中的勾选、反馈草稿、导出文件或按钮动画不自动构成仓库决定；通过现有受支持写回方式后回读原记录。未写回时说明实际保存位置和后续动作。
+The panel is a reading/operation entrypoint for the same source. Browser checkboxes, feedback drafts, exported files or button animations do not automatically constitute repository decisions; use existing supported writeback and read back original records. Without writeback, explain actual saved location and next action.
 
-## 5. 按原承诺交付或接入
+<a id="5-按原承诺交付或接入"></a>
+## 5. Deliver or integrate against original commitments
 
-若目标仅为候选或内容包，交付相应文件、预览、检查与剩余限制，按自身条件收尾。若目标包括运行接入，核对当前版本和允许范围后使用 [develop](../develop/SKILL.md) 完成实际消费者接线与运行检查；不以素材目录交付代替游戏结果。
+For candidate/content-package-only goals, deliver corresponding files, previews, checks and remaining limits, closing under their own conditions. For runtime integration, check current version and allowed scope, then use [develop](../develop/SKILL.md) for actual consumer wiring and runtime checks; delivering material directories cannot replace game outcomes.
 
-交接使用同一 Task：内容身份/版本、有效输入与接受范围、具体消费者、交付文件/manifest、检查证据、接入安排和未解决问题。新的生产版本、局部拒绝或部分接入按资产交接约定处理，保留有效历史。
+Handoff uses the same Task: content identity/version, effective inputs/acceptance scope, concrete consumers, delivery files/manifest, check evidence, integration arrangements and unresolved issues. Handle new production versions, local rejection or partial integration under asset handoff conventions, retaining valid history.
 
-制作完成、技术通过、外观/体验接受、指定选用和实际接入分别说明。需要的接受尚缺时只暂停依赖它的动作，允许范围内的独立工作继续。
+State production completion, technical passes, appearance/experience acceptance, designated selection and actual integration separately. Missing necessary acceptance pauses dependent actions only; independent work within allowed scope continues.
 
-检查覆盖、证据适用性或独立核验需要专门处理时使用 [verify](../verify/SKILL.md)；简单内容交付已有充分检查时按[共同验证约定](../../shared/verification.md)直接使用结果，不重复生成同义报告。
+Use [verify](../verify/SKILL.md) for dedicated check-coverage, evidence-applicability or independent-verification needs; for simple content deliveries with sufficient checks, use results directly under [Common verification conventions](../../shared/verification.md), without duplicate equivalent reports.
 
-## 6. 回写事实并留下下一步
+<a id="6-回写事实并留下下一步"></a>
+## 6. Write back facts and leave next steps
 
-在产生可追踪候选、取得检查/接受结果、变更选用关系、完成或中断交接时，更新对应来源与原 Task；检查报告按[留存与索引](../../shared/records.md#留存索引与版本)处理。台账、manifest、Decision、Evidence 和工程消费者各维护自己的事实。
+Update corresponding sources and original Task at traceable candidates, check/acceptance results, selection changes and completed/interrupted handoffs; handle reports under [Retention and indexing](../../shared/records.md#retention-indexing-and-versions). Ledgers, manifests, Decision, Evidence and engineering consumers each maintain their own facts.
 
-本任务的内容生产、验证与必要接受等交付条件满足后，原请求明确要求收尾或已授权完整交付时，按[共同关闭规则](../../shared/records.md)继续收尾；复杂关闭使用 [close](../close/SKILL.md)。用户明确只交部分内容或暂不关闭时保留该限制；当前项目规范和已声明基线只在确受影响时同步。原目标包含正式接入或更多内容时继续推进剩余承诺，不能通过拆出后续任务让本次虚假完成。
+After content production, verification and necessary acceptance delivery conditions are met, continue closure under [Common closure rules](../../shared/records.md) when explicitly requested or complete delivery authorized; use [close](../close/SKILL.md) for complex closure. Retain explicit partial-content or no-closure limits; synchronize current project conventions and declared baselines only when actually affected. Continue remaining commitments for formal integration or more content in original goals; splitting subsequent tasks cannot make this work falsely complete.

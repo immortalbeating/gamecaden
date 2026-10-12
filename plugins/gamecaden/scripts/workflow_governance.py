@@ -32,13 +32,55 @@ def annotation_blocks(body):
             while end<len(lines) and lines[end].strip()!="<!-- workflow:endgovernance -->": end+=1
             chunk="\n".join(lines[i:end+1])
             match=BLOCK.fullmatch(chunk)
-            if not match: raise PanelDataError("invalid_governance","治理块格式未闭合")
+            if not match: raise PanelDataError("invalid_governance","Governance block is not properly closed")
             result.append(match[1]); i=end
         else:
             opening=re.match(r"^(`{3,}|~{3,})",line)
             if opening:fence=(opening[1][0],len(opening[1]))
         i+=1
     return result
+
+def source_excerpt(body):
+    """Return the first nonempty H2 section without interpreting its language.
+
+    Fenced examples cannot supply headings or workflow boundaries. Preserve
+    section content verbatim (apart from outer whitespace) for source display.
+    Actual embedded records have already been masked by the native parser.
+    """
+    heading = None
+    content = []
+    fence = None
+    for line in body.splitlines(keepends=True):
+        stripped = line.strip()
+        if fence:
+            if heading is not None:
+                content.append(line)
+            if re.fullmatch(re.escape(fence[0])+"{"+str(fence[1])+",}", stripped):
+                fence = None
+            continue
+        opening = re.match(r"^ {0,3}(`{3,}|~{3,})", line)
+        if opening:
+            fence = (opening[1][0], len(opening[1]))
+            if heading is not None:
+                content.append(line)
+            continue
+        boundary = stripped.startswith("<!-- workflow:")
+        match = re.match(r"^ {0,3}##[ \t]+(.+?)[ \t]*(?:\r?\n)?$", line)
+        if boundary or match:
+            if heading is not None and "".join(content).strip():
+                return {"text": "".join(content).strip(), "heading": heading,
+                        "kind": "source_excerpt"}
+            if boundary:
+                break
+            heading = match[1]
+            content = []
+        elif heading is not None:
+            content.append(line)
+    if heading is not None and "".join(content).strip():
+        return {"text": "".join(content).strip(), "heading": heading,
+                "kind": "source_excerpt"}
+    return None
+
 
 class Governance:
     def __init__(self, panel):
@@ -123,23 +165,23 @@ class Governance:
         if definition.get("applicability","applies") == "not_applicable":
             return "not_applicable",definition["applicability_reason"],[]
         if definition.get("authority","unknown") != "effective":
-            return "unknown","尚非生效约束；保留为待核实或参考",[]
+            return "unknown","Constraint is not effective; retain it for verification or reference",[]
         if definition.get("applicability","applies") == "unknown":
-            return "unknown","适用性尚未核实",[]
+            return "unknown","Applicability has not been verified",[]
         check=definition.get("check")
         if not check:
-            return "unknown","需要语义判断；尚未绑定相应证据或决定",[]
+            return "unknown","Semantic judgment is required; no corresponding evidence or decision is bound",[]
         subject=check["subject"]
         try:
             self.guard.check_subject(subject,base)
             wanted=self.subject_key(subject,base)
         except WorkflowError as exc:
             state="stale" if exc.code in ("version_mismatch","revision_conflict") else "unknown"
-            return state,"检查对象版本未获当前核对："+str(exc),[]
+            return state,"Subject version could not be verified against the current source: "+str(exc),[]
         try:
             proofs=self.proof_rows(check,base)
         except WorkflowError as exc:
-            return "unknown","指定依据无法解析："+str(exc),[]
+            return "unknown","Declared grounds could not be resolved: "+str(exc),[]
         values,used=[],[]
         for kind,data,fragment in proofs:
             meta=data.get("metadata") or {}
@@ -177,11 +219,11 @@ class Governance:
                 used.append({"ref":ref,"path":data["path"],"revision":data["revision"],"title":meta.get("title",meta.get("id")),
                              "actor":event.get("actor"),"event_scope":event.get("scope"),"conclusion":event.get("conclusion",event.get("result"))})
         if not values:
-            return "unknown","缺少与对象、版本、方面和用途一致的有效依据",[]
+            return "unknown","No effective grounds match the subject, version, coverage, and use",[]
         if len(set(values))>1:
-            return "unknown","同一范围的依据存在矛盾，需核对或明确替代",used
+            return "unknown","Grounds for the same scope conflict; verify them or declare a replacement",used
         state=values[0]
-        return state,{"satisfied":"原记录匹配所声明的检查范围；执行仍需核对全部约定","unsatisfied":"匹配范围的原记录报告失败或要求修改","unknown":"已有依据未给出满足结论"}[state],used
+        return state,{"satisfied":"Original records match the declared check scope; execution still requires checking all applicable agreements","unsatisfied":"Original records for the matching scope report failure or require revision","unknown":"Existing grounds do not establish satisfaction"}[state],used
 
     def build(self, focus=None):
         cursor=None
@@ -194,7 +236,7 @@ class Governance:
             if cursor is None:
                 break
         else:
-            raise PanelDataError("too_many_records","来源超过本次读取上限",413)
+            raise PanelDataError("too_many_records","Sources exceed the read limit for this request",413)
         root_key="project:"+page["project"]["id"]
         self.add({"key":root_key,"kind":"project","title":page["project"]["name"],"ref":None,
                   "path":str(self.panel.root),"revision":None})
@@ -215,13 +257,13 @@ class Governance:
                     for start,end in spans:
                         body=body[:start]+"\n"*body[start:end].count("\n")+body[end:]
                 self.bodies[key]=body
-                excerpt=re.search(r"^## (目标(?:与边界)?|当前安排|当前续接)\s*\n(.*?)(?=^## |<!-- workflow:|\Z)",body,re.S|re.M)
+                excerpt=source_excerpt(body)
                 if excerpt:
-                    self.nodes[key]["excerpt"]={"text":excerpt[2].strip(),"heading":excerpt[1],"kind":"source_excerpt"}
+                    self.nodes[key]["excerpt"]=excerpt
                 blocks=annotation_blocks(body)
                 # Embedded EV/Decision bodies are parsed only in their own record.
                 if len(blocks)>1:
-                    raise PanelDataError("invalid_governance","每个来源记录最多一个治理块")
+                    raise PanelDataError("invalid_governance","Each source record may contain at most one governance block")
                 if blocks:
                     model=json_load(blocks[0])
                     errors=list(VALIDATOR.iter_errors({k:v for k,v in model.items() if k!="navigation"}))
@@ -229,18 +271,18 @@ class Governance:
                         raise PanelDataError("invalid_governance",errors[0].message)
                     ids=[e["id"] for group in ("outcomes","rules","materials","conditions","flows","relationships") for e in model.get(group,[])]
                     if len(ids)!=len(set(ids)) or any((row["path"],local_id) in self.local_ids for local_id in ids):
-                        raise PanelDataError("invalid_governance","同一文件中的治理局部编号重复")
+                        raise PanelDataError("invalid_governance","Duplicate local governance IDs in the same file")
                     for flow in model.get("flows",[]):
                         step_ids=[step["id"] for step in flow["steps"]]
                         if len(step_ids)!=len(set(step_ids)):
-                            raise PanelDataError("invalid_governance","流程内步骤编号重复")
+                            raise PanelDataError("invalid_governance","Duplicate step IDs within a flow")
                     self.local_ids.update((row["path"],local_id) for local_id in ids)
                     self.extensions.append((model,row))
                     for group,kind in (("outcomes","outcome"),("rules","rule"),("materials","material"),("conditions","condition")):
                         for entry in model.get(group,[]):
                             local=(row["path"],entry["id"])
                             if local in self.locals:
-                                raise PanelDataError("invalid_governance","同一文件中的治理局部编号重复")
+                                raise PanelDataError("invalid_governance","Duplicate local governance IDs in the same file")
                             node_key="local:"+hashlib.sha256(canonical(local).encode()).hexdigest()
                             self.locals[local]=node_key
                             node={"key":node_key,"kind":entry.get("kind",kind) if group=="outcomes" else kind,
@@ -280,7 +322,7 @@ class Governance:
                         target=self.guard.resolve(ref,Path(row["reference_base"]))
                         self.retired.add((str(target.path),ref.get("fragment")))
                     except WorkflowError:
-                        self.diagnostic("invalid_replacement","决定替代关系未解析","record:"+row["key"])
+                        self.diagnostic("invalid_replacement","Decision replacement relation could not be resolved","record:"+row["key"])
         for group,key,entry,row in self.entries:
             base=Path(row["reference_base"])
             source="record:"+row["key"]
@@ -294,17 +336,17 @@ class Governance:
                     if target:self.edge(target,key,"governed_by")
             elif group=="materials":
                 state="not_applicable" if entry["applicability"]=="not_applicable" else "unknown"
-                reason=entry["applicability_reason"] if state=="not_applicable" else "尚需识别适用性或提供材料"
+                reason=entry["applicability_reason"] if state=="not_applicable" else "Applicability must be determined or materials provided"
                 target=None
                 if entry["applicability"]=="applies":
                     if entry.get("ref"):
                         try:
                             target=self.resolve(entry["ref"],base)
                             self.edge(key,target,"references")
-                            state,reason="located","已定位材料；内容充分性由相关条件和依据判断"
+                            state,reason="located","Material is located; related conditions and grounds determine content sufficiency"
                         except WorkflowError as exc:
                             state,reason="missing",str(exc)
-                    else: state,reason="missing","此动作需要的材料尚未提供"
+                    else: state,reason="missing","Materials required for this action have not been provided"
                 item={**entry,"key":key,"source_key":source,"state":state,"reason":reason}
                 refs=entry.get("applies_to",[row["ref"]] if row["record_type"] in ("task","epic") else [])
                 item["applies_to"]=[k for ref in refs if (k:=self.link_ref(key,ref,base,"references"))]
@@ -314,14 +356,14 @@ class Governance:
             else:
                 state,reason,proofs=self.evaluate(entry,base)
                 if row["path"] in self.invalid_paths:
-                    state,reason="unknown","定义来源存在无效或冲突标注"
+                    state,reason="unknown","Definition source contains invalid or conflicting annotations"
                 targets=[]
                 for ref in entry["applies_to"]:
                     target=self.link_ref(key,ref,base,"references")
                     if target:targets.append(target);self.edge(target,key,"requires")
                 # Broken scope must never be shown as a current satisfied prerequisite.
                 if len(targets)!=len(entry["applies_to"]) or not any(self.nodes[t].get("kind") in ("task","epic","asset") for t in targets):
-                    state,reason="unknown","部分适用对象无法解析"
+                    state,reason="unknown","Some applicable subjects could not be resolved"
                 item={**{k:v for k,v in entry.items() if k not in ("check","applies_to")},
                       "key":key,"source_key":source,"state":state,"reason":reason,"applies_to":targets,
                       "expected_check":{k:entry.get("check",{}).get(k) for k in ("kind","actor_kind")},
@@ -336,15 +378,15 @@ class Governance:
         from workflow_navigation import build_navigation
         build_navigation(self)
         if not self.materials:
-            self.diagnostic("materials_unmapped","尚未识别材料职责；需按当前动作判断是否需要",root_key)
+            self.diagnostic("materials_unmapped","Material responsibilities are unmapped; determine requirements for the current action",root_key)
         if not self.conditions:
-            self.diagnostic("conditions_unmapped","尚未识别推进条件；不能据此认定全部满足",root_key)
+            self.diagnostic("conditions_unmapped","Progression conditions are unmapped; this does not establish that all conditions are satisfied",root_key)
         if not self.entries and not flows and not relationships:
-            self.diagnostic("governance_unmapped","尚未识别材料职责和推进条件；来源可读不代表规范完整",root_key)
+            self.diagnostic("governance_unmapped","Material responsibilities and progression conditions are unmapped; readable sources do not establish specification completeness",root_key)
         # Caller sees snapshot provenance, never a mutable gate status ledger.
         for path,expected in self.guard.observed.items():
             if revision(self.guard.path(path).read_bytes())!=expected:
-                raise PanelDataError("revision_conflict","治理读取期间来源变化，请刷新",409)
+                raise PanelDataError("revision_conflict","Sources changed during the governance read; refresh the view",409)
         focused=next((n["key"] for n in self.nodes.values() if n.get("ref",{}) and n["ref"].get("id")==focus),None) if focus else None
         return {"generated_at":datetime.now(timezone.utc).isoformat(),"project":page["project"],
                 "nodes":list(self.nodes.values()),"edges":self.edges,"materials":self.materials,"conditions":self.conditions,

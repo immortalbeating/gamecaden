@@ -1,11 +1,11 @@
 {
   "name": "gamecaden",
-  "version": "0.1.3",
-  "description": "按需组织游戏设计、开发、资产、验证与续接，沿用项目的唯一事实来源。",
+  "version": "0.2.0",
+  "description": "Organize game design, development, assets, verification, and continuation on demand, retaining the project's single source of truth.",
   "skills": "./skills/",
   "interface": {
     "displayName": "Gamecaden",
-    "shortDescription": "游戏设计、开发、资产、验证与跨会话续接",
+    "shortDescription": "Game design, development, assets, verification, and cross-session continuation",
     "category": "Developer Tools"
   }
 }

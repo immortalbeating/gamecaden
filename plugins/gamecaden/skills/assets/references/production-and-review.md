@@ -1,54 +1,60 @@
-# 内容生产与审阅
+<a id="内容生产与审阅"></a>
+# Content production and review
 
-只读取本次内容类型及实际出现的批量、长作业或审阅部分。生产工具的具体调用由匹配专业 Skill/项目规范负责。
+Read only current content types and actually arising batch, long-job or review parts. Matching specialized Skills/project conventions own concrete production tool calls.
 
-## 1. 根据消费者组织交付
+<a id="1-根据消费者组织交付"></a>
+## 1. Organize delivery by consumers
 
-| 内容 | 生产前与交付时关注 |
+| Content | Focus before production and at delivery |
 |---|---|
-| 角色、动作与精灵 | 已采用身份/比例、方向与视角、帧边界、锚点/根点、动作时序及运行消费者；已有锁定材料明确继承 |
-| 地图图像、瓦片与道具 | 拓扑/尺度依据、层级、接缝/透明、切分、碰撞与导航由谁定义；背景画面不自动成为运行几何 |
-| 模型、材质与绑定动画 | 单位/轴向、原点、拓扑/材质、骨骼/动作、必要代理和目标导入要求；静态文件检查与引擎显示分开 |
-| 特效 | 触发/结束/重入、时序、空间附着、可读性和影响范围；预览与实际战斗背景的观察各有覆盖 |
-| 音频与配音 | 内容/声音方向、时长/循环、响度与格式、事件触发和并发/中断；文件可播不证明游戏触发正确 |
-| UI 图像、文本与数据内容 | 尺寸/布局语义、状态/语言与实际读取者；内容数据和程序规则分别有明确所有者 |
+| Characters, actions and sprites | Adopted identity/proportions, directions/viewpoints, frame boundaries, anchors/root points, action timing and runtime consumers; explicitly inherit locked materials |
+| Map images, tiles and props | Topology/scale grounds, layers, seams/transparency, slicing, and ownership of collision/navigation; background images do not automatically become runtime geometry |
+| Models, materials and rigged animation | Units/axes, origins, topology/materials, skeletons/actions, necessary proxies and target import requirements; distinguish static-file checks and engine display |
+| Effects | Trigger/end/re-entry, timing, spatial attachment, readability and impact scope; preview and actual combat-background observation have separate coverage |
+| Audio and voice | Content/sound direction, duration/loop, loudness/format, event triggers and concurrency/interruption; playable files do not prove correct game triggering |
+| UI images, text and data content | Dimension/layout semantics, states/languages and actual readers; content data and program rules have explicit separate owners |
 
-这些是信息职责，不是每项任务的必填表。尺寸、帧数、方向、编码、图数与性能预算服从实际用途；缺少当前无需消费的未来内容，不阻断已明确工作。
+These are information responsibilities, not mandatory forms for every task. Dimensions, frame counts, directions, encoding, image counts and performance budgets follow actual use; future content unnecessary for current consumption does not block established work.
 
-关卡布局与机制配置若直接构成工程运行数据，沿用它们的工程来源与设计约定；仅在确实存在独立内容身份、选用或审阅需要时登记资产，不把所有配置文件自动收编为素材。
+When level layouts and mechanism configuration directly form runtime engineering data, retain their engineering sources and design agreements. Register assets only with actual independent content identity, selection or review needs; do not automatically absorb every configuration file as material.
 
-## 2. 复用、生成与加工
+<a id="2-复用生成与加工"></a>
+## 2. Reuse, generation and processing
 
-先判断已有内容是否满足本次输入和使用范围。仅需重新导出或修复锚点时，保留仍成立的身份/风格依据，修正受影响的步骤。
+Judge whether existing content meets current inputs and use scope first. For re-export or anchor repair alone, retain still-valid identity/style grounds and fix affected steps.
 
-生成返回后检查真实内容、文件可用性和需要的技术属性。提示词、来源引用、生产任务回执、关键加工参数或脚本版本按可追溯需要保留，避免把密钥或临时访问凭据写进记录。
+After generation returns, check actual content, file usability and needed technical properties. Retain prompts, source references, production-job receipts, key processing parameters or script versions for traceability, avoiding keys or temporary access credentials in records.
 
-源、可编辑材料、输出和运行导入文件按实际工具/引擎惯例放置；关系清楚比统一物理目录重要。原始大文件、候选保留与清理遵守项目存储政策；删除或覆盖不得破坏仍被引用的采用依据。
+Place sources, editable materials, outputs and runtime import files by actual tool/engine conventions; clear relationships matter more than a uniform physical directory. Raw large files, candidate retention and cleanup follow project storage policy; deletion/overwriting must not destroy still-referenced adoption grounds.
 
-技术检查与实际观看/听取各自给出结论。透明边缘、帧漂移、动作可读性、地图自然路线、音频接缝等按实际风险观察；不能用文件数量或工具成功提示代替内容判断。
+Give separate conclusions for technical checks and actual viewing/listening. Observe transparent edges, frame drift, action readability, natural map routes, audio seams and similar risks as applicable; file counts or tool success messages cannot replace content judgment.
 
-## 3. 批量生产
+<a id="3-批量生产"></a>
+## 3. Batch production
 
-目标明确且方法已验证的同类输出可按授权批量处理。新的视觉方向、未验证转换或显著重试成本出现时，先用有代表性的内容检验该不确定点，再继续整批；只有项目或用户要求时才引入相应人工批准。
+Process similar outputs in authorized batches when goals are clear and methods verified. For new visual directions, unverified conversions or significant retry costs, test the uncertainty with representative content before continuing the batch; introduce corresponding human approval only when projects/users require it.
 
-批次应能定位成员、输入和具体版本。局部失败时保留有效输出，只修复受影响成员或共享根因；成员共用的参考/转换改变时，再按影响范围复核。
+Batches must locate members, inputs and concrete versions. For local failures, retain valid outputs and repair affected members or shared root causes only; when shared references/conversions change, recheck affected scope.
 
-同一批中状态可以不同：待审、被拒、技术失败、允许使用及已接入的成员分别表达。批次成功率只作汇总，不能把多数通过投射为全部通过。
+Statuses within one batch may differ: express pending review, rejected, technical failure, permitted use and integrated members separately. Success rates summarize only; a majority pass cannot become all-pass.
 
-## 4. 作业与恢复
+<a id="4-作业与恢复"></a>
+## 4. Jobs and recovery
 
-长作业启动后保存工具原有的任务标识/回执和输出位置引用，按实际能力等待结果。用户给出的成本、渠道与资源约束保持有效；没有观测依据时不编造进度或剩余时间。
+After starting long jobs, save original tool job identifiers/receipts and output-location references, waiting according to actual capability. User cost, channel and resource constraints remain effective; do not invent progress or remaining time without observation grounds.
 
-中断后先查询原作业和文件。远端已接收、本地尚未下载、文件已下载但未校验是不同情况；只补缺失步骤。重复提交可能再次计费或产生外部效果时，先核实原结果及已有重试授权。
+After interruption, query original jobs and files first. Remote acceptance without local download, downloaded files without validation and other states differ; supplement missing steps only. When resubmission may charge again or have external effects, check original results and existing retry authorization first.
 
-预算判断区分报价、仍可能产生的费用占用与已确认费用。作业失败后核对收费/退款，不把每次报价累加当作实际支出，也不假定失败免费。已确认可安全重试且原授权与预算覆盖时继续，无需增加逐次批准；当前仍有未知费用或输出时先解决相应不确定性。
+Budget judgment distinguishes quotations, costs that may still be incurred and confirmed costs. Check charging/refunds after failure; summed quotations are not actual spending, and failure is not assumed free. Continue confirmed safe retries covered by original authorization and budget without per-retry approvals; resolve uncertain costs/outputs first.
 
-本地取消不证明远端停止；来源、作业和副作用不能核实时如实保留未知。原任务的暂停/取消、当前进展和可恢复下一步仍归 Task，不新建另一套生产状态机。
+Local cancellation does not prove remote termination; retain unknowns honestly when sources, jobs or side effects cannot be verified. Original Task owns pause/cancellation, current progress and recoverable next steps, without another production state machine.
 
-## 5. 让审阅对应实际决定
+<a id="5-让审阅对应实际决定"></a>
+## 5. Match review to actual decisions
 
-准备适合对象的审阅方式：动画看连续播放与必要帧，地图看整体与关键区域，模型看必要角度/动作，音频提供可听片段。固定缩略图不天然足以判断所有质量目标。
+Prepare object-fitting review: continuous animation playback and necessary frames, overall maps and key regions, necessary model angles/actions, and audible audio samples. Fixed thumbnails do not inherently suffice for every quality goal.
 
-说明本次请求接受什么，例如角色身份、受击动作观感、某个用途的采用，或批次中明确列出的成员。用户已经对相同对象/范围作出决定时直接使用；不将接受参考图自动扩大为所有新动作都已接受。
+Explain what acceptance is requested, such as character identity, hit-reaction appearance, adoption for a use or explicitly listed batch members. Reuse existing decisions for identical objects/scopes directly; acceptance of reference images does not automatically expand to all new actions.
 
-面板反馈、批量决定、新版本和撤回的事实归属见[资产交接与采用](../../../shared/asset-handoff.md)。专业工具已输出的报告和回执直接引用，附上确实缺少的对象/范围说明即可。
+See [Asset handoff and adoption](../../../shared/asset-handoff.md) for ownership of panel feedback, batch decisions, new versions and withdrawal facts. Cite reports/receipts already produced by specialized tools directly, supplementing genuinely missing object/scope explanations only.

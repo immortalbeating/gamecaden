@@ -1,236 +1,253 @@
-# 游戏材料：按消费者选择必要信息
+<a id="游戏材料按消费者选择必要信息"></a>
+# Game materials: select necessary information by consumers
 
-根据本次动作、消费者与已有约定定位命中条目；适用范围不清时读[材料职责](../../../shared/material-requirements.md)。已有充分来源直接引用，目标关系变化或语义不足时补相关内容。下列名称是候选材料与检索别名，不是项目必建文件或统一审批清单；有效项目要求继续满足。
+Locate matching entries by current actions, consumers and existing agreements; read [Material responsibilities](../../../shared/material-requirements.md) when applicability is unclear. Cite sufficient existing sources directly; supplement relevant content when target relationships change or semantics are insufficient. Names below are candidate materials and search aliases, not mandatory project files or a uniform approval checklist; effective project requirements still apply.
 
-## 总体原则
+<a id="总体原则"></a>
+## General principles
 
-材料应回答某个实际使用者或后续动作的问题。结构、视觉身份、制造参数、运行接入和接受范围可以分开成熟，不能用其中一项的通过代替其他项。
+Materials should answer questions for actual users or subsequent actions. Structure, visual identity, production parameters, runtime integration and acceptance scope may mature separately; a pass in one cannot replace others.
 
-每项材料说明用途、适用对象/版本、明确生效的关系和仍属示意/未知的部分。存在原始真源时直接引用；文件数、截图数和标题不证明信息完整。
+Each material explains its purpose, applicable objects/versions, explicitly effective relationships and still-illustrative/unknown parts. Cite original authoritative sources directly when present; file counts, screenshot counts and titles do not prove complete information.
 
-信息职责按当前消费者覆盖；图、表、文字、配置、模型与原型按问题选择；经济、叙事、骨骼、动态音乐等专项按实际用途展开；实际生产与运行事实由原清单/证据拥有。候选 Spec/GDD 不因名称自动生效，原型可表达设计，其实际观察才证明试验结果。
+Cover information responsibilities by current consumers; select diagrams, tables, text, configuration, models and prototypes by the question. Expand economy, narrative, skeletons, dynamic music and other special topics by actual use. Original inventories/evidence own actual production/runtime facts. Candidate Spec/GDD do not take effect from names alone; prototypes can express design, but actual observations prove experimental results.
 
-拟新建独立材料时，判断已有来源缺什么、为何引用或局部补充不足，以及维护/交接收益。需要的图件实际形成或引用；重要依据参与原方案，不能仅列“已读文件”。常用名可以合并别名，功能不同的材料分别判断，不按表中行数创建文件。
+Before new independent materials, judge what existing sources lack, why references/local supplements are insufficient and the maintenance/handoff benefit. Actually produce or cite needed diagrams; important grounds inform original solutions, rather than merely listing “files read”. Merge aliases for common names as appropriate, judge functionally distinct materials separately, and do not create files by table-row count.
 
-## 用途入口
+<a id="用途入口"></a>
+## Use entrypoints
 
-| 当前问题 | 按需读取 |
+| Current question | Read as needed |
 |---|---|
-| 方向、循环、操作、战斗或敌人行为 | [玩法与机制](#玩法与机制) |
-| 资源流、奖励、成长或解锁 | [经济与成长](#经济与成长) |
-| 风格比较、角色身份与生产结构 | [视觉方向](#视觉方向)、[角色与可复用单位](#角色与可复用单位) |
-| 路线、空间施工、节奏或地形模块 | [地图与空间关卡](#地图与空间关卡) |
-| 背景、人物、任务、对白或镜头 | [叙事与内容](#叙事与内容) |
-| 页面、焦点、布局或内容适配 | [UI 与玩家旅程](#ui-与玩家旅程) |
-| 姿态/帧、挂点、效果、声音或音乐 | [动画、特效与音频](#动画特效与音频) |
-| 组成、状态、依赖或持久化 | [架构与数据](#架构与数据)、[存档与跨关卡状态](#存档与跨关卡状态) |
-| 预算、联网或交付环境 | [性能、联网与平台](#性能联网与平台) |
-| 原型、清单、证据或接受记录 | [试验与交付记录](#试验与交付记录) |
+| Direction, loops, controls, combat or enemy behavior | [Gameplay and mechanics](#gameplay-and-mechanics) |
+| Resource flows, rewards, growth or unlocking | [Economy and progression](#economy-and-progression) |
+| Style comparison, character identity and production structure | [Visual direction](#visual-direction), [Characters and reusable units](#characters-and-reusable-units) |
+| Routes, spatial construction, pacing or terrain modules | [Maps and spatial levels](#maps-and-spatial-levels) |
+| Background, characters, quests, dialogue or shots | [Narrative and content](#narrative-and-content) |
+| Pages, focus, layout or content adaptation | [UI and player journeys](#ui-and-player-journeys) |
+| Poses/frames, attachment points, effects, sound or music | [Animation, effects and audio](#animation-effects-and-audio) |
+| Composition, state, dependencies or persistence | [Architecture and data](#architecture-and-data), [Saves and cross-level state](#saves-and-cross-level-state) |
+| Budgets, networking or delivery environments | [Performance, networking and platforms](#performance-networking-and-platforms) |
+| Prototypes, inventories, evidence or acceptance records | [Experiment and delivery records](#experiment-and-delivery-records) |
 
-## 玩法与机制
+<a id="玩法与机制"></a>
+## Gameplay and mechanics
 
-当本次要新增或改变交互规则，说明玩家输入/触发、状态变化、结果/反馈、失败/恢复，以及与现有规则的关系。复杂转换用状态图；简单规则短文即可。
+When adding/changing interaction rules, explain player inputs/triggers, state changes, results/feedback, failure/recovery and relationships to existing rules. Use state diagrams for complex transitions and brief text for simple rules.
 
-影响实现的数值要有可用来源或明确的可校准初值。已有配置拥有逐项值时不重抄手工表；用户结果明确且普通初值可合理决定时自行选择，标明用途和校准方式。不可把临时值写成用户已经锁定的长期标准。
+Values affecting implementation need usable sources or explicit calibratable initial values. When configuration owns individual values, do not copy manual tables. With clear user outcomes and reasonably decidable ordinary initial values, choose them yourself, labeling purpose/calibration. Temporary values are not user-locked long-term standards.
 
-可调初值无需逐项取得用户签字或生成 Decision。参数校准、功能/外观接受和长期规则固化是不同责任；哪些需要人工决定由已有承诺和项目规则确定。只有数值改变会影响这些既定边界时，才处理相应取舍或接受。
+Adjustable initial values need neither per-value user signatures nor Decisions. Parameter calibration, feature/appearance acceptance and long-term rule establishment are distinct responsibilities; existing commitments/project rules determine human decisions. Handle corresponding tradeoffs/acceptance only when numerical changes affect established boundaries.
 
-新游戏关注当前要验证的核心循环；完整远期内容保留在 Vision/Roadmap，不要求先写完每个章节和数值才允许当前试验。
+For new games, focus on the core loop currently under verification; retain complete distant content in Vision/Roadmap, without requiring every chapter/value before current experiments.
 
 
-| 常用名称/别名 | 功能 | 何时使用 | 可复用或等效来源 |
+| Common name/alias | Function | When to use | Reusable or equivalent sources |
 |---|---|---|---|
-| 项目愿景/设计简报（Vision/Design Brief） | 目标体验、对象与范围 | 立项或方向变化影响取舍 | 原 Vision、需求或 Task 章节 |
-| 设计支柱（Design Pillars） | 给备选明确取舍依据 | 方向或系统目标存在冲突 | 已采用原则与简短理由 |
-| 参考比较/差异说明 | 借鉴方面与自身结果 | 参考项目影响当前选择 | 原比较章节及具体参考 |
-| 核心/长期循环图（Core/Meta Loop） | 行动、结果、反馈与再次行动 | 验证循环；长期循环实际采用时展开 | 原规则、关系图或有界原型 |
-| 操作/相机规格 | 动作映射、观察与反馈 | 输入设备、操控或视角变化 | Input 配置、原设计及相机来源 |
-| 战斗规格 | 攻击、防御、命中、取消与恢复 | 战斗结果或规则变化 | 原状态/事件定义与玩法设计 |
-| 状态图（State Diagram） | 状态和转换条件 | 转换关系存在歧义 | 现有状态模型或清楚的关系说明 |
-| 时序图/事件时序表 | 参与方、先后与时间关系 | 跨对象事件或时机影响结果 | 原事件定义或时序表达；状态图不独自承担时间契约 |
-| 敌人行为/行为树/决策表 | 感知、选择、行动与退出 | 新行为或多单位反应变化 | 原行为实现与规则；不强制行为树 |
+| Project vision/design brief (Vision/Design Brief) | Target experience, audience/objects and scope | Project initiation or directional changes affect tradeoffs | Original Vision, requirements or Task sections |
+| Design pillars (Design Pillars) | Explicit grounds for comparing alternatives | Direction or system goals conflict | Adopted principles and brief rationale |
+| Reference comparison/difference explanation | Borrowed aspects and own outcomes | Reference projects influence choices | Original comparison sections and specific references |
+| Core/meta loop diagram (Core/Meta Loop) | Action, results, feedback and repeated action | Verifying loops; expand long-term loops when actually adopted | Original rules, relationship diagrams or bounded prototypes |
+| Control/camera specifications | Action mappings, observation and feedback | Changed input devices, controls or viewpoints | Input configuration, original design and camera sources |
+| Combat specifications | Attack, defense, hit, cancellation and recovery | Changed combat outcomes/rules | Original state/event definitions and gameplay design |
+| State diagram (State Diagram) | States and transition conditions | Ambiguous transition relationships | Existing state models or clear relationship explanations |
+| Sequence diagram/event timing table | Participants, ordering and timing | Cross-object events/timing affect outcomes | Original event definitions or timing expression; state diagrams alone do not fulfill timing contracts |
+| Enemy behavior/behavior tree/decision table | Perception, selection, action and exit | New behavior or changed multi-unit responses | Original behavior implementation/rules; behavior trees are not mandatory |
 
-## 经济与成长
+<a id="经济与成长"></a>
+## Economy and progression
 
-资源关系、获得能力和保存状态分别判断。实际数值由原配置拥有，规则差异留在原设计；可调初值与接受沿用上节约定。
+Judge resource relationships, gained abilities and saved state separately. Original configuration owns actual values; original design retains rule differences. Adjustable initial values/acceptance follow the preceding section.
 
-| 常用名称/别名 | 功能 | 何时使用 | 可复用或等效来源 |
+| Common name/alias | Function | When to use | Reusable or equivalent sources |
 |---|---|---|---|
-| 经济流图/资源收支说明 | 资源来源、消耗与转换 | 新增或改变经济关系 | 配置加必要流向图/文字 |
-| 数值/平衡表 | 成本、收益与校准假设 | 数值影响当前玩法结果 | 实际配置或派生表；不复制手工真源 |
-| 奖励/掉落规则 | 获得条件、次数与消费者 | 奖励、掉落或兑换变化 | 原定义与玩家结果说明 |
-| 成长曲线/节奏说明 | 能力、挑战和获得节奏 | 成长或难度推进变化 | 原配置、规则及必要曲线 |
-| 技能树/解锁关系图 | 能力依赖与解锁后果 | 解锁条件或能力关系变化 | 原定义或局部依赖图；字段存在不证明能力已接入 |
+| Economy flow diagram/resource income and expenditure explanation | Resource sources, consumption and conversion | Adding/changing economy relationships | Configuration plus necessary flow diagrams/text |
+| Numerical/balance table | Costs, benefits and calibration assumptions | Values affect current gameplay results | Actual configuration or derived tables; do not duplicate manual sources of truth |
+| Reward/drop rules | Acquisition conditions, counts and consumers | Changed rewards, drops or exchanges | Original definitions and player-outcome explanations |
+| Progression curve/pacing explanation | Abilities, challenges and acquisition pace | Changed progression/difficulty advancement | Original configuration, rules and necessary curves |
+| Skill tree/unlock relationship diagram | Ability dependencies and unlock consequences | Changed unlock conditions/ability relationships | Original definitions or local dependency diagrams; existing fields do not prove integrated abilities |
 
-## 视觉方向
+<a id="视觉方向"></a>
+## Visual direction
 
-方向探索材料用于比较，采用范围明确后才指导对应生产。不同资产可共享视觉依据，各自结构与制造输入仍需覆盖。
+Direction exploration materials support comparison; they guide corresponding production only after adopted scope is clear. Assets may share visual grounds, but each still needs structural/production input coverage.
 
-| 常用名称/别名 | 功能 | 何时使用 | 可复用或等效来源 |
+| Common name/alias | Function | When to use | Reusable or equivalent sources |
 |---|---|---|---|
-| 美术风格指南（Art Bible/Style Guide） | 形体、色彩、材质与表现规则 | 风格或跨资产一致性影响制作 | 原视觉章节、采用样例及规则 |
-| 情绪板/参考板（Mood Board） | 比较氛围与视觉语言 | 探索真实方向 | 参考集合加比较说明；不证明个体结构已确定 |
-| 概念图（Concept Art） | 造型、环境或构图方案 | 需要比较视觉方案 | 现有概念、局部草图或预演；说明采用方面 |
-| 关键画面/质量标杆 | 本次呈现与质量方面 | 质量目标存在歧义 | 采用样例、目标渲染或预览；不自动接受新产物 |
+| Art bible/style guide (Art Bible/Style Guide) | Form, color, material and presentation rules | Style/cross-asset consistency affects production | Original visual sections, adopted samples and rules |
+| Mood/reference board (Mood Board) | Compare atmosphere and visual language | Exploring actual directions | Reference sets with comparison explanations; do not prove individual structures settled |
+| Concept art (Concept Art) | Form, environment or composition solutions | Comparing visual solutions | Existing concepts, local sketches or previs; explain adopted aspects |
+| Key image/quality benchmark | Current presentation and quality aspects | Ambiguous quality goals | Adopted samples, target renders or previews; do not automatically accept new outputs |
 
-## 角色与可复用单位
+<a id="角色与可复用单位"></a>
+## Characters and reusable units
 
-正式角色/动作生产需要判断下列职责是否已被当前材料覆盖：
+For formal character/action production, judge whether current materials cover these responsibilities:
 
-| 职责 | 使用者需要知道什么 |
+| Responsibility | What consumers need to know |
 |---|---|
-| 结构与比例 | 轮廓、身体/装备关系、明显不对称及目标视角下的空间范围 |
-| 视觉身份 | 当前采用的参考、风格、身份特征、配色/材质，哪些细节必须保留 |
-| 制作与消费者适配 | 实际需要的姿态/方向、锚点/挂点、时序/帧组织或骨骼要求、目标显示条件 |
+| Structure and proportions | Silhouette, body/equipment relationships, obvious asymmetry and spatial extent in target viewpoints |
+| Visual identity | Adopted references, style, identity features, colors/materials and details that must remain |
+| Production and consumer adaptation | Required poses/directions, anchors/attachment points, timing/frame organization or skeleton requirements and target display conditions |
 
-三项职责不等于固定三份文档或三张图。已采用图件、文字与现有生产配置可以组合或明确继承；只重新设计受变化影响的部分。视图数量由不对称、制造风险与真实观察角决定，不为所有项目默认六向/三视图。
+Three responsibilities do not mean three fixed documents or images. Adopted diagrams, text and existing production configuration may combine or be explicitly inherited; redesign affected parts only. Asymmetry, production risk and actual viewing angles determine view counts, without default six-direction/three-view requirements for all projects.
 
-同一角色正式生产的身份与结构一致性可由共用母版加个体差异、角色专属设计、已采用模型/资产及明确约束承担。按覆盖情况组合或选择，不因出现“生成角色”就重建整套材料；本次动作与消费者输入另行核对。
+Identity/structural consistency in formal production of one character may be fulfilled by a shared master with individual differences, character-specific design, adopted models/assets and explicit constraints. Combine/select by coverage, without rebuilding all materials whenever “generate characters” appears; check current action/consumer inputs separately.
 
-| 常用名称/别名 | 功能 | 何时使用 | 可复用或等效来源 |
+| Common name/alias | Function | When to use | Reusable or equivalent sources |
 |---|---|---|---|
-| 共用造型母版/体型规范 | 共同的比例、轮廓和可变范围 | 多角色实际共享结构或制作链 | 已用模型、比例图与差异说明；不规定统一文件名 |
-| 角色专属设计/设定图（Character Model Sheet） | 个体结构、比例与身份细节 | 新身份或材料无法指导生产 | 原设计、已用模型/资产及局部说明 |
-| 转面图/角色旋转视图（Turnaround/Model Rotation） | 目标角度的形体与装备关系 | 新视角、不对称或背侧结构未知 | 必要视图或已有模型截图；数量由用途决定 |
-| 尺寸/比例对照图（Scale Chart） | 实体之间的相对尺度 | 尺度关系影响生产或可读性 | 原尺寸配置与可检查对照 |
-| 装备分件/结构拆解图 | 遮挡、连接和制作分件 | 分层、拆装或装备结构有歧义 | 原模型、图层及局部结构图 |
-| 表情/姿态设定（Expression/Pose Sheet） | 表演范围与身份特征 | 表情、对白表现或姿态制作 | 采用样例、模型或预览；不构成通用必交包 |
-| 道具/武器设计与挂点说明 | 功能、尺度与连接 | 独立物件或角色持用关系变化 | 原模型/配置加必要说明 |
+| Shared form master/body-type conventions | Shared proportions, silhouettes and variation range | Characters actually share structure or production chains | Used models, proportion diagrams and difference explanations; no uniform filename required |
+| Character-specific design/model sheet (Character Model Sheet) | Individual structure, proportions and identity details | New identities or materials insufficient for production guidance | Original design, used models/assets and local explanations |
+| Turnaround/model rotation (Turnaround/Model Rotation) | Form/equipment relationships at target angles | New viewpoints, asymmetry or unknown back/side structure | Necessary views or existing model screenshots; count follows purpose |
+| Scale/proportion comparison (Scale Chart) | Relative scales between entities | Scale relationships affect production/readability | Original dimension configuration and inspectable comparisons |
+| Equipment parts/structural breakdown diagram | Occlusion, connections and production parts | Ambiguous layers, assembly/disassembly or equipment structure | Original models/layers and local structural diagrams |
+| Expression/pose sheet (Expression/Pose Sheet) | Performance range and identity features | Expressions, dialogue performance or pose production | Adopted samples, models or previews; not a universally mandatory package |
+| Prop/weapon design and attachment explanation | Function, scale and connections | Independent objects or changed character-held relationships | Original models/configuration with necessary explanations |
 
-物理占位、空间预算或接线试验可以用可追溯代理；代理不自动成为正式角色身份或最终资产。用户要求正式交付时继续完成该目标，不能以占位结束。
+Traceable proxies may be used for physical occupancy, spatial budgets or wiring experiments; proxies do not automatically become formal character identities/final assets. Continue formal delivery goals when requested, without ending at placeholders.
 
-接受某角色参考不自动接受所有重生成动作或运行尺度。需要人工接受哪些对象，沿用项目原要求及实际授权，不为每份设计材料新增统一审批。
+Accepting character references does not automatically accept all regenerated actions or runtime scales. Human-acceptance objects follow original project requirements and actual authorization, without uniform new approvals per design material.
 
-## 地图与空间关卡
+<a id="地图与空间关卡"></a>
+## Maps and spatial levels
 
-存在空间移动、战斗布局或路线要求时，明确入口/出口、拓扑、尺度、支撑/碰撞/导航、主要路径、相机可读性、交互位置与状态条件。无需空间移动的玩法不因“游戏”二字生成地形蓝图。
+For spatial movement, combat layouts or route requirements, establish entrances/exits, topology, scale, support/collision/navigation, main paths, camera readability, interaction positions and state conditions. Gameplay without spatial movement does not need terrain blueprints merely because it is a “game”.
 
-蓝图可以是图、坐标/拓扑数据或可读布局说明，形式以能指导本次动作并检查结果为准。先查明谁拥有运行事实：
+Blueprints may be images, coordinate/topology data or readable layout explanations; choose forms that guide current actions and check results. Establish runtime fact ownership first:
 
-- 程序实际读取的数据：它是对应运行来源，图表可以从它派生；不要另写一份可独立变更的坐标台账。
-- 指导场景施工的蓝图：它保存设计关系，实际场景/程序保存接线和几何；设计需要说明怎样核对两者。
-- 背景/氛围图：只有明确标注并被采用的设计含义才构成约束，不从画面直接推断碰撞或出口。
+- Data actually read by programs: corresponding runtime sources, from which charts may derive; do not create another independently changeable coordinate ledger.
+- Blueprints guiding scene construction: design relationships belong to them, wiring/geometry to actual scenes/programs; design explains checking correspondence.
+- Background/atmosphere images: only explicitly labeled and adopted design meanings become constraints; do not infer collision/exits directly from images.
 
 
-| 常用名称/别名 | 功能 | 何时使用 | 可复用或等效来源 |
+| Common name/alias | Function | When to use | Reusable or equivalent sources |
 |---|---|---|---|
-| 世界/区域连接图、关卡拓扑图 | 连接、入口出口、路径与解锁条件 | 路线、区域关系或可达性变化 | 原拓扑/任务数据或局部连接表达 |
-| 关卡布局/施工蓝图（Level Layout） | 空间尺度、位置与施工关系 | 搭建、碰撞或交互位置需要明确 | 原布局数据/场景或图件；拓扑图不独自定义几何 |
-| 关卡尺度/度量说明（Level Metrics） | 移动、支撑与通过空间的尺度 | 能力与空间尺度关系变化 | 实际配置与可检查布局；不另抄数值表 |
-| 节奏/遭遇布局 | 挑战、停顿、交互与反馈的分布 | 体验节奏或遭遇安排变化 | 原设计、布局和必要节奏表达 |
-| 模块套件/地形拼接规格（Modular Kit/Tileset） | 组合边界、接缝、尺度与碰撞 | 模块化或地形生产复用 | 现有制作源与局部拼接约定 |
-| 灰盒/白盒（Greybox/Blockout） | 可操作的空间与规则代理 | 需检验布局、尺度或玩法假设 | 已有有界原型；标明替代范围，观察归 Evidence |
-| 场景概念/光色参考 | 氛围、构图和空间可读性 | 环境视觉选择或制作 | 原场景/图件；不自动规定碰撞和出口 |
+| World/region connection diagram, level topology diagram | Connections, entrances/exits, paths and unlock conditions | Changed routes, region relationships or reachability | Original topology/quest data or local connection expression |
+| Level layout/construction blueprint (Level Layout) | Spatial scale, positions and construction relationships | Construction, collision or interaction positions need clarity | Original layout data/scenes or diagrams; topology alone does not define geometry |
+| Level scale/metrics explanation (Level Metrics) | Scales of movement, support and traversable space | Changed ability/spatial-scale relationships | Actual configuration and inspectable layouts; do not duplicate numerical tables |
+| Pacing/encounter layout | Distribution of challenge, pauses, interaction and feedback | Changed experience pacing/encounter arrangements | Original design/layout and necessary pacing expression |
+| Modular kit/terrain assembly specifications (Modular Kit/Tileset) | Combination boundaries, seams, scale and collision | Modular/terrain production reuse | Existing production sources and local assembly agreements |
+| Greybox/blockout (Greybox/Blockout) | Operable spatial/rule proxies | Testing layout, scale or gameplay assumptions | Existing bounded prototypes; label substitution scope, observations belong to Evidence |
+| Scene concept/light and color reference | Atmosphere, composition and spatial readability | Environment visual selection/production | Original scenes/diagrams; do not automatically define collision/exits |
 
-可达性验证使用真实入口、能力状态和玩家输入路径。初始化可以设置起点，检查路径时的瞬移/直接切场景只证明注入结果，不能代替自然到达。具体检查方法依本项目能力决定。
+Verify reachability through actual entrypoints, ability state and player inputs. Initialization can set starting points; teleporting/direct scene switching during path checks proves injected results only, not natural arrival. Concrete methods follow project capabilities.
 
-## 叙事与内容
+<a id="叙事与内容"></a>
+## Narrative and content
 
-按实际叙事交付展开，与角色视觉、任务规则和状态来源关联。剧情意图、执行条件与实际内容分别说明；设定写完不代表运行内容已实现。
+Expand actual narrative delivery, linking character visuals, quest rules and state sources. State story intent, execution conditions and actual content separately; completed settings do not prove implemented runtime content.
 
-| 常用名称/别名 | 功能 | 何时使用 | 可复用或等效来源 |
+| Common name/alias | Function | When to use | Reusable or equivalent sources |
 |---|---|---|---|
-| 世界背景/叙事设定 | 本次内容的一致事实与边界 | 背景影响当前交付 | 原内容章节；不要求先写完整世界观 |
-| 人物设定/关系图 | 动机、关系与叙事角色 | 人物关系影响剧情或对白 | 原角色/内容章节；不替代视觉结构设计 |
-| 剧情/任务时间线、分支图 | 事件先后、条件与后果 | 任务、章节或分支变化 | 原任务数据和设计差异 |
-| 对话脚本/条件对白表 | 说话者、内容、条件与顺序 | 对白或语音有实际消费者 | 原脚本/内容表；台词真源不重复 |
-| 分镜（Storyboard）/镜头说明 | 镜头、动作与叙事表现关系 | 过场或镜头安排有歧义 | 必要图件、现有镜头源或预演 |
-| 预演/动画草稿（Animatic/Previs） | 可观察的节奏与表现方案 | 静态表达不足以说明时序 | 有界预演；方案表达与运行接受分别判断 |
+| World background/narrative settings | Consistent facts/boundaries for current content | Background affects current delivery | Original content sections; no complete world lore required first |
+| Character settings/relationship diagrams | Motivations, relationships and narrative roles | Character relationships affect stories/dialogue | Original character/content sections; not replacements for visual structural design |
+| Story/quest timelines, branch diagrams | Event ordering, conditions and consequences | Changed quests, chapters or branches | Original quest data and design differences |
+| Dialogue scripts/conditional dialogue tables | Speakers, content, conditions and order | Actual dialogue/voice consumers exist | Original scripts/content tables; no duplicated dialogue source of truth |
+| Storyboards (Storyboard)/shot explanations | Shot, action and narrative-presentation relationships | Ambiguous cutscene/shot arrangements | Necessary diagrams, existing shot sources or previs |
+| Animatic/previs (Animatic/Previs) | Observable pacing/presentation solutions | Static expression insufficient for timing | Bounded previs; judge solution expression/runtime acceptance separately |
 
-## UI 与玩家旅程
+<a id="ui-与玩家旅程"></a>
+## UI and player journeys
 
-布局、层级、页面关系或多状态会影响理解时，用线框或状态/流程图表达。说明进入、返回、暂停/恢复、焦点、输入设备、遮挡/裁切、关键反馈及相关异常状态。
+When layouts, hierarchy, page relationships or multiple states affect understanding, use wireframes or state/flow diagrams. Explain entry, return, pause/resume, focus, input devices, occlusion/clipping, key feedback and relevant abnormal states.
 
-将体验结构映射到实际场景/组件及状态来源。控件清单不等于交互设计，静态截图不证明动态行为；纯文案或无空间歧义的小改无需额外整屏图。
+Map experience structure to actual scenes/components and state sources. Control lists are not interaction design; static screenshots do not prove dynamics. Pure copy changes or small changes without spatial ambiguity need no additional full-screen diagrams.
 
-资料只列出某个数组或占位字段，不证明用户只需要对应的简化界面。例如地图缺少位置/连接资料时，应调查或设计其来源，并提出合适的空间/拓扑表达；若建议改为地点列表，明确说明功能含义的变化，不能自行把它当作已采用的地图结果。
+An array or placeholder field listed in materials does not prove users need only a corresponding simplified interface. For example, when maps lack position/connection information, investigate/design sources and offer suitable spatial/topological expression. If suggesting location lists instead, explicitly state changed feature meaning without treating them as already-adopted map outcomes yourself.
 
 
-| 常用名称/别名 | 功能 | 何时使用 | 可复用或等效来源 |
+| Common name/alias | Function | When to use | Reusable or equivalent sources |
 |---|---|---|---|
-| 玩家旅程/交互流程（User Flow） | 进入、返回及任务路径 | 页面关系或操作路径变化 | 原流程、任务条件或可操作原型 |
-| 页面/焦点状态与异常路径 | 暂停、恢复、失焦与失败关系 | 输入、焦点或恢复行为变化 | 原状态/输入来源；静态截图不证明行为 |
-| 线框图（Wireframe） | 内容层级、信息密度与空间布局 | 布局或遮挡存在歧义 | 原 UI 源、局部草图或原型 |
-| 高保真设计稿/组件状态 | 视觉规则与实际状态呈现 | 界面视觉或组件表现制作 | 共用样式、实际组件与必要稿件 |
-| 交互原型 | 操作反馈与动态关系 | 需要表达或试验交互方案 | 既有原型；实际观察才作为运行证据 |
-| 可访问性适配说明 | 输入、可读反馈和相关用户路径 | 有效承诺或本次变化涉及可访问性 | 原规则与受影响控件/输入来源 |
-| 本地化/字体与文本适配 | 语言内容、字体、空间与回退 | 语言支持或文本呈现条件变化 | 实际内容/字体配置；不重抄翻译表 |
+| Player journey/interaction flow (User Flow) | Entry, return and task paths | Changed page relationships/operation paths | Original flows, quest conditions or operable prototypes |
+| Page/focus states and exceptional paths | Pause, resume, lost focus and failure relationships | Changed input, focus or recovery | Original state/input sources; screenshots do not prove behavior |
+| Wireframe (Wireframe) | Content hierarchy, density and spatial layout | Ambiguous layouts/occlusion | Original UI sources, local sketches or prototypes |
+| High-fidelity designs/component states | Visual rules and actual state presentation | UI visual/component production | Shared styles, actual components and necessary drafts |
+| Interactive prototype | Operation feedback and dynamic relationships | Expressing/testing interaction solutions | Existing prototypes; actual observations alone are runtime evidence |
+| Accessibility adaptation explanation | Inputs, readable feedback and relevant user paths | Effective commitments/current changes involve accessibility | Original rules and affected control/input sources |
+| Localization/font and text adaptation | Language content, fonts, space and fallback | Changed language support/text presentation conditions | Actual content/font configuration; do not duplicate translation tables |
 
-## 动画、特效与音频
+<a id="动画特效与音频"></a>
+## Animation, effects and audio
 
-需要与玩法或角色关联时，明确触发事件、取消/重复触发、时间关系、空间/附着位置、优先关系及消费者。已有动作或音频定义为原始来源时引用其标识，不复制第二份时序表。
+When related to gameplay/characters, establish trigger events, cancellation/retriggering, temporal relationships, spatial/attachment positions, priorities and consumers. Cite original action/audio definition IDs instead of copying another timing table.
 
-分清原始素材、制作参数、运行引用与验证材料。效果在单独预览中可见，不等于在真实玩家路径和目标显示条件下正确接入。
+Distinguish raw materials, production parameters, runtime references and verification materials. Effects visible in isolated previews are not necessarily correctly integrated in actual player paths and target display conditions.
 
 
-| 常用名称/别名 | 功能 | 何时使用 | 可复用或等效来源 |
+| Common name/alias | Function | When to use | Reusable or equivalent sources |
 |---|---|---|---|
-| 动作清单/动作状态关系 | 动作用途、进入、退出与衔接 | 新动作或动作消费者变化 | 原动作定义与规则 |
-| 关键姿态/动作草图 | 重心、剪影和动作意图 | 姿态含义或制作输入不明 | 既有动作、模型或必要姿态图 |
-| 帧/方向/时序/事件规格 | 组织、时机与消费者契约 | 正式动作制作或格式变化 | 原动画定义/配置；继承有效帧数与锚点，不设通用固定值 |
-| 分层/骨骼/绑定/蒙皮说明 | 变形、分件与连接 | 制作链实际采用该技术 | 原模型/图层/绑定源；非骨骼路线不强制骨骼包 |
-| VFX参考/效果触发表 | 触发、取消、附着与可读反馈 | 效果与事件/空间关系变化 | 原效果 Cue 与事件定义，不复制命中时序 |
-| SFX/语音 Cue 表 | 播放条件、重复与消费者 | 声音或对白播放规则变化 | 原音频定义/内容来源 |
-| 混音/空间与优先关系 | 抢占、层级、附着与可听反馈 | 并发、空间或优先关系影响表现 | 原混音/音频配置和必要说明 |
-| 音乐结构/循环说明 | 循环、段落与本次使用方式 | 音乐制作或循环条件变化 | 原音乐定义与可听参考 |
-| 动态音乐状态/过渡图 | 分层、切换条件与过渡 | 实际采用状态驱动音乐 | 原音乐状态/Cue；静态循环不展开此分支 |
+| Action list/action-state relationships | Action uses, entry, exit and transitions | New actions or changed consumers | Original action definitions/rules |
+| Key poses/action sketches | Center of gravity, silhouette and action intent | Unclear pose meaning/production inputs | Existing actions, models or necessary pose diagrams |
+| Frame/direction/timing/event specifications | Organization, timing and consumer contracts | Formal action production or changed formats | Original animation definitions/configuration; inherit valid frame counts/anchors without universal fixed values |
+| Layer/skeleton/rigging/skinning explanation | Deformation, parts and connections | Production chains actually use the technology | Original model/layer/rigging sources; non-skeletal routes need no mandatory skeleton package |
+| VFX references/effect trigger tables | Trigger, cancellation, attachment and readable feedback | Changed effect-event/spatial relationships | Original effect Cue/event definitions; do not duplicate hit timing |
+| SFX/voice Cue tables | Playback conditions, repetition and consumers | Changed sound/dialogue playback rules | Original audio definitions/content sources |
+| Mixing/spatial and priority relationships | Preemption, hierarchy, attachment and audible feedback | Concurrency, space or priorities affect presentation | Original mixing/audio configuration and necessary explanations |
+| Music structure/loop explanation | Loops, sections and current use | Music production or changed loop conditions | Original music definitions and audible references |
+| Dynamic music state/transition diagrams | Layers, switching conditions and transitions | State-driven music actually adopted | Original music state/Cue; static loops do not expand this branch |
 
-## 架构与数据
+<a id="架构与数据"></a>
+## Architecture and data
 
-按[结构合同](../../../profiles/references/structure-contract.md)和[profiles 专题](../../../profiles/README.md#结构变化的专题入口)补命中的技术机制。源码说明现状，未来关系变化仍在原设计表达；新项目无工程时可先形成安排，原生来源标明待建立。
+Supplement matching technical mechanisms under [Structure contract](../../../profiles/references/structure-contract.md) and [Profile topics](../../../profiles/README.md#topic-entries-for-structural-changes). Source code explains current state; original design still expresses future relationship changes. New projects without engineering may establish arrangements first, labeling native sources not yet established.
 
-| 常用名称/别名 | 功能 | 何时使用 | 可复用或等效来源 |
+| Common name/alias | Function | When to use | Reusable or equivalent sources |
 |---|---|---|---|
-| 组成/责任图 | 装配、类型与消费者关系 | 独立页面、复用主体或编辑边界变化 | 原设计/制作源；详见结构合同 |
-| 状态/生命周期/依赖说明 | 写者、读者、创建、终止与重置 | 共享状态、跨系统或异步关系变化 | 原源码/配置加目标差异；可见树不证明寿命 |
-| 数据模型/接口契约 | 数据含义、引用与失败行为 | 字段或跨模块输入输出变化 | 原 schema/配置/接口，补本次语义与兼容差异 |
+| Composition/responsibility diagram | Assembly, types and consumer relationships | Changed independent pages, reusable entities or editing boundaries | Original design/production sources; see structure contract |
+| State/lifecycle/dependency explanation | Writers, readers, creation, termination and reset | Changed shared-state, cross-system or async relationships | Original code/configuration with target differences; visible trees do not prove lifetimes |
+| Data model/interface contract | Data meanings, references and failure behavior | Changed fields or cross-module inputs/outputs | Original schema/configuration/interfaces, supplemented with semantics/compatibility differences |
 
-## 存档与跨关卡状态
+<a id="存档与跨关卡状态"></a>
+## Saves and cross-level state
 
-真实涉及持久状态时，明确谁拥有状态、何时保存/加载/重置、哪些变化跨场景保留、失败如何恢复；改变旧数据格式或含义时补兼容/迁移和回退考虑。
+For actual persistent state, establish ownership, saving/loading/reset timing, changes retained across scenes and failure recovery; supplement compatibility/migration and rollback considerations when old data formats/meanings change.
 
-角色设定或章节大纲已确定，不证明状态传递和运行内容已实现。让验证覆盖实际消费者，不能以配置字段存在代替玩家得到的能力或奖励。
+Established character settings/chapter outlines do not prove implemented state transfer/runtime content. Verification covers actual consumers; configuration fields do not replace player-acquired abilities/rewards.
 
 
-| 常用名称/别名 | 功能 | 何时使用 | 可复用或等效来源 |
+| Common name/alias | Function | When to use | Reusable or equivalent sources |
 |---|---|---|---|
-| 保存/恢复/重置说明 | 状态与保存时机、跨关卡保留及失败恢复 | 实际持久化或状态寿命变化 | 原数据/运行来源和设计关系 |
-| 兼容/迁移/回退安排 | 旧数据含义、转换与失败后果 | 格式或保存语义变化 | 原版本约定及局部变更安排 |
+| Save/restore/reset explanation | State/save timing, cross-level retention and failure recovery | Actual persistence or changed state lifetime | Original data/runtime sources and design relationships |
+| Compatibility/migration/rollback arrangements | Old data meanings, conversion and failure consequences | Changed formats/save semantics | Original version agreements and local change arrangements |
 
-## 性能、联网与平台
+<a id="性能联网与平台"></a>
+## Performance, networking and platforms
 
-只在本次承诺或实际风险涉及这些条件时补设计：目标规模、状态权威、同步/失败、资源预算、平台输入/限制和可复现的检查环境。
+Supplement design only when current commitments/actual risks involve these conditions: target scale, state authority, synchronization/failure, resource budgets, platform inputs/limits and reproducible check environments.
 
-从项目真实要求和证据推导约束，不复制其他项目的单位数、显卡型号、帧数或固定基准。缺少会影响方案的事实先调查；未来可能需要的规格不提前成为当前关卡的门禁。
+Derive constraints from actual project requirements/evidence, without copying unit counts, GPU models, frame counts or fixed benchmarks from other projects. Investigate missing facts affecting solutions first; potentially needed future specifications do not become current level gates prematurely.
 
 
-| 常用名称/别名 | 功能 | 何时使用 | 可复用或等效来源 |
+| Common name/alias | Function | When to use | Reusable or equivalent sources |
 |---|---|---|---|
-| 性能目标/资源预算 | 本次规模、加载与资源约束 | 性能承诺或已有证据风险 | 项目真实要求；测量结果另归证据 |
-| 联网权威/同步关系 | 谁决定状态、同步范围与消费者 | 实际联网行为或支持承诺 | 原协议、关系说明及必要图表 |
-| 会话/连接失败恢复 | 进入退出、失败与恢复 | 连接/会话关系影响本次结果 | 原会话模型和失败路径 |
-| 平台/输入/构建条件 | 目标环境、部署与交付限制 | 实际目标影响设计或接入 | 项目设置及命中 profile；不预维护全平台认证表 |
+| Performance targets/resource budgets | Current scale, loading and resource constraints | Performance commitments or evidence-backed risks | Actual project requirements; measurements belong separately to evidence |
+| Network authority/synchronization relationships | State decision owners, synchronization scope and consumers | Actual network behavior/support commitments | Original protocols, relationship explanations and necessary diagrams |
+| Session/connection failure recovery | Entry, exit, failure and recovery | Connections/sessions affect current results | Original session models and failure paths |
+| Platform/input/build conditions | Target environments, deployment and delivery limits | Actual targets affect design/integration | Project settings and matching profiles; no advance maintenance of all-platform certification tables |
 
-## 试验与交付记录
+<a id="试验与交付记录"></a>
+## Experiment and delivery records
 
-设计输入与发生后的事实分别维护；本目录仅连接其用途，格式与事件语义继续由原合同拥有。
+Maintain design inputs and subsequent facts separately; this directory only connects uses, while original contracts retain format/event semantics.
 
-| 材料/记录 | 功能与归属 |
+| Material/record | Function and ownership |
 |---|---|
-| 原型/试验安排与观察 | 原型可表达设计或用于有界试验；允许范围与问题写在原工作，实际观察归 [Evidence](../../../shared/verification.md) |
-| 测试/接受安排 | 对应目标、对象、可观察路径和必要接受；计划不当作已执行证据 |
-| Manifest/生产清单 | 实际文件、版本、尺寸、帧数和编码等由工具/文件拥有；引用清单，避免手工镜像 |
-| 资产主台账与接受记录 | 按 [资产交接](../../../shared/asset-handoff.md)追踪身份、用途、候选、选择及接入依据；技术通过、接受与运行分别判断 |
-| 构建/发行与变更记录 | 实际版本、交付环境及结果归原交付来源；设计时需要的限制仍提前说明 |
+| Prototype/experiment arrangements and observations | Prototypes express design or support bounded experiments; allowed scope/questions belong to original work, actual observations to [Evidence](../../../shared/verification.md) |
+| Test/acceptance arrangements | Match goals, objects, observable paths and necessary acceptance; plans are not executed evidence |
+| Manifest/production inventories | Tools/files own actual files, versions, dimensions, frame counts, encoding and similar facts; cite inventories without manual mirrors |
+| Asset master ledger and acceptance records | Track identity, uses, candidates, selection and integration grounds under [Asset handoff](../../../shared/asset-handoff.md); judge technical passes, acceptance and runtime separately |
+| Build/release and change records | Original delivery sources own actual versions, delivery environments/results; still explain design-relevant limits in advance |
 
-概念图和设定稿可直接作为设计输入；形成需持续比较、复用或审阅的独立身份/候选时也可按原台账合同追踪。临时草图不逐个入账，设计章节不因被引用就都变为资产。
+Concepts and design drafts may directly supply design inputs; independent identities/candidates needing sustained comparison, reuse or review may also be tracked under original ledger contracts. Temporary sketches need no individual entries, and references do not turn all design sections into assets.
 
-## 缺项怎样影响下一动作
+<a id="缺项怎样影响下一动作"></a>
+## How gaps affect the next action
 
-把缺项关联到具体动作：当前必须补、可在已授权迭代中校准、后续阶段才需要。分类可用短文说明，不新增全局 readiness 状态文件。
+Associate gaps with concrete actions: mandatory now, calibratable during authorized iteration, or needed only later. Brief text may explain classification, without new global readiness state files.
 
-缺少正式资产输入时，可以继续不依赖它的规则说明或灰盒；缺少当前玩法的关键选择时，不把自己猜测写成已接受需求。已有有效规范要求某项材料时，遵守该真实要求；认为需要改变时按范围变更处理。
+Without formal asset inputs, continue independent rule explanations/grayboxing; without key choices for current gameplay, do not write guesses as accepted requirements. Follow effective conventions that require specific materials; handle proposed changes through scope-change procedures.
 
-## 名称与用途参考
+<a id="名称与用途参考"></a>
+## Name and use references
 
-名称用于检索，团队可使用其他明确别名。角色设定与旋转视图的用途参考 [Toon Institute 原创课程](https://www.awn.com/tooninstitute/lessonplan/model.htm)；灰盒用于布局/尺度与玩法粗稿的例子见 [Epic 灰盒说明](https://dev.epicgames.com/documentation/en-us/fortnite/greyboxing-in-unreal-editor-for-fortnite)。只借用用途区分，不采用课程固定视图数量、引擎操作或生产顺序作为跨项目要求。本页候选导航与触发安排属于 Gamecaden 的工作流选择。
+Names support search; teams may use other explicit aliases. For character model sheets and rotation views, see [Toon Institute original course](https://www.awn.com/tooninstitute/lessonplan/model.htm); for grayboxing as layout/scale and gameplay rough drafts, see [Epic grayboxing explanation](https://dev.epicgames.com/documentation/en-us/fortnite/greyboxing-in-unreal-editor-for-fortnite). Borrow only use distinctions, not fixed course view counts, engine operations or production order as cross-project requirements. Candidate navigation and trigger arrangements on this page are Gamecaden workflow choices.

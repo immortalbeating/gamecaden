@@ -1,74 +1,81 @@
-# 资产主台账、版本决定与运行交接
+<a id="资产主台账版本决定与运行交接"></a>
+# Asset Master Ledger, Version Decisions, and Runtime Handoff
 
-assets 制作、develop 接入以及后续审阅/验证使用同一约定。各记录的唯一职责见[共同记录](records.md)；本页细化更新时机和交接判断，不建立平行资产状态系统。
+Asset production in assets, integration in develop, and later review/verification share this convention. See [common records](records.md) for each record's sole responsibility; this page details update timing and handoff judgments without establishing a parallel asset-state system.
 
-确需新建原生台账/决定时，使用[格式合同](formats-v1.md)与[按需模板](../templates/catalog.md)。[本地读写工具](local-io.md)已按接口合同提供对应操作；当前版本校验、决定者绑定与恢复能力以工具说明为准。面板桥接和真实宿主用户输入仍分别接入验证。
+When new native ledgers/decisions are actually needed, use the [format contract](formats-v1.md) and [on-demand templates](../templates/catalog.md). [Local I/O tools](local-io.md) provide corresponding operations according to interface contracts; tool documentation defines current version checks, decision-maker binding, and recovery capabilities. Panel bridges and actual host user input still require separate integration validation.
 
-## 1. 用身份和用途连接记录
+<a id="1-用身份和用途连接记录"></a>
+## 1. Connect Records by Identity and Use
 
-交接至少能够回答：哪个资产/内容、哪个实际版本、要用于哪里、依据哪些允许范围、文件与技术清单在哪里、已证明什么、还缺什么。可以直接引用已有材料，无需每次新建交接文件。
+A handoff must at least answer: which asset/content, which actual version, where it will be used, on what permitted scope, where files and technical inventories are located, what has been proven, and what remains missing. Existing materials may be directly referenced without a new handoff file each time.
 
-身份可按资产族和实际可独立使用的变体组织；候选版本用工具已有不可混淆的 ID、内容摘要或版本与文件清单定位。同名路径会被覆盖时，路径本身不足以绑定审阅结论。一次接受多文件时应能确定成员集合及各自版本，不能只写“当前目录全部通过”。
+Organize identities by asset families and variants that can actually be used independently; locate candidate versions through existing unambiguous tool IDs, content digests, or versions and file inventories. If a same-named path can be overwritten, the path alone cannot bind a review conclusion. Acceptance of multiple files at once must identify the member set and each version, rather than merely stating “the entire current directory passed.”
 
-台账保存以下信息职责，沿用现有 Markdown/YAML 或工具格式：
+The ledger owns the following information, using existing Markdown/YAML or tool formats:
 
-| 台账内容 | 应保存/引用什么 |
+| Ledger content | What to save/reference |
 |---|---|
-| 身份与用途 | 稳定标识、名称、资产族/变体及预期消费者 |
-| 来源与候选 | 来源依据、需要留存的候选版本、对应生产清单/manifest 引用 |
-| 指定选用关系 | 哪个版本计划用于哪个用途/消费者，依据哪个有效选择或接受记录 |
-| 替换与保留关系 | 被谁替换、哪些用途仍保留、相关决定/工作引用 |
-| 接入依据入口 | 相关工程消费者与 Evidence 的引用，供核对实际使用 |
+| Identity and use | Stable identifier, name, asset family/variant, and intended consumers |
+| Sources and candidates | Source grounds, candidate versions needing retention, corresponding production inventory/manifest references |
+| Designated selection relationships | Which version is planned for which use/consumer, supported by which effective selection or acceptance record |
+| Replacement and retention relationships | What replaces it, which uses retain it, and related decision/work references |
+| Integration grounds entry points | Related engineering consumers and Evidence references for checking actual use |
 
-尺寸、帧数、编码、逐文件摘要等技术事实以 manifest/实际文件为准；原有清单已足够时不再手抄。台账里的指定选用不是对实际运行结果的替代。新项目首次确有独立追踪需要时按 workspace 默认创建资产主台账；已有有效台账直接维护，不为本 Skill 换格式或另开一份。
+Technical facts such as dimensions, frame counts, encoding, and per-file digests are owned by manifests/actual files; do not manually copy sufficient existing inventories. Designated selection in the ledger does not replace actual runtime results. In a new project, create the asset master ledger under workspace defaults when independent tracking is first actually needed; directly maintain existing effective ledgers without changing format or opening another ledger for this Skill.
 
-## 2. 按事件更新对应来源
+<a id="2-按事件更新对应来源"></a>
+## 2. Update Corresponding Sources by Event
 
-| 实际事件 | 更新责任 |
+| Actual event | Update responsibility |
 |---|---|
-| 形成需持续使用、比较或审阅的资产身份/候选 | 台账登记身份、用途与版本引用；原 Task 记录本次产出 |
-| 文件生成、转换或替换 | 生产清单/manifest 反映实际文件；技术检查结果归 Evidence |
-| 用户/获授权执行者选择、接受、拒绝或要求修改 | Decision 或原记录保存决定者、精确对象/版本/方面与用途范围；台账引用有效决定 |
-| 明确选用或替换某用途 | 台账更新指定关系；保留必要历史和被替换对象的去向 |
-| 修改实际资源引用/场景/配置并完成检查 | 工程消费者拥有实际接线；Evidence 记录本次基线的结果，Task 汇总，台账关联其依据 |
-| 仅刷新面板、进度或总览 | 从原来源派生；不产生新的接受或通过事实 |
+| An asset identity/candidate is formed for continued use, comparison, or review | Register identity, uses, and version references in the ledger; record this output in the original Task |
+| Files are generated, converted, or replaced | Production inventory/manifest reflects actual files; technical check results belong to Evidence |
+| User/authorized executor selects, accepts, rejects, or requests revision | Decision or original records save the decision-maker, exact object/version/aspect and use scope; ledger references the effective decision |
+| A use is explicitly selected or replaced | Update designated relationships in the ledger; retain necessary history and the disposition of replaced objects |
+| Actual resource references/scenes/configuration are changed and checked | Engineering consumers own actual wiring; Evidence records results for this baseline, Task summarizes, and ledger links their grounds |
+| Only a panel, progress, or overview is refreshed | Derive from original sources; create no new acceptance or passing facts |
 
-只保存有使用意义的候选身份；随机临时产物不逐一进入主台账，完整任务成员可由工具清单管理。对象已经存在时更新原条目；同一 Skill 往返不创建新资产或新任务身份。
+Save only candidate identities meaningful for use; do not enter every random temporary artifact into the master ledger. Tools may manage complete task membership through inventories. Update original entries for existing objects; moving back and forth between Skills does not create new asset or task identities.
 
-### 候选快照与遗留恢复
+<a id="候选快照与遗留恢复"></a>
+### Candidate Snapshots and Legacy Recovery
 
-需要持续审阅/比较的候选，其 manifest 及所需成员应位于稳定的版本位置或受支持的留存源；运行导入副本可以替换，但不能成为多个历史候选共同依赖的可覆盖唯一载荷。按项目存储政策保留足以复核结论的材料，不要求全部试跑大文件进入 Git。
+Candidates needing continued review/comparison must keep their manifests and required members at stable version locations or supported retention sources. Runtime-import copies may be replaced but cannot be the sole overwritable payload shared by multiple historical candidates. Retain materials sufficient to review conclusions according to project storage policy, without requiring all large trial-run files in Git.
 
-已发生覆盖、迁移或丢失时，先查真实文件、旧报告和可用历史。能够恢复原字节时保留原身份和摘要关系；只有历史定位或旧观察可查、原载荷不足时，记录该限制，不能修改旧 manifest/摘要把它洗成通过。归档链接或迁移引用可用于人工定位，当前原生工具仍拒绝 junction/符号链接；定位成功与内容摘要复验分别报告。
+After overwrites, migration, or loss, first inspect real files, old reports, and available history. If original bytes can be recovered, preserve original identities and digest relationships; if only historical locations or old observations remain and original payloads are insufficient, record the limitation rather than changing old manifests/digests to launder them into passes. Archive links or migration references can support human navigation; current native tools still reject junctions/symbolic links. Report successful location separately from content-digest revalidation.
 
-登记当前内容时使用新的稳定候选与 manifest，保留旧身份、决定和选用关系。原生 `asset.upsert` 严格检查新候选及新增引用，保留旧绑定并返回历史候选载荷诊断；无关历史失配不阻止登记新版本。`asset.select` 仍检查本次指定候选的实际成员，历史接受不随新版本转移。登记成功不证明旧载荷恢复、指定选用已更新或工程已经接入；再按本次授权更新相关用途并验证消费者。
+Register current content using new stable candidates and manifests while retaining old identities, decisions, and selection relationships. Native `asset.upsert` strictly checks new candidates and added references, preserves old bindings, and returns historical candidate payload diagnostics; unrelated historical mismatches do not block new-version registration. `asset.select` still checks actual members of the candidate being designated, and historical acceptance does not transfer to new versions. Successful registration does not prove old payload recovery, updated designated selection, or engineering integration; then update related uses under current authorization and verify consumers.
 
-## 3. 技术、接受、选用与接入分别判断
+<a id="3-技术接受选用与接入分别判断"></a>
+## 3. Judge Technical Checks, Acceptance, Selection, and Integration Separately
 
-技术检查说明文件/包符合哪些消费者条件；接受说明谁对哪个版本的哪些方面作出判断；指定选用说明希望在哪个用途使用；实际接入由工程与适用运行证据证明。这些事实可以逐步形成，不压成一个通用状态枚举。
+Technical checks establish which consumer conditions files/packages meet; acceptance states who judged which aspects of which version; designated selection states intended uses; actual integration is proven by engineering and applicable runtime evidence. These facts may develop gradually and are not collapsed into a general state enum.
 
-有项目要求的人工接受时，以真实用户决定为准；已授权由模型判断的范围可按要求完成并如实归因。接受外观不等于自动授权所有运行修改，明确要求“通过后接入”的已有授权也无需再重复询问。
+When project requirements call for human acceptance, actual user decisions govern; scopes authorized for model judgment may be completed as required and attributed truthfully. Acceptance of appearance does not automatically authorize all runtime modifications; existing explicit authorization to “integrate after passing” needs no repeated question.
 
-需要预览才能审阅时，在项目允许范围内建立临时/隔离预览，说明它的用途与保留方式；预览接线不标为正式采用。项目规则禁止某种预览动作时保留其限制，不能用预览名义绕过。
+When previews are needed for review, establish temporary/isolated previews within project-permitted scope and explain their purpose and retention; preview wiring is not formal adoption. Preserve project restrictions on preview actions rather than bypassing them under the name of preview.
 
-新候选或转换结果出现后，按变化范围判断既有证据/决定是否仍适用。绑定精确旧内容的接受不自动转移给已变的内容；明确允许继承的参考或转换范围继续沿用并保留来源关系。不因一次无关修改撤销全部历史接受。
+After new candidates or conversions appear, judge existing evidence/decision applicability by the scope of change. Acceptance bound to exact old content does not automatically transfer to changed content; explicitly inheritable reference or conversion scopes continue with retained source relationships. One unrelated change does not revoke all historical acceptance.
 
-## 4. 批量接受、反馈与撤回
+<a id="4-批量接受反馈与撤回"></a>
+## 4. Batch Acceptance, Feedback, and Withdrawal
 
-提交决定前核对当前对象、所审版本、成员范围与已有决定；防止旧页面把新内容当成刚看过的内容接受。已有工具提供 revision/摘要校验、并发保护或原子写回时使用其支持方式。
+Before submitting decisions, check current objects, reviewed versions, member scope, and existing decisions, preventing an old page from accepting new content as if just reviewed. Use supported revision/digest checks, concurrency protection, or atomic writeback when provided by existing tools.
 
-浏览器本地勾选、localStorage、导出反馈包只证明这些位置保存了数据。通过支持的导入/写回动作落到权威来源并回读后，才声明决定已保存；缺少写回能力时给出可检查的反馈包与具体下一步，不伪造同步。
+Browser-local selections, localStorage, and exported feedback packages prove only that data was saved there. Claim decisions are saved only after supported import/writeback reaches authoritative sources and is read back; without writeback capability, provide an inspectable feedback package and specific next steps rather than fabricating synchronization.
 
-部分写回成功时逐项说明已保存与未保存部分，重试前查询原记录，避免重复或覆盖其他人的决定。尚未提供的通用面板桥接不假定存在。
+When writeback partially succeeds, explain saved and unsaved items individually; query original records before retrying to avoid duplicates or overwriting others' decisions. Do not assume an unavailable general panel bridge exists.
 
-拒绝针对被审对象和范围，保留可用于修订的理由；替代决定保留旧记录与新引用。撤回接受/改变指定选用和回退已经发生的运行修改是不同动作，按实际授权分别处理。仅把台账改回旧版本不会自动回退引擎资源。
+Rejection concerns the reviewed object and scope and retains reasons usable for revision; replacement decisions retain old records and new references. Withdrawing acceptance/changing designated selection and reverting runtime modifications already performed are different actions, handled separately under actual authorization. Merely reverting the ledger to an old version does not automatically revert engine resources.
 
-## 5. 实际接入与部分结果
+<a id="5-实际接入与部分结果"></a>
+## 5. Actual Integration and Partial Results
 
-develop 核对交接对象及允许范围后，完成该消费者需要的文件放置、导入/转换、引用和事件/状态接线，再用实际入口验证。具体方法按本项目引擎/平台执行，资产复制或导入成功不能单独证明显示、动作、声音或玩法已经正确。
+After checking handoff objects and permitted scope, develop completes file placement, import/conversion, references, and event/state wiring required by the consumer, then verifies through actual entry points. Use methods for the project's engine/platform; successful copying or importing alone cannot prove correct display, motion, sound, or gameplay.
 
-复用既有采用/生成脚本前，核对其用途、允许的输入/版本与当前目标。保存某次历史基线或明确拒绝重放的脚本不能因为名字合适就重跑；应使用当前支持的局部接入方式，保留其防回滚条件。
+Before reusing adoption/generation scripts, check purpose, permitted inputs/versions, and current goals. Scripts preserving historical baselines or explicitly rejecting replay cannot be rerun merely because their name fits; use currently supported local integration methods and retain anti-rollback conditions.
 
-同一版本允许 A、B 两个消费者使用，A 成功而 B 失败时：保留有效接受范围，记录 A 的真实结果与 B 的失败；B 原来使用什么以其实际引用为准。原目标要求两者都接入时，Task 保留 B 的未完成义务；不把 A 的证据扩成整批成功。
+If the same version is allowed for consumers A and B, and A succeeds while B fails: retain effective acceptance scope and record A's actual result and B's failure; B's previous resource is determined by its actual references. If the original goal requires both integrations, the Task retains B's unfinished obligation; do not expand A's evidence into whole-batch success.
 
-素材本身的问题回到 assets，消费者接线/生命周期问题回到 develop，输入契约需改变时回到相关 design。已有 Task 内的修订保留原工作身份；独立后续交付才按共同规则另建工作。
+Material problems return to assets, consumer wiring/lifecycle problems to develop, and input-contract changes to relevant design. Revisions within an existing Task retain original work identity; only independent follow-up deliveries create separate work under common rules.

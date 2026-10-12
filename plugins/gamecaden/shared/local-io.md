@@ -1,14 +1,16 @@
-# 本地读写工具：调用与恢复
+<a id="本地读写工具调用与恢复"></a>
+# Local read/write tools: invocation and recovery
 
-当前实现提供 Python 库和命令行入口，使用 [v1 接口合同](io-v1.md)中的 14 个操作。[第十四步的本机 HTTP 宿主](../panels/README.md)已复用同一库，按独立启动配置提供受控面板接入；未自动修改 Codex 宿主配置，也未安装 MCP 服务。
+The current implementation provides a Python library and command-line entry point, using the 14 operations in the [v1 interface contract](io-v1.md). [Step 14's local HTTP host](../panels/README.md) reuses the same library and provides controlled panel access through separate startup configuration; it does not automatically modify Codex host configuration or install an MCP service.
 
-材料、条件和关系的派生读取另由 [workflow_governance.py](../scripts/workflow_governance.py) 提供；它不是第十五个核心写入操作，不维护新的业务状态。字段、CLI 与面板用法见 [governance](governance.md) 和[面板衔接](panel-workflow.md)。
+Derived reading of materials, conditions, and relationships is provided separately by [workflow_governance.py](../scripts/workflow_governance.py). It is not a fifteenth core write operation and maintains no new business state. Fields, CLI, and panel usage are documented in [governance](governance.md) and [panel integration](panel-workflow.md).
 
-## 1. 环境与调用
+<a id="1-环境与调用"></a>
+## 1. Environment and invocation
 
-工具就绪与调用以本节为准。读取 Skill 正文、只读咨询或 init 的现场 inspect 不需要准备 Python 依赖；真正采用项目、首个本地 I/O 或启动面板前，先确认实际安装包根并检查工具环境。若 inspect 本身调用本地工具，也按本节处理，但不因此自动安装或写项目指引。
+This section governs tool readiness and invocation. Reading Skill prose, read-only consultation, or init's on-site inspect does not require preparing Python dependencies. Before actually adopting the workflow for a project, performing the first local I/O, or starting the panel, confirm the actual installed bundle root and check the tool environment. If inspect itself invokes local tools, follow this section as well, without automatically installing or writing project guidance as a consequence.
 
-[gamecaden_runtime.py](../scripts/gamecaden_runtime.py) 是标准库启动入口，需要系统已有 Python 3.12+。它为 [requirements.txt](../scripts/requirements.txt) 准备独立环境，不修改全局 Python，不在插件 cache 或游戏工程内放置 venv。缺失或过旧的 Python 需先由宿主准备 Python 3.12+；网络、下载源或目录权限失败时保留明确错误，不承诺无条件成功。
+[gamecaden_runtime.py](../scripts/gamecaden_runtime.py) is a standard-library launcher requiring an existing system Python 3.12+. It prepares an isolated environment for [requirements.txt](../scripts/requirements.txt), without modifying global Python or placing a venv in plugin caches or game projects. Missing/outdated Python first requires the host to prepare Python 3.12+. Retain explicit errors for network, download-source, or directory-permission failures; do not promise unconditional success.
 
 ```powershell
 & $python -B "$bundle/scripts/gamecaden_runtime.py" check
@@ -16,27 +18,27 @@
 & $python -B "$bundle/scripts/gamecaden_runtime.py" run io --project-root $gameRoot --request $requestFile
 ```
 
-`check` 只读检查；`setup` 幂等准备。两者返回 JSON，核对 `status`、`ready`、`python_executable` 和 `dependencies`，以 `ready=true` 确认工具环境。`run` 在缺依赖时自动准备后继续原调用；准备日志写 stderr，正常业务 stdout 只返回原工具内容。准备失败返回明确的 not-ready 错误，不调用业务工具。
+`check` is read-only; `setup` prepares idempotently. Both return JSON. Check `status`, `ready`, `python_executable`, and `dependencies`; `ready=true` confirms the tool environment. `run` automatically prepares missing dependencies before continuing the original invocation. Preparation logs go to stderr; normal business stdout returns only the original tool output. Preparation failure returns an explicit not-ready error without calling the business tool.
 
-默认缓存为 Windows `%LOCALAPPDATA%/Gamecaden/runtimes`、macOS `~/Library/Caches/Gamecaden/runtimes`、Linux `${XDG_CACHE_HOME:-~/.cache}/Gamecaden/runtimes`。可用 `GAMECADEN_RUNTIME_HOME` 或 `--runtime-home DIR` 指定缓存目录。环境按 requirements 字节、Python 实现及主次版本、平台与架构隔离；依赖文件变化会选择新环境。
+Default caches are Windows `%LOCALAPPDATA%/Gamecaden/runtimes`, macOS `~/Library/Caches/Gamecaden/runtimes`, and Linux `${XDG_CACHE_HOME:-~/.cache}/Gamecaden/runtimes`. Set `GAMECADEN_RUNTIME_HOME` or `--runtime-home DIR` to specify a cache directory. Environments are isolated by requirements bytes, Python implementation and major/minor version, platform, and architecture; dependency-file changes select a new environment.
 
-托管安装忽略 pip 配置文件和目标、前缀、用户级安装覆盖，先确认解释器属于独立环境；下载源、代理和证书可通过对应 `PIP_INDEX_URL`、`PIP_PROXY`、`PIP_CERT` 等环境参数提供。已有旧式 CLI 直接调用缺依赖时也转入同一入口；库被导入时不自动准备。缺依赖时仅请求 `--help` 会返回就绪诊断，不下载依赖。
+Managed installation ignores pip configuration files and target, prefix, and user-install overrides, first confirming that the interpreter belongs to the isolated environment. Download sources, proxies, and certificates may be provided through corresponding environment parameters such as `PIP_INDEX_URL`, `PIP_PROXY`, and `PIP_CERT`. Existing direct legacy CLI calls also route through this launcher when dependencies are missing; importing the library does not automatically prepare them. Requesting only `--help` with missing dependencies returns readiness diagnostics without downloading dependencies.
 
-已有就绪 Python 可通过 `check --python PATH` 或 `run --python PATH io ...` 复用。外部 Python 缺依赖时返回明确错误，不自动向它执行 pip 安装。禁止自动下载准备时使用：
+Reuse an already-ready Python through `check --python PATH` or `run --python PATH io ...`. Missing dependencies in an external Python return an explicit error; pip installation into it is not automatic. To prohibit automatic download/preparation, use:
 
 ```powershell
 & $python -B "$bundle/scripts/gamecaden_runtime.py" run --no-install io --project-root $gameRoot --request $requestFile
 ```
 
-`--runtime-home` 可用于 check/setup/run；run 的启动参数放在工具名前。支持工具 `io`、`governance`、`panel`、`contracts`，工具名之后的参数原样转交对应入口。例如 `run governance --project-root ... --focus T-003`、`run panel --config ... --state-dir ... --port 8875`、`run contracts`。
+`--runtime-home` applies to check/setup/run. Place run launcher options before the tool name. Supported tools are `io`, `governance`, `panel`, `contracts`; arguments after the tool name pass unchanged to that entry point. Examples: `run governance --project-root ... --focus T-003`, `run panel --config ... --state-dir ... --port 8875`, `run contracts`.
 
-这里 `$python` 是 Python 3.12+ 启动程序，`$bundle` 是实际完整安装包根，`$gameRoot` 是已确认的项目根，`$requestFile` 是填写真实上下文的 UTF-8 JSON。I/O 参数、退出码和 stdin/stdout 保持 [workflow_io.py](../scripts/workflow_io.py) 的接口：`--request` 接收 UTF-8 JSON 请求文件或 `-`（stdin）；成功退出码为 0，拒绝、冲突或未完成为 2，stdout 返回 JSON。
+Here `$python` is a Python 3.12+ launcher, `$bundle` is the actual complete installed bundle root, `$gameRoot` is the confirmed project root, and `$requestFile` is UTF-8 JSON containing actual context. I/O arguments, exit codes, and stdin/stdout retain the [workflow_io.py](../scripts/workflow_io.py) interface: `--request` accepts a UTF-8 JSON request file or `-` (stdin); success exits with 0, rejection/conflict/incompletion with 2, and stdout returns JSON.
 
-就绪成功后，仍需核对真实 I/O 响应与回读结果；手工保存记录不能作为 I/O 已验证的证据。环境未就绪时报告原因和未完成范围，保留项目原状态。
+After readiness succeeds, still check actual I/O responses and read-back results. Manually saving records is not evidence of validated I/O. If the environment is not ready, report the reason and unfinished scope, preserving the project's original state.
 
-项目根由宿主参数绑定，请求里的 context 不能扩大它。context.project_root 使用绝对路径；context.workspace 与 base_dir 的相对值基于项目根解析。业务 payload/Ref 路径基于 base_dir；省略 base_dir 时使用项目根。Workspace document 本身的映射路径始终基于目标 workspace.yaml，正文/无结构元数据的相对路径由调用者按目标文档准备。
+Host arguments bind the project root; request context cannot expand it. context.project_root uses an absolute path; relative context.workspace and base_dir values resolve against that root. Business payload/Ref paths use base_dir, or the project root when omitted. Mapping paths in the Workspace document itself always use the target workspace.yaml as their base. Callers prepare relative paths in bodies/unstructured metadata against the target document.
 
-示例请求：
+Example request:
 
 ```json
 {
@@ -48,82 +50,89 @@
 }
 ```
 
-示例中的根、ID 都应替换为已定位项目的真实值。examples/v1/io 中的 C:/ExampleGame 是格式样例，不是本机执行目标。JSON 语法错误、非对象顶层或无法识别的请求信封返回简短 invalid_request/error 结果，不伪装成某个合法操作的成功响应。
+Replace example roots and IDs with actual values from the located project. C:/ExampleGame in examples/v1/io is a format example, not a local execution target. Invalid JSON syntax, non-object top levels, or unrecognized request envelopes return concise invalid_request/error results rather than masquerading as successful responses from valid operations.
 
-## 2. 实际能力
+<a id="2-实际能力"></a>
+## 2. Actual capabilities
 
-| 操作组 | 本地实现 |
+| Operation group | Local implementation |
 |---|---|
-| workspace.inspect/configure | 识别已有映射、原生默认位置、来源与缺口；条件保存映射，保留 YAML 注释 |
-| record.list/read/resolve | 原生记录/内嵌记录/转向、原文读取、绝对位置与引用基准、分页及变化检测 |
-| record.create/update/transition | 稳定编号、少量元数据/正文、附属文档、生命周期及理由记录；身份/正式记录保护 |
-| record.extract | 目标先写入，源后转向；相对引用重定位、中断回读和明确冲突修复 |
-| decision.record | 独立/内嵌创建、事件追加、真实来源校验入口、跨 Decision 替代和局部撤回范围检查 |
-| asset.upsert/select | 身份/候选登记、set/clear 指定关系；校验备用 manifest 和实际成员字节 |
-| view.build | Progress/Timeline/Assets 的 JSON 读模型，可保存至原有或指定位置；不推断通过百分比或运行采用 |
-| operation.status | 读取原操作回执及可观察的恢复情况，不写原文档 |
+| workspace.inspect/configure | Recognize existing mappings, native default locations, sources, and gaps; conditionally save mappings, preserving YAML comments |
+| record.list/read/resolve | Native/embedded records/forwards, raw-text reading, absolute locations and reference bases, pagination and change detection |
+| record.create/update/transition | Stable numbering, small metadata/bodies, attached documents, lifecycles and recorded reasons; identity/formal-record protection |
+| record.extract | Write targets before forwarding sources; relocate relative references, read back interruptions, and explicitly repair conflicts |
+| decision.record | Independent/embedded creation, event appends, actual-source validation entry point, cross-Decision replacement and partial-withdrawal scope checks |
+| asset.upsert/select | Identity/candidate registration and set/clear designated relationships; validate fallback manifests and actual member bytes |
+| view.build | JSON read models for Progress/Timeline/Assets, saveable at existing or specified locations; no inferred pass percentages or runtime adoption |
+| operation.status | Read original operation receipts and observable recovery conditions without writing original documents |
 
-原生 Markdown/YAML/JSON 及 UTF-8（包括 BOM、CRLF）已实现。修改保留未改动的正文和 YAML 注释；新增结构用序列化器处理。二进制对象在原生集合内外均可按路径只读及绑定摘要，正文为 null，无正式记录身份和写能力。Windows 长源路径的物理读取/枚举使用扩展路径，返回的逻辑路径、项目边界与链接限制保持一致。
+Native Markdown/YAML/JSON and UTF-8 (including BOM, CRLF) are implemented. Edits preserve unchanged bodies and YAML comments; serializers handle new structure. Binary objects inside/outside native collections support read-only access by path and digest binding, with null bodies and no formal record identity or write capability. Physical reads/enumeration of long Windows source paths use extended paths; returned logical paths, project boundaries, and link restrictions remain consistent.
 
-旧格式无适配器时按原文只读。来源声明为原生但损坏时返回具体格式错误。既有 sources 的外部归属、重叠解释或限定来源不能被绕过；字段 `owner` 不是操作授权。
+Material titles, headings, prose, and readable values may use the user's language; native reading/writing does not translate them or require English headings. Governance excerpts retain the first nonempty actual H2 section in its original language, without deriving status or acceptance from its label. Extracted records retain unrebased code/free-text path provenance as `unrebased_relative_reference_base` data rather than inserting prose in the toolkit's language. Explicit recovery still recognizes the previous Chinese provenance note and preserves an already-written matching target.
 
-尚未建立 workspace 时，明确交付可以使用原生默认 Task 集合。已有映射后新增一类尚未登记的文档/资产台账时，工具可以在未被其他来源占用的新位置创建，并返回 `source_registration_required` 和可用的 `source_proposal`；init 随后用 workspace.configure 保存明确的映射。创建不会暗中改变默认来源；登记前不能假定新 ID 已进入已有来源列表。提取则要求目标已有可用原生来源，保持原 ID 可解析。
+Legacy formats without adapters are read-only as raw text. Sources declared native but damaged return specific format errors. Existing sources' external ownership, overlapping interpretations, and source qualifications cannot be bypassed; `owner` is not operation authorization.
 
-## 3. 正常写入
+Before a workspace exists, explicit deliveries may use native default Task collections. After mappings exist, when adding an unregistered document type/asset ledger, tools may create at new locations not occupied by other sources, returning `source_registration_required` and an available `source_proposal`. init then saves explicit mappings through workspace.configure. Creation does not silently change defaults; before registration, do not assume new IDs belong to existing source lists. Extraction requires an available native target source so the original ID remains resolvable.
 
-1. 从 record.read/resolve 取得真实承载路径、reference_base、源文件 revision 和当前正文。
-2. 保留用户本次范围和不相关内容，准备指定操作。更新/显式创建目标分别提供匹配 revision 或 null（期望不存在）。
-3. 需要当前对象一致性时附 expected_subjects。recorded_at 由实际写入准备过程生成；决策本身的发生时间未知仍可保留 null。
-4. 同一次逻辑请求保持 request_id 和载荷。核对 response.status、逐文件 writes、receipt 和错误；按原 Skill 规则更新当前工作中的实际结果。
+<a id="3-正常写入"></a>
+## 3. Normal writes
 
-同一文件中的短记录、独立记录和 Quick/standard 都走相同保护边界。record.update 也检查所承载的正式内嵌块，不能借全量正文替换绕过专门动作。source_revision 与检查对象 Version 分别核对。
+1. Obtain the actual carrier path, reference_base, source-file revision, and current body from record.read/resolve.
+2. Preserve the user's current scope and unrelated content while preparing the specified operation. Provide matching revisions for updates or null (expecting absence) for explicit creation targets.
+3. Attach expected_subjects when current subject consistency is needed. recorded_at is generated during actual write preparation; unknown decision occurrence time may remain null.
+4. Keep request_id and payload unchanged for the same logical request. Check response.status, per-file writes, receipt, and errors; update actual results in current work according to the original Skill rules.
 
-原生编号集合的子目录支持自然文件名的 `.md`、`.json`、`.yaml`、`.yml` 普通附件，如 `SOURCE.md`、`FILES.md`；集合根仍兼容 design/plan/history/readme/index 名称，不把根目录任意文件都当附件。task/epic/evidence/decision/asset 主文件名、以 T-/E-/EV-/D-/A-数字开头的文件名以及声明正式管理 ID 的内容仍按正式记录校验；缺 ID 但带 quick/standard mode 和 epic 的 Task 元数据也不能降级。坏原生块和重复正式 ID 继续报错。
+Short records within files, independent records, and Quick/standard share the same protection boundary. record.update also checks formal embedded blocks in its carrier; whole-body replacement cannot bypass dedicated actions. Check source_revision and checked-subject Version separately.
 
-普通 Markdown 附件的对象 frontmatter 保留 metadata/body；生产者局部 id/status/events 可用 set_fields 更新，不成为工作身份、生命周期或正式事件，也不参与编号引用预留。非对象 frontmatter 保留完整文本，metadata 为 null。无正式身份的 JSON/YAML 附件同样以完整文本返回 body，全文更新仍须语法有效。任何更新仍须回读原来源，不能把普通附件改成正式工作记录；不新增 `.txt` 扫描。
+Subdirectories of native numbered collections support ordinary `.md`, `.json`, `.yaml`, `.yml` attachments with natural filenames such as `SOURCE.md`, `FILES.md`. Collection roots retain compatibility with design/plan/history/readme/index names; arbitrary root files are not all attachments. Main task/epic/evidence/decision/asset filenames, filenames beginning with T-/E-/EV-/D-/A- plus digits, and content declaring formal management IDs are still validated as formal records. Task metadata without id but with quick/standard mode and epic cannot be downgraded either. Malformed native blocks and duplicate formal IDs still produce errors.
 
-`record.create` 的 attachment 须指定真实 Task/Epic owner 和显式 `.md` path，位于其实际附件目录或子目录。新 Task 材料目录就是主文件所在的 `tasks/T-编号-短名/`，旧平铺 Task 仍使用 `tasks/T-编号/`；后续改标题不搬文件。附件不分配工作 ID 或生命周期。创建在写入前按实际来源的读取规则校验，无法回读时返回 invalid_record 且不写目标；已有材料保留原字节和原归属，不为套用新布局自动迁移。
+Object frontmatter in ordinary Markdown attachments retains metadata/body. Producer-local id/status/events may be updated through set_fields; they do not become work identities, lifecycles, or formal events and do not reserve numbered references. Non-object frontmatter retains complete text with null metadata. JSON/YAML attachments without formal identities likewise return full text as body; whole-text updates must remain syntactically valid. Every update still requires reading back the original source; ordinary attachments cannot be converted into formal work records. No `.txt` scanning is added.
 
-项目/版本级 PDP 使用 `record.create` 的 `record_type: development-plan`，无 Task/Epic owner、管理 ID 或 transition。省略 path 时提供 `metadata.title`，默认 `plans/<安全标题>.md`；显式原路径和改标题后的更新保持位置稳定。创建返回 development-plan 来源提案，按 `workspace.configure` 登记后回读/list；当前数量与编排含义仍由 [PDP 合同](phased-development.md)核对。
+`record.create` attachment requires an actual Task/Epic owner and an explicit `.md` path within its actual attachment directory or subdirectories. New Task material directories are the main file's `tasks/T-<number>-<short-name>/`; legacy flat Tasks retain `tasks/T-<number>/`. Later title changes do not move files. Attachments receive no work ID or lifecycle. Before writing, creation validates against the actual source's reading rules; inability to read back returns invalid_record without writing the target. Existing materials retain original bytes and ownership, without automatic migration to impose the new layout.
 
-handoff 提供 `source_refs` 和 `snapshot_scope`；工具读取实际来源参与修订核对，并保存工具快照时间。省略 path 默认在 handoffs/ 生成 UTC 日期/安全标题/时间名称，同秒冲突追加序号；同 request_id 重放返回原位置，新请求留新快照。范围、正文和旧路径沿[派生输出](derived-outputs.md)，不把交接作为新的工作实体。
+Project/version-level PDP uses `record.create` with `record_type: development-plan`, without Task/Epic owner, management ID, or transition. Supply `metadata.title` when omitting path; the default is `plans/<safe-title>.md`. Explicit original paths and updates after title changes remain stable. Creation returns a development-plan source proposal; register with `workspace.configure`, then read back/list. Current count and orchestration meaning are still checked against the [PDP contract](phased-development.md).
 
-当前自动内容验证支持单文件 SHA-256，以及本包备用 manifest 中每个实际成员的 SHA-256；候选 Subject 可从其已绑定 candidate.manifest 得到隐含 proof。其他生产工具 manifest、git/build/named 的当前适用性需要对应适配器，当前请求会明确返回 unsupported_format，不把未解析的版本当作通过。已有历史记录仍可保存这些声明，不因此虚构当前验证。
+handoff provides `source_refs` and `snapshot_scope`; tools read actual sources for revision checks and save tool snapshot time. When path is omitted, default names under handoffs/ use UTC date/safe title/time; same-second collisions append a sequence number. Replaying the same request_id returns the original location; new requests retain new snapshots. Scope, prose, and old paths follow [derived outputs](derived-outputs.md); handoffs are not new work entities.
 
-`asset.upsert` 的创建核验全部新候选；更新保护已有候选 ID/manifest/version 和原选用关系，严格核验新候选及新增引用。返回 `validated_candidate_ids` 和 `historical_candidate_diagnostics`，后者说明保留旧载荷的失配/不可读情况，不将其改为通过。`asset.select set` 仍逐项核对所选候选；恢复登记、更新选用及工程采用分开，流程见[候选快照与遗留恢复](asset-handoff.md#候选快照与遗留恢复)。
+Current automatic content validation supports single-file SHA-256 and SHA-256 for every actual member of this bundle's fallback manifest. Candidate Subjects may obtain implicit proof from their bound candidate.manifest. Current applicability of other producing tools' manifests and git/build/named versions requires corresponding adapters; current requests explicitly return unsupported_format rather than treating unresolved versions as passing. Existing historical records may still preserve these declarations without inventing current validation.
 
-## 4. 决定者与接受来源
+`asset.upsert` creation validates all new candidates; updates protect existing candidate ID/manifest/version and selection relationships, strictly checking new candidates and added references. Results return `validated_candidate_ids` and `historical_candidate_diagnostics`. The latter explains mismatches/unreadability of retained old payloads without converting them to passing. `asset.select set` still checks selected candidates individually. Recovery registration, selection updates, and engineering adoption remain separate; see [candidate snapshots and legacy recovery](asset-handoff.md#candidate-snapshots-and-legacy-recovery).
 
-CLI 的默认记录者为 agent/local-cli，`--actor-id` 可标识实际 Agent。它可以记录该 Agent 负责的决定；不能靠 payload 的 actor:user 冒充用户选择。
+<a id="4-决定者与接受来源"></a>
+## 4. Decision-maker and acceptance sources
 
-Python 调用方可用 `Workflow(project_root, actor=..., decision_authorizer=...)` 提供可信宿主身份与回调。回调接收完整事件和请求，必须核对实际用户输入/宿主事件及精确对象；回调不由请求 JSON 选择。已知用户决定无需再次请求同义批准。
+The CLI's default recorder is agent/local-cli; `--actor-id` may identify the actual Agent. It may record decisions that Agent owns; payload actor:user cannot impersonate a user choice.
 
-本轮测试校验了拒绝伪造归因和明确宿主回调两条路径。后续面板提供了[本机启动会话绑定](panel-bridge-v1.md)，不会将它声称为 Codex 账号认证或真人证明。CLI 的身份界限保持不变。已有会话的决定仍可按原工作流规则保存。
+Python callers may provide trusted host identity and a callback through `Workflow(project_root, actor=..., decision_authorizer=...)`. The callback receives the complete event and request and must check actual user input/host events and exact subjects. Request JSON cannot choose the callback. Known user decisions do not require equivalent approval again.
 
-## 5. 重试、中断与冲突
+This round's tests validated both rejection of fabricated attribution and explicit host callbacks. The subsequent panel provides [local startup-session binding](panel-bridge-v1.md), without claiming Codex account authentication or proof of a human. CLI identity boundaries remain unchanged. Existing-session decisions may still be saved under original workflow rules.
 
-项目内 `.game-workflow-io/` 保存锁和操作回执，不保存第二份 Task 状态。回执中包含原请求和恢复材料，应留在本机操作环境；发行/项目接入时按项目约定排除打包和版本控制。工具本身不修改 .gitignore 或执行 Git。
+<a id="5-重试中断与冲突"></a>
+## 5. Retries, interruptions, and conflicts
 
-- 请求结果未知：先 operation.status；需要继续且条件仍成立时重发原 request_id 和原载荷。
-- 相同请求再次到达：复用原编号和结果。相同 ID 换载荷：request_id_conflict，原结果另查。
-- 多文件仅完成一部分：回执逐项说明，恢复核对实际文件，不重新创建 Task 或清空已有结果。
-- 原操作确认遇到外部修改：保留外部内容，结束该次冲突尝试；使用新 revision 和新请求表达已重新核对的修改。
-- 提取在目标已写后遇到源文件外部修改：原回执为 settled/partial。新的 record.extract 提供 `recovery_of`、源路径/原内嵌 ID、原目标以及两者的新 revision；仅复用同一原操作、同一 ID、内容一致的目标，再切换源为 forward。
+Project-local `.game-workflow-io/` stores locks and operation receipts, not a second Task state. Receipts contain original requests and recovery materials and should remain in the local operating environment. Exclude them from packaging/version control according to project conventions during distribution/onboarding. Tools themselves do not modify .gitignore or execute Git.
 
-`written` 表示有本操作的已核实写入依据。崩溃后仅观察到目标字节、无法确认写入归属时，返回 unchanged 并用 note 说明；不会把外部恰好写出的相同内容算作本操作写入。已有 written 结果被外部恢复或改动时，未结算操作查询会标出冲突，重放保留该变化。
+- Unknown request outcome: first operation.status; if continuation is needed and conditions still hold, resend the original request_id and payload.
+- Identical request arrives again: reuse original numbers and results. Same ID with changed payload: request_id_conflict; query original results separately.
+- Multi-file operation only partly completed: receipts explain each item; recovery checks actual files without recreating Tasks or clearing existing results.
+- Original operation confirmed to encounter external edits: preserve external content and end that conflict attempt; use new revisions and a new request for rechecked changes.
+- Extraction encounters external source edits after writing the target: original receipt is settled/partial. A new record.extract supplies `recovery_of`, source path/original embedded ID, original target, and new revisions for both. Reuse only the same original operation, same ID, and matching target content, then switch the source to a forward.
 
-settled 回执说明原操作当时的结果；需要现在的内容时另读原文档。未结算操作会结合现场给出恢复观察。清理回执可能失去重试去重和编号保留依据，因此未决操作先恢复；普通清理/迁移需遵守已有范围和留存需要。
+`written` means verified evidence of a write by this operation exists. After a crash, when only target bytes are observable and attribution is unconfirmed, return unchanged with an explanatory note; identical content coincidentally written externally is not counted as this operation's write. When existing written results are externally restored/changed, queries for unsettled operations identify conflicts and replay preserves the changes.
 
-## 6. 验证范围与实用边界
+settled receipts describe original outcomes at the time; read original documents separately for current content. Unsettled operations report recovery observations from the actual scene. Clearing receipts may lose retry deduplication and ID reservation bases, so restore pending operations first. Ordinary cleanup/migration follows existing scope and retention needs.
 
-项目级 OS 锁协调本工具的多个进程，退出后由 OS 释放。源文件采用写前修订比较、临时文件、替换和回读；恢复保留原分配及逐文件结果。Windows 目录联接和符号链接入口当前拒绝，需要实际受支持的适配方式。
+<a id="6-验证范围与实用边界"></a>
+## 6. Validation scope and practical boundaries
 
-这些保障针对本地协作调用。外部编辑器不参加项目锁；工具检测可观察的版本变化，不能把任意非合作编辑器纳入同一文件事务。本轮没有验证断电、网络盘或跨机器写入。
+Project-level OS locks coordinate this tool's multiple processes and are released by the OS on exit. Source files use pre-write revision comparisons, temporary files, replacement, and read-back; recovery preserves original allocations and per-file outcomes. Windows directory-junction and symbolic-link entry points are currently rejected; an actually supported adaptation is required.
 
-JSON views 保留来源、原文、时间和诊断。raw 源无法完整枚举结构化记录时 complete=false；重复 ID 和未结算操作是另外的诊断，不一概改变扫描完整性。分页是否还有内容看 next_cursor。Timeline 当前提供带来源的记录/事件材料，正文中的任意历史叙述不伪造为精确时间线。
+These guarantees cover local cooperative calls. External editors do not participate in project locks. Tools detect observable version changes but cannot include arbitrary non-cooperative editors in the same file transaction. This round did not validate power loss, network drives, or cross-machine writes.
 
-新视图输出只使用 JSON/HTML；当前 view.build 仅保存 `.json`，HTML 由现有面板读取实际来源，静态 HTML 导出另以实际导出器能力判断。保存不是启动面板前置，Progress 的 Task/Epic 汇总不替代 Roadmap/PDP 的完整成果/阶段判断；刷新与冻结留存按[派生输出](derived-outputs.md)。
+JSON views retain sources, original prose, timestamps, and diagnostics. complete=false when raw sources cannot fully enumerate structured records. Duplicate IDs and unsettled operations are separate diagnostics and do not uniformly change scan completeness. next_cursor indicates remaining pages. Timeline currently provides records/event materials with sources; arbitrary historical narratives in prose are not fabricated into precise timelines.
 
-`record.list` 的 items、source_revisions 和 diagnostics 各按同一 offset/limit 分页；记录读完后可能仍有修订/诊断页，按 next_cursor 结束。summary 给出全扫描指纹、三类总数及按 code 的诊断计数，详情范围为 page；分页详情不等于全量验收。游标及面板前后核对使用同查询的全扫描指纹，来源或查询变化使游标失效。仍需全扫描以保持一致性；缩小实际扫描范围通过[来源登记](workspace.md#2-便携字段)，不靠 scope 文本静默排除内容。
+New view outputs use only JSON/HTML. Current view.build saves only `.json`; existing panels produce HTML by reading actual sources, while static HTML export depends on actual exporter capabilities. Saving is not a panel-startup prerequisite. Progress Task/Epic summaries do not replace full Roadmap/PDP outcome/stage judgments; refreshing and frozen retention follow [derived outputs](derived-outputs.md).
 
-工具不执行引擎、素材生成或 Git 交付，也不替代 verify/close 的实际判断。开发测试见维护仓库的 [test_workflow_io.py](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/tests/test_workflow_io.py)；包内纯合同检查为 [check_contracts.py](../scripts/check_contracts.py)。
+`record.list` items, source_revisions, and diagnostics are each paginated with the same offset/limit. Revision/diagnostic pages may remain after records are exhausted; continue until next_cursor ends. summary provides the full-scan fingerprint, totals for all three categories, and diagnostic counts by code; detail scope is page. Paginated detail is not complete acceptance. Cursors and panel before/after checks use the full-scan fingerprint for the same query; source/query changes invalidate cursors. Full scanning is still needed for consistency; narrow actual scanning through [source registration](workspace.md#2-portable-fields), not silent exclusion based on scope text.
+
+Tools do not run engines, generate assets, or perform Git delivery, and do not replace verify/close judgments. Development tests are in the maintenance repository's [test_workflow_io.py](https://github.com/immortalbeating/gamecaden/blob/v0.1.0/tests/test_workflow_io.py); bundle-local pure contract checks are in [check_contracts.py](../scripts/check_contracts.py).

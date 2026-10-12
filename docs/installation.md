@@ -1,36 +1,38 @@
-# 安装、更新与独立使用
+# Installation, Updates, and Standalone Use
 
-维护与公开发行已统一到 [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden)。当前版本为0.1.3；旧0.1.0/0.1.1/0.1.2保持原内容。原账号地址仅保留GitHub兼容跳转。已有安装更换来源见[仓库迁移](repository-migration.md)。
+Maintenance and public releases are unified at [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden). The current version is 0.2.0; published 0.1.x versions retain their original content. The former account address remains only as a GitHub compatibility redirect. See [repository migration](repository-migration.md) for switching existing installations.
 
-0.1.3 提供统一环境入口；固定旧 tag 不会获得首次使用修复。系统需 Python 3.12+ 与 venv 支持，本地工具首次调用自动准备独立依赖。
+0.2.0 includes the unified environment entry point and updates to project documents, evidence, and planning; pinned older tags retain their corresponding contracts. The system needs Python 3.12+ with venv support; the first local-tool invocation automatically prepares independent dependencies.
 
-Gamecaden提供Codex插件、Claude Code插件和完整目录的Skill安装。插件提供八个命名空间职责；独立入口使用包根的`gamecaden` Skill，再读取同包职责。按宿主实际列表核对名称，安装后在新会话使用。
+Gamecaden provides Codex plugins, Claude Code plugins, and complete-directory Skill installation. Plugins provide eight namespaced responsibilities; the standalone entry point uses the package-root `gamecaden` Skill, then reads responsibilities from the same package. Check names against the host's actual list and use a new session after installation.
 
-本轮Codex独立目录的新进程实际发现九个入口：`gamecaden:gamecaden`总入口及八个`gamecaden:flow`等职责，均为项目Skill而非marketplace安装。通用CLI报告的“一个Skill”是一个完整安装包，宿主还可能发现包内职责。Claude插件实际发现八职责；Claude独立目录已核对完整复制与相对资源，尚未运行模型确认其原生Skill列表。
+The same complete Gamecaden plugin/package serves English and Chinese users; there is no separate locale installer. English workflow text is complete, with a [Chinese usage guide](https://github.com/immortalbeating/gamecaden/blob/main/README.zh-CN.md). New material documents default to the user's current language, regardless of the language of Skills, templates, input references, or other project files; only an explicit current/user or effective project document-language preference selects another language, and current explicit instructions override older preferences. Existing documents retain their language unless conversion is requested. See [language preferences](../plugins/gamecaden/shared/workspace.md#6-language-preferences) for separate project communication and document preferences. This release translates workflow text; panel controls currently remain Chinese.
 
-## Codex插件
+In the installation evidence for the earlier round, a new process for the standalone Codex directory actually discovered nine entry points: the `gamecaden:gamecaden` main entry and eight responsibilities such as `gamecaden:flow`, all as project Skills rather than marketplace installations. The general CLI's “one Skill” refers to one complete installation package; hosts may also discover responsibilities within it. The Claude plugin actually discovered eight responsibilities; complete copying and relative resources were checked for the Claude standalone directory, but no model run confirmed its native Skill list.
 
-在支持插件命令的Codex CLI中执行：
+## Codex Plugin
+
+Run in a Codex CLI supporting plugin commands:
 
 ```sh
 codex plugin marketplace add immortalbeating/gamecaden
 codex plugin add gamecaden@gamecaden --json
 ```
 
-未指定`--ref`时跟踪仓库默认分支，本仓库为`main`。这里的跟踪指更新时取该分支，不等于后台自动更新。后续更新使用相同命令，不需要填写新版本号：
+Without `--ref`, installation tracks the repository's default branch, `main` here. Tracking means taking that branch during updates, not automatic background updates. Later updates use the same commands without a new version number:
 
 ```sh
 codex plugin marketplace upgrade gamecaden
 codex plugin add gamecaden@gamecaden --json
 ```
 
-第一步刷新安装源，第二步安装该源当前提供的插件版本。新开会话回读真实版本，已有会话的列表不能证明新内容已加载。
+The first step refreshes the installation source, and the second installs the plugin version currently supplied by that source. Read back the actual version in a new session; existing session lists cannot prove new content loaded.
 
-### 固定版本及切换更新方式
+### Pinned Versions and Switching Update Methods
 
-复现或稳定固定场景可以指定tag，例如`codex plugin marketplace add immortalbeating/gamecaden --ref v0.1.3`。固定tag后刷新仍读取该tag，不会自动跳到以后发布的tag；主动升级需改目标版本。
+For reproducibility or stable pinned use, specify a tag, for example `codex plugin marketplace add immortalbeating/gamecaden --ref v0.2.0`. Refreshing a pinned tag still reads that tag rather than automatically moving to later released tags; deliberate upgrades require changing the target version.
 
-如果此前登记了`--ref v0.1.0`，改用默认分支前明确替换旧的marketplace登记：
+If previously registered with `--ref v0.1.0`, explicitly replace the old marketplace registration before switching to the default branch:
 
 ```sh
 codex plugin marketplace remove gamecaden
@@ -38,18 +40,18 @@ codex plugin marketplace add immortalbeating/gamecaden
 codex plugin add gamecaden@gamecaden --json
 ```
 
-只对名为`gamecaden`的公开安装源使用上述切换。此前演练的其他本地来源独立处理，不能视为已自动迁移。
+Use this switch only for the public installation source named `gamecaden`. Other local sources from earlier trials are handled independently and cannot be considered automatically migrated.
 
-## Claude Code插件
+## Claude Code Plugin
 
-在终端中执行，默认示例明确选择用户级：
+Run in a terminal; the default example explicitly selects user-level scope:
 
 ```sh
 claude plugin marketplace add immortalbeating/gamecaden
 claude plugin install gamecaden@gamecaden --scope user
 ```
 
-在Claude Code交互会话内也可使用：
+Within an interactive Claude Code session, you can also use:
 
 ```text
 /plugin marketplace add immortalbeating/gamecaden
@@ -57,61 +59,61 @@ claude plugin install gamecaden@gamecaden --scope user
 /reload-plugins
 ```
 
-交互安装时选择User、Project或Local范围；终端可用`--scope project`安装到当前项目。八个职责使用`/gamecaden:flow`、`/gamecaden:init`等命名空间。
+Choose User, Project, or Local during interactive installation; terminal installations can use `--scope project` for the current project. The eight responsibilities use namespaces such as `/gamecaden:flow` and `/gamecaden:init`.
 
-后续刷新安装源并更新插件：
+Refresh the installation source and update the plugin later:
 
 ```sh
 claude plugin marketplace update gamecaden
 claude plugin update gamecaden@gamecaden --scope user
 ```
 
-更新后开启新会话，或在交互会话执行`/reload-plugins`。Claude项目采用指引写入实际生效的CLAUDE.md；Codex使用AGENTS.md。两者都沿用项目已有记录，不因安装重建任务。
+After updates, open a new session or run `/reload-plugins` interactively. Claude project-adoption guidance goes in the actually effective CLAUDE.md; Codex uses AGENTS.md. Both retain existing project records rather than rebuilding tasks on installation.
 
-## 通用Skills CLI
+## General Skills CLI
 
-需要Node.js/npm。这里的`skills`是Vercel维护的安装器，不是Gamecaden自己的npm注册表包。它可将完整包安装为宿主的本地Skill，无需登记marketplace。
+Requires Node.js/npm. Here `skills` is the installer maintained by Vercel, not Gamecaden's own npm registry package. It installs the complete package as a host-local Skill without marketplace registration.
 
 ```sh
-# 用户级，供Codex使用
+# User-level, for Codex
 npx skills add https://github.com/immortalbeating/gamecaden/tree/main/plugins/gamecaden --skill gamecaden --agent codex --global
 
-# 用户级，供Claude Code使用
+# User-level, for Claude Code
 npx skills add https://github.com/immortalbeating/gamecaden/tree/main/plugins/gamecaden --skill gamecaden --agent claude-code --global
 ```
 
-省略`--global`即安装到当前项目；选择Copy模式可在不支持符号链接的环境中保存完整目录。需要时添加`--copy`。避免选择包内单个flow/init目录：这些职责依赖共同的shared、profiles、templates和scripts资源，拆开复制会失去相对链接。
+Omit `--global` to install into the current project; choose Copy mode to retain the complete directory in environments without symbolic-link support. Add `--copy` when needed. Avoid individual flow/init directories inside the package: these responsibilities depend on common shared, profiles, templates, and scripts resources, and separated copies lose relative links.
 
-更新独立用户级安装：
+Update standalone user-level installations:
 
 ```sh
 npx skills update gamecaden --global
 ```
 
-项目级使用`npx skills update gamecaden --project`。以安装器的实际结果和宿主发现为准；其他宿主的目录选择由该CLI支持范围决定。本轮不宣称所有宿主都已实跑。
+For project-level installations, use `npx skills update gamecaden --project`. Actual installer results and host discovery govern; the CLI's supported scope determines directory choices for other hosts. The earlier installation round does not claim actual runs for all hosts.
 
-### Pi与oh my pi（OMP）
+### Pi and oh my pi (OMP)
 
-Pi使用同一完整包，将以上agent参数换为`--agent pi`：用户级写入`~/.pi/agent/skills/gamecaden`，项目级写入`.pi/skills/gamecaden`。OMP使用完整目录复制到`~/.omp/agent/skills/gamecaden`或项目`.omp/skills/gamecaden`；没有已确认的`oh-my-pi`安装器参数。
+Pi uses the same complete package with the agent parameter changed to `--agent pi`: user-level installs go to `~/.pi/agent/skills/gamecaden`, and project-level to `.pi/skills/gamecaden`. OMP uses complete-directory copying to `~/.omp/agent/skills/gamecaden` or project `.omp/skills/gamecaden`; no `oh-my-pi` installer parameter has been confirmed.
 
-两者通过总入口读取八职责及共同资源，技能命令启用时可调用`/skill:gamecaden`；本轮原生目录加载器只注册总入口，未运行模型或完整项目。安装命令、OMP的PowerShell复制示例、更新和项目信任说明见[通用安装兼容](compatibility.md#pi-omp)。
+Both read eight responsibilities and common resources through the main entry; when Skill commands are enabled, use `/skill:gamecaden`. In the earlier round, native directory loaders registered only the main entry, without running a model or complete project. See [general installation compatibility](compatibility.md#pi-omp) for installation commands, OMP PowerShell copying examples, updates, and project trust.
 
-## 不需要npm的完整目录安装
+## Complete-directory Installation Without npm
 
-OpenCode、Antigravity CLI（agy）和Cursor也可使用以上完整包方式，分别选择`--agent opencode`、`--agent antigravity-cli`和`--agent cursor`。最低兼容检查和未做的行为验证见[通用安装兼容](compatibility.md)；安装兼容不要求逐宿主运行完整游戏项目。
+OpenCode, Antigravity CLI (agy), and Cursor can also use the complete-package approach above, selecting `--agent opencode`, `--agent antigravity-cli`, and `--agent cursor` respectively. See [general installation compatibility](compatibility.md) for minimum compatibility checks and behavioral verification not performed; installation compatibility does not require running complete game projects in every host.
 
-克隆公开仓库，把`plugins/gamecaden`完整目录复制到当前宿主的Skill位置，保留所有共同资源。用户级示例位置：Codex为`~/.agents/skills/gamecaden`，Claude Code为`~/.claude/skills/gamecaden`；项目级使用项目下对应路径。
+Clone the public repository and copy the complete `plugins/gamecaden` directory into the current host's Skill location, preserving all common resources. Example user-level locations are `~/.agents/skills/gamecaden` for Codex and `~/.claude/skills/gamecaden` for Claude Code; use corresponding paths under the project for project-level installation.
 
 ```sh
 git clone https://github.com/immortalbeating/gamecaden.git
 ```
 
-目录已有内容时先核对归属与差异；更新由`git pull --ff-only`取得新源码，再更新自己维护的安装副本。可删除副本中的`.codex-plugin/`、`.claude-plugin/`、`plugin.json`和`.gamecaden-package.json`只保留独立Skill资源；此副本不再声称满足插件完整性manifest。正文及全部被引用资源仍需保留。支持标准SKILL.md的其他宿主可按其实际目录使用本入口。
+When directories already contain files, check ownership and differences first; obtain updated source through `git pull --ff-only`, then update the installation copy you maintain. You may delete `.codex-plugin/`, `.claude-plugin/`, `plugin.json`, and `.gamecaden-package.json` from the copy to retain standalone Skill resources only; that copy no longer claims plugin-integrity manifest compliance. Bodies and every referenced resource must remain. Other hosts supporting standard SKILL.md can use this entry in their actual directories.
 
-## 安装、项目采用与运行工具
+## Installation, Project Adoption, and Runtime Tools
 
-安装提供发现入口。项目采用通常通过明确请求`使用Gamecaden init接入本项目`完成；有效项目指引支持后续自然续接。插件方式与独立方式择一，避免同一宿主重复发现同包。
+Installation provides discovery entry points. Project adoption is usually completed by an explicit request such as `Use Gamecaden init to adopt this project`; effective project guidance supports later natural continuation. Choose either plugin or standalone installation to avoid duplicate discovery of the same package in one host.
 
-技能正文无需Python。插件或npx安装提供资源与发现入口；真正采用项目、首个本地I/O或启动面板前，另按[工具就绪与调用](../plugins/gamecaden/shared/local-io.md#1-环境与调用)检查并准备独立环境。包内启动入口需要Python 3.12+，首次工具调用可自动准备依赖；只读咨询或init inspect不自动安装或写项目指引。面板启动见[面板说明](panel.md)。本轮安装验证不等于模型行为、游戏运行或人工接受。
+Skill bodies require no Python. Plugin or npx installation supplies resources and discovery entry points; before actual project adoption, first local I/O, or panel startup, separately check and prepare an independent environment under [tool readiness and invocation](../plugins/gamecaden/shared/local-io.md#1-environment-and-invocation). The bundled launcher requires Python 3.12+, and the first tool invocation may automatically prepare dependencies; read-only consultation or init inspect does not automatically install or write project guidance. See [panel instructions](panel.md) for startup. Installation validation from the earlier round is not model behavior, game execution, or human acceptance.
 
-依据：[Codex插件文档](https://developers.openai.com/plugins/build/plugins)、[Claude市场与版本更新](https://code.claude.com/docs/en/plugin-marketplaces)、[Claude插件安装](https://code.claude.com/docs/en/discover-plugins)、[Vercel skills CLI](https://github.com/vercel-labs/skills)。
+Sources: [Codex plugin documentation](https://developers.openai.com/plugins/build/plugins), [Claude marketplaces and version updates](https://code.claude.com/docs/en/plugin-marketplaces), [Claude plugin installation](https://code.claude.com/docs/en/discover-plugins), [Vercel skills CLI](https://github.com/vercel-labs/skills).

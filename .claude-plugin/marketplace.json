@@ -1,12 +1,12 @@
 {
   "name": "gamecaden",
-  "description": "Gamecaden游戏开发工作流",
+  "description": "Gamecaden game development workflow",
   "owner": { "name": "immortalbeating" },
   "plugins": [
     {
       "name": "gamecaden",
       "source": "./plugins/gamecaden",
-      "description": "游戏设计、开发、资产、验证与跨会话续接"
+      "description": "Game design, development, assets, verification, and cross-session continuation"
     }
   ]
 }

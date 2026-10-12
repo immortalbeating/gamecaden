@@ -1,41 +1,46 @@
-# 执行中的未知、失败与恢复
+<a id="执行中的未知失败与恢复"></a>
+# Unknowns, failures and recovery during execution
 
-按命中的情况阅读；明确局部修改不需要完整走一轮以下流程。
+Read matching situations only; explicit local changes do not need a complete round of the process below.
 
-## 修复有证据的原因
+<a id="修复有证据的原因"></a>
+## Repair evidence-backed causes
 
-先确定错误发生的真实入口、预期与实际差异，以及复现或能定位分叉的证据。已有可靠定位直接使用；不为流程重新制造一次已知故障。
+Establish the actual failure entrypoint, expected/actual differences and reproduction evidence or evidence locating divergence. Use reliable existing localization directly, without recreating known faults for process alone.
 
-从最可能且可验证的原因开始。试修后用能暴露原问题的路径复验，并检查受影响的相邻行为。编译恢复只说明编译问题解决，测试通过也需要与本次承诺对应。
+Start with the most likely verifiable cause. After trial repair, reverify through a path exposing the original issue and check affected neighboring behavior. Restored compilation proves only compilation repair; passing tests must correspond to current commitments.
 
-连续试修无进展或新证据推翻假设时，保留现场与失败事实，重新定位边界。共享状态、回调、异步完成、重复订阅、生命周期与保存恢复的缺陷，需要检查同一状态所有者的相邻入口；只在有此信号时扩大调查。
+When successive trial repairs make no progress or new evidence overturns assumptions, retain the situation and failure facts, and relocate boundaries. Defects in shared state, callbacks, async completion, repeated subscriptions, lifecycle and save restoration need neighboring entrypoints of the same state owner checked; expand investigation only with such signals.
 
-修复不能通过删掉失败断言、降低目标规模或把症状隐藏来宣称完成。发现旧测试不再表达有效要求时，核对现行契约并更新测试理由和覆盖。
+Do not claim repairs by deleting failed assertions, reducing target scale or hiding symptoms. When old tests no longer express effective requirements, check current contracts and update test rationale and coverage.
 
-## 先打通关键未知
+<a id="先打通关键未知"></a>
+## Resolve key unknowns first
 
-说明要验证哪一个不确定点、成功/失败能观察到什么，以及对下一步的影响。在授权范围内用真实消费者打通风险；替身只隔离本次无需证明的外部部分。
+Explain the uncertainty to verify, observable success/failure and impact on next steps. Use actual consumers to resolve risks within authorization; substitutes isolate only external parts this work need not prove.
 
-单场景试验、样品或局部切片应标明用途；原交付需要模块化、正式资产或目标规模时继续兑现。用户只要试验结论时，则按该试验目标收尾，不自动扩展为正式实现。
+Label single-scene experiments, samples or slices by purpose; continue fulfilling modularity, formal assets or target scale required by original delivery. For experiment-conclusion-only requests, close against that experiment goal without automatically expanding to formal implementation.
 
-技术上的方案调整在原目标内可直接处理并保存重要偏差；会改变产品承诺、兼容行为、必要接受或显著成本的未决取舍，先给出具体影响与推荐，再取得缺少的决定。
+Handle technical solution adjustments within original goals directly, saving important deviations; for unresolved tradeoffs changing product commitments, compatibility, necessary acceptance or significant cost, provide concrete impacts and recommendations first, then obtain missing decisions.
 
-## 保护实际工作区和协作边界
+<a id="保护实际工作区和协作边界"></a>
+## Protect actual workspaces and collaboration boundaries
 
-写前读取相关现状与差异，分清工作树、运行根和工具连接。端口可连、目录同名或旧报告存在不能证明正在操作正确实例。
+Read relevant current state and differences before writes, distinguishing worktrees, runtime roots and tool connections. Reachable ports, identical directory names or old reports do not prove correct instances.
 
-按实际并行收益选择协作，并遵守宿主/项目对代理角色的约定。允许委派时明确对象、写入边界、有效输入和返回证据；未委派部分由当前执行者继续。多个执行者不同时无协调修改同一导入数据库、资源包或权威记录。
+Choose collaboration by actual parallel benefit and follow host/project agent-role conventions. When delegation is allowed, specify objects, write boundaries, effective inputs and returned evidence; current executors continue undelegated parts. Multiple executors do not modify the same import database, resource package or authoritative records simultaneously without coordination.
 
-合并与接入后验证真正的集成结果；不同分支各自通过不代表组合后通过。隔离、缓存、生成器或依赖版本变化可能影响证据，按实际变化复核。
+Verify actual integrated results after merge/integration; passing separate branches does not prove their combination passes. Isolation, caches, generators or dependency version changes may affect evidence; recheck actual changes.
 
-保留无关未提交改动和证据。回退只针对明确属于本次且可安全恢复的变化，不能用全仓清理代替定位问题。
+Preserve unrelated uncommitted changes and evidence. Revert only changes clearly belonging to this work and safely recoverable; full-repository cleanup does not replace cause localization.
 
-## 中断和长作业
+<a id="中断和长作业"></a>
+## Interruptions and long jobs
 
-在提交长作业、准备等待或切换上下文时，保存原 Task 的目标、当前结果、已有工具任务/回执引用和下一动作；机器作业事实优先引用原工具记录，不复制第二套作业状态数据库。
+Before submitting long jobs, waiting or switching context, save original Task goals, current results, existing tool-job/receipt references and next actions; cite original tool records for machine-job facts instead of copying another job-state database.
 
-恢复先查真实作业、输出及已有记录。命令启动、文件占位或日志安静不说明成功。外部生成、迁移或其他可能重复产生效果的操作，先查询是否已经完成或部分完成；结果不明时不直接重复提交。
+On restoration, inspect actual jobs, outputs and records first. Command startup, placeholder files or quiet logs do not prove success. For external generation, migration or other potentially repeated effects, query completion/partial completion first; do not resubmit directly when results are unclear.
 
-明确失败且可以安全重试的动作按已有工具策略处理；输入或方法未变的断言失败先调查。持续无进展时换有依据的假设/方法或说明实际阻碍，不用重复检查累计“完成度”。
+Handle explicit failures safe to retry under existing tool policy; investigate assertion failures with unchanged inputs/methods first. For sustained lack of progress, change to grounded assumptions/methods or explain actual blockers; repeated checks do not accumulate “completion”.
 
-某项必要用户选择、资源或工具不可用时，记录它阻断哪一动作、已完成什么和怎样恢复；继续独立可做的工作。后续等待/监控仅使用宿主允许且已授权的机制，不自行创建长期调度。
+For unavailable necessary user choices, resources or tools, record blocked actions, completed work and restoration path; continue independent available work. Later waiting/monitoring uses only host-allowed authorized mechanisms, without creating long-term schedules yourself.

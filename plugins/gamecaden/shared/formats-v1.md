@@ -1,143 +1,153 @@
-# 原生文档格式 v1：字段、正文与引用
+<a id="原生文档格式-v1字段正文与引用"></a>
+# Native document formats v1: fields, bodies, and references
 
-状态：v1 原生文档合同，已用于本地读写工具。既有对象/记录职责继续由 records.md 等共享规则维护；本页定义新原生记录的形态。旧项目不因本合同出现就自动转换，实际能力见[本地工具说明](local-io.md)。
+Status: the v1 native document contract, used by the local read/write tools. Existing object/record responsibilities remain governed by shared rules such as records.md; this page defines the shape of new native records. This contract does not automatically convert existing projects. See the [local tool documentation](local-io.md) for actual capabilities.
 
-语法来源：[JSON Schema](../schemas/workflow-v1.schema.json)；写作蓝本：[模板目录](../templates/catalog.md)。JSON Schema 检查结构，不能证明目标已实现、报告可信或用户已接受。读写动作见[接口合同](io-v1.md)。
+Syntax source: [JSON Schema](../schemas/workflow-v1.schema.json); writing blueprints: [template catalog](../templates/catalog.md). JSON Schema checks structure; it cannot prove that a goal is implemented, a report is trustworthy, or the user has accepted it. Read/write actions are defined in the [interface contract](io-v1.md).
 
-## 1. 文件形态与加载范围
+<a id="1-文件形态与加载范围"></a>
+## 1. File forms and loading scope
 
-| 对象 | 新原生形态 | 机读内容与正文 |
+| Object | New native form | Machine-readable content and body |
 |---|---|---|
-| workspace | workspace.yaml | 定位、来源与规则映射；无执行进度 |
-| Task（quick／standard） | Markdown＋YAML frontmatter | 同一套六个必需字段；正文说明交付、结果与续接 |
-| Epic | Markdown＋frontmatter | id/title/status；正文拥有共同目标与整体出口 |
-| Vision、Spec、Roadmap、停车场、Notes、Git 规则 | Markdown | 默认使用可读正文；需要稳定引用的条目加稳定锚点 |
-| PDP（development-plan） | plans/<安全标题>.md | 项目/版本级方案编排；无管理 ID、无 Task/Epic owner 或生命周期；明确来源与 Stage 范围 |
-| 普通任务附件（attachment） | Markdown/JSON/YAML，按用途使用自然文件名 | 无独立管理 ID 或生命周期；依附真实 Task/Epic，按需读取 |
-| design/plan/详细历史/交接快照 | Markdown | 依附原工作或原始来源，不增加另一份生命周期；快照不成为当前真源 |
-| 独立 Evidence | Markdown＋frontmatter；已有工具报告保留原格式 | 元数据绑定对象与检查范围，方法/观察等写正文 |
-| 独立 Decision | Markdown＋frontmatter；批量场景可用同元数据形态的 JSON | events 保存决定及补充/撤回/替代事件，长理由写正文 |
-| Asset Ledger | assets/ledger.yaml | 资产身份、候选引用与指定使用；已有 Markdown 台账可继续维护 |
-| manifest | 专业工具原生格式优先；缺少时可使用 v1 JSON 备用格式 | 文件身份和技术事实，不含人工接受或运行采用开关 |
-| Progress／Timeline／面板数据 | JSON 读模型与 HTML 展示 | 显示来源、模型范围与生成时点；新输出不生成 MD 视图，保存与刷新按[派生输出](derived-outputs.md) |
+| workspace | workspace.yaml | Location, source, and rule mappings; no execution progress |
+| Task (quick/standard) | Markdown + YAML frontmatter | The same six required fields; the body explains delivery, results, and continuation |
+| Epic | Markdown + frontmatter | id/title/status; the body owns the shared goal and overall exit criteria |
+| Vision, Spec, Roadmap, parking lot, Notes, Git rules | Markdown | Readable prose by default; add stable anchors to entries needing stable references |
+| PDP (development-plan) | plans/<safe-title>.md | Project/version-level solution orchestration; no management ID, Task/Epic owner, or lifecycle; explicit sources and Stage scope |
+| Ordinary task attachment (attachment) | Markdown/JSON/YAML, with natural filenames suited to their purpose | No independent management ID or lifecycle; attached to a real Task/Epic and read as needed |
+| design/plan/detailed history/handoff snapshot | Markdown | Attached to the original work or source, without another lifecycle; a snapshot does not become the current source of truth |
+| Independent Evidence | Markdown + frontmatter; existing tool reports retain their original format | Metadata binds subjects and check scope; methods/observations belong in the body |
+| Independent Decision | Markdown + frontmatter; batch cases may use JSON with the same metadata shape | events store decisions and supplemental/withdrawal/replacement events; long reasons belong in the body |
+| Asset Ledger | assets/ledger.yaml | Asset identity, candidate references, and designated uses; existing Markdown ledgers may remain in use |
+| manifest | Prefer the specialist tool's native format; the v1 JSON fallback may be used when none exists | File identity and technical facts, without human-acceptance or runtime-adoption switches |
+| Progress/Timeline/panel data | JSON read models and HTML display | Show sources, model scope, and generation time; new outputs do not generate MD views; saving and refreshing follow [derived outputs](derived-outputs.md) |
 
-原生编号集合子目录中的普通附件不要求工作记录 frontmatter；文件名或内容声明正式记录时仍按对应 schema 校验，不能用附件类型掩盖缺字段、坏原生块或重复正式 ID。普通附件的读取与创建支持范围见[本地工具说明](local-io.md#3-正常写入)。
+Ordinary attachments in subdirectories of native numbered collections do not require work-record frontmatter. Filenames or content declaring formal records are still validated against the corresponding schema; attachment types cannot conceal missing fields, malformed native blocks, or duplicate formal IDs. See the [local tool documentation](local-io.md#3-normal-writes) for supported attachment reading and creation.
 
-只在需要创建/修改该类原生记录时读取相应 schema 和模板，不让每个 Task 全量加载格式库。模板中的标题是写作提示；没有内容的可选部分删去，不要求填满所有章节或一次生成整棵目录。
+Read the corresponding schema and template only when creating/modifying that native record type; do not load the entire format library for every Task. Template headings are writing prompts. Remove optional sections with no content; filling every section or generating an entire directory tree at once is not required.
 
-YAML 使用 JSON 可表达的值，禁止可执行标签。ID、版本和日期字符串加引号；时间确实未知时保留 null 并说明，不编造日期。原文件的自由正文、无关内容与扩展数据应保留，不能为了格式化清空用户资料。
+YAML uses values expressible in JSON and prohibits executable tags. Quote ID, version, and date strings. When time is genuinely unknown, retain null and explain it rather than inventing dates. Preserve the original file's free prose, unrelated content, and extension data; formatting must not erase user material.
 
-原生 YAML/JSON 拒绝重复键；原生 YAML 不使用别名、锚点或合并键来隐藏覆盖。外部旧格式保留原文并按适配器处理，不用原生限制擅自清洗其内容。
+Native YAML/JSON rejects duplicate keys. Native YAML does not use aliases, anchors, or merge keys to hide overrides. Preserve external legacy formats verbatim and handle them through adapters; do not use native restrictions to clean their content without authorization.
 
-## 2. 身份、路径与版本
+<a id="2-身份路径与版本"></a>
+## 2. Identity, paths, and versions
 
-### 稳定身份
+<a id="稳定身份"></a>
+### Stable identity
 
-新建原生 Task/Epic 默认分配 T-001、E-001；工具需要单独定位 Evidence/Decision 时分配 EV-001、D-001；资产族采用 A-001。编号至少三位显示，超过后自然增长；已存在且合法的较短编号不因格式整理重编号。原生同类数字编号项目内唯一、不复用，保留 cancelled/历史入口参与检查。
+New native Tasks/Epics default to T-001 and E-001; assign EV-001 and D-001 when tools need to locate Evidence/Decision independently; asset families use A-001. Display numbers with at least three digits, growing naturally beyond that. Existing valid shorter numbers are not renumbered during formatting. Native numeric IDs of the same type are unique within the project and never reused; include cancelled/historical entries in checks.
 
-已有外部 ID、文件位置和管理者不改写。原生引用通常使用 `{id: "T-001"}`；跨项目增加 project_id，外部或需限定来源时增加 source。解析查实际来源，不能因同名或日期较新选中另一条记录。
+Do not rewrite existing external IDs, file locations, or managers. Native references usually use `{id: "T-001"}`; add project_id for cross-project references and source for external or source-qualified references. Resolve against the actual source; do not select another record merely because it has the same name or a newer date.
 
-Ref 有两种互斥写法：
+Ref has two mutually exclusive forms:
 
 ```yaml
 {id: "T-001", fragment: "acceptance-focus"}
 {path: "../checks/focus-report.json"}
 ```
 
-id 指记录身份；path 指已定位文件；fragment 指明确锚点或原生记录子项（如 Decision 的 event_id），不代替版本。对嵌套对象的解析由已声明格式/适配器完成。含 source/project_id 的引用只用于定位，不扩大读取或写入权限。
+id identifies a record; path identifies a located file; fragment identifies an explicit anchor or native record subitem (such as a Decision event_id), not a version. Nested objects are resolved by the declared format/adapter. References containing source/project_id only locate content; they do not expand read or write permissions.
 
-新 Task 默认使用 `tasks/T-编号-短名/task.md`，短名仅在创建时由 title 安全整理；后续改标题不迁移路径。设计、计划、历史及本任务独有材料按需放在同目录或子目录。旧平铺 `tasks/T-编号-短名.md` 及其 `tasks/T-编号/` 附件目录继续读写；显式原路径和原身份保持不变。完整命名规则见[记录约定](records.md#2-选择和创建工作)。
+New Tasks default to `tasks/T-<number>-<short-name>/task.md`. The short name is safely derived from title only at creation; later title changes do not relocate the path. Place designs, plans, history, and materials exclusive to this Task in the same directory or subdirectories as needed. Existing flat `tasks/T-<number>-<short-name>.md` files and their `tasks/T-<number>/` attachment directories remain readable/writable; explicit original paths and identities stay unchanged. Full naming rules are in the [record conventions](records.md#2-selecting-and-creating-work).
 
-### 路径基准
+<a id="路径基准"></a>
+### Path bases
 
-- workspace 中的 root/path/marker 相对于 workspace.yaml 所在目录。
-- 持久记录中的 Ref.path 与 Markdown 相对链接，相对于承载该引用的文件。
-- manifest.files[].path 相对于该 manifest 文件。
-- 请求的业务路径相对于 context.base_dir；省略时使用已确认 project_root。context.workspace/base_dir 自身的相对值基于 project_root；Workspace document 的映射值仍基于目标 YAML。工具回传实际位置，不能把当前 shell 目录误当引用基准。
-- 外部原生报告沿用生产工具定义的相对基准，由适配器明确转换；未知时返回无法解析。
+- workspace root/path/marker values are relative to the directory containing workspace.yaml.
+- Ref.path and relative Markdown links in persistent records are relative to the file carrying the reference.
+- manifest.files[].path is relative to that manifest file.
+- Business paths in requests are relative to context.base_dir; when omitted, use the confirmed project_root. Relative context.workspace/base_dir values themselves are based on project_root; Workspace document mappings remain based on the target YAML. Tools return actual locations; do not mistake the current shell directory for the reference base.
+- External native reports retain the relative base defined by their producing tool, with explicit conversion by the adapter; return unresolved when unknown.
 
-写入须核对解析后的真实目标、符号链接/目录联接及本次授权范围，不能仅凭字符串前缀或映射拥有者允许越界。
+Writes must check the resolved real target, symbolic links/directory junctions, and the current authorized scope. Neither a string prefix nor a mapping owner alone permits crossing boundaries.
 
-### 内容版本与源文件修订不同
+<a id="内容版本与源文件修订不同"></a>
+### Content versions differ from source-file revisions
 
-Version 表示被检查/被决定的对象版本，包含 kind/value，必要时以 proof 引用 manifest、构建或其他可核对来源。kind 可为 sha256、git-commit、git-tree、build、named。named 不是“latest”的替代词；应有可定位依据，不把会被覆盖的路径当稳定内容身份。
+Version identifies the version of the subject checked/decided upon, containing kind/value and, when needed, proof referencing a manifest, build, or other verifiable source. kind may be sha256, git-commit, git-tree, build, or named. named is not a substitute for “latest”; it should have a locatable basis. Do not treat an overwritable path as a stable content identity.
 
-读写接口的 revision 是承载文件原始字节的 `sha256:<64位hex>`，用于避免旧页面覆盖新写入，不持久存为 Task 的第二个版本计数。文件修订一致不自动说明素材内容一致；素材决定还要核对它实际绑定的内容/manifest 和文件集合。
+The read/write interface revision is `sha256:<64-hex-digits>` of the carrier file's raw bytes, preventing an old page from overwriting newer writes. It is not persisted as a second Task version counter. Matching file revisions do not automatically establish matching media content; asset decisions must also check the content/manifest and file set they actually bind.
 
-Version.kind=sha256 固定表示一个具体文件的原始字节摘要，不混用规范化 JSON 或文件集合摘要。给出 proof 时摘要目标是该 proof 定位的文件；没有 proof 时使用 Subject.ref 直接定位的文件，或由明确 candidate_id 绑定的 candidate.manifest。AssetCandidate.version 的摘要目标明确是 candidate.manifest 定位的 manifest 文件本身；该摘要只绑定 manifest 版本，实际内容仍需逐项核对 manifest.files 列出的文件。source revision 和对象 version 即使恰好相同，也必须分别核对它们指的对象。
+Version.kind=sha256 always means the raw-byte digest of one specific file, never a normalized JSON or file-set digest. With proof, the digest target is the file located by that proof; without proof, use the file directly located by Subject.ref or the candidate.manifest bound by an explicit candidate_id. The digest target of AssetCandidate.version is specifically the manifest file located by candidate.manifest. This digest binds only the manifest version; actual content still requires checking each file listed in manifest.files. Even if source revision and object version happen to match, check their respective subjects separately.
 
-## 3. workspace 与来源
+<a id="3-workspace-与来源"></a>
+## 3. workspace and sources
 
-Workspace schema 保留既定字段：schema_version=1、project、runtime_roots、sources、两个默认工作来源及 rule_sources。
+The Workspace schema retains the established fields: schema_version=1, project, runtime_roots, sources, the two default work sources, and rule_sources.
 
-sources 每项包含 id/role/kind/path/owner，可有 scope、format、adapter。format 在本次原生格式中明确为 native-markdown-v1、native-yaml-v1、native-json-v1 或 external；省略的既有映射仍可读取，但工具应报告格式识别结果和实际能力，不默认为可按 v1 改写。
+Each sources entry contains id/role/kind/path/owner and may contain scope, format, adapter. In this native format, format explicitly means native-markdown-v1, native-yaml-v1, native-json-v1, or external. Existing mappings omitting it remain readable, but tools should report recognized formats and actual capabilities rather than assume they can be rewritten as v1.
 
-role 是信息类别，scope 是可读范围说明；当前工具不会按 scope 截取章节，也不验证自由正文是否充分承担 Vision/Spec/Roadmap 职责。正式接入时的当前正文与详细引用按[记录约定](records.md#项目级当前正文)整理；旧映射的形态有效与读取兼容不代表内容已经符合新的接入要求。
+role categorizes information; scope is a readable description of scope. Current tools do not slice sections according to scope or validate whether free prose adequately fulfills Vision/Spec/Roadmap responsibilities. At formal onboarding, organize current bodies and detailed references according to the [record conventions](records.md#current-project-level-bodies). Valid legacy mapping forms and read compatibility do not mean their content already meets new onboarding requirements.
 
-owner 是维护约定，不是权限。adapter 只是适配标识，不保证其已经存在；真正能力由工具检查后返回。旧管理来源无写适配器时返回原文及限制，继续使用其既有流程或先完成获授权移交。
+owner is a maintenance convention, not permission. adapter is only an adaptation identifier, not a guarantee that an implementation exists. Tools return actual capabilities after checking. When an old management source has no write adapter, return its original text and limitations; continue its existing workflow or first complete an authorized transfer.
 
-rule_sources 每项用 id/path/scope 定位生效规则，owner 可选。默认任务/专题来源必须指向正确 role；集合可以尚未创建，但已被具体工作引用的缺失记录不能当作空项目。
+Each rule_sources entry locates effective rules through id/path/scope; owner is optional. Default Task/Epic sources must point to the correct role. Collections may not yet exist, but a missing record already referenced by specific work cannot be treated as an empty project.
 
-## 4. Task 与 Epic
+<a id="4-task-与-epic"></a>
+## 4. Task and Epic
 
-Task 必需字段保持 id/title/mode/kind/status/epic 六项。mode 为 quick 或 standard；生命周期只有 planned/active/closed/cancelled；epic 为单个 E-ID 或 null。kind 是开放的工作性质标签，推荐使用 feature、bug、asset、design、validation、maintenance 等，不用它决定验证强度。
+The six required Task fields remain id/title/mode/kind/status/epic. mode is quick or standard; the lifecycle contains only planned/active/closed/cancelled; epic is one E-ID or null. kind is an open label describing the nature of work; feature, bug, asset, design, validation, maintenance, etc. are recommended. Do not use it to determine validation intensity.
 
-可选字段：depends_on、related、extensions。depends_on 每项由 target 与 requires 表达需要哪个结果/条件，可引用 evidence_refs；不是统一要求上游 closed。related 只有关联意义，不赋予推进或关闭权限。Task 的 Epic 归属和外部依赖仍只在 Task 定义一次。
+Optional fields: depends_on, related, extensions. Each depends_on entry expresses the required result/condition through target and requires and may reference evidence_refs; it does not uniformly require upstream work to be closed. related only indicates a relationship and grants no permission to advance or close work. A Task's Epic membership and external dependencies remain defined once, in that Task.
 
-Epic 元数据只有 id/title/status 和可选 related/extensions；子 Task 归属从 Task.epic 汇总。Epic 正文可引用交付、说明分工，但不新增可独立编辑的子任务状态表。
+Epic metadata contains only id/title/status and optional related/extensions; child membership is aggregated from Task.epic. The Epic body may reference deliverables and explain responsibilities, but adds no independently editable child-status table.
 
-暂停/推进限制和恢复条件继续在 Task 当前续接正文中保存，不增加 paused 生命周期。工具返回这段原文或完整正文供模型判断；正文标题无法可靠识别时返回原文和提示，不能据 active 就得出可执行。面板展示该限制，自动执行不得绕过当前用户指示。
+Pause/progression restrictions and resumption conditions remain in the Task's current continuation prose, without adding a paused lifecycle state. Tools return that original passage or the complete body for model judgment. If body headings cannot be recognized reliably, return the original text and a notice; active alone does not establish executability. The panel displays these restrictions; automatic execution must not bypass current user instructions.
 
-正文按[模式与记录用途](records.md#选择管理模式)回答本次目标/边界、必要检查、实际结果和续接；需要时维护方案与步骤，正文深度不靠标签机械决定。Task 的 plan.md 拥有内部实施清单，已有 Epic 计划组织本 Epic 的交付引用。项目/版本级上位编排使用 [PDP](phased-development.md)，其 S 标识与 Roadmap 的 M 标识是文档内锚点，不分配新管理 ID。详尽参数与原报告保留原引用。
+The body answers the current goal/boundary, necessary checks, actual results, and continuation according to [modes and record purposes](records.md#selecting-the-management-mode). Maintain solutions and steps when needed; do not mechanically determine body depth from a label. A Task's plan.md owns its internal implementation checklist; existing Epic plans organize deliverable references for that Epic. Project/version-level orchestration uses [PDP](phased-development.md). Its S identifiers and Roadmap M identifiers are document-local anchors, without new management IDs. Keep detailed parameters and original reports at their original references.
 
 ## 5. Evidence
 
-工具原生报告已经承担记录职责时直接引用，留存、索引与轮次按[共同记录](records.md#留存索引与版本)，不为了符合本页重复造一份 Evidence。原生独立记录需要 id/title/observed_at/actor/subjects/result/coverage，可有 report_refs、corrects、extensions。
+When a tool's native report already fulfills the record responsibility, reference it directly. Retention, indexing, and rounds follow [shared records](records.md#retention-indexing-and-versions); do not duplicate Evidence merely to conform to this page. Native independent records require id/title/observed_at/actor/subjects/result/coverage and may have report_refs, corrects, extensions.
 
-observed_at 表达检查实际发生时间，可用明确日期或时间；未知为 null。actor 不明可为 null，不能补造检查者。subjects 说明对象、适用范围，版本在影响复用、接受或批量判断时必须精确绑定。
+observed_at expresses when the check actually occurred, as an explicit date or time; use null when unknown. actor may be null when unknown; do not invent a checker. subjects describe objects and applicable scope; versions must be bound precisely when they affect reuse, acceptance, or batch judgment.
 
-result 为 passed/failed/inconclusive/not_run/not_applicable。coverage 表示实际支持的范围；not_run 可以为空，通过必须说明支持了什么。方法、观察、限制和缺口写正文或引用原报告。元数据/正文矛盾需诊断，不能任选一个通过值。
+result is passed/failed/inconclusive/not_run/not_applicable. coverage expresses the scope actually supported; it may be empty for not_run, but passing must state what is supported. Put methods, observations, limitations, and gaps in the body or reference the original report. Diagnose metadata/body contradictions rather than choosing whichever passing value is convenient.
 
-一次检查结果保留历史。重跑或实质纠正使用新记录，corrects 可明确指向原证据；原生工具不无痕改旧结果。仅需说明性勘误时追加更正与依据，不重写当时观察。
+Preserve each check result historically. Reruns or substantive corrections use new records; corrects may explicitly reference the original evidence. Native tools do not silently alter old results. For explanatory errata only, append the correction and its basis without rewriting the observations made at the time.
 
-## 6. Decision 与批量决定
+<a id="6-decision-与批量决定"></a>
+## 6. Decision and batch decisions
 
-原生 Decision 使用 id/title/events 和可选 related/extensions。每个事件包括：
+Native Decision uses id/title/events and optional related/extensions. Each event includes:
 
-- event_id：该 Decision 内唯一的稳定子标识。
-- decided_at、recorded_at：实际决定时间（可未知）与记录时间，不能混为同一件事。
-- actor：实际决定者，区分 user/agent/tool；记录用户选择时不能把执行记录的模型当成决定者。
-- action：choose/accept/reject/revise/defer/waive/withdraw/supersede。
-- subjects、scope、conclusion：具体对象/版本、作用范围和真实结论。
-- basis、replaces：按需引用依据与被替代事件；原生替代引用应定位到具体 event_id。
+- event_id: a stable subidentifier unique within that Decision.
+- decided_at, recorded_at: the actual decision time (possibly unknown) and recording time; do not conflate them.
+- actor: the actual decision-maker, distinguishing user/agent/tool; when recording a user choice, do not identify the recording model as the decision-maker.
+- action: choose/accept/reject/revise/defer/waive/withdraw/supersede.
+- subjects, scope, conclusion: specific objects/versions, applicable scope, and the actual conclusion.
+- basis, replaces: references to the basis and replaced events as needed; native replacement references should locate specific event_id values.
 
-已正式使用的事件不可原地覆盖或删除，补充、撤回和替代追加事件；可继续保存在同一文件，不要求每次新建文档。普通局部取舍仍可直接写 Task/Epic 正文，无需套 events。
+Events already formally used cannot be overwritten or deleted in place. Append supplemental, withdrawal, and replacement events; they may stay in the same file, without creating a new document each time. Ordinary local choices may still be written directly in Task/Epic prose without events.
 
-scope 保留可读说明，subjects 逐项绑定实际版本，批量决定不推定未列出的成员或用途。适配器无法可靠解释范围时返回需判断，不能自动放宽。撤回某用途的接受不自动撤回其他用途，也不自动回退工程。
+scope retains a readable explanation; subjects bind actual versions individually. Batch decisions do not imply unlisted members or uses. When an adapter cannot reliably interpret scope, return a need for judgment rather than automatically broadening it. Withdrawing acceptance for one use does not automatically withdraw other uses or roll back engineering work.
 
-工具须检查 event_id 唯一，并保留已经生效的事件。replaces 可以跨 Decision 引用，但必须解析到具体已有事件；不能将“替代一个多用途事件”直接理解为所有用途一起失效。针对消费者/用途的局部撤回必须给出对应 Subject.use 或其他可明确解析的相同范围；无法确定时返回 invalid_scope，不自动扩大。全撤回也需明确列出其影响范围。
+Tools must check event_id uniqueness and preserve effective events. replaces may reference another Decision but must resolve to a specific existing event. Replacing a multi-use event cannot directly be interpreted as invalidating every use. A partial withdrawal for a consumer/use must provide the corresponding Subject.use or another explicitly resolvable equivalent scope. Return invalid_scope when it cannot be determined; do not broaden it automatically. Full withdrawal also requires an explicit list of affected scope.
 
-需要按消费者定位时，Subject 可附 use（runtime_id/consumer/purpose，必要时 baseline），与可读 scope 对照。同一批可以逐项对应不同用途；省略 use 不表示已允许全部消费者。
+When locating by consumer is necessary, Subject may include use (runtime_id/consumer/purpose and, when needed, baseline), checked against readable scope. Items in the same batch may correspond to different uses; omitting use does not permit all consumers.
 
-actor:user 只是数据，不能证明用户真的决定过。decision.record 必须依据真实用户输入、可信面板身份/事件或已采用自动策略；保存者与决定者应能区分。只留一条聊天链接不足以恢复决定含义，conclusion 本身须可理解。
+actor:user is only data, not proof that the user actually decided. decision.record must rely on actual user input, trusted panel identity/events, or an adopted automatic policy. The recorder and decision-maker should be distinguishable. A chat link alone cannot recover a decision's meaning; conclusion itself must be understandable.
 
-## 7. 内嵌记录与提取
+<a id="7-内嵌记录与提取"></a>
+## 7. Embedded records and extraction
 
-普通局部检查可保持自由 Markdown，偶尔引用可用稳定锚点；不强制分配全局 ID。需要工具独立读取、批量处理或持续引用时，可使用以下显式块，仍不要求拆文件：
+Ordinary local checks may remain free Markdown, with stable anchors for occasional references; global IDs are not mandatory. For independent tool reading, batch processing, or ongoing references, the following explicit block may be used without requiring a separate file:
 
 ````markdown
 <!-- workflow:record evidence EV-001 -->
 ```yaml
 id: "EV-001"
-# 其余内容与 Evidence frontmatter 相同
+# Remaining content matches Evidence frontmatter
 ```
-方法、观察和限制正文。
+Body describing methods, observations, and limitations.
 <!-- workflow:endrecord EV-001 -->
 ````
 
-Decision 同理，将 evidence 改为 decision，块内使用 Decision 元数据与正文。块不可嵌套，起止 ID 与元数据一致；同一原生 ID 只能有一份当前正文。
+Decision follows the same pattern: replace evidence with decision and use Decision metadata and prose inside the block. Blocks cannot nest; opening/closing IDs and metadata must match. Each native ID can have only one current body.
 
-提取到独立文件时保留原 ID，并将旧块改为转向，原位置不再保留可编辑完整正文：
+When extracting to an independent file, preserve the original ID and replace the old block with a forward. The original location no longer retains an editable complete body:
 
 ````markdown
 <!-- workflow:forward EV-001 -->
@@ -148,26 +158,28 @@ to: {path: "../evidence/EV-001.md"}
 <!-- workflow:endforward EV-001 -->
 ````
 
-转向不算第二个证据实体。解析须检查目标 ID 一致、避免循环及多个有效正文；出现冲突时报告，不能按日期挑一份。普通正文中的旧锚点引用仍保留可读去向。
+A forward is not a second evidence entity. Resolution must check matching target IDs, avoid cycles and multiple valid bodies, and report conflicts rather than choose by date. Old anchor references in ordinary prose retain a readable destination.
 
-## 8. 资产主台账与 manifest
+<a id="8-资产主台账与-manifest"></a>
+## 8. Asset master ledger and manifest
 
-新原生台账为 schema_version=1 与 assets。每个资产包含 id/title/purpose、candidates、selected_uses，可选来源、替换关系及扩展。
+A new native ledger contains schema_version=1 and assets. Each asset contains id/title/purpose, candidates, selected_uses, and optional sources, replacement relationships, and extensions.
 
-candidate 包含其局部 id、manifest 引用及 Version，可引用来源和 Evidence；同一候选 ID 不用于另一个实质内容版本。manifest 负责逐文件参数与内容摘要，台账只引用其身份，不手抄每文件属性。
+A candidate contains its local id, manifest reference, and Version and may reference sources and Evidence. The same candidate ID is not used for another substantive content version. The manifest owns per-file parameters and content digests; the ledger references its identity without manually copying file attributes.
 
-旧候选绑定保持不可变，新候选核验自己的 manifest 和成员；历史载荷不可读或失配时按[候选恢复](asset-handoff.md#候选快照与遗留恢复)保留限制和诊断。登记新版本不修正旧检查、转移接受或自动改变选用。
+Existing candidate bindings remain immutable; new candidates validate their own manifests and members. For unreadable or mismatched historical payloads, preserve limitations and diagnostics according to [candidate recovery](asset-handoff.md#candidate-snapshots-and-legacy-recovery). Registering a new version does not correct old checks, transfer acceptance, or automatically change selection.
 
-selected_uses 每项包含 use_id、purpose、runtime_id、consumer、candidate_id，可加 baseline、Decision/Evidence 引用。它表达指定选用；没有 approved、adopted、official 或统一 current_version 开关。真实采用由工程和适用 Evidence 对照，未能观察时显示未知，不能从台账推断成功。
+Each selected_uses entry contains use_id, purpose, runtime_id, consumer, candidate_id, with optional baseline and Decision/Evidence references. It expresses designated selection, without approved, adopted, official, or a unified current_version switch. Compare engineering and applicable Evidence to establish actual adoption; display unknown when unobserved, and do not infer success from the ledger.
 
-默认 manifest 备用格式包含 asset_id/candidate_id/files，每个文件给出相对 path、sha256、role，可有 technical 属性；专业工具已有等效格式时直接用适配器，不重抄。检查内容版本时必须核对需要证明的实际文件集合，不能仅检审批 JSON 自己的 hash。
+The default manifest fallback contains asset_id/candidate_id/files; each file provides a relative path, sha256, role, and optional technical properties. When a specialist tool already provides an equivalent format, use an adapter directly rather than copy it. Content-version checks must verify the actual file set that needs proof, not just the approval JSON's own hash.
 
-候选可先登记而没有 selected_uses；选择依赖的消费者或用途未明确时不造空假关系。仅在有实际独立追踪需要时建立台账条目，不为每帧、每条临时输出都建身份。
+Candidates may be registered before selected_uses exist; do not create empty fictitious relationships when consumers or uses required for selection are unclear. Create ledger entries only when actual independent tracking is needed, not for every frame or temporary output.
 
-## 9. 格式验证与语义判断
+<a id="9-格式验证与语义判断"></a>
+## 9. Format validation and semantic judgment
 
-JSON Schema 能检查类型、必需字段和已定义枚举；以下还需解析器/工具或调用 Skill 核对：ID 唯一与不复用、引用是否解析、默认来源是否匹配、依赖条件、同一事实拥有者、决定事件不可覆盖、候选版本身份、写入范围、证据有效性及关闭承诺。
+JSON Schema checks types, required fields, and defined enums. Parsers/tools or the calling Skill must also check: ID uniqueness and non-reuse, reference resolution, matching default sources, dependency conditions, ownership of each fact, non-overwriting of decision events, candidate version identity, write scope, evidence validity, and closure commitments.
 
-未知的原生字段放入有明确用途的 extensions；旧格式/未来版本的未知内容读取时保留。无法可靠修改时报告只读/需适配，不能丢弃字段后宣称升级成功。
+Place unknown native fields in extensions with an explicit purpose; retain unknown legacy/future-version content when reading. If reliable modification is impossible, report read-only/adaptation required; do not discard fields and claim a successful upgrade.
 
-通过 schema 只说明形态有效。实际读写/恢复由本地工具另行验证，当前支持范围见其说明；schema、模板或本地测试都不证明面板桥接、引擎适配和宿主安装已经完成。
+Passing schema only establishes valid form. Actual read/write/recovery is validated separately by local tools, with current support documented there. Neither schemas, templates, nor local tests prove panel bridging, engine adaptation, or host installation is complete.

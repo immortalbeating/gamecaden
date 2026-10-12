@@ -1,21 +1,26 @@
-# {{项目规则或既有 Spec 章节标题}}
+<a id="项目规则或既有-spec-章节标题"></a>
+# {{project_rule_or_existing_spec_section_title}}
 
-<!-- 仅在已有 Spec/规则没有合适承载位置时新建；删去无内容提示，不新增全局审批或进度账本。 -->
+<!-- Create only when the existing Spec/rules have no suitable place; remove empty prompts and do not add a global approval or progress ledger. -->
 
-## 采用范围
+<a id="采用范围"></a>
+## Adopted scope
 
-{{本次已确认的运行根、平台/领域、适用动作；工程版本引用原配置，不手抄第二套依赖表}}
+{{confirmed_runtime_roots_platforms_domains_and_applicable_actions_reference_original_configuration_for_versions_without_a_second_dependency_table}}
 
-## 所采用的规则来源
+<a id="所采用的规则来源"></a>
+## Adopted rule sources
 
-| 来源 / profile 或条目 | 可定位版本或内容摘要 | 本项目适用范围与性质 |
+| Source / profile or entry | Locatable version or content digest | Project applicability and nature |
 |---|---|---|
-| {{实际来源}} | {{来源版本或可核对摘要}} | {{作用对象与必要条件/默认建议；未采纳内容另标待定}} |
+| {{actual_source}} | {{source_version_or_verifiable_digest}} | {{affected_objects_and_required_conditions_or_default_recommendations_mark_unadopted_content_as_pending}} |
 
-## 项目具体约定与差异
+<a id="项目具体约定与差异"></a>
+## Project-specific conventions and differences
 
-{{已有参考不能表达的项目取舍、关键数值及依据；可引用原设计/Decision，不复制正文}}
+{{project_choices_key_values_and_basis_not_expressed_by_existing_references_use_original_design_or_decision_refs_without_copying_the_body}}
 
-## 变化后的复核
+<a id="变化后的复核"></a>
+## Reassessment after changes
 
-{{哪些引擎/平台/消费者/设计变化会影响上述约定，以及应回读的材料和相关验证；无关变更不触发全量重验}}
+{{engine_platform_consumer_or_design_changes_affecting_these_conventions_materials_to_reread_and_relevant_checks_no_full_revalidation_for_unrelated_changes}}

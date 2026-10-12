@@ -1,13 +1,14 @@
-# 已采用的 Git 交付策略
+<a id="已采用的-git-交付策略"></a>
+# Adopted Git delivery policy
 
-- 方案：{{selected_profile}}
-- 适用范围与采用依据：{{scope_and_actual_choice}}
-- 提交：{{allowed_commit_behavior}}
-- 集成：{{target_branch_and_direct_or_pr_route}}
-- 远端同步：{{allowed_remote_and_refs_or_manual}}
-- 清理：{{allowed_scope_or_keep_worktrees}}
-- 发布/外部效果范围：{{actual_authorization_scope}}
+- Profile:{{selected_profile}}
+- Scope and adoption basis:{{scope_and_actual_choice}}
+- Commits:{{allowed_commit_behavior}}
+- Integration:{{target_branch_and_direct_or_pr_route}}
+- Remote synchronization:{{allowed_remote_and_refs_or_manual}}
+- Cleanup:{{allowed_scope_or_keep_worktrees}}
+- Release/external-effect scope:{{actual_authorization_scope}}
 
-现有现场与规则来源：{{source_refs}}
+Current context and rule sources:{{source_refs}}
 
-当前分支、远端差异和执行进度由 Git/原 Task 提供；本页不手填动态状态。
+Read the current branch, remote differences, and execution progress from Git/the original Task; do not manually duplicate changing state on this page.

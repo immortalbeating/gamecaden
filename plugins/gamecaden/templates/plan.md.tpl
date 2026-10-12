@@ -1,13 +1,16 @@
-# {{work_title}} · 实施安排
+<a id="work_title--实施安排"></a>
+# {{work_title}} · Implementation plan
 
-原工作：{{owning_work_ref}}
+Owning work:{{owning_work_ref}}
 
 {{why_this_plan_is_independently_used}}
 
-## 实施清单
+<a id="实施清单"></a>
+## Implementation checklist
 {{steps_outputs_internal_order_and_required_checks}}
 
-## 等待、恢复与回退
+<a id="等待恢复与回退"></a>
+## Waiting, recovery, and rollback
 {{only_applicable_conditions_and_paths}}
 
-外部依赖与验收以原工作为准；本文件只维护该工作的内部实施清单。
+The original work owns external dependencies and acceptance; this file maintains only that work's internal implementation checklist.
