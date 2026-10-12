@@ -42,7 +42,7 @@ WriteResult 可用 note 说明恢复观察。仅看到当前字节与目标相�
 
 写操作的 ok/partial 结果及 operation.status 的成功查询还须返回 receipt：原 request_id/operation、scope_id、request_digest、prepared/applying/settled 阶段、outcome、已分配对象和 recovery_actions。它描述一次文件操作，不成为业务流程状态。operation.status 的 writes 表示被查询原操作的写入结果，不表示查询本身写了文件；receipt 中的原 request_id 与查询请求 ID 分开。
 
-allocations 只列分配稳定管理 ID 的 Task/Epic/Evidence/Decision/Asset。无独立管理 ID 的 attachment/design/plan/history/handoff 等文件创建由 writes 指明实际位置，不借回执增设管理实体。
+allocations 只列分配稳定管理 ID 的 Task/Epic/Evidence/Decision/Asset。无独立管理 ID 的 development-plan/attachment/design/plan/history/handoff 等文件创建由 writes 指明实际位置，不借回执增设管理实体。
 
 ## 3. 操作目录
 
@@ -65,7 +65,9 @@ record.update 不改原生 ID，不绕过 record.transition 修改 Task/Epic 状
 
 改写承载文件正文（含 record.update/transition）时，同样核对其中的原生内嵌块，不能借整段替换删除正式事件、改变 Evidence 的实质对象/结果或重新分配身份。格式/基准转换属于保持含义的搬移；实质证据纠正另建记录并引用原记录。record.create 分配缺省 ID 后仍须按目标记录格式校验完整元数据，Request 信封通过本身不足以证明可保存。
 
-record.create 也可以创建 attachment/design/plan/history/handoff 文档；attachment 必须提供 owner 和显式 `.md` path，owner 须解析为真实 Task/Epic，目标须位于该工作的附件目录或子目录。design/plan/history 必须定位 owner，handoff 明确原始来源与快照范围。它们是附属文档类型，不新增管理实体或生命周期。正文拆分可组合受保护的 create/update，遵循先准备目标、再切换原正文为说明/引用、逐项回读的同一恢复原则；不能仅创建一份副本就宣称迁出完成。
+record.create 的 development-plan 创建项目/版本级 [PDP](phased-development.md)，不要求 Task/Epic owner，不分配 ID 或生命周期。省略 path 时提供 metadata.title，默认保存在 plans/<安全标题>.md；返回实际来源登记提案，登记与创建分别回读。改标题不搬文件，后续使用原 path。
+
+attachment/design/plan/history 继续依附真实 Task/Epic：attachment 提供 owner 与显式 `.md` path，目标位于该工作的附件目录或子目录；design/plan/history 也必须定位 owner。上位 PDP 不扩大这些旧附件类型的范围。handoff 提供真实 source_refs 与 snapshot_scope，来源参与当前读取核对；默认路径与再次生成的留存按[独立交接](derived-outputs.md#独立-handoff)。以上文档都不新增管理实体或生命周期。正文拆分遵循先准备目标、再切换原正文为说明/引用、逐项回读的恢复原则；创建副本不证明迁出完成。
 
 所有写操作在任何权威源文件改动前，重新解析实际目标与来源并核对当前写能力、格式与授权。不能信任请求自行声称 capabilities；raw/缺少对应写适配器时返回 unsupported_write，各目标为 not_attempted。读取之后来源发生迁移/变化时，需要重新核对真实位置和写入前提，不把旧正文盲写到另一个来源。操作锁/回执属于本地恢复材料，不等于已写入权威源。
 
@@ -80,6 +82,8 @@ asset.select 明确 action=set/clear。set 提供完整 use（含 use_id）；cl
 Task 转换前，调用 Skill 核对原范围、有效证据、必要接受与 Git 落点。工具核对结构、引用和操作允许范围；它不能仅凭 status 字段或 JSON Schema 通过，代替 close 的交付判断。
 
 view.build 只返回数据时 preconditions 可为空；保存时需保护实际输出目标。没有可靠的正文解析/引擎观察时保留原文或 unknown/needs_review，不能从 closed 数量推导 Epic 完成或从素材数量推导质量。
+
+读模型的实际覆盖和保存方式按[派生输出](derived-outputs.md#视图与-views)：当前 progress 仅汇总 Task/Epic，timeline 汇总 Task/Epic/Decision/Evidence，assets 汇总资产身份。面板从来源即时读取，保存 JSON 不是启动前置；完整里程碑/Stage 判断须回原 Roadmap/PDP 与依据。当前 view.build 不生成 Markdown 或完整面板静态 HTML。
 
 新 Task 未指定原路径时，默认创建在 `tasks/T-编号-短名/task.md`；安全短名由创建时 title 得到，规则见[记录约定](records.md#2-选择和创建工作)。后续改标题不搬文件；旧平铺 Task 的原主文件及 `tasks/T-编号/` 附件目录继续复用，显式路径不自动迁移。
 

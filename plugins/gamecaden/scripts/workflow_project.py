@@ -16,7 +16,7 @@ DEFAULTS = {"vision": ("file", "vision.md"), "spec": ("collection", "spec"),
             "roadmap": ("file", "roadmap.md"), "task": ("collection", "tasks"),
             "epic": ("collection", "epics"), "evidence": ("collection", "evidence"),
             "decision": ("collection", "decisions"), "asset-ledger": ("file", "assets/ledger.yaml"),
-            "notes": ("collection", "notes"), "parking-lot": ("file", "parking-lot.md")}
+            "development-plan": ("collection", "plans"), "notes": ("collection", "notes"), "parking-lot": ("file", "parking-lot.md")}
 
 
 class Project:
@@ -38,7 +38,7 @@ class Project:
         else:
             for role, (kind, name) in DEFAULTS.items():
                 self.sources.append({"id": role, "role": role, "kind": kind, "path": name,
-                                     "owner": "flow", "format": "native-yaml-v1" if role == "asset-ledger" else "native-markdown-v1"})
+                                     "owner": "project" if role == "development-plan" else "flow", "format": "native-yaml-v1" if role == "asset-ledger" else "native-markdown-v1"})
 
     def path(self, value, base=None):
         candidate = Path(value)

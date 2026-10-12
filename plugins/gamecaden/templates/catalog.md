@@ -11,15 +11,16 @@
 | [Vision](vision.md.tpl) | 正式接入时整理当前愿景；已有纯愿景复用内容，未定方向如实表达 |
 | [Spec 总览](spec-index.md.tpl) | 已有需持续维护的规则/基线，形成确定的总览与领域入口 |
 | [领域 Spec](spec-page.md.tpl) | 保存生效合同和该基线的实际能力 |
-| [Roadmap](roadmap.md.tpl) | 多个可分别交付的产品成果需共同安排；单个成果的准备步骤留原工作 |
+| [Roadmap](roadmap.md.tpl) | 正式采用项目级持续开发时默认建立；保留当前真实成果与未定范围，不为凑阶段编造承诺 |
+| [Phased Development Plan](development-plan.md.tpl) | 已选大型方案需分阶段转为一个/多个 Epic 的交付编排；按 [PDP 合同](../shared/phased-development.md)独立于工作记录保存 |
 | [停车场](parking-lot.md.tpl) | 出现值得保留但未承诺的未来想法 |
 | [Task](task.md.tpl) | 持续交付，使用同一原生元数据格式 |
 | [Quick Task](quick-task.md.tpl) | 明确局部交付的轻记录；并非验证豁免 |
 | [Epic](epic.md.tpl) | 多个相关交付需共同目标和整体出口 |
 | [Design](design.md.tpl) | 设计正文确需独立阅读/维护 |
-| [Plan](plan.md.tpl) | 达到既定独立计划使用标准 |
+| [Plan](plan.md.tpl) | 原 Task 的唯一内部清单或已有 Epic 的界内安排；上位 PDP 使用独立蓝本 |
 | [详细历史](history.md.tpl) | 原工作历史妨碍阅读，需要拆出唯一正文 |
-| [交接快照](handoff.md.tpl) | 用户确实要求独立交接材料；来源仍是原记录 |
+| [交接快照](handoff.md.tpl) | 用户或有效项目约定需要独立交接；从原记录生成，路径与版本留存按 [派生输出](../shared/derived-outputs.md#独立-handoff) |
 | [Evidence](evidence.md.tpl) | 需要原生独立说明，或将同一形态嵌入原 Task；已有完整报告不复制 |
 | [Decision](decision.md.tpl) | 版本接受、批量决定或独立追踪事件；普通取舍可留正文 |
 | [Asset Ledger](asset-ledger.yaml.tpl) | 原生资产主台账，登记真实身份和选用关系 |
@@ -36,4 +37,4 @@
 
 ## 可选的材料与条件标注
 
-需要面板共享成果、材料职责、适用规则和推进条件时，使用[governance 合同](../shared/governance.md)中的同源标注及其 Schema。定义留在原 Spec、Roadmap、Epic 或 Task；不增加一份必建的 Gate/总进度文档。先按[材料职责](../shared/material-requirements.md)确定本次需要的信息，再选择能承担该职责的现有章节、图件或数据。旧格式登记不等于采纳或迁移。
+需要面板共享成果、材料职责、适用规则和推进条件时，使用[governance 合同](../shared/governance.md)中的同源标注及其 Schema。定义留在原 Spec、Roadmap、PDP、Epic 或 Task；不增加一份必建的 Gate/总进度文档。视图的读取、按需 JSON 保存与 HTML 能力范围见[派生输出](../shared/derived-outputs.md)。旧格式登记不等于采纳或迁移。

@@ -60,6 +60,7 @@ init 返回目标根、权威位置和相关缺口即可，flow 不新建自己�
 | 只询问或审阅现状 | 读取相关事实并回答/审阅 |
 | 核心方向尚需比较 | 读取 [brainstorm](../brainstorm/SKILL.md)，处理相关分歧并保存到对应位置 |
 | 已有需求，缺必要方案；或明确要求设计/方案审阅 | 读取 [design](../design/SKILL.md)，形成或审阅本次安排 |
+| 已选大型方案需要分阶段转为交付，或明确要求分阶段开发计划 | 读取 design 与 [PDP](../../shared/phased-development.md)，复用原方案并编排 Epic/Stage/Task；纯规划不自动实施 |
 | 已有可执行设计或明确工程快改 | 读取 [develop](../develop/SKILL.md)，直接实现与必要验证，不为顺序完整再加载 brainstorm/design |
 | 内容制作、复用、修订或审阅后交付 | 读取 [assets](../assets/SKILL.md)，按具体用途生产与留存；包含接入时协同 develop |
 | 已有素材的工程接入或引用修复 | 使用 develop 并核对资产交接与允许范围，无需重新生产 |

@@ -71,6 +71,172 @@ class Integration(unittest.TestCase):
         mapping["sources"] = [s for s in mapping["sources"] if s.get("format", "").startswith("native-")]
         self.run_request(self.request("workspace.configure", {"document": plain(mapping)}, [self.condition("workspace.yaml")]))
 
+    def test_development_plan_roundtrip_and_registration(self):
+        request = self.request("record.create", {"record_type": "development-plan",
+            "metadata": {"title": "../Version: One"}, "body": "# Delivery stages\n"}, [])
+        result = self.run_request(request)
+        path = Path(result["data"]["path"])
+        self.assertEqual(path.name, "version-one.md")
+        self.assertEqual(path.parent.name, "plans")
+        self.assertEqual(result["receipt"]["allocations"], [])
+        self.assertTrue(result["data"]["source_registration_required"])
+        self.assertEqual(self.run_request(request)["data"]["path"], str(path))
+        changed = copy.deepcopy(request)
+        changed["payload"]["body"] = "changed"
+        self.run_request(changed, "conflict")
+        mapping = plain(yaml_load((self.root / "game-workflow/workspace.yaml").read_text(encoding="utf-8")))
+        mapping["sources"].append(result["data"]["source_proposal"])
+        self.run_request(self.request("workspace.configure", {"document": mapping}, [self.condition("workspace.yaml")]))
+        read = self.read({"path": str(path)})
+        self.assertIn("Delivery stages", read["body"])
+        self.assertNotIn("record.transition", read["capabilities"])
+        listing = self.run_request(self.request("record.list", {}))["data"]["items"]
+        self.assertTrue(any(item["path"] == str(path) and item["record_type"] == "development-plan" for item in listing))
+        self.run_request(self.request("record.update", {"target": {"path": str(path)},
+            "set_fields": {"title": "Renamed"}, "body": "Next stage", "reason": "Update stage"}, [self.condition("plans/version-one.md")]))
+        self.assertEqual(self.read({"path": str(path)})["metadata"]["title"], "Renamed")
+        self.run_request(self.request("record.transition", {"target": {"path": str(path)},
+            "to": "closed", "reason": "No lifecycle"}, [self.condition("plans/version-one.md")]), "rejected")
+
+    def test_development_plan_rejects_other_source_roles_and_owner(self):
+        for name in ("spec", "notes"):
+            relative = name + "/development.md"
+            request = self.request("record.create", {"record_type": "development-plan",
+                "path": relative, "metadata": {"title": "Version plan"}, "body": "Stages"},
+                [self.condition(relative)])
+            result = self.run_request(request, "rejected")
+            self.assertEqual(result["errors"][0]["code"], "invalid_scope")
+            self.assertFalse((self.root / "game-workflow" / relative).exists())
+            self.assertFalse(any(write["status"] == "written" for write in result["writes"]))
+            self.assertNotIn("receipt", result)
+        for extra in ({"owner": {"id": "T-002"}}, {"metadata": {"owner": {"id": "T-002"}}}):
+            payload = {"record_type": "development-plan", "path": "planning/owned.md", "body": "Stages"}
+            payload.update(extra)
+            self.run_request(self.request("record.create", payload, [self.condition("planning/owned.md")]), "rejected")
+            self.assertFalse((self.root / "game-workflow/planning/owned.md").exists())
+
+    def test_development_plan_explicit_unmapped_location_registration(self):
+        relative = "planning/version.md"
+        created = self.run_request(self.request("record.create", {"record_type": "development-plan",
+            "path": relative, "body": "# Existing planning location"},
+            [self.condition(relative)]))
+        self.assertEqual(created["receipt"]["allocations"], [])
+        self.assertEqual(created["data"]["source_proposal"]["role"], "development-plan")
+        self.assertEqual(created["data"]["source_proposal"]["kind"], "file")
+        mapping = plain(yaml_load((self.root / "game-workflow/workspace.yaml").read_text(encoding="utf-8")))
+        mapping["sources"].append(created["data"]["source_proposal"])
+        self.run_request(self.request("workspace.configure", {"document": mapping}, [self.condition("workspace.yaml")]))
+        read = self.read({"path": relative})
+        self.assertIn("Existing planning location", read["body"])
+        listing = self.run_request(self.request("record.list", {}))["data"]["items"]
+        self.assertTrue(any(item["path"] == created["data"]["path"] and
+            item["record_type"] == "development-plan" for item in listing))
+        self.assertNotIn("record.transition", read["capabilities"])
+
+    def test_development_plan_missing_title_and_scope(self):
+        for metadata in ({}, {"title": "..."}, {"title": "Stage", "status": "active"}, {"title": "Stage", "id": "T-999"}):
+            self.run_request(self.request("record.create", {"record_type": "development-plan",
+                "metadata": metadata, "body": "Stage"}, []), "rejected")
+        result = self.run_request(self.request("record.create", {"record_type": "development-plan",
+            "metadata": {"title": "CON"}, "body": "Stage"}, []))
+        self.assertEqual(Path(result["data"]["path"]).name, "work-con.md")
+        self.run_request(self.request("record.create", {"record_type": "development-plan",
+            "path": "../outside.md", "body": "Stage"}, []), "rejected")
+        for kind in ("design", "plan", "history", "attachment"):
+            self.run_request(self.request("record.create", {"record_type": kind,
+                "path": "plans/invalid.md", "body": "Stage"}, []), "rejected")
+
+    def test_handoff_collision_replay_and_sources(self):
+        payload = {"record_type": "handoff", "metadata": {"title": "Resume",
+            "snapshot_scope": "Current delivery", "source_refs": [{"id": "T-002"}]}, "body": "# Snapshot"}
+        with patch("workflow_io.now", return_value="2026-10-12T12:34:56Z"):
+            request = self.request("record.create", payload, [])
+            first = self.run_request(request)
+            original = Path(first["data"]["path"]).read_bytes()
+            second = self.run_request(self.request("record.create", payload, []))
+            self.assertNotEqual(first["data"]["path"], second["data"]["path"])
+            self.assertEqual(Path(first["data"]["path"]).read_bytes(), original)
+            self.assertEqual(self.run_request(request)["data"]["path"], first["data"]["path"])
+        self.assertIn("UTC", original.decode())
+        self.assertIn("2026-10-12T12:34:56Z", original.decode())
+        for metadata in ({}, {"snapshot_scope": "Current", "source_refs": [{"path": "missing.md"}]}):
+            self.run_request(self.request("record.create", {"record_type": "handoff",
+                "metadata": metadata, "body": "Snapshot"}, []), "rejected")
+        source = self.root / "game-workflow/notes/input.md"
+        source.parent.mkdir(exist_ok=True)
+        source.write_text("Original", encoding="utf-8")
+        payload["metadata"]["source_refs"] = [{"path": "notes/input.md"}]
+        original_check = self.api.check_read_snapshot
+        def change_source():
+            source.write_text("Changed", encoding="utf-8")
+            original_check()
+        with patch.object(self.api, "check_read_snapshot", side_effect=change_source):
+            self.run_request(self.request("record.create", payload, []), "conflict")
+
+    def test_handoff_prepared_recovery_preserves_changed_source(self):
+        source = self.root / "game-workflow/notes/recovery-source.md"
+        source.parent.mkdir(exist_ok=True)
+        source.write_text("Original source", encoding="utf-8")
+        request = self.request("record.create", {"record_type": "handoff", "metadata": {
+            "snapshot_scope": "Recovery", "source_refs": [{"path": "notes/recovery-source.md"}]},
+            "body": "Saved scope"}, [])
+        def interrupt(stage, value):
+            if stage == "prepared":
+                raise RuntimeError("simulated process exit")
+        with self.assertRaisesRegex(RuntimeError, "simulated"):
+            Workflow(self.root, fault=interrupt).execute(request)
+        store = Store(self.root, lambda p: Path(p))
+        prepared = store.load(request["request_id"])
+        path = Path(prepared["data"]["path"])
+        self.assertFalse(path.exists())
+        source.write_text("External change", encoding="utf-8")
+        result = self.run_request(request, "conflict")
+        self.assertFalse(path.exists())
+        self.assertEqual(result["data"]["path"], str(path))
+
+    def test_handoff_rejects_unsettled_referenced_work_only(self):
+        pending = self.request("record.update", {"target": {"id": "T-002"},
+            "set_fields": {"title": "Changed title"}, "reason": "Pending source write"},
+            [self.condition("tasks/T-002-feedback.md")])
+        def stop(stage, value):
+            if stage == "prepared":
+                raise OSError("Pause source write")
+        self.run_request(pending, "indeterminate", Workflow(self.root, fault=stop))
+        payload = {"record_type": "handoff", "metadata": {"snapshot_scope": "Current",
+            "source_refs": [{"id": "T-002"}]}, "body": "Source not settled"}
+        response = self.run_request(self.request("record.create", payload, []), "conflict")
+        self.assertEqual(response["errors"][0]["code"], "operation_pending")
+        self.assertFalse((self.root / "game-workflow/handoffs").exists())
+        payload["metadata"]["source_refs"] = [{"id": "T-001"}]
+        self.run_request(self.request("record.create", payload, []))
+
+    @unittest.skipUnless(os.name == "nt", "Windows long handoff path")
+    def test_windows_long_handoff_collision_and_replay(self):
+        root = self.folder / "long-handoff-project"
+        while len(str(root / "game-workflow/handoffs/2026-10-12-resume-123456.md")) <= 290:
+            root /= "segment-0123456789"
+        shutil.copytree(FIXTURE, filesystem_path(root))
+        api = Workflow(root)
+        context = {"project_root": str(root), "base_dir": str(root / "game-workflow")}
+        payload = {"record_type": "handoff", "metadata": {"title": "Resume",
+            "snapshot_scope": "Current delivery", "source_refs": [{"id": "T-002"}]}, "body": "# Snapshot"}
+        with patch("workflow_io.now", return_value="2026-10-12T12:34:56Z"):
+            request = self.request("record.create", payload, [], context=context)
+            first = self.run_request(request, api=api)
+            first_path = Path(first["data"]["path"])
+            original = filesystem_path(first_path).read_bytes()
+            second = self.run_request(self.request("record.create", payload, [], context=context), api=api)
+            second_path = Path(second["data"]["path"])
+            self.assertGreater(len(str(first_path)), 260)
+            self.assertNotEqual(first_path, second_path)
+            self.assertEqual(second_path.name, "2026-10-12-resume-123456-2.md")
+            self.assertEqual(filesystem_path(first_path).read_bytes(), original)
+            self.assertTrue(filesystem_path(second_path).is_file())
+            replay = self.run_request(request, api=api)
+            self.assertTrue(replay["replayed"])
+            self.assertEqual(replay["data"]["path"], str(first_path))
+            self.assertEqual(filesystem_path(first_path).read_bytes(), original)
+
     @unittest.skipUnless(os.name == "nt", "Windows long receipt path")
     def test_windows_long_receipt_roundtrip(self):
         root = self.folder / "long-project"
@@ -340,6 +506,47 @@ Workflow(sys.argv[2],fault=crash).execute(json.loads(Path(sys.argv[3]).read_text
         data = json_load((self.root / "game-workflow/views/progress.json").read_text(encoding="utf-8"))
         self.assertNotIn("completion_percent", data)
         self.assertEqual(self.read({"id": "E-001"})["metadata"]["status"], "active")
+
+    def test_view_snapshot_retained_and_current_view_refreshed(self):
+        frozen = "views/snapshots/2026-10-12-slice-progress.json"
+        request = self.request("view.build", {"view": "progress", "output_path": frozen}, [self.condition(frozen)])
+        self.run_request(request)
+        original = (self.root / "game-workflow" / frozen).read_bytes()
+        self.run_request(self.request("record.transition", {"target": {"id": "T-002"},
+            "to": "closed", "reason": "Fixture result changed"}, [self.condition("tasks/T-002-feedback.md")]))
+        self.run_request(self.request("view.build", {"view": "progress", "output_path": frozen},
+            [self.condition(frozen)]), "conflict")
+        self.assertEqual((self.root / "game-workflow" / frozen).read_bytes(), original)
+        self.run_request(request)
+        self.assertEqual((self.root / "game-workflow" / frozen).read_bytes(), original)
+        next_snapshot = "views/snapshots/2026-10-12-slice-progress-2.json"
+        self.run_request(self.request("view.build", {"view": "progress", "output_path": next_snapshot},
+            [self.condition(next_snapshot)]))
+        self.assertNotEqual((self.root / "game-workflow" / next_snapshot).read_bytes(), original)
+        current = "views/progress.json"
+        self.run_request(self.request("view.build", {"view": "progress", "output_path": current}, [self.condition(current)]))
+        self.run_request(self.request("view.build", {"view": "progress", "output_path": current}, [self.condition(current)]))
+
+    def test_frozen_view_recovers_after_write_and_preserves_external_change(self):
+        for number, (stage, external) in enumerate((("after_replace:0", False), ("after_write:0", False), ("after_write:0", True))):
+            with self.subTest(stage=stage, external=external):
+                name = f"views/snapshots/fault-{number}.json"
+                request = self.request("view.build", {"view": "progress", "output_path": name}, [self.condition(name)])
+                def crash(current_stage, value):
+                    if current_stage == stage:
+                        raise RuntimeError("Simulated process exit after snapshot write")
+                with self.assertRaisesRegex(RuntimeError, "Simulated"):
+                    Workflow(self.root, fault=crash).execute(request)
+                path = self.root / "game-workflow" / name
+                expected = path.read_bytes()
+                if external:
+                    expected = b'{"external":true}\n'
+                    path.write_bytes(expected)
+                result = self.run_request(request, "conflict" if external else "ok")
+                self.assertEqual(path.read_bytes(), expected)
+                self.assertEqual(result["receipt"]["phase"], "settled")
+                if not external:
+                    self.assertEqual(result["writes"][0]["status"], "written" if stage == "after_write:0" else "unchanged")
 
     def test_workspace_configure_and_attachment(self):
         path = self.root / "game-workflow/workspace.yaml"

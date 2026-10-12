@@ -2,6 +2,8 @@
 
 面板是八个职责共享的可选本机工具。它读取已登记的项目来源，提供工作入口、原文阅读、治理关系、资产预览和审阅恢复。默认只读，服务只监听 `127.0.0.1`。
 
+面板读取无需先保存 `views/` 文件。按需 JSON 快照、当前汇总刷新与独立交接的职责见[派生输出](../plugins/gamecaden/shared/derived-outputs.md)；当前 JSON 工具不提供完整面板静态 HTML 导出。Roadmap/PDP 原文可阅读，成果或阶段关系只有实际结构化声明时才能进入关系图。
+
 ## 准备与启动
 
 需要 Python 3.12+；环境准备以[本地 I/O](../plugins/gamecaden/shared/local-io.md#1-环境与调用)为准。以下 PowerShell 示例从仓库根执行：

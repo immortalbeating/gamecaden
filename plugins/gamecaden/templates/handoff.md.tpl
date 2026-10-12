@@ -1,6 +1,8 @@
 # {{handoff_title}}
 
-快照时间：{{actual_snapshot_time}}
+快照时间：{{actual_snapshot_time_and_timezone}}
+
+适用范围与基线：{{snapshot_scope_and_actual_baseline}}
 
 ## 来源与工作位置
 {{project_worktree_original_work_and_source_refs}}
@@ -11,4 +13,4 @@
 ## 继续动作与限制
 {{next_action_and_current_restrictions}}
 
-本文件是从原记录导出的交接快照。后续更新原 Task/Epic，不另维护本快照的当前状态。
+本文件是从原记录导出的交接快照。后续更新原 Task/Epic，不另维护本快照的当前状态；再次交接另存版本。

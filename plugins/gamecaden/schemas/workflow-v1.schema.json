@@ -236,6 +236,7 @@
             "evidence",
             "decision",
             "notes",
+            "development-plan",
             "parking-lot"
           ]
         },
@@ -1069,6 +1070,7 @@
             "epic",
             "evidence",
             "notes",
+            "development-plan",
             "parking-lot",
             "index",
             "rule",

@@ -84,6 +84,10 @@
 
 `record.create` 的 attachment 须指定真实 Task/Epic owner 和显式 `.md` path，位于其实际附件目录或子目录。新 Task 材料目录就是主文件所在的 `tasks/T-编号-短名/`，旧平铺 Task 仍使用 `tasks/T-编号/`；后续改标题不搬文件。附件不分配工作 ID 或生命周期。创建在写入前按实际来源的读取规则校验，无法回读时返回 invalid_record 且不写目标；已有材料保留原字节和原归属，不为套用新布局自动迁移。
 
+项目/版本级 PDP 使用 `record.create` 的 `record_type: development-plan`，无 Task/Epic owner、管理 ID 或 transition。省略 path 时提供 `metadata.title`，默认 `plans/<安全标题>.md`；显式原路径和改标题后的更新保持位置稳定。创建返回 development-plan 来源提案，按 `workspace.configure` 登记后回读/list；当前数量与编排含义仍由 [PDP 合同](phased-development.md)核对。
+
+handoff 提供 `source_refs` 和 `snapshot_scope`；工具读取实际来源参与修订核对，并保存工具快照时间。省略 path 默认在 handoffs/ 生成 UTC 日期/安全标题/时间名称，同秒冲突追加序号；同 request_id 重放返回原位置，新请求留新快照。范围、正文和旧路径沿[派生输出](derived-outputs.md)，不把交接作为新的工作实体。
+
 当前自动内容验证支持单文件 SHA-256，以及本包备用 manifest 中每个实际成员的 SHA-256；候选 Subject 可从其已绑定 candidate.manifest 得到隐含 proof。其他生产工具 manifest、git/build/named 的当前适用性需要对应适配器，当前请求会明确返回 unsupported_format，不把未解析的版本当作通过。已有历史记录仍可保存这些声明，不因此虚构当前验证。
 
 `asset.upsert` 的创建核验全部新候选；更新保护已有候选 ID/manifest/version 和原选用关系，严格核验新候选及新增引用。返回 `validated_candidate_ids` 和 `historical_candidate_diagnostics`，后者说明保留旧载荷的失配/不可读情况，不将其改为通过。`asset.select set` 仍逐项核对所选候选；恢复登记、更新选用及工程采用分开，流程见[候选快照与遗留恢复](asset-handoff.md#候选快照与遗留恢复)。
@@ -117,6 +121,8 @@ settled 回执说明原操作当时的结果；需要现在的内容时另读原
 这些保障针对本地协作调用。外部编辑器不参加项目锁；工具检测可观察的版本变化，不能把任意非合作编辑器纳入同一文件事务。本轮没有验证断电、网络盘或跨机器写入。
 
 JSON views 保留来源、原文、时间和诊断。raw 源无法完整枚举结构化记录时 complete=false；重复 ID 和未结算操作是另外的诊断，不一概改变扫描完整性。分页是否还有内容看 next_cursor。Timeline 当前提供带来源的记录/事件材料，正文中的任意历史叙述不伪造为精确时间线。
+
+新视图输出只使用 JSON/HTML；当前 view.build 仅保存 `.json`，HTML 由现有面板读取实际来源，静态 HTML 导出另以实际导出器能力判断。保存不是启动面板前置，Progress 的 Task/Epic 汇总不替代 Roadmap/PDP 的完整成果/阶段判断；刷新与冻结留存按[派生输出](derived-outputs.md)。
 
 `record.list` 的 items、source_revisions 和 diagnostics 各按同一 offset/limit 分页；记录读完后可能仍有修订/诊断页，按 next_cursor 结束。summary 给出全扫描指纹、三类总数及按 code 的诊断计数，详情范围为 page；分页详情不等于全量验收。游标及面板前后核对使用同查询的全扫描指纹，来源或查询变化使游标失效。仍需全扫描以保持一致性；缩小实际扫描范围通过[来源登记](workspace.md#2-便携字段)，不靠 scope 文本静默排除内容。
 

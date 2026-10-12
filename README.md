@@ -39,7 +39,7 @@ claude plugin install gamecaden@gamecaden --scope user
 - 单次工作：`使用 Gamecaden flow 修复暂停后计时跳变的问题，并验证本轮改动。`
 - 已采用项目续接：`继续之前的工作，按项目已保存的目标完成当前任务，并保存真实检查结果。`
 
-项目明确采用后的有效指引可支持后续自然续接；单次显式调用按本次范围执行，不要求全项目迁移。普通未采用项目继续沿用原工作方式。正式接入时从已有材料整理当前 `vision.md`、必要的 `spec/index.md` 和 `roadmap.md`，默认在 `game-workflow/`；原材料、工作与资产记录保留来源及明确维护范围，详细内容按需引用。旧映射的局部续接保持兼容。
+项目明确采用后的有效指引可支持后续自然续接；单次显式调用按本次范围执行，不要求全项目迁移。正式接入整理当前 `vision.md`、必要的 `spec/index.md`；项目级持续开发默认建立 `roadmap.md`，默认在 `game-workflow/`，只有当前一个成果或方向未定也如实表达。已有大型方案需要分阶段落实时，design 使用 [Phased Development Plan](plugins/gamecaden/shared/phased-development.md) 编排 Epic、S 阶段与 Task；Roadmap 维护 M 里程碑。原材料与工作保留明确维护范围，旧映射的局部续接保持兼容。
 
 ## 八个职责
 
@@ -55,6 +55,8 @@ claude plugin install gamecaden@gamecaden --scope user
 | close | 保存交付结论和遗留归属，收尾工作 |
 
 职责按请求选择，不是八步必经流程。详细规则见 [技能目录](plugins/gamecaden/skills) 和 [来源约定](plugins/gamecaden/shared/workspace.md)。Notes 提供项目内的基础记录能力；经验增强尚未采用。当前包没有后台记忆、自动调度或专用 MCP 服务。
+
+视图与独立交接不增加 Skill 命令：面板直接读原来源，JSON 快照和 handoff 按真实需求保存，默认路径、刷新与版本留存见[派生输出](plugins/gamecaden/shared/derived-outputs.md)。当前工具不提供完整面板静态 HTML 导出，不生成新的 Markdown 进度视图。
 
 ## 可选面板与开发工具
 

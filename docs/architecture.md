@@ -26,8 +26,12 @@ Gamecaden 将任务行为、项目事实与宿主展示分开维护。八个职�
 
 主要文档整理属于 Skill 的内容判断与写回约定。当前 role 分类和 scope 说明不自动筛选章节或证明正文合格；旧 Schema/映射继续可读，项目按实际接入或修复范围处理职责。包更新不自动迁移项目。
 
+项目级持续接入默认建立 Roadmap，产品成果/M 里程碑与条件引用由该正文维护。已选大型方案需分阶段落实时，项目/版本级 [PDP](../plugins/gamecaden/shared/phased-development.md)（development-plan）独立保存于 plans/，编排 Epic 与局部 S Stage；Task 归属及生命周期保持原定义。PDP 无管理 ID/生命周期，旧 design/plan/history 附件继续依附真实 Task/Epic。创建、登记和内容完整性分别核对，数量不表示实施已经发生。
+
 ## 面板
 
 本地面板通过同一库派生展示已登记来源。浏览器草稿用于输入恢复，原 Task、Decision 和账本仍是权威事实。前台事件触发来源版本检查；续接摘要是定位线索，继续前重读原记录和现场。面板不运行引擎或唤醒 Agent。见 [启动说明](panel.md) 与 [桥接合同](../plugins/gamecaden/shared/panel-bridge-v1.md)。
+
+[派生输出](../plugins/gamecaden/shared/derived-outputs.md)区分实时 HTML、可重建 JSON 汇总与冻结快照，保存视图不是启动前置；当前 view.build 不导出完整静态 HTML。独立 handoff 从真实来源生成，默认时间/序号名称留新轮次，来源参与修订核对；它与操作回执、工作生命周期分别处理。
 
 工程 profiles 是按条件加载的参考。技术检查、模型遵循、引擎表现、用户接受和发布授权各自需要对应证据，见 [验证层级](validation.md)。

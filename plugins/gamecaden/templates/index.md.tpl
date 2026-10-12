@@ -3,7 +3,7 @@
 {{project_identity_runtime_roots_and_workflow_usage}}
 
 ## 当前维护入口
-{{current_vision_required_for_adoption_spec_roadmap_when_needed_and_original_work_assets_rules_refs_that_exist}}
+{{current_vision_spec_and_roadmap_for_project_level_continuous_adoption_existing_pdp_and_original_work_assets_rules_refs_that_exist}}
 
 ## 继续工作
 {{how_to_locate_original_work_and_current_restrictions}}

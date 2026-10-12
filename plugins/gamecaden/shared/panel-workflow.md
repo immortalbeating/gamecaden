@@ -6,6 +6,8 @@
 
 确认实际项目及已注册的来源后，从面板 `GET /api/projects/<id>/governance?focus=T-003` 读取派生只读图、材料和条件；按当前 Task/候选及其关系阅读。`focus` 定位对象，不删去图中其他来源。无面板或需命令行时使用 `scripts/workflow_governance.py --project-root ... [--workspace ...] --focus T-003` 取得同一派生模型。输出报告适用条件状态，不自动授权执行、接受、关闭或改变原记录。
 
+面板无需先保存 views 文件。按需 JSON 快照、现有 HTML 展示、模型覆盖及历史留存统一见[派生输出](derived-outputs.md)；Roadmap/PDP 的自由正文仍是原文，只有实际声明的结构关系进入成果/推进图，不从 S/M 编号推断达成。
+
 面板可定位到 `#project=<id>&view=overview|assets|review|documents&task=T-003&asset=A-002&candidate=C-001`；只带当前需要的参数。`connect=` 仍只用于一次连接认证，不作为可复制的工作深链接。项目 ID、Task、资产和候选均应来自已登记真实对象；片段不能指定新项目根或扩展权限。
 
 | 当前职责 | 视图用法 |

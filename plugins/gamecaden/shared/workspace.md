@@ -38,7 +38,7 @@ workspace.yaml 中所有 path、root、marker 均相对于该 YAML 所在目录�
 | default_epic_source | 新 Epic 的默认来源；无需要或尚未决定时可为空 |
 | rule_sources | 真正生效的项目规范/profile 来源及适用范围；仅登记可定位的材料，使用时按[规则选择与加载](rules.md)判断 |
 
-sources 的 role 使用 vision、spec、roadmap、task、epic、asset-ledger、evidence、decision、notes、parking-lot。kind 为 file 或 collection。role 表示信息类别，不自动证明正文职责充分或要求生效。scope 说明适用范围，不是工具的章节筛选器。owner 表示维护约定，例如 flow、codestable、trellis、project；它不是操作系统权限，也不强制必须存在同名工具。
+sources 的 role 使用 vision、spec、roadmap、development-plan、task、epic、asset-ledger、evidence、decision、notes、parking-lot。kind 为 file 或 collection。role 表示信息类别，不自动证明正文职责充分或要求生效。scope 说明适用范围，不是工具的章节筛选器。owner 表示维护约定，例如 flow、codestable、trellis、project；它不是操作系统权限，也不强制必须存在同名工具。
 
 format/adapter 说明实际形态与适配线索，省略时先识别；声明适配器不等于已有写入能力。新建时按需使用[workspace 模板](../templates/workspace.yaml.tpl)，旧来源不会因为登记映射而自动转换。
 
@@ -79,6 +79,12 @@ sources:
     kind: file
     path: spec/index.md
     owner: project
+  - id: current-roadmap
+    role: roadmap
+    kind: file
+    path: roadmap.md
+    owner: project
+    format: native-markdown-v1
   - id: tasks
     role: task
     kind: collection
@@ -104,11 +110,11 @@ workspace 不存当前 Task 状态、完成百分比、进程/端口、临时登
 
 ### 新建资料的默认位置
 
-正式接入时，按[项目级当前正文](records.md#项目级当前正文)在当前工作流目录建立 vision.md、必要的 spec/index.md 和 roadmap.md，作为确定的维护入口。用户明确指定其他位置时沿用其要求并登记唯一入口。重复接入保留已确定位置，只补本次差异；已有旧映射的读取和局部续接保持兼容，相关修复才整理其职责。
+正式接入时，按[项目级当前正文](records.md#项目级当前正文)在当前工作流目录建立 vision.md、必要的 spec/index.md；采用项目级持续开发时默认建立 roadmap.md。用户明确指定其他位置时沿用其要求并登记唯一入口。重复接入保留已确定位置，只补本次差异；已有旧映射的读取和局部续接保持兼容，相关修复才整理其职责。
 
-vision 来源指向当前愿景正文，Spec 总览与必要 Roadmap 指向相应入口；详细领域规范仍可登记独立来源。混合输入按章节/字段、版本和采用范围由当前正文引用，不因含有目标、规则或阶段表就整份登记为当前主要文档。历史/候选登记仅用于定位，不成为另一份生效正文。
+vision 来源指向当前愿景正文，Spec 总览与 Roadmap 指向相应当前入口；详细领域规范仍可登记独立来源。大型方案的分阶段实施按 [PDP](phased-development.md)登记 development-plan 来源，默认使用 plans/ 窄集合或实际 file 入口，owner 为 project；它可独立于 Epic/Task 创建。混合输入按章节/字段、版本和采用范围引用，不因含有目标、规则或阶段表就整份登记为当前主要文档。历史/候选登记仅用于定位，不成为另一份生效正文。
 
-其他新资料默认放在 parking-lot.md、notes/、assets/ledger.yaml，以及按需的 evidence/、decisions/、views/，有真实职责时再创建。Task/Epic、账本和检查/决定保留原身份及维护来源。未来候选需持续留存时由独立 parking-lot.md 维护，保留输入引用，Vision 只指向该停车场；原输入中的候选段保留历史身份。默认集合中新 Task 使用 `tasks/T-编号-短名/task.md`，专属材料按需同目录或子目录保存；Epic 位置沿用共同记录规则。旧平铺 Task 和已明确的原路径继续复用，不因默认布局更新而迁移。
+其他新资料默认放在 parking-lot.md、notes/、assets/ledger.yaml，以及按需的 plans/、evidence/、decisions/、views/、handoffs/，有真实职责时再创建。PDP 默认 plans/<安全标题>.md；视图与独立交接的生成、命名、刷新和版本留存统一见[派生输出](derived-outputs.md)。Task/Epic、账本和检查/决定保留原身份及维护来源。未来候选由独立 parking-lot.md 维护，Vision 引用它。默认新 Task 使用 `tasks/T-编号-短名/task.md`，专属材料按需同目录或子目录保存；Epic 位置沿用共同记录规则。旧平铺 Task 和已明确的原路径继续复用。
 
 ### 入口正文与宿主段落
 

@@ -12,13 +12,14 @@
 | Task／Quick Task | Markdown＋YAML frontmatter | 同一套六个必需字段；正文说明交付、结果与续接 |
 | Epic | Markdown＋frontmatter | id/title/status；正文拥有共同目标与整体出口 |
 | Vision、Spec、Roadmap、停车场、Notes、Git 规则 | Markdown | 默认使用可读正文；需要稳定引用的条目加稳定锚点 |
+| PDP（development-plan） | plans/<安全标题>.md | 项目/版本级方案编排；无管理 ID、无 Task/Epic owner 或生命周期；明确来源与 Stage 范围 |
 | 普通任务附件（attachment） | Markdown/JSON/YAML，按用途使用自然文件名 | 无独立管理 ID 或生命周期；依附真实 Task/Epic，按需读取 |
 | design/plan/详细历史/交接快照 | Markdown | 依附原工作或原始来源，不增加另一份生命周期；快照不成为当前真源 |
 | 独立 Evidence | Markdown＋frontmatter；已有工具报告保留原格式 | 元数据绑定对象与检查范围，方法/观察等写正文 |
 | 独立 Decision | Markdown＋frontmatter；批量场景可用同元数据形态的 JSON | events 保存决定及补充/撤回/替代事件，长理由写正文 |
 | Asset Ledger | assets/ledger.yaml | 资产身份、候选引用与指定使用；已有 Markdown 台账可继续维护 |
 | manifest | 专业工具原生格式优先；缺少时可使用 v1 JSON 备用格式 | 文件身份和技术事实，不含人工接受或运行采用开关 |
-| Progress／Timeline／面板数据 | 派生 JSON/Markdown/HTML | 显示来源与生成时点，不成为第二写入源 |
+| Progress／Timeline／面板数据 | JSON 读模型与 HTML 展示 | 显示来源、模型范围与生成时点；新输出不生成 MD 视图，保存与刷新按[派生输出](derived-outputs.md) |
 
 原生编号集合子目录中的普通附件不要求工作记录 frontmatter；文件名或内容声明正式记录时仍按对应 schema 校验，不能用附件类型掩盖缺字段、坏原生块或重复正式 ID。普通附件的读取与创建支持范围见[本地工具说明](local-io.md#3-正常写入)。
 
@@ -87,7 +88,7 @@ Epic 元数据只有 id/title/status 和可选 related/extensions；子 Task 归
 
 暂停/推进限制和恢复条件继续在 Task 当前续接正文中保存，不增加 paused 生命周期。工具返回这段原文或完整正文供模型判断；正文标题无法可靠识别时返回原文和提示，不能据 active 就得出可执行。面板展示该限制，自动执行不得绕过当前用户指示。
 
-正文仍回答目标/范围、现状/方案、必要安排、验收、实际结果、续接/收尾。Quick 用四答和必要续接即可；独立 plan.md 只拥有 Task 内部实施清单，详尽参数与原报告不复制进主记录。
+正文仍回答目标/范围、现状/方案、必要安排、验收、实际结果、续接/收尾。Quick 用四答和必要续接即可；Task 的 plan.md 拥有内部实施清单，已有 Epic 计划组织本 Epic 的交付引用。项目/版本级上位编排使用 [PDP](phased-development.md)，其 S 标识与 Roadmap 的 M 标识是文档内锚点，不分配新管理 ID。详尽参数与原报告保留原引用。
 
 ## 5. Evidence
 

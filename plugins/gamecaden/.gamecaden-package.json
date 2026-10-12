@@ -1,5 +1,5 @@
 {
-  "digest": "f3715f99fa0845f5dcb503da5e3594e756aac3ecdccb3f6a1e70840ef11617b7",
+  "digest": "95c37d3f30b7055820ded3e1ad5a6e0463d8a9e0d5074c72c7a159330fc5f286",
   "files": {
     ".claude-plugin/plugin.json": {
       "sha256": "a6e5d641dda91460d9385b37c33dab8175395bf7b6504f637a80d772ea04d321",
@@ -314,8 +314,8 @@
       "size": 12833
     },
     "schemas/workflow-v1.schema.json": {
-      "sha256": "c6654d97b0a2d844676704067f3037507766b3d05c05d060003fa29b2b94ab73",
-      "size": 61870
+      "sha256": "3ce0066e7b7d3dbcfddaa1019f3e48640a73b18508f5116b12f90043fd09e110",
+      "size": 61934
     },
     "scripts/check_codex_discovery.py": {
       "sha256": "c069715532a9a045d5be8797d8566265982e9e3d56704679248a54de5182daaa",
@@ -346,8 +346,8 @@
       "size": 22041
     },
     "scripts/workflow_io.py": {
-      "sha256": "2a3db669a048b775a29b64e8bd6b023628fb0346bf632cbd2e7828b595820183",
-      "size": 47108
+      "sha256": "a6da9615ad5d960296d206dfe0f4197ff12c675653b4b950c60abe0d048515e1",
+      "size": 50925
     },
     "scripts/workflow_navigation.py": {
       "sha256": "bc627203733d597d80795b7e5119e2bdd768b82242b6532db238506e4e98af7c",
@@ -366,8 +366,8 @@
       "size": 29067
     },
     "scripts/workflow_project.py": {
-      "sha256": "dfd0e3ca502e85d5990ce168152eabfce21324fb847a7376437077043a6c271c",
-      "size": 22091
+      "sha256": "965fdcdd759e91c2e1861f3cbe315d8ca3d86750ee25f330c6864b4684e47c3b",
+      "size": 22181
     },
     "scripts/workflow_relations.py": {
       "sha256": "405e18daa4825412419c0d657e89b64309357d92c8001f5fbc227d290c2fbf24",
@@ -381,25 +381,29 @@
       "sha256": "84f5ad4462ae0a2ab6fdd1439122d9fb90b4229b66b36baf893ed9ceea261ad0",
       "size": 7900
     },
+    "shared/derived-outputs.md": {
+      "sha256": "d3e38470920387cc35466cfdfdba36d287c1d0f22306cdf6f8fa8667e6ca1e9b",
+      "size": 4037
+    },
     "shared/formats-v1.md": {
-      "sha256": "7583a14091d751e010e2bcf47b12b0ff1bed0acc576b8f0eb19168c1605be13e",
-      "size": 16221
+      "sha256": "8f107e4fce2efe8ce59d9ac3fd744e9175f78a96c9c74ce71e6d28ab0e2a4259",
+      "size": 16655
     },
     "shared/git-policy.md": {
       "sha256": "cf3e25553f5667335506b7ff682cbbc30c9906d0607e0d9a7b205dd382f0217b",
       "size": 6022
     },
     "shared/governance.md": {
-      "sha256": "d8da145164dea29b637dfda0df5fc757b7c6f7d317d227c962605be253037b43",
-      "size": 6505
+      "sha256": "d1416974e9aece003a7752ef94a8c85c1cebdfd49976ff473dfa4018012cb070",
+      "size": 6877
     },
     "shared/io-v1.md": {
-      "sha256": "c0d45971ad928ba2ae7e2f8c79b542edfcb7f09c4c95f7d79fe70e562c8f6505",
-      "size": 17688
+      "sha256": "7174a370ff655dbb3a25e9c88c2230e0f0b7b5a71d73bc76e823d733042ed652",
+      "size": 18500
     },
     "shared/local-io.md": {
-      "sha256": "98268955c5065b3b8054575acfbcdcd5700efb1bc9ebd69cc4a572303cca2f31",
-      "size": 14920
+      "sha256": "3b90469ad9ca3fb7fb5885ac636c3815333dfed5580e2a79b31cccca0b386838",
+      "size": 16112
     },
     "shared/material-requirements.md": {
       "sha256": "6b40db47dd369dd93a335c6efdaf8c13f68122f515e15053fe8af6564749fea1",
@@ -410,12 +414,16 @@
       "size": 4695
     },
     "shared/panel-workflow.md": {
-      "sha256": "937af77c5049098ce8191bc0c137cfd7bec80cd28e58fcc77c0a6ea7575d27d0",
-      "size": 4696
+      "sha256": "4ddde16f09aee001d919cabc01578e31b3e0d6a0ae23ddb1de2c3c5282d1b58e",
+      "size": 4982
+    },
+    "shared/phased-development.md": {
+      "sha256": "20040bb5f89765747e7485e92cd0c3975805e4a8f593105a2e7845b9fce62329",
+      "size": 5949
     },
     "shared/records.md": {
-      "sha256": "b7b63fa4eb3930fb1b84d985cecd48535fc29407b8b9b3e1643d43bb44972a35",
-      "size": 17460
+      "sha256": "4bf040b9fcc381ee61f00bc50a0735c5798caeefcc655a2505d61a3c858fc569",
+      "size": 20102
     },
     "shared/relation-views.md": {
       "sha256": "16fb8dfbfb5bc53f7cec7e88148d4ea03861a4ea89ba35cab3721ce17d343ca5",
@@ -430,80 +438,80 @@
       "size": 6211
     },
     "shared/workspace.md": {
-      "sha256": "b0a5dfb72160d515c018b2e34e7d3be770a42901403c8eafff26ac16c1bab47e",
-      "size": 12597
+      "sha256": "fde0deb5a3d42e03d4984565212f6fa65da98fffd600e76d8fbead3fda2f98c3",
+      "size": 12969
     },
     "skills/assets/SKILL.md": {
-      "sha256": "c8b76a7518ce7cccfc99404dc4c6bb4eb44091bab5b5159e5aa9aef010fd7a55",
-      "size": 6306
+      "sha256": "7ba47cb75a7d4c6d99b328a4f9cefdca374988ecafa112795a82444df2e8db47",
+      "size": 6566
     },
     "skills/assets/references/production-and-review.md": {
       "sha256": "03a54f1a0ebf6dab00fcf6a27b8558b2a2511847d770a1d3f3437aec75914077",
       "size": 5049
     },
     "skills/brainstorm/SKILL.md": {
-      "sha256": "0deb11baec113fe891c40176d80ffd07c935cc097ce63a55376c1ea32de29687",
-      "size": 9879
+      "sha256": "012f9db75392f8a5b6f63cb5ef4567dbaabae0ca16039412b9e06297c8e19a0c",
+      "size": 10143
     },
     "skills/brainstorm/references/decision-exploration.md": {
       "sha256": "92e3f17303b696efdcd214f105d0615ef8b6ef3a8c922f0cc8d3bb298ee33c08",
       "size": 5334
     },
     "skills/close/SKILL.md": {
-      "sha256": "7e5f0120d7a5149ad435fdf93d53386da4663f75e4517dc69b01447b8c7726a3",
-      "size": 6066
+      "sha256": "7ac4c673b7b0b2fbe5c932645d7e7b18c31d73b2172048fc07b416305149c51f",
+      "size": 6463
     },
     "skills/close/references/closure-and-sync.md": {
-      "sha256": "718b7f2f992476072731c209676fe898288ed72ace14d80f0098b045d9c57009",
-      "size": 4967
+      "sha256": "e7a53524167e132070ed449947386a22e5c5d1c789b8b02e31573c766ee6de68",
+      "size": 5356
     },
     "skills/close/references/git-delivery.md": {
       "sha256": "fe4b686887777d420a9e3437b4fc21970c2ea3f9860c5da5813392d9d805259f",
       "size": 4806
     },
     "skills/design/SKILL.md": {
-      "sha256": "acb86b6a9cefbe33d66fb43154b5afbf85891eb0d6877a196eed78e5790f7c3d",
-      "size": 8266
+      "sha256": "b727cf8cb59d9995a797dcd766ec1ecb0aeaa2587d094388c9f3ba7eb432e03e",
+      "size": 8876
     },
     "skills/design/references/architecture-and-readiness.md": {
-      "sha256": "9cf6aedd55eb3a54ed22f5922be0567245e7c0649767d188504ab1f96d6dd567",
-      "size": 4740
+      "sha256": "8a61bf8722c06b909af06391ed491ec0eba952a0dde136d740d0bf7e33e4a480",
+      "size": 4893
     },
     "skills/design/references/game-deliverables.md": {
       "sha256": "979aba6b0bd258bd4ab4293ed7196c3a5bb53ea0a2c66be1275c0675d4dea8c8",
       "size": 22168
     },
     "skills/develop/SKILL.md": {
-      "sha256": "15968e949e577aec67c3ece7a68bd90e1be4693b2473c33e440811b5bd664799",
-      "size": 7657
+      "sha256": "f3a4e1f1baa22234360cc463d027bd7b36ec5271854b5f8a41c8fe7fbbeb2d40",
+      "size": 7962
     },
     "skills/develop/references/execution-and-recovery.md": {
       "sha256": "2722fc68b0ab3e4f5e4b525b7fa0fe06ded1373e041510cc49b0aad414022e41",
       "size": 3558
     },
     "skills/flow/SKILL.md": {
-      "sha256": "3973fe48fd47ccb27a860a07d86d042f10a93761f6f6d3d5d19a29329a0de587",
-      "size": 8424
+      "sha256": "a1d1ba1ceacb14e9ed13362a09efed56b9b7a605ebc882755ca3e99ff4215c0f",
+      "size": 8645
     },
     "skills/flow/references/change-work.md": {
-      "sha256": "50991254ddfd91a23bee3707ca8f70dad82be139c14bbb88fba9c0b874baf98e",
-      "size": 6676
+      "sha256": "5599377f7b83d7b96230c70ba3e5c36cb450f0fdae911f33097616d5bdcfc151",
+      "size": 7097
     },
     "skills/flow/references/resume.md": {
-      "sha256": "54b055e5dd28901bc3063cd5790520c13fca58f8623961dc562a5febd4b0d895",
-      "size": 5927
+      "sha256": "19feacd61d00c14f674fc1d676daf75c1afcd8988c52c8043ab75f98ef770f96",
+      "size": 6310
     },
     "skills/init/SKILL.md": {
-      "sha256": "da8f4e547bea23674292f6a00c366f2eca90d0575c1a8f30d0a9daeb56aaed82",
-      "size": 9561
+      "sha256": "9ea5d230e7e92f241b383b492fa07af15f63dbc4cfb99a26432c544d9b804322",
+      "size": 9748
     },
     "skills/init/references/adoption.md": {
-      "sha256": "5f0263947fc1dfd85a26ba35b78e253d0077ea8b6d685acd8d1314ed8445a403",
-      "size": 6715
+      "sha256": "1231c18f81328833cbd64dc7bb770b53627c322d67bd5f422294238e4e811434",
+      "size": 6780
     },
     "skills/verify/SKILL.md": {
-      "sha256": "fb939f4812360737c8257b4142ea7c257db77ab70ba38a9cb8fd617991aefdb8",
-      "size": 5157
+      "sha256": "5d530c93ee5a5008a6ee33fadb3f947949577a964fdd32faa4c8dd96f45097dc",
+      "size": 5589
     },
     "skills/verify/references/game-checks.md": {
       "sha256": "79d6b0810b1450501287b54dadc1f75eedb7169b2c691634668cb659843d847c",
@@ -514,8 +522,8 @@
       "size": 542
     },
     "templates/catalog.md": {
-      "sha256": "4f83a25d02249150a06a4356071a45b17a2bc975288c1bd9a4853f92254ca222",
-      "size": 3838
+      "sha256": "9db787cbdc3760d634b69f6cf7d856e1f332d5f552a8657f17c9ba43cb9d3b56",
+      "size": 4185
     },
     "templates/decision.md.tpl": {
       "sha256": "b5cd16bc583582f8ae350f0c4e586a118061ea05f371e58fc9008c3d77868e2c",
@@ -524,6 +532,10 @@
     "templates/design.md.tpl": {
       "sha256": "e4415caca2949fddbd172c63e6bde77c8080f048a5dd2caf934e9910aa77d2fc",
       "size": 363
+    },
+    "templates/development-plan.md.tpl": {
+      "sha256": "cae8c7f18d36e67cd95b26f2b1742fe204de32c70857dfd385736a7ab4388c22",
+      "size": 1187
     },
     "templates/epic.md.tpl": {
       "sha256": "5fd5d8ceb977010910ae7b27ce88ed02a3d1e83b8b818f6bb28fdc7463906697",
@@ -538,16 +550,16 @@
       "size": 526
     },
     "templates/handoff.md.tpl": {
-      "sha256": "be536e60c7479abd9e710b91b3bed3a9e87ebaa6331df32693e0ad3d6d756c46",
-      "size": 409
+      "sha256": "84cb11b2a6c5a0ea92cb2846cd86eed1290dcc9fbf960e9cd8b972c2e9101989",
+      "size": 513
     },
     "templates/history.md.tpl": {
       "sha256": "438ad54bad71f723dda5032ff29359c0df85b013335ea4b824d566480de02f8b",
       "size": 223
     },
     "templates/index.md.tpl": {
-      "sha256": "133b906a7dd5332d25a578c58fefd6add8ee189799c3ee1b99cab5ed508b7bf9",
-      "size": 457
+      "sha256": "55969f34b54202e8d3e690f3da52292c9eb8b7994cf48825777885044c3bb1f4",
+      "size": 478
     },
     "templates/manifest.json.tpl": {
       "sha256": "edd7bb54ceb38d0c7503cbd1c35260ae55946d0ef989dea8046626cca3f3193f",
@@ -574,8 +586,8 @@
       "size": 339
     },
     "templates/roadmap.md.tpl": {
-      "sha256": "54f04b1afc9def2d9d3f07e86f526fb08d62185983df0ace176bab1485d77701",
-      "size": 392
+      "sha256": "bb4f0a53e8041ecae057bd87c54e57621eb5c1c03b64f73601a00503247558c0",
+      "size": 852
     },
     "templates/spec-index.md.tpl": {
       "sha256": "57c1477e2d562953816eebe09c00d5dad91d6a8ebba60fbb416904110833407d",

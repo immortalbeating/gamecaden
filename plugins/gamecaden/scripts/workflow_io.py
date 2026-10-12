@@ -24,7 +24,7 @@ from workflow_formats import (Document, PREFIXES, WorkflowError, canonical, forw
                               normalized_id, plain, rebase, rebase_markdown, record_block, request_digest,
                               require, revision, validate, walk_refs, yaml_dump)
 from workflow_project import DEFAULTS, Project
-from workflow_storage import Store, file_revision, plan_write
+from workflow_storage import Store, file_revision, filesystem_path, plan_write
 
 
 READS = {"workspace.inspect", "record.list", "record.read", "record.resolve", "operation.status"}
@@ -189,7 +189,24 @@ class Workflow:
     def allocation(self, kind, rid, path):
         self.allocations.append({"ref": {"id": rid}, "path": str(path), "record_type": kind})
 
+    @staticmethod
+    def safe_title(title):
+        slug = re.sub(r"[^\w-]+", "-", title.casefold() if isinstance(title, str) else "").strip("-_")[:64].rstrip("-_")
+        if re.fullmatch(r"(?i)(con|prn|aux|nul|com[1-9]|lpt[1-9])", slug):
+            slug = "work-" + slug
+        return slug
+
     def default_path(self, kind, rid=None, owner=None, title=None):
+        if kind == "handoff":
+            stamp = self.snapshot_time
+            stem = stamp[:10] + "-" + (self.safe_title(title) or "handoff") + "-" + stamp[11:19].replace(":", "")
+            path = self.project.home / "handoffs" / (stem + ".md")
+            number = 2
+            reserved = {Path(plan["path"]) for value in self.store.pending() for plan in value["plans"]}
+            while filesystem_path(self.project.path(path)).exists() or path in reserved:
+                path = path.with_name(stem + f"-{number}.md")
+                number += 1
+            return path
         if kind in ("design", "plan", "history"):
             require(owner is not None, "invalid_record", "Attachment needs its owning work")
             work = self.project.resolve(owner)
@@ -198,7 +215,7 @@ class Workflow:
             return folder / (kind + ".md")
         if kind == "index":
             return self.project.home / "index.md"
-        require(kind not in ("rule", "handoff", "attachment"), "invalid_record", "Supply an explicit path for a rule/handoff/attachment")
+        require(kind not in ("rule", "attachment"), "invalid_record", "Supply an explicit path for a rule/attachment")
         role = kind
         sources = [s for s in self.project.sources if s["role"] == role]
         if self.project.mapping and kind in ("task", "epic"):
@@ -211,6 +228,11 @@ class Workflow:
         source = sources[0]
         require(source.get("format", "").startswith("native-"), "unsupported_write", "Default source has no native writer")
         folder = self.project.source_path(source)
+        if kind == "development-plan":
+            require(isinstance(title, str) and title.strip(), "invalid_record", "Development plan default path requires metadata.title")
+            slug = self.safe_title(title)
+            require(slug, "invalid_record", "Development plan title needs a safe descriptive basename")
+            return folder if source["kind"] == "file" else folder / (slug + ".md")
         if source["kind"] == "file":
             return folder
         if kind == "task":
@@ -232,7 +254,7 @@ class Workflow:
         return path
 
     def registration(self, kind, path):
-        if self.project.source_for(path) is not None:
+        if self.project.source_for(path) is not None and not (kind == "development-plan" and self.project.mapping is None):
             return {}
         role = kind if kind in DEFAULTS else None
         if role is None:
@@ -363,11 +385,13 @@ class Workflow:
             return data
         raise WorkflowError("unsupported_format", "Unknown write operation")
 
-    def check_view_destination(self, path):
+    def check_view_destination(self, path, *, snapshot_recovery=False):
         require(path.suffix == ".json", "unsupported_format", "The local view builder saves JSON projections")
         source = self.project.source_for(path)
         require(source is None or path.is_relative_to(self.project.home / "views") and source["id"] == "support",
                 "invalid_scope", "A derived view cannot overwrite an authoritative source")
+        require(snapshot_recovery or not path.is_relative_to(self.project.home / "views" / "snapshots") or file_revision(path) is None,
+                "revision_conflict", "Saved view snapshots are retained; choose a new output_path for another snapshot")
 
     def create_record(self, payload):
         kind = payload["record_type"]
@@ -376,6 +400,21 @@ class Workflow:
             require(owner.kind in ("task", "epic") and owner.id, "invalid_scope", "Attachment owner must be a real Task/Epic")
         metadata = copy.deepcopy(payload.get("metadata"))
         body = payload["body"].replace("\r\n", "\n")
+        if kind == "development-plan":
+            require("owner" not in payload and (not metadata or "owner" not in metadata),
+                    "invalid_record", "Development plans are project/version documents without a Task/Epic owner")
+            require(not metadata or not set(metadata).intersection({"id", "status", "events"}),
+                    "invalid_record", "Development plans have no management ID or lifecycle")
+        if kind == "handoff":
+            require(isinstance(metadata, dict) and isinstance(metadata.get("source_refs"), list) and metadata["source_refs"],
+                    "invalid_record", "Handoff requires nonempty metadata.source_refs")
+            require(isinstance(metadata.get("snapshot_scope"), str) and metadata["snapshot_scope"].strip(),
+                    "invalid_record", "Handoff requires metadata.snapshot_scope")
+            for ref in metadata["source_refs"]:
+                self.pending_for(self.project.resolve(ref))
+            self.snapshot_time = now()
+            metadata["snapshot_time"] = self.snapshot_time
+            body = body.rstrip() + "\n\nSnapshot time (UTC): " + self.snapshot_time + "\n"
         if kind in PREFIXES:
             require(isinstance(metadata, dict), "invalid_record", "Typed record requires metadata")
             metadata["id"] = self.allocate(kind, metadata.get("id"))
@@ -393,11 +432,21 @@ class Workflow:
             self.write(path, doc.render(body=text))
         else:
             require(not payload.get("container"), "invalid_record", "Standalone creation cannot name a container")
+            title = metadata.get("title") if metadata else None
+            if kind == "handoff" and not self.safe_title(title):
+                title = metadata["snapshot_scope"]
             path = self.project.path(payload["path"]) if payload.get("path") else self.default_path(
-                kind, metadata.get("id") if metadata else None, payload.get("owner"), metadata.get("title") if metadata else None)
+                kind, metadata.get("id") if metadata else None, payload.get("owner"), title)
+            if kind == "development-plan":
+                source = self.project.source_for(path)
+                require(source is None or source["role"] == "development-plan", "invalid_scope",
+                        "Development plan target belongs to another source role; select an unmapped location or explicitly adjust its source mapping",
+                        {"path": str(path)})
             path = self.new_destination(path, kind, allow_unmapped=True)
             if kind == "attachment":
                 require(path.is_relative_to(self.project.work_directory(owner)), "invalid_scope", "Attachment must stay in its owner's directory")
+            if kind == "handoff":
+                metadata["source_refs"] = [rebase(ref, self.project.base, path.parent, self.project.path) for ref in metadata["source_refs"]]
             if metadata:
                 if kind in PREFIXES:
                     metadata = rebase(metadata, self.project.base, path.parent, self.project.path)
@@ -417,7 +466,8 @@ class Workflow:
             self.write(path, data, allocated=not payload.get("path"))
         if kind in PREFIXES:
             self.allocation(kind, metadata["id"], path)
-        return {"ref": {"id": metadata["id"]} if kind in PREFIXES else {"path": str(path)}, "path": str(path), **self.registration(kind,path)}
+        return {"ref": {"id": metadata["id"]} if kind in PREFIXES else {"path": str(path)}, "path": str(path),
+                **({"snapshot_time": self.snapshot_time} if kind == "handoff" else {}), **self.registration(kind,path)}
 
     def protect(self, before, after, allow_events=False):
         require(before.id == after.id and before.kind == after.kind, "invalid_record", "Record identity/type cannot change")
@@ -690,7 +740,9 @@ class Workflow:
             if self.request["operation"] == "workspace.configure":
                 require(path == self.project.workspace, "invalid_scope", "Workspace target changed")
             elif self.request["operation"] == "view.build":
-                self.check_view_destination(path)
+                # A stored creation may have already replaced this file. Store.apply
+                # accepts only its original before/after bytes and preserves external edits.
+                self.check_view_destination(path, snapshot_recovery=plan["before"] is None)
             else:
                 source = self.project.source_for(path)
                 new_unmapped = source is None and plan["before"] is None and value["data"].get("source_registration_required")

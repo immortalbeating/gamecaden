@@ -49,7 +49,9 @@ description: 仅在用户明确要求本次使用 Gamecaden，或当前项目有
 
 ## 5. 保存结论并继续原工作
 
-按[留存、索引与版本](../../shared/records.md#留存索引与版本)保存本轮结论及 Evidence/Decision 引用并回写原 Task/Epic；用户只读或明确不落盘时在对话交付。正式出口、独立复核或比较版本时使用可定位报告，已有完整报告直接引用。
+按[留存、索引与版本](../../shared/records.md#留存索引与版本)保存本轮结论及 Evidence/Decision 引用并回写原 Task/Epic；影响产品成果或整体判断时同步 Roadmap，影响 [PDP](../../shared/phased-development.md) Stage 编排时同步原计划，摘要引用真实依据。只读或明确不落盘时在对话交付。正式出口、独立复核或比较版本使用可定位报告，已有完整报告直接引用。
+
+核验 Stage/里程碑时回查其范围内的实际条件与必要组合结果。相同条件引用原 Task/Epic，独有条件在对应 PDP/Roadmap 判断；数量和已建记录不是通过依据。Stage/PDP 不调用 record.transition，也不为每项新增人工接受。
 
 原请求包括实现时，失败按原因返回 [develop](../develop/SKILL.md) 或 [assets](../assets/SKILL.md)，在原工作内修复和补验；只有检查请求则报告问题与建议。设计/范围确需改变时局部回到对应职责，独立可做的工作继续。
 

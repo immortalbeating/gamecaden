@@ -13,6 +13,8 @@ description: 仅在用户明确要求本次使用 Gamecaden，或当前项目有
 
 ## 1. 明确本次内容交付
 
+内容交付属于 [PDP](../../shared/phased-development.md) 的 Stage 时，继承当前段明确的生产输入、消费者和原工作；阶段出口不能替代候选接受或实际接入依据。已有独立资产工作不为 Stage 编号重新收编。
+
 沿用原 Task、有效设计和授权，判断目标是候选探索、可复用内容包、修订已有素材，还是包含实际运行接入。按[工作区](../../shared/workspace.md)、[记录](../../shared/records.md)与[规则选择](../../shared/rules.md)定位真实来源；quick/standard 继续使用同一套 Task 规则。
 
 核对消费者需要的身份、用途、表现/技术要求、允许继承的参考和已有接受范围。相关输入不足时先查事实；需要补生产设计时只回到 [design](../design/SKILL.md) 的相关部分，不重做已成立的全部设定。
