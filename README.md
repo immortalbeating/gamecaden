@@ -4,9 +4,11 @@
 
 A local-first game development workflow for Codex, Claude Code, and compatible Skill hosts. Continue from existing goals and project records, connecting design, implementation, assets, verification, and closure to their actual sources.
 
-The maintained public repository is [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden). The current version is **0.2.0**; previously published 0.1.x tags and releases retain their original contents. The former address remains a GitHub compatibility redirect.
+The maintained public repository is [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden). The current version is **0.2.1**; previously published 0.1.x tags and releases retain their original contents. The former address remains a GitHub compatibility redirect.
 
 0.2.0 brings together current project documents, material navigation, evidence retention, phased development planning, derived outputs, Task mode guidance, attachment reading, and Windows long source paths. All Skill bodies, shared contracts, material references, and templates are available in English, with English and Chinese usage guides in the same repository.
+
+0.2.1 adds the selected orange G and charcoal play icon to the Codex plugin listing and composer. The workflow contracts and runtime behavior retain the 0.2.0 baseline.
 
 ## Install and update
 

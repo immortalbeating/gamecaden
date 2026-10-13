@@ -1,11 +1,13 @@
 {
   "name": "gamecaden",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Organize game design, development, assets, verification, and continuation on demand, retaining the project's single source of truth.",
   "skills": "./skills/",
   "interface": {
     "displayName": "Gamecaden",
     "shortDescription": "Game design, development, assets, verification, and cross-session continuation",
-    "category": "Developer Tools"
+    "category": "Developer Tools",
+    "logo": "./.codex-plugin/assets/gamecaden-icon.png",
+    "composerIcon": "./.codex-plugin/assets/gamecaden-icon.png"
   }
 }

@@ -1,16 +1,20 @@
 {
-  "digest": "ceaeb52520cf59851751d28f940934543c988383d51257d81a778dd0fac851c3",
+  "digest": "a7e7787ca8bb1a6b0c438dc0e9439075cbb9d30c1022fb064c238b9e5052c3b7",
   "files": {
     ".claude-plugin/plugin.json": {
-      "sha256": "025e35c0752da12429589a5c8a1b5e28b4f063ee6002ef075935fd967b923198",
+      "sha256": "2ff22f285ad1d3e628825846d7b6df45f8ac06bbbc134714d29bd0594c5b7186",
       "size": 328
     },
+    ".codex-plugin/assets/gamecaden-icon.png": {
+      "sha256": "9d67e49be31e95fe8330bde59a02aa2462d3d088f8c74bb7bdaf695bdb2f0ddf",
+      "size": 1392298
+    },
     ".codex-plugin/plugin.json": {
-      "sha256": "806959d6a63b7864e0315a0d68431e8c3af2e62800da7b82c6922e65b00c6aa6",
-      "size": 420
+      "sha256": "8341d809a4ed7ae2e135baf68915b279287b3ce4905a29dca11ced957b6c8d2b",
+      "size": 542
     },
     "INSTALL.md": {
-      "sha256": "8a18092ef6fbb1afae858c172ea77f8fe0776af76228c8cec718ca1b4a5529ff",
+      "sha256": "f6607f0888c3dfb2911e5596171a944fddb18f9e723342daf5477886926664a4",
       "size": 9314
     },
     "LICENSE": {
@@ -246,7 +250,7 @@
       "size": 1609707
     },
     "plugin.json": {
-      "sha256": "d0565ab9e0a8d6af6c022f9883ebcb68fce03be99eba5a56fa9ae6dcb2412fd9",
+      "sha256": "53ee865740133d962f43f7b6eafb4c7aeba8900c6a0007266002ea8ce906d7e7",
       "size": 340
     },
     "profiles/README.md": {
@@ -612,5 +616,5 @@
   },
   "format_version": 1,
   "name": "gamecaden",
-  "version": "0.2.0"
+  "version": "0.2.1"
 }

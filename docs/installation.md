@@ -1,6 +1,6 @@
 # Installation, Updates, and Standalone Use
 
-Maintenance and public releases are unified at [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden). The current version is 0.2.0; published 0.1.x versions retain their original content. The former account address remains only as a GitHub compatibility redirect. See [repository migration](repository-migration.md) for switching existing installations.
+Maintenance and public releases are unified at [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden). The current version is 0.2.1; published 0.1.x versions retain their original content. The former account address remains only as a GitHub compatibility redirect. See [repository migration](repository-migration.md) for switching existing installations.
 
 0.2.0 includes the unified environment entry point and updates to project documents, evidence, and planning; pinned older tags retain their corresponding contracts. The system needs Python 3.12+ with venv support; the first local-tool invocation automatically prepares independent dependencies.
 
@@ -30,7 +30,7 @@ The first step refreshes the installation source, and the second installs the pl
 
 ### Pinned Versions and Switching Update Methods
 
-For reproducibility or stable pinned use, specify a tag, for example `codex plugin marketplace add immortalbeating/gamecaden --ref v0.2.0`. Refreshing a pinned tag still reads that tag rather than automatically moving to later released tags; deliberate upgrades require changing the target version.
+For reproducibility or stable pinned use, specify a tag, for example `codex plugin marketplace add immortalbeating/gamecaden --ref v0.2.1`. Refreshing a pinned tag still reads that tag rather than automatically moving to later released tags; deliberate upgrades require changing the target version.
 
 If previously registered with `--ref v0.1.0`, explicitly replace the old marketplace registration before switching to the default branch:
 

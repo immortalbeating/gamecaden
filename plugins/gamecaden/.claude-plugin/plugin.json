@@ -1,6 +1,6 @@
 {
   "name": "gamecaden",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Organize game design, development, assets, verification, and continuation on demand, retaining the project's single source of truth.",
   "author": { "name": "immortalbeating" },
   "repository": "https://github.com/immortalbeating/gamecaden",

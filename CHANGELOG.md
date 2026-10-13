@@ -4,6 +4,12 @@ Windows physical I/O uses extended paths for deep operation-receipt writes, read
 
 ## Unreleased
 
+## v0.2.1 — 2026-10-14
+
+- Add the selected orange G and charcoal play mark as the Codex listing logo and composer icon, with the PNG included in the verified package.
+- Keep the eight Skills, shared contracts, schemas, templates, profiles, runtime tools, and panel behavior at the 0.2.0 baseline. Existing project documents require no icon-driven migration.
+- Synchronize Codex, Claude, and portable manifest versions and current installation guidance. Icon display depends on the host; Claude and other Skill hosts retain their existing presentation.
+
 ## v0.2.0 — 2026-10-12
 
 - Establish English as the canonical development and maintenance language for every Skill, shared contract, material reference, profile, and template. Publish English and Chinese usage guides for one plugin identity; complete Chinese rule comparisons remain local, outside public history.

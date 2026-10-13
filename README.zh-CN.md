@@ -2,13 +2,15 @@
 
 [English](README.md)
 
-维护与公开发行已统一到 [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden)。当前版本为0.2.0；已发布的0.1.x版本保持原内容。原账号地址仅保留GitHub兼容跳转。
+维护与公开发行已统一到 [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden)。当前版本为0.2.1；已发布的0.1.x版本保持原内容。原账号地址仅保留GitHub兼容跳转。
 
 0.2.0 整合项目当前正文、材料导航、证据留存、分阶段开发计划与派生输出，并补齐 Task 模式判断、附件读取及 Windows 长源路径支持。Codex、Claude 和完整通用包继续共用环境检查、独立依赖准备与调用入口。
 
 Gamecaden 是面向 Codex、Claude Code及兼容Skill宿主的游戏开发工作流：从已有目标和项目记录继续工作，把设计、实现、资产、验证和收尾接回真实来源。
 
 A local-first game development workflow for Codex and Claude Code, with eight focused skills, a standalone skill entry and an optional local panel.
+
+0.2.1 为 Codex 插件列表与输入框加入已确定的橙色 G＋深灰黑播放图标；工作流合同与运行行为沿用 0.2.0 基线。
 
 ## 安装与更新
 

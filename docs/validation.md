@@ -21,6 +21,23 @@ python scripts/check.py --suite distribution
 
 The entry point and `--help` define actual suites. Contract checks verify interfaces/file relationships; core regression checks I/O, governance, and panel models; distribution checks builds, integrity, installation, and recovery. Before release, run the complete suite and retain the environment, commands, actual results, and uncovered scope. Material-language behavior requires inspecting actual generated documents, including headings/labels, not only response language or tool exit codes.
 
+## v0.2.1 icon patch validation
+
+The 2026-10-14 patch adds the selected orange G and charcoal play icon to the Codex listing and composer. All three plugin manifests use 0.2.1. Independent byte comparisons against the 0.2.0 release found no changes in the 103 Skill, shared-contract, schema, template, profile, script, and panel files.
+
+Local validation ran the complete required check entry with Python 3.14.5 and Node.js 24.16.0:
+
+```sh
+python -B -X utf8 scripts/check.py --suite all
+git -c core.whitespace=cr-at-eol diff --check
+```
+
+All 153 core tests passed. Distribution completed 45 tests: 44 passed and one file-symlink capability test was skipped on Windows. All 13 JavaScript tests passed. The complete entry also verified contracts, source inventory, and identical inventories and ZIP bytes from two fresh builds.
+
+The PNG is a decoded square 1254 by 1254 RGB image, 1,392,298 bytes, with valid chunk CRCs and compressed image data. Both branding references resolve to this packaged file. The verified package contains 153 inventoried resources plus its inventory manifest. Image provenance was inspected for accidental private paths or user material; none was found in the inspected metadata. Raw prompts and local release records remain outside the public package.
+
+These checks establish package and program integrity; they do not rerun game projects, model behavior, human gameplay acceptance, or the host's rendered plugin UI.
+
 ## v0.2.0 release validation
 
 The 2026-10-12 release makes English the canonical development and maintenance language for all Skills, shared contracts, material references, profiles, and templates. The public repository has English and Chinese usage guides; complete Chinese rule comparisons and raw evaluation artifacts stay outside public history. Existing multilingual example fixtures and earlier validation observations retain their original source versions.

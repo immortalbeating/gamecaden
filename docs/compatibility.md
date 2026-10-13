@@ -2,7 +2,7 @@
 
 # General Installation Compatibility and Validation Scope
 
-Maintenance and public releases are unified at [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden). The current version is 0.2.0; published 0.1.x versions retain their original content. The former account address remains only as a GitHub compatibility redirect.
+Maintenance and public releases are unified at [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden). The current version is 0.2.1; published 0.1.x versions retain their original content. The former account address remains only as a GitHub compatibility redirect.
 
 Gamecaden's general entry point is a complete package containing SKILL.md, eight responsibilities, and common documents/tools. Codex and Claude Code also have native plugin entry points; other hosts supporting standard Agent Skills can use complete-directory installation.
 
