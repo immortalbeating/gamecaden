@@ -5,37 +5,33 @@ description: Use only when the user explicitly requests Gamecaden for this work,
 
 # Develop
 
-First check the applicability conditions above; when they are not met, follow original project guidance. See [Workflow applicability](../../shared/workspace.md) for boundaries.
+Apply the [workflow applicability boundary](../../shared/workspace.md#workflow-applicability) before using this responsibility.
 
 Advance authorized goals to observable engineering results, verify according to actual impact and write back to original work. The model judges methods, step granularity and necessary collaboration; goals, fact sources and delivery commitments remain traceable.
 
-Resolve relative links from this SKILL.md's directory; ../../shared/ is in the common skill package root.
+Resolve links from this Skill's directory; ../../shared/ is the package's shared/ directory.
 
 <a id="1-接住原交付并核对现场"></a>
 ## 1. Take over original delivery and check the situation
 
-Retain original Task, goals, design/plan, acceptance, advancement constraints and existing authorization from current context or [flow](../flow/SKILL.md). Check actual runtime roots under [Workspace conventions](../../shared/workspace.md); read applicable rules through [Rule selection and loading](../../shared/rules.md), reusing still-applicable materials directly.
+Retain original work, goals, design, acceptance, advancement constraints and authorization from current context or [flow](../flow/SKILL.md). Check actual [source/runtime locations](../../shared/workspace.md#1-locations-and-resolution) and applicable [rules](../../shared/rules.md#1-select-sources-for-current-work), reusing valid context.
 
 Check related code, scenes, resource references and existing changes. Distinguish current changes from others before writing; when using editors, bridges or external runtime processes, check connected projects and worktrees. Use separate worktrees only for actual isolation/parallel needs, not every quick change.
 
-For Git delivery, check existing agreements and current exceptions under [Project Git policy](../../shared/git-policy.md). Commit at authorized meaningful checkpoints as appropriate, including only owned changes; an unselected policy does not authorize commit/push automatically, and explicit current instructions do not need another solution selection.
+For Git delivery, follow the existing [policy and explicit exceptions](../../shared/git-policy.md), checking actual destinations and including only owned changes. Unselected recommendations do not authorize Git actions.
 
 Establish whether users request implementation, repair, integration or investigation only. Return read-only diagnosis/design within scope, without expanding into runtime changes because tools exist; continue complete implementation requests through original commitments.
 
 <a id="2-选择执行深度"></a>
 ## 2. Choose execution depth
 
-Use original work under [Record conventions](../../shared/records.md); entering implementation does not create another Task.
+Keep original work. Use [Task modes](../../shared/records.md#selecting-the-management-mode) only when organization needs judgment; follow [record structure](../../shared/records.md#creation-and-saving) when saving. Entering implementation creates no new Task.
 
 When original work belongs to a [PDP](../../shared/phased-development.md) Stage, read necessary current inputs/actual prerequisites and original Task/Epic, advancing actual executable delivery. Stages are orchestration only; Task ownership and lifecycle remain. Reuse sufficient local arrangements directly without a full upper-level plan for engineering quick changes.
 
-- quick: briefly state goals and necessary checks; execute directly after checking relevant conditions, briefly record actual results and save progress for waiting/interruption.
-- standard: reuse established goals/arrangements and maintain steps, interfaces or stage judgments needed here; explicit local steps may likewise be implemented directly and briefly recorded. Independent plan.md follows common criteria.
-- When Task scope or management needs materially change, retain identity and reassess under [Mode judgment](../../shared/records.md#selecting-the-management-mode), supplementing needed arrangements. One failure or a lighter current step alone does not change mode; necessary acceptance follows original agreements.
-
 Use sufficient executable design directly. Return to relevant [design](../design/SKILL.md) parts for missing implementation arrangements; clarify locally only when actual product tradeoffs are unclear. Investigate ascertainable facts and decide ordinary reversible choices yourself.
 
-When this work touches formal production inputs, cross-system relationships or integration conditions, check matching [Material responsibilities](../../shared/material-requirements.md); locate Tasks/candidates/conditions through derived views under [Panel continuation](../../shared/panel-workflow.md) and read back original records. Local quick work checks related conditions only.
+For formal production inputs, cross-system relationships or integration conditions, check matching [material responsibilities](../../shared/material-requirements.md#domain-triggers). Read known original sources directly; use [derived views](../../shared/panel-workflow.md) when cross-record discovery or an overview is needed, then read back sources. Local changes check related conditions only.
 
 For bugs, key unknowns, repeated failures, parallel/isolation needs or interruption recovery, read corresponding [Execution and recovery](references/execution-and-recovery.md) parts.
 
@@ -44,7 +40,9 @@ For bugs, key unknowns, repeated failures, parallel/isolation needs or interrupt
 
 Connect inputs, state, content/data, consumers and results along actual triggers. Follow established responsibility boundaries and lifecycles; necessary structure changes serve correct implementation, avoiding more new behavior in wrong owners.
 
-For new independent pages/levels, reusable objects, state across lifecycles or editing approaches, check whether original design answers actual composition and dependencies under [Structural conventions](../../profiles/references/structure-contract.md), and read corresponding engine/library topics and target platform. Implement sufficient arrangements directly; complete locally any missing boundaries affecting implementation. Establish production sources, wiring and editing entrypoints of real scenes/Prefabs/components/render trees/code modules; handle runtime/shared resources by ownership. Empty files or managers do not prove completed structure.
+For new pages/levels, reusable objects, cross-lifecycle state or editing changes, apply [structural ownership](../../profiles/references/structure-contract.md) and matching engine/platform topics. Establish real types, composition, dependencies, authoritative state and production/editing entrypoints; fill local gaps affecting implementation. Empty files or managers do not establish structure.
+
+For reusable UI components or shared UI style/interaction changes, apply [UI families](../../shared/ui-families.md#production-and-implementation) to actual resources, behavior and consumers, inspecting existing implementations first.
 
 With integration risks, first connect real paths that verify them, then expand remaining commitments; a successful small segment does not reduce complete goals. Complete ordinary explicit changes directly without unrelated abstractions, repository-wide refactoring or fixed-granularity steps in advance.
 
@@ -75,8 +73,8 @@ Complete human acceptance or independent verification when original delivery/pro
 <a id="6-同步事实与交接"></a>
 ## 6. Synchronize facts and hand off
 
-Write back to original Task at meaningful results, waiting, scope changes or handoff preparation: actual changes, run/not-run checks, key conclusions, remaining requirements and executable next steps. Cite original reports for detailed evidence, without another development log or progress list.
+Save engineering changes, actual checks, remaining requirements and next actions under [common writeback rules](../../shared/records.md#6-current-facts-closure-and-aggregation), citing detailed reports at their original locations.
 
-Update affected Spec when current behavior enters declared baseline; for assets, synchronize selections/references and integration evidence under common conventions. Update affected sources only; derived views refresh afterward.
+Update affected Spec when current behavior enters declared baseline; for assets, synchronize selections/references and integration evidence. Refresh only existing affected current views under [derived outputs](../../shared/derived-outputs.md#refresh-and-retention).
 
 Judge closure from Task commitments and [Common closure rules](../../shared/records.md). Retain actual unfinished items when necessary acceptance/checks are incomplete. After delivery conditions are met, continue corresponding closure when explicitly requested or complete delivery is authorized; use [close](../close/SKILL.md) for complex closure. Retain explicit partial-implementation or no-closure limits. Git commits, merges, packaging and publishing each retain actual authorization and requirements.

@@ -2,15 +2,15 @@
 
 [English](README.md)
 
-维护与公开发行已统一到 [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden)。当前版本为0.2.1；已发布的0.1.x版本保持原内容。原账号地址仅保留GitHub兼容跳转。
+维护与公开发行已统一到 [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden)。当前版本为 **0.3.0**；已发布的标签与发行包保持原内容。原账号地址仅保留GitHub兼容跳转。
 
-0.2.0 整合项目当前正文、材料导航、证据留存、分阶段开发计划与派生输出，并补齐 Task 模式判断、附件读取及 Windows 长源路径支持。Codex、Claude 和完整通用包继续共用环境检查、独立依赖准备与调用入口。
+0.3.0 整合资产存储与留存安排、玩法数据维护、视觉方向连续性及 UI 家族约定，并精简重复的路由与记录说明。八个职责、原有 Task 字段和 schema v1 保持不变，完整更新见[变更记录](CHANGELOG.md)。Codex、Claude 和完整通用包继续共用环境检查、独立依赖准备与调用入口。
 
 Gamecaden 是面向 Codex、Claude Code及兼容Skill宿主的游戏开发工作流：从已有目标和项目记录继续工作，把设计、实现、资产、验证和收尾接回真实来源。
 
 A local-first game development workflow for Codex and Claude Code, with eight focused skills, a standalone skill entry and an optional local panel.
 
-0.2.1 为 Codex 插件列表与输入框加入已确定的橙色 G＋深灰黑播放图标；工作流合同与运行行为沿用 0.2.0 基线。
+大型已结算操作回执现在采用无损压缩。新版工具可读取旧回执，旧版无法读取新的压缩格式；共用一个项目操作存储的各客户端应一起升级，回退工具包不会转换已保存的回执。项目文档沿用原身份和维护位置。
 
 ## 安装与更新
 
@@ -81,6 +81,8 @@ quick 和 standard 是同一 Task 的轻量与常规管理模式；按交付的�
 ```sh
 python scripts/check.py --suite all
 ```
+
+[资产存储与保留](plugins/gamecaden/shared/asset-storage.md)说明项目版本工具、批量输出边界，以及批次收尾或用途变化后的资料整理。沿用原资产记录和项目规则，选中候选不会自动淘汰其他版本。
 
 [验证范围](docs/validation.md) · [架构](docs/architecture.md) · [贡献指南](CONTRIBUTING.md) · [变更记录](CHANGELOG.md)
 

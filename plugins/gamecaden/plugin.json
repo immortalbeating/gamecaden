@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "gamecaden",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Organize game design, development, assets, verification, and continuation on demand, retaining the project's single source of truth.",
   "repository": "https://github.com/immortalbeating/gamecaden"
 }

@@ -22,6 +22,8 @@ Prioritize existing project rules and the user's current explicit instructions. 
 
 Even while long-term policy is undecided, currently authorized Git actions with clear targets may proceed; keep this round's arrangements in the original work record. Design, implementation, and verification continue within original scope. First establish permissions or targets actually needed and missing for the current Git action; clarify only what existing authorization cannot determine. Existing protection conditions still apply. Ordinary local work does not require rerunning init because complete project-adoption files are missing.
 
+For formal binary assets or a missing large-file policy, use [Asset storage](asset-storage.md#versioning-storage-and-recovery) for the Git/LFS default, exact inclusion rules, actual object checks and recovery arrangements. That storage choice does not expand Git-action permissions or migrate existing history.
+
 <a id="2-需要长期策略时提供方案"></a>
 ## 2. Provide Options When Long-term Policy Is Needed
 

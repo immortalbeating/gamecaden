@@ -72,6 +72,8 @@ Judge resource relationships, gained abilities and saved state separately. Origi
 
 Direction exploration materials support comparison; they guide corresponding production only after adopted scope is clear. Assets may share visual grounds, but each still needs structural/production input coverage.
 
+Keep the adopted direction, its applicable scope and detailed visual grounds locatable from Vision. Existing visual sections and selected reference images may fulfill this; no separate art-bible file is required. Extract the features distinguishing the choice from plausible alternatives rather than only its medium, palette or theme. Later candidates do not revise the adopted selection; explicit changes follow the original decision and change conventions.
+
 | Common name/alias | Function | When to use | Reusable or equivalent sources |
 |---|---|---|---|
 | Art bible/style guide (Art Bible/Style Guide) | Form, color, material and presentation rules | Style/cross-asset consistency affects production | Original visual sections, adopted samples and rules |
@@ -153,6 +155,8 @@ When layouts, hierarchy, page relationships or multiple states affect understand
 
 Map experience structure to actual scenes/components and state sources. Control lists are not interaction design; static screenshots do not prove dynamics. Pure copy changes or small changes without spatial ambiguity need no additional full-screen diagrams.
 
+For coherent UI systems, reusable components or drift between related interfaces, use [UI families](../../../shared/ui-families.md) for proactive scope judgment, adaptable general/game component catalogues, family/variant selection and implementation ownership. Keep actual project definitions in their existing authoritative sources.
+
 An array or placeholder field listed in materials does not prove users need only a corresponding simplified interface. For example, when maps lack position/connection information, investigate/design sources and offer suitable spatial/topological expression. If suggesting location lists instead, explicitly state changed feature meaning without treating them as already-adopted map outcomes yourself.
 
 
@@ -162,6 +166,7 @@ An array or placeholder field listed in materials does not prove users need only
 | Page/focus states and exceptional paths | Pause, resume, lost focus and failure relationships | Changed input, focus or recovery | Original state/input sources; screenshots do not prove behavior |
 | Wireframe (Wireframe) | Content hierarchy, density and spatial layout | Ambiguous layouts/occlusion | Original UI sources, local sketches or prototypes |
 | High-fidelity designs/component states | Visual rules and actual state presentation | UI visual/component production | Shared styles, actual components and necessary drafts |
+| UI family/component arrangement | Shared grounds, contextual differences, supported variants and usage-to-implementation relationships | UI unification, reusable UI or evidenced inconsistency | Original UI design, component manifests, shared resources and representative samples |
 | Interactive prototype | Operation feedback and dynamic relationships | Expressing/testing interaction solutions | Existing prototypes; actual observations alone are runtime evidence |
 | Accessibility adaptation explanation | Inputs, readable feedback and relevant user paths | Effective commitments/current changes involve accessibility | Original rules and affected control/input sources |
 | Localization/font and text adaptation | Language content, fonts, space and fallback | Changed language support/text presentation conditions | Actual content/font configuration; do not duplicate translation tables |

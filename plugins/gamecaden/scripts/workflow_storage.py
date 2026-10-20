@@ -5,6 +5,7 @@ The journal is operational data, never the source of task/approval state.
 from __future__ import annotations
 
 import base64
+import gzip
 from contextlib import contextmanager
 import hashlib
 import json
@@ -13,11 +14,44 @@ from pathlib import Path
 import stat
 import tempfile
 import time
+import zlib
 
 from workflow_formats import WorkflowError, json_load, require, revision
 
 
 STATE_NAME = ".game-workflow-io"
+RECEIPT_FORMAT = "gamecaden.operation.gzip-base64.v1"
+RECEIPT_COMPRESSION_MIN_BYTES = 64 * 1024
+
+
+def receipt_bytes(value):
+    return (json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False) + "\n").encode("utf-8")
+
+
+def decode_receipt(value):
+    """Decode internal storage only; callers still validate scope and identity."""
+    require(isinstance(value, dict), "indeterminate", "Invalid operation receipt object")
+    if "storage_format" not in value:
+        validate_receipt_identity(value)
+        return value
+    require(value["storage_format"] == RECEIPT_FORMAT, "indeterminate", "Unsupported operation receipt storage format")
+    raw = gzip.decompress(base64.b64decode(value["payload"], validate=True))
+    require(len(raw) == value["uncompressed_bytes"] and
+            hashlib.sha256(raw).hexdigest() == value["sha256"],
+            "indeterminate", "Operation receipt integrity mismatch")
+    decoded = json_load(raw.decode("utf-8"))
+    validate_receipt_identity(decoded)
+    require("storage_format" not in decoded and decoded["receipt"]["phase"] == "settled",
+            "indeterminate", "Invalid compressed operation receipt")
+    return decoded
+
+
+def validate_receipt_identity(value):
+    require(isinstance(value, dict) and isinstance(value.get("receipt"), dict),
+            "indeterminate", "Invalid operation receipt object")
+    receipt = value["receipt"]
+    require(isinstance(receipt.get("request_id"), str) and isinstance(receipt.get("scope_id"), str),
+            "indeterminate", "Invalid operation receipt identity")
 
 
 def file_revision(path):
@@ -135,11 +169,11 @@ class Store:
         if not path.exists():
             return None
         try:
-            value = json_load(path.read_text(encoding="utf-8"))
+            value = decode_receipt(json_load(path.read_text(encoding="utf-8")))
             require(value["receipt"]["scope_id"] == self.scope, "invalid_scope", "Receipt belongs to another project root")
             require(value["receipt"]["request_id"] == request_id, "indeterminate", "Receipt identity mismatch")
             return value
-        except (ValueError, KeyError, TypeError) as exc:
+        except (ValueError, KeyError, TypeError, OSError, EOFError, zlib.error) as exc:
             raise WorkflowError("indeterminate", "Unreadable operation receipt; preserve it for inspection") from exc
 
     def all(self):
@@ -151,16 +185,25 @@ class Store:
         for physical in physical_folder.glob("*.json"):
             path = self.safe_state(folder / physical.name)
             try:
-                data = json_load(physical.read_text(encoding="utf-8"))
+                data = decode_receipt(json_load(physical.read_text(encoding="utf-8")))
                 require(data["receipt"]["scope_id"] == self.scope, "invalid_scope", "Foreign receipt scope")
+                require(self.path(data["receipt"]["request_id"]).name == path.name,
+                        "indeterminate", "Receipt identity mismatch")
                 result.append(data)
-            except (ValueError, KeyError, TypeError) as exc:
+            except (ValueError, KeyError, TypeError, OSError, EOFError, zlib.error) as exc:
                 raise WorkflowError("indeterminate", f"Invalid operational receipt: {path.name}") from exc
         return result
 
     def save(self, value):
         path = self.path(value["receipt"]["request_id"])
-        data = (json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False) + "\n").encode("utf-8")
+        data = receipt_bytes(value)
+        if value["receipt"]["phase"] == "settled" and len(data) >= RECEIPT_COMPRESSION_MIN_BYTES:
+            packed = receipt_bytes({"storage_format": RECEIPT_FORMAT,
+                                    "uncompressed_bytes": len(data),
+                                    "sha256": hashlib.sha256(data).hexdigest(),
+                                    "payload": base64.b64encode(gzip.compress(data, mtime=0)).decode("ascii")})
+            if len(packed) < len(data):
+                data = packed
         atomic_write(path, data, file_revision(path), self.safe_state)
 
     def pending(self, except_id=None):

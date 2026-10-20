@@ -4,11 +4,11 @@
 
 A local-first game development workflow for Codex, Claude Code, and compatible Skill hosts. Continue from existing goals and project records, connecting design, implementation, assets, verification, and closure to their actual sources.
 
-The maintained public repository is [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden). The current version is **0.2.1**; previously published 0.1.x tags and releases retain their original contents. The former address remains a GitHub compatibility redirect.
+The maintained public repository is [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden). The current version is **0.3.0**; previously published tags and releases retain their original contents. The former address remains a GitHub compatibility redirect.
 
-0.2.0 brings together current project documents, material navigation, evidence retention, phased development planning, derived outputs, Task mode guidance, attachment reading, and Windows long source paths. All Skill bodies, shared contracts, material references, and templates are available in English, with English and Chinese usage guides in the same repository.
+0.3.0 adds asset storage and retention arrangements, project-owned gameplay data, visual-direction continuity and UI family conventions. Focused references reduce repeated routing and record guidance while retaining eight responsibilities, existing Task fields and schema v1. See the [changelog](CHANGELOG.md) for the combined changes.
 
-0.2.1 adds the selected orange G and charcoal play icon to the Codex plugin listing and composer. The workflow contracts and runtime behavior retain the 0.2.0 baseline.
+Large settled operational receipts now use lossless compression. New tools read legacy receipts; earlier versions cannot decode the new compressed format. Upgrade the tools used by all clients sharing a project's operation store together; a package rollback does not convert stored receipts. Project documents retain their existing identities and locations.
 
 ## Install and update
 
@@ -77,6 +77,8 @@ Maintenance checks require Python 3.12+ and Node.js:
 ```sh
 python scripts/check.py --suite all
 ```
+
+[Asset storage](plugins/gamecaden/shared/asset-storage.md) covers project versioning choices, bounded batch outputs, and retention at batch/use changes. It reuses original asset records and project rules; candidate selection alone does not dispose of other versions.
 
 [Validation](docs/validation.md) · [Architecture](docs/architecture.md) · [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md)
 

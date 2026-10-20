@@ -1,7 +1,7 @@
 <a id="面板定位读回与续接"></a>
 # Panel Navigation, Readback, and Continuation
 
-Used by flow/init/design/develop/assets/verify/close when locating Tasks, candidates, or conditions across records. See [material responsibilities](material-requirements.md) and the [governance contract](governance.md) for rule semantics; this page only explains how to use derived views in current work. Launch the panel according to [panels/README.md](../panels/README.md). It is an entry point for existing responsibility Skills, not a ninth Skill or a new progress store.
+Use derived views for cross-record discovery, dependency overviews or batch review. Read known original sources directly when they suffice. This page explains the selected view path for flow/init/design/develop/assets/verify/close; [material responsibilities](material-requirements.md) and [governance](governance.md) own rule semantics. Launch the panel only when using it, under [panels/README.md](../panels/README.md); CLI views remain available. Views add no Skill or progress store.
 
 <a id="取得本次范围的视图"></a>
 ## Obtain a View for the Current Scope

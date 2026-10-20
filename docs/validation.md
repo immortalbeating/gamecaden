@@ -21,6 +21,114 @@ python scripts/check.py --suite distribution
 
 The entry point and `--help` define actual suites. Contract checks verify interfaces/file relationships; core regression checks I/O, governance, and panel models; distribution checks builds, integrity, installation, and recovery. Before release, run the complete suite and retain the environment, commands, actual results, and uncovered scope. Material-language behavior requires inspecting actual generated documents, including headings/labels, not only response language or tool exit codes.
 
+## v0.3.0 release validation
+
+On 2026-10-20, the final 0.3.0 source completed `python -B -X utf8 scripts/check.py --suite all` on Windows PowerShell with Python 3.14.5 and Node.js v24.16.0, exit 0. All 162 core tests passed; distribution/runtime checks completed 45 cases with 44 passes and one unavailable file-symlink case skipped; all 13 JavaScript tests passed. Contracts, source inventory, deterministic package/ZIP rebuilds and license retention passed. A separate whitespace check passed. Independent read-only review found no implementation, record-format or public-content disclosure blocker and confirmed the documented receipt-reader compatibility boundary.
+
+All three host manifests use 0.3.0. Source and frozen package verify at content digest `15dd4c946c1a484b9e812739dc6710aa7ef6f55b0ef5d9a7747fafdff2cefedd`, with 155 inventoried resources plus the manifest. The release ZIP SHA-256 is `ea22921e53b7ca14dea8b303f741c012c9dfed9a472dcdf18dbdeab79443e41d`. Version preparation changed only the three manifests and package installation guide from the preceding instruction candidate; the other 151 package resources remained byte-identical.
+
+The preparation observations below retain their original source versions and limits. This final repository run does not establish new native-host discovery, automatic invocation, game rendering/input, asset adoption or human acceptance. GitHub CI and published artifact delivery retain their own release-page evidence; local tests are not relabeled as remote results. Installed copies and external game projects were not modified by release preparation.
+
+## v0.3.0 preparation: structural refinement and combined-source validation
+
+The 2026-10-20 refinement changes twelve existing instruction resources. Ordinary engineering configuration retains its data-maintenance owners, with asset registration conditional on independent content identity, selection or review. Known sufficient sources can be read directly; derived discovery/views are optional, and refresh applies only to existing affected current views. Task-mode and common writeback rules retain their shared maintenance sources, frequent links target existing sections, and mechanical naming delegates to the actual I/O implementation. First-use responsibility loading, quick-change exceptions, authorization, original identities and acceptance boundaries remain intact. No Skill, Task field, schema, runtime code or management file was added by this refinement.
+
+On the final combined source, Windows PowerShell with Python 3.14.5 and Node.js v24.16.0 completed:
+
+```powershell
+python -B -X utf8 scripts/check.py --suite all
+git -c core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol diff --check
+```
+
+The full suite exited 0: 162 core tests passed; distribution/runtime checks completed 45 cases with 44 passes and one unavailable file-symlink case skipped; all 13 JavaScript tests passed. Contracts, source inventory, license retention and deterministic package/ZIP rebuilds passed. These checks cover the current combined source, including the earlier pending receipt-storage and instruction changes, without relabeling their historical validation runs. Six changed Skills passed format validation; a separate check resolved 182 internal links across fourteen instruction resources. An independent read-only reviewer found no necessary semantic repair in this refinement.
+
+The source and frozen candidate verify at digest `7ed20ca8a8256d1a205251d6caf7ceff6a6c4d3eef447f7ee54801d39cc9f473`, retaining 155 inventoried resources plus the manifest. Comparison with the preceding frozen source found only the twelve intended modifications; the other 143 resources were byte-identical. All eight Skill descriptions/frontmatter remained unchanged.
+
+Two fresh scouts without inherited maintenance context separately planned the same six anonymous cases against pre-refinement and candidate packages, using the same case order, role and instrumented reading utility. The cases cover a local label edit, existing typed gameplay configuration, explicit Task continuation, shared-UI closure assessment, a forty-panel production/integration batch and an existing phased Stage. Both runs retained appropriate action/delivery boundaries in all six plans: no redundant Task, view, approval, administrative-closure prerequisite or reduced delivery was observed. The baseline already handled these cases appropriately; the comparison establishes no defect-rate improvement.
+
+Presented guidance decreased from 22,398 to 14,298 whitespace-separated words and from 174,847 to 113,364 characters, while reads increased from 24 to 25 and distinct files from 18 to 19. Whole-file/section/index reads changed from 16/6/2 to 10/13/2. Counts include repeated reads and exclude the helper pilot; within-run reuse was permitted. This single comparison reflects model reading choices as well as text changes, and is not measured billing tokens, total context, latency or guaranteed savings. One candidate reply used English despite the experiment's Chinese-output instruction; that separate compliance failure is retained rather than silently rescored. This batch claims no project-material language validation.
+
+Detailed case inputs, traces and assessments remain local outside the public package/history. Planning does not establish business I/O execution, native-host automatic invocation, game rendering/input, actual asset integration or user acceptance. At this preparation checkpoint, no installed copy or external project had been updated and no commit, push or publication had been performed. These observations precede version synchronization and final release checks.
+
+## v0.3.0 preparation: UI family design and implementation
+
+The 2026-10-20 UI batch adds one shared [UI family reference](../plugins/gamecaden/shared/ui-families.md) and connects six existing material/design/production/development/verification resources. It covers proactive scoped use, adaptable general and game component catalogues, several families or independent visual systems, behavior-based component selection, controlled variants, real production/implementation sources and affected-consumer checks. Project definitions retain their existing maintenance sources; the batch adds no Task fields, management objects, runtime code or panel behavior.
+
+Validation used the prepared Python 3.14.5 environment:
+
+```powershell
+python -B -X utf8 scripts/check.py --suite core
+$env:PYTHONPATH='plugins/gamecaden/scripts;tests'
+python -B -X utf8 -m unittest test_gamecaden_distribution.DistributionTests.test_standalone_and_shared_dependencies_retained_in_archive test_gamecaden_distribution.DistributionTests.test_deterministic_build_and_verify -v
+
+git -c core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol diff --check
+```
+
+All 162 core tests and both targeted distribution tests passed. Four Skill format validators passed; a separate local check resolved 91 internal links and 35 section fragments across the seven affected instruction resources. A fresh local build and source/frozen-package verification passed with 155 inventoried resources plus the manifest, digest `fa3b1dafb9af1063cb9a784cd71a43e8cfa4d09d7ec0c7215928e350c364b722`. Comparison with the pre-batch inventory found only the intended six modified resources and one new reference; the other 148 remained byte-identical. The instruction-only batch adds no wording-matching regression and claims no complete distribution-suite or JavaScript run.
+
+An independent reviewer without inherited maintenance context read the frozen package and answered six anonymous planning cases. It organized a minimal game-specific UI arrangement without promoting unselected art directions, kept a label edit local, preserved distinct accepted visual roots while proposing health-display variants, distinguished commands/tabs/exclusive choices/switches by behavior, required current baseline comparison before expanding an old panel master, and retained missing page/interaction/owner-acceptance evidence in a three-consumer verification judgment. Inputs and detailed observations remain local, outside the public package/history.
+
+These are scoped instruction-reading and planning observations, not before/after effectiveness measurements or native-host invocation guarantees. Actual game implementation, rendering/input coverage, user acceptance, installed-copy adoption and release retain separate evidence. No external project or installation was changed and no commit, push or publication was performed during this preparation batch; final release checks are recorded separately.
+
+## v0.3.0 preparation: visual continuity and responsibility loading
+
+The 2026-10-20 follow-through batch changes four existing instruction resources: visual-direction grounds, asset production/review, flow, and continuation. Adopted direction remains traceable through Vision and the original visual sources; actual production references and representative outputs are checked before expanding unverified visual work. Responsibility guidance is loaded at applicable transitions within a long session, and continuation finishes relevant paginated queries while explicit Task references remain direct reads. Existing handoff rules remain authoritative. No Task field, classification, lifecycle, discussion boundary, schema, runtime code or panel behavior changed in this batch.
+
+Validation used the prepared isolated Python environment:
+
+```powershell
+python -B -X utf8 scripts/check.py --suite core
+$env:PYTHONPATH='plugins/gamecaden/scripts;tests'
+python -B -X utf8 -m unittest test_gamecaden_distribution.DistributionTests.test_standalone_and_shared_dependencies_retained_in_archive test_gamecaden_distribution.DistributionTests.test_deterministic_build_and_verify -v
+git -c core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol diff --check
+```
+
+All 162 core tests and both targeted distribution tests passed. Three Skill frontmatter validators and both new link anchors passed separate checks. Source comparison confirmed only the four intended package resources changed from the pre-batch inventory; the other 150 remained byte-identical. The rebuilt local package retains 154 inventoried resources plus its manifest, with digest `420ace78e5e147685fdb0a5e7715ca4921a6a597d98b75afb4ec61eab6f08510`. No new wording-matching regression, full distribution-suite run or JavaScript run is claimed for this instruction-only batch.
+
+An independent read-only planning exercise used the frozen package and six anonymous cases without inherited maintenance context. It viewed the supplied style references/candidate, withheld expansion from a divergent master despite stated technical checks, read assets and develop guidance for a production-to-integration request, reused valid checks for a path-only repair, consumed three synthetic pagination pages before restoring the active Task, kept a discussion-only request out of persistent work records, and read an explicit Task directly without collection enumeration. It did not create assets or execute game integration. Case inputs and observations remain local, outside the public package/history.
+
+These are scoped planning and instruction-reading observations, not a before/after efficiency measurement or native-host invocation guarantee. Runtime readiness, synthetic pagination, native I/O regression, appearance acceptance and actual project adoption retain separate scopes. Installed copies, external projects, engine/rendering acceptance and release were outside this preparation batch; no commit or push was performed. Final release checks are recorded separately.
+
+## v0.3.0 preparation: gameplay data maintenance
+
+The 2026-10-20 batch adds the conditional GAME-DATA default and configuration-effect verification in two existing instruction resources. Tunable or reusable definitions use project-owned maintenance entries consumed by gameplay; existing typed-data/table pipelines and native resources remain valid. Original records reference those sources, and existing ownership rules distinguish definitions from mutable instance state. No new Skill, management ledger, schema, configuration service or panel behavior was added.
+
+Validation used the existing isolated Python 3.14.5 environment, with PowerShell for the targeted environment variable:
+
+```powershell
+python -B -X utf8 scripts/check.py --suite core
+$env:PYTHONPATH='plugins/gamecaden/scripts;tests'
+python -B -X utf8 -m unittest test_gamecaden_distribution.DistributionTests.test_standalone_and_shared_dependencies_retained_in_archive test_gamecaden_distribution.DistributionTests.test_deterministic_build_and_verify -v
+git -c core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol diff --check
+```
+
+All 162 core tests and both targeted distribution tests passed. The core entry also passed contract and source-inventory checks; targeted distribution checked retained package dependencies and deterministic builds. New link anchors were checked separately. The package retains 154 inventoried resources plus its manifest, with digest `fa32f5282d5ff370c01fa2da07d295d698e1fca8d6610b7e401febd23eba32fa`. Other pending package resources were byte-identical to the pre-batch inventory. No new JavaScript or complete distribution-suite run is claimed for this documentation-only batch.
+
+A fresh read-only model planning exercise used the frozen final package and three anonymous cases without inherited maintenance context. It proposed a shared definition consumed by existing weapon mechanisms, reused an authoritative TypeScript module for a local cooldown change, and refused to treat an unconsumed JSON file or shared current-health data as completed integration. The plans did not introduce a database, configuration page, duplicate ledger or unrelated migration. Inputs and observation summaries remain outside the public package/history. These are planning observations, with no before/after benefit measurement or guarantee of future behavior; no game files were produced or executed. Installed copies, external projects, engine/rendering acceptance and release were outside this batch; no commit or push was performed.
+
+## v0.3.0 preparation: asset storage and settled receipts
+
+The 2026-10-19 changes add one shared asset-storage contract, referenced from project adoption and asset production. Existing Task/Spec/ledger locations hold the applicable arrangement; no extra catalogue, grading system, per-file form, retry quota, or automatic cleanup service is introduced. Formal Git binary pipelines without an adequate existing policy default to Git/LFS. Existing suitable version systems, Git action permissions, pending reviews, unique sources, and native candidate bindings remain effective.
+
+Local validation used the prepared Python 3.14.5 environment:
+
+```powershell
+python -B -X utf8 scripts/check.py --suite core
+python -B -X utf8 scripts/check.py --suite distribution
+$env:PYTHONPATH='plugins/gamecaden/scripts;tests'
+python -B -X utf8 -m unittest test_gamecaden_distribution.DistributionTests.test_standalone_and_shared_dependencies_retained_in_archive -v
+python -B -X utf8 plugins/gamecaden/scripts/check_contracts.py
+git -c core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol diff --check
+```
+
+All 162 core tests passed, including nine new receipt-storage tests covering exact content, replay/allocation, pending recovery, legacy reads without rewriting, partial extraction, corruption/identity refusal, and long paths. Distribution initially completed 45 tests with 43 passes, one Windows file-symlink capability skip, and one source/archive comparison failure: a documentation edit during the run made its frozen fixture differ from the live source. After freezing the final source, that exact test passed; its assertion was retained. Other distribution results remain applicable, and two additional fresh final-source builds produced identical inventories and ZIP bytes. Final contracts and package verification passed with 154 inventoried resources plus the inventory manifest. No JavaScript or panel implementation changed; no new JavaScript execution is claimed.
+
+An independent source review checked receipt decoding, malformed input refusal, replay/recovery boundaries, and the final storage contract. A guards-heavy anonymous receipt decreased from 1,297,179 to 484,323 bytes; a deliberately repetitive integration fixture decreased from 431,528 to 5,038 bytes. These are sample storage measurements, not a general compression ratio or a latency result. Large settled receipts retain their complete original content; pending receipts stay plain. Legacy readers cannot decode the new envelope, so old and new writers must not alternate on one store. Existing projects were not migrated.
+
+Read-only model planning exercises compared four anonymous cases under baseline and candidate documentation: an inherited repair, a new binary batch, retention after selection, and changed scope under a capture budget. Both packages produced sensible production choices; the candidate made LFS adoption checks, finite output bounds, and archive availability more explicit. A provisional production-investment guide showed no observed incremental benefit and was removed. Two affected cases were repeated against the final package; storage/retention contracts were unchanged from the paired exercise. These exercises inspected plans and rule reads, not tool execution, host discovery, actual configuration, generated assets, reclaimed disk space, or universal future compliance. Final code/package checks cover the source independently of those behavior observations.
+
+Daily installations, external projects, actual engine/GPU execution, and human acceptance were outside this change. No commit, push, or release was performed. Anonymous raw evidence remains outside the public package and history.
+
 ## v0.2.1 icon patch validation
 
 The 2026-10-14 patch adds the selected orange G and charcoal play icon to the Codex listing and composer. All three plugin manifests use 0.2.1. Independent byte comparisons against the 0.2.0 release found no changes in the 103 Skill, shared-contract, schema, template, profile, script, and panel files.

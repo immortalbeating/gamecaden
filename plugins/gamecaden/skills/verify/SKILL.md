@@ -5,20 +5,20 @@ description: Use only when the user explicitly requests Gamecaden for this work,
 
 # Verify
 
-First check the applicability conditions above; when they are not met, follow original project guidance. See [Workflow applicability](../../shared/workspace.md) for boundaries.
+Apply the [workflow applicability boundary](../../shared/workspace.md#workflow-applicability) before using this responsibility.
 
 Answer which commitments of the current object hold, which failed or remain unproven, and the grounds. Share [Verification conventions](../../shared/verification.md) with implementation and closure; check results return to original records.
 
-Resolve relative links from this SKILL.md's directory; ../../shared/ is in the common skill package root.
+Resolve links from this Skill's directory; ../../shared/ is the package's shared/ directory.
 
 <a id="1-确定核验目标和允许动作"></a>
 ## 1. Establish verification goals and allowed actions
 
-Locate actual project/runtime roots, original Task/Epic, requirements and existing evidence under [Workspace conventions](../../shared/workspace.md). Distinguish local checks, complete-delivery verification, independent review, experience-acceptance preparation and release judgment.
+Locate actual roots, original Task/Epic, requirements and evidence under [source locations](../../shared/workspace.md#1-locations-and-resolution). Distinguish local checks, complete-delivery verification, independent review, experience-acceptance preparation and release judgment.
 
 For status-only or explicit read-only requests, read/report within scope; when actual verification is allowed, run corresponding checks and produce necessary evidence. Verification permission does not automatically include production implementation changes, clearing player saves, publishing or operations on other projects.
 
-Read matching effective conditions through [Rule selection](../../shared/rules.md). Retain explicit scope and acceptance decisions directly; “reacceptance” does not justify another general approval round or reduced goals.
+Read matching effective conditions through [rule selection](../../shared/rules.md#1-select-sources-for-current-work). Retain explicit scope and acceptance decisions directly; “reacceptance” does not justify another general approval round or reduced goals.
 
 <a id="2-对照要求审查现有证据"></a>
 ## 2. Review existing evidence against requirements
@@ -29,7 +29,7 @@ Judge reusable, invalid or missing conclusions under common verification convent
 
 Choose sufficient checks for uncovered/doubtful parts. For game inputs, scenes, assets, saves, performance or target platforms, read [Game check scope](references/game-checks.md) as needed. Do not expand unrelated domains.
 
-Associate material gaps with actual actions under [Material responsibilities](../../shared/material-requirements.md); locate conditions through the panel under [Panel continuation](../../shared/panel-workflow.md) and read back original requirements/evidence, without treating derived status as verification results.
+Associate material gaps with actual actions under [material responsibilities](../../shared/material-requirements.md#domain-triggers). Read known original requirements/evidence directly; use [derived views](../../shared/panel-workflow.md) for cross-record discovery or overviews, then read back sources. Derived status is not verification evidence.
 
 <a id="3-完成必要检查或独立核验"></a>
 ## 3. Complete necessary checks or independent verification

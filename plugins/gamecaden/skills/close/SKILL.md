@@ -5,11 +5,11 @@ description: Use only when the user explicitly requests Gamecaden for this work,
 
 # Close
 
-First check the applicability conditions above; when they are not met, follow original project guidance. See [Workflow applicability](../../shared/workspace.md) for boundaries.
+Apply the [workflow applicability boundary](../../shared/workspace.md#workflow-applicability) before using this responsibility.
 
 Make work records accurately express delivery results so subsequent sessions can continue from current facts. Closure rests on effective commitments, applicable evidence and necessary synchronization, retaining [Common record conventions](../../shared/records.md).
 
-Resolve relative links from this SKILL.md's directory; ../../shared/ is in the common skill package root.
+Resolve links from this Skill's directory; ../../shared/ is the package's shared/ directory.
 
 <a id="1-确定收尾对象与当前意图"></a>
 ## 1. Establish closure objects and current intent
@@ -27,7 +27,7 @@ For explicit abandonment, replacement or deferral, use flow's [Change handling](
 
 Check correspondence of necessary requirements and evidence under [Verification conventions](../../shared/verification.md). Reuse sufficient still-valid results directly; read [verify](../verify/SKILL.md) for actual gaps, without rerunning unchanged full checks for closure alone.
 
-Limit material conditions to current necessary scope under [Material responsibilities](../../shared/material-requirements.md); locate original requirements/evidence for panel conditions through [Panel continuation](../../shared/panel-workflow.md). Closure conclusions still rest on original records.
+Limit material conditions to [triggered responsibilities](../../shared/material-requirements.md#domain-triggers). Read known requirements/evidence directly; use [derived views](../../shared/panel-workflow.md) when discovery or an overview needs them, then read back originals. Closure rests on those sources.
 
 Distinguish actual commitments for design delivery, content packages, engineering implementation, runtime adoption and release. Tasks own their scoped results only; retain unfinished work for missing necessary scoped acceptance/verification. See [Closure and synchronization](references/closure-and-sync.md) for specific scope changes, Epics and historical closure.
 
@@ -60,7 +60,7 @@ Retain clear conclusions in original records: delivery/baseline, necessary verif
 
 Update lifecycle after necessary authoritative writebacks and required Git delivery are satisfied, then read back to confirm; commit/synchronize closure records themselves under the same policy when needed. New formats retain IDs and main entrypoint paths; old management sources follow real conventions without forced migration at closure. For partial writes, integration or synchronization, retain actual facts and pending steps without claiming full closure success.
 
-Derive Progress/Timeline and similar views after original record updates. Report view-refresh failure separately from authoritative closure failure; restoration follows the closure/synchronization reference.
+Refresh only existing affected current views under [derived outputs](../../shared/derived-outputs.md#refresh-and-retention) after original updates. Report view-refresh failure separately from authoritative closure failure; restoration follows the closure/synchronization reference.
 
 <a id="6-交付收尾结果"></a>
 ## 6. Deliver closure results

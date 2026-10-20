@@ -5,16 +5,16 @@ description: Use only when the user explicitly requests Gamecaden for this work,
 
 # Design
 
-First check the applicability conditions above; when they are not met, follow original project guidance. See [Workflow applicability](../../shared/workspace.md) for boundaries.
+Apply the [workflow applicability boundary](../../shared/workspace.md#workflow-applicability) before using this responsibility.
 
 Establish sufficient design to guide the next action for current delivery. Fit design to actual consumers and project state, retaining complete goals; material depth follows current actions, risks and established agreements.
 
-Resolve relative links from this SKILL.md's directory; ../../shared/ is in the common skill package root.
+Resolve links from this Skill's directory; ../../shared/ is the package's shared/ directory.
 
 <a id="1-确定这次要设计什么"></a>
 ## 1. Determine what to design here
 
-Reuse user requirements, selected solutions, original Task/Epic and effective project specifications. Locate relevant sources under [Workspace conventions](../../shared/workspace.md); do not reinitialize established goals or runtime roots.
+Reuse user requirements, selected solutions, original Task/Epic and effective project specifications. Locate [original sources](../../shared/workspace.md#1-locations-and-resolution) without reinitializing established goals or roots.
 
 - Users want design/plans only: deliver corresponding materials; code execution, asset integration and engine operations follow original authorization boundaries.
 - Users only want existing solutions reviewed: deliver grounded problems and recommendations, preserving original files; save to corresponding sources when modifying/implementing design is requested.
@@ -23,7 +23,7 @@ Reuse user requirements, selected solutions, original Task/Epic and effective pr
 - Selected large solutions need phased execution, or explicit upper-level phased development documents are requested: read [Phased Development Plan](../../shared/phased-development.md) and arrange current Epic/Stage and ownership destinations. PDP may be saved before real work exists, without fictitious Epics for plan storage.
 - Core experience or commitments have genuine unresolved tradeoffs: handle that disagreement only, reading [brainstorm](../brainstorm/SKILL.md) as needed without reinterviewing all content.
 
-Retain original work under [Record conventions](../../shared/records.md); moving from discussion to design does not create a new Task. Independent design deliveries needing retention or handoff may use a design Task; pure planning or maintenance of a management object writes back to that object.
+Retain original work under [record conventions](../../shared/records.md#creation-and-saving); moving from discussion to design does not create a new Task. Independent design deliveries needing retention or handoff may use a design Task; pure planning or maintenance of a management object writes back to that object.
 
 <a id="2-先核对现状与消费者"></a>
 ## 2. Check current state and consumers first
@@ -32,7 +32,7 @@ Follow relevant inputs or triggers to inspect state, data, scenes/modules, actua
 
 Explain what must change, needs verification or remains under investigation. Read relevant project rules, existing design and failure experience, reusing still-applicable understanding; do not expand local changes into unrelated repository-wide audits.
 
-Before solutions, read matching general, domain, engine/framework/platform and project requirements under [Rule selection and loading](../../shared/rules.md). Distinguish effective agreements, default recommendations and historical experience; select by actual runtime roots and versions, without mistaking an HTML panel in the same repository for the game's stack. Load only available relevant Skills for specialized judgment, retaining current design/execution scope.
+Before solutions, select matching requirements under [rule selection](../../shared/rules.md#1-select-sources-for-current-work), respecting effective agreements, default recommendations and historical experience. Use actual runtime roots/versions and available specialized Skills within current design/execution scope.
 
 Distinguish gaps: investigate project-accessible technical facts; offer explicit design recommendations for undefined interfaces/initial values that can reasonably be selected; ask users only about unresolved tradeoffs materially changing player outcomes or commitments. Materials omitting fields or input actions do not automatically require technical answers from users.
 
@@ -43,7 +43,9 @@ For cross-scene, shared-state, lifecycle or multi-system interface design, read 
 <a id="3-确定必要内容和表达"></a>
 ## 3. Determine necessary content and expression
 
-For gameplay, character, map, UI, feedback, save or production-input changes, judge responsibilities triggered by current actions under [Material responsibilities](../../shared/material-requirements.md), then read matching entries in [Game material reference](references/game-deliverables.md) as needed. For panel-assisted location of materials or conditions, read back original sources under [Panel continuation](../../shared/panel-workflow.md).
+For gameplay, character, map, UI, feedback, save or production-input changes, check [triggered responsibilities](../../shared/material-requirements.md#domain-triggers) and matching [material entries](references/game-deliverables.md#use-entrypoints). Use [derived views](../../shared/panel-workflow.md) when source discovery or an overview needs them, then read back originals.
+
+For UI unification, reusable UI design or evidenced cross-interface drift, apply [UI families](../../shared/ui-families.md) within current scope, proactively organizing the arrangement when the requested outcome includes it.
 
 Define responsibilities, inputs/outputs and key relationships, then choose text, diagrams or data. Cite explicit versions of existing materials that fulfill responsibilities; diagrams and text explain what is effective, illustrative or awaiting verification.
 
@@ -65,7 +67,7 @@ The model handles ordinary reversible implementation and local presentation choi
 <a id="5-保存与一致性检查"></a>
 ## 5. Save and check consistency
 
-Simple content writes back to original Task; use its design.md for extensive design text or independent consumption. Whether to split plan.md follows “Implementation arrangements and plan.md” in [Record conventions](../../shared/records.md); main records retain current explanation and references. Epic holds shared cross-Task design; Task holds concrete arrangements for this delivery.
+Keep simple design in the original Task, using its design.md for extensive text or independent consumption. Split plan.md only under [implementation-arrangement rules](../../shared/records.md#implementation-arrangements-and-planmd); main records retain current explanation and references. Epic holds shared cross-Task design; Task holds this delivery's arrangements.
 
 Long-term rules update current Spec overview and corresponding domain sources by scope, separately from implementation facts of declared baselines; choosing future implementation alone does not become current capability. When design changes complete direction or outcome arrangements, write back current Vision/Roadmap under [Change handling](../flow/references/change-work.md#4-synchronize-actually-affected-content); local design remains with original work. Future branches go to parking lots; valuable experience enters Notes as needed.
 
@@ -76,7 +78,7 @@ For PDP delivery, check commitment coverage of adopted solutions, Epic/Stage cou
 <a id="6-明确现在可以推进什么"></a>
 ## 6. State what can advance now
 
-Deliver current design and next action: original goal/work, actual roots and baseline, effective rules and input materials, arrangements/acceptance for that action and gaps still affecting it. Use original records and [Common handoff conventions](../../shared/records.md), without another dynamic design state ledger.
+Deliver current design and next action: original goal/work, roots/baseline, effective inputs, arrangements/acceptance and gaps still affecting that action. Use [original records for continuation](../../shared/records.md#7-continuation-and-independent-handoff), without another design state ledger.
 
 Scope design conclusions, such as “room-connectivity grayboxing can begin” or “formal action production still lacks anchor conventions”; do not broadly declare “the entire project is ready”. With authorized subsequent work and sufficient key inputs, hand engineering implementation to [develop](../develop/SKILL.md) and content production to [assets](../assets/SKILL.md), continuing within original work; design-only requests end at design delivery.
 

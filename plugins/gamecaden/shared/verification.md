@@ -14,6 +14,8 @@ Ordinary quick fixes may connect requirements and checks in a brief explanation;
 
 Choose checks around failure modes: some requirements need static data; others need actual execution, natural input, target scale, or user judgment. Choose methods sufficient for this work's impacts; do not expand into an unrelated full audit because a tool is available, or reduce necessary coverage because of a quick label.
 
+When a method produces repeated screenshots, decoded media, traces or frozen builds, arrange finite outputs and retained evidence under [Asset storage](asset-storage.md#bound-a-batch-without-capping-the-goal). Check configured limits against this method's required coverage and report any shortfall; a resource cap is not an acceptance result.
+
 The existence of required data/diagrams/frame slots supports only the corresponding material facts. To claim rules are active, visuals are reproduced, or actions are complete, check reading/wiring and corresponding observations along real consumers; after implementation or measurement changes, check whether this round's evidence covers the final baseline. Static checks that fulfill the original commitment remain valid; do not uniformly require all work to run the game for additional verification.
 
 <a id="2-判断已有证据是否仍适用"></a>

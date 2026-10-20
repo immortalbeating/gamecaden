@@ -21,6 +21,8 @@ Quick work can be briefly recorded after completion, but when waiting, session s
 
 Priority: explicit Task/Issue/path in this turn → clear context for current unfinished work → match the request's goal to relevant active work. Progress can navigate; return to original records ultimately.
 
+When enumerating candidates with paginated tools, finish the relevant query before claiming complete coverage or no matching active work. For record.list, follow next_cursor through remaining record, revision and diagnostic pages under [local I/O pagination](../../../shared/local-io.md#6-validation-scope-and-practical-boundaries). With an explicit Task/path, read that source directly rather than enumerate unrelated collections; use the actual tool's pagination contract rather than assume project-specific wrapper flags.
+
 With multiple candidates, compare goals, scope, runtime roots and original management sources, rather than selecting by last-modified date. Offer concise choices only when substantive ambiguity remains, listing actual work identifiers and differences.
 
 Also read the original Task's current advancement constraints: explicitly deferred or cancelled work cannot execute automatically merely because it remains in a list. Select directly when existing priorities, dependencies and current intent suffice; multiple candidates alone do not necessarily require a question. Explicit resumption of a Task can lift that user deferral; other necessary conditions continue to apply.
@@ -73,4 +75,4 @@ When additions, modifications, deferral or cancellation actually occur, read [Ch
 
 Use one current context during execution: actual roots, work source/identifier, current goal, next action, applicable evidence and unresolved points. This is working understanding; it does not require context.json or another HANDOFF.
 
-Write back to the original Task when obtaining new results, encountering a blocker requiring a pause, handing off or closing. When an independent handoff file is genuinely needed, export a snapshot from updated original records under [Derived outputs](../../../shared/derived-outputs.md#standalone-handoff), retaining actual scope/baseline, original grounds and default path. Save repeated generations as separate versions; restoration still advances from original records.
+Save results and continuation information under [common writeback rules](../../../shared/records.md#6-current-facts-closure-and-aggregation). When an independent handoff file is genuinely needed, export a snapshot from updated original records under [Derived outputs](../../../shared/derived-outputs.md#standalone-handoff), retaining scope/baseline and original grounds. Save repeated generations as separate versions; restoration still advances from original records.

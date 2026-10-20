@@ -19,7 +19,7 @@ Select portions matching the current scope from the following sources rather tha
 
 When a Godot game includes an HTML approval panel, select rules separately for the game and panel; do not identify a side tool as the main game engine. If a new project has no selected engine yet, use only common and confirmed domain requirements to compare options; do not record future options as adopted profiles.
 
-When common engineering, directory, or engine/platform rules are needed, read the current branch from the [profile selection entry](../profiles/README.md). Reuse existing versions and scopes while they remain applicable; reassess matching items when the engine, target platform, consumer, or delivery action changes, without loading everything for every quick task.
+When common engineering, directory, or engine/platform rules are needed, read the current branch from the [profile selection entry](../profiles/README.md#select-what-this-work-needs). Reuse existing versions and scopes while they remain applicable; reassess matching items when the engine, target platform, consumer, or delivery action changes, without loading everything for every quick task.
 
 <a id="2-明确规则的性质"></a>
 ## 2. Identify the Nature of Rules

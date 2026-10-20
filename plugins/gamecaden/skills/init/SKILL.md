@@ -43,6 +43,8 @@ For new projects needing page/level switching, reusable entities, state across l
 
 When the project already uses or explicitly intends Git and needs delivery conventions established/checked, read [Project Git policy](../../shared/git-policy.md). Investigate existing facts and rules first, retaining project conventions and explicit current instructions; directly arrange authorized Git actions with clear targets, clarifying only what is genuinely undecided for the current action. When long-term policy genuinely needs establishing or adjustment, offer automatic delivery, automatic commits only, manual Git and custom approaches, then save after an actual choice. Do not force a choice without Git or during conceptual exploration, or block authorized work because long-term policy is absent.
 
+When adoption includes formal binary assets, repeated production outputs, or a missing large-file arrangement, read [Asset storage](../../shared/asset-storage.md). Reuse adequate existing rules; otherwise establish the needed versioning destinations, recovery and batch-retention arrangement in original project rules or current work, including the Git/LFS default and actual configuration checks where applicable.
+
 <a id="3-决定真实需要的写入"></a>
 ## 3. Decide which writes are actually needed
 

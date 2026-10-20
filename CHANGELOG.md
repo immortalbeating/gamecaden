@@ -4,6 +4,17 @@ Windows physical I/O uses extended paths for deep operation-receipt writes, read
 
 ## Unreleased
 
+## v0.3.0 — 2026-10-20
+
+- Keep ordinary engineering configuration with its data-maintenance owners, using asset records only when independent content identity, selection or review is needed. Make derived discovery/views explicitly conditional, centralize repeated Task-mode and writeback guidance, and shorten responsibility entrypoints with focused references while preserving first-use loading, evidence and authorization boundaries.
+- Add UI family design and implementation guidance with proactive scoped use, adaptable general/game component catalogues, multiple families or visual systems, controlled variants, source-backed production and shared implementation, and consumer/state verification. Reuse existing project materials and Task structures.
+- Preserve adopted visual grounds through actual production references and representative review before expanding unverified masters or changed recipes. Clarify responsibility-guidance loading within long sessions and complete relevant continuation queries across pagination; retain existing Task modes, fields, lifecycle and discussion boundaries.
+- Default reusable and tunable gameplay definitions to project-owned data maintenance entries consumed by the game, reusing native resources or existing typed-data/table pipelines. Add configuration-effect verification while retaining existing state ownership, local fields and bounded implementation scope.
+- Establish project asset storage and retention arrangements, including a Git/LFS default when a formal Git binary pipeline lacks one, actual pointer/object checks, rolling batch estimates, finite diagnostic output, shared immutable dependencies, and batch/use-based retention. Candidate selection preserves alternatives still needed for review, reuse, sources or reproduction.
+- Losslessly compress large settled local I/O receipts while retaining legacy reads, complete operational content, replay, allocation and recovery semantics. Pending receipts retain their original full representation.
+
+Upgrade compatibility: new tools read legacy operation receipts; older tools cannot read the new compressed large settled receipts. Upgrade clients sharing a project operation store together. Package rollback does not convert that store. Project record identities, Task fields and schema v1 remain unchanged.
+
 ## v0.2.1 — 2026-10-14
 
 - Add the selected orange G and charcoal play mark as the Codex listing logo and composer icon, with the PNG included in the verified package.

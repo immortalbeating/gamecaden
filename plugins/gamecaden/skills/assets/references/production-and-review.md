@@ -13,29 +13,33 @@ Read only current content types and actually arising batch, long-job or review p
 | Models, materials and rigged animation | Units/axes, origins, topology/materials, skeletons/actions, necessary proxies and target import requirements; distinguish static-file checks and engine display |
 | Effects | Trigger/end/re-entry, timing, spatial attachment, readability and impact scope; preview and actual combat-background observation have separate coverage |
 | Audio and voice | Content/sound direction, duration/loop, loudness/format, event triggers and concurrency/interruption; playable files do not prove correct game triggering |
-| UI images, text and data content | Dimension/layout semantics, states/languages and actual readers; content data and program rules have explicit separate owners |
+| UI images, text and data content | Applicable [family/variant and production sources](../../../shared/ui-families.md#production-and-implementation), dimension/layout semantics, states/languages and actual readers; content data and program rules have explicit separate owners |
 
 These are information responsibilities, not mandatory forms for every task. Dimensions, frame counts, directions, encoding, image counts and performance budgets follow actual use; future content unnecessary for current consumption does not block established work.
 
-When level layouts and mechanism configuration directly form runtime engineering data, retain their engineering sources and design agreements. Register assets only with actual independent content identity, selection or review needs; do not automatically absorb every configuration file as material.
+Engineering layouts and mechanism configuration retain their [data-maintenance owners](../../../profiles/common.md#data-maintenance); use asset records only for content needing independent identity, selection or review.
 
 <a id="2-复用生成与加工"></a>
 ## 2. Reuse, generation and processing
 
 Judge whether existing content meets current inputs and use scope first. For re-export or anchor repair alone, retain still-valid identity/style grounds and fix affected steps.
 
+For visual production, carry the [adopted visual grounds](../../design/references/game-deliverables.md#visual-direction) into actual production inputs, assigning references by shared style, identity/structure or pose/motion. Use applicable baseline images when the tool supports them, or explain the substitute and check the result against the baseline. Generated masters may carry style only while comparisons support that scope; production success or within-pack consistency does not establish it. For known drift, retain valid identity and motion intent while rebuilding divergent appearance/structure at the responsible source. Desaturating an old image retains its shape constraints; resolve conflicts with explicitly locked identity/structure through existing change handling.
+
 After generation returns, check actual content, file usability and needed technical properties. Retain prompts, source references, production-job receipts, key processing parameters or script versions for traceability, avoiding keys or temporary access credentials in records.
 
-Place sources, editable materials, outputs and runtime import files by actual tool/engine conventions; clear relationships matter more than a uniform physical directory. Raw large files, candidate retention and cleanup follow project storage policy; deletion/overwriting must not destroy still-referenced adoption grounds.
+Place sources, editable materials, outputs and runtime import files by actual tool/engine conventions; clear relationships matter more than a uniform physical directory. Establish or reuse the [storage and retention arrangement](../../../shared/asset-storage.md) for large inputs and retained outputs, preserving still-needed adoption grounds.
 
 Give separate conclusions for technical checks and actual viewing/listening. Observe transparent edges, frame drift, action readability, natural map routes, audio seams and similar risks as applicable; file counts or tool success messages cannot replace content judgment.
 
 <a id="3-批量生产"></a>
 ## 3. Batch production
 
-Process similar outputs in authorized batches when goals are clear and methods verified. For new visual directions, unverified conversions or significant retry costs, test the uncertainty with representative content before continuing the batch; introduce corresponding human approval only when projects/users require it.
+Process similar outputs in authorized batches when goals are clear and methods verified. For visual production, before expanding an unverified direction/family/master, style correction or materially changed reference/conversion recipe, compare representative outputs directly with the adopted baseline in views revealing relevant style features and at target display conditions. Check form/proportions, face language, contours, color/shadow grouping and material/detail density as applicable. In existing batch/Task evidence, identify compared versions, substantive matches/conflicts and the scope permitted to continue; technical validity or agreement with the current master does not establish global-style conformance. Reuse still-valid comparisons for unchanged risks. For unverified conversions or other significant retry costs, test the uncertainty with representative content; introduce human approval only when projects/users require it.
 
 Batches must locate members, inputs and concrete versions. For local failures, retain valid outputs and repair affected members or shared root causes only; when shared references/conversions change, recheck affected scope.
+
+Use [batch resource and retention rules](../../../shared/asset-storage.md#bound-a-batch-without-capping-the-goal) for deliverable counts, attempts, real occupancy, finite captures, changing plans and batch-end organization.
 
 Statuses within one batch may differ: express pending review, rejected, technical failure, permitted use and integrated members separately. Success rates summarize only; a majority pass cannot become all-pass.
 

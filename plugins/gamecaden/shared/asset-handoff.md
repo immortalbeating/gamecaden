@@ -41,7 +41,7 @@ Save only candidate identities meaningful for use; do not enter every random tem
 <a id="候选快照与遗留恢复"></a>
 ### Candidate Snapshots and Legacy Recovery
 
-Candidates needing continued review/comparison must keep their manifests and required members at stable version locations or supported retention sources. Runtime-import copies may be replaced but cannot be the sole overwritable payload shared by multiple historical candidates. Retain materials sufficient to review conclusions according to project storage policy, without requiring all large trial-run files in Git.
+Candidates needing continued review/comparison must keep their manifests and required members at stable version locations or supported retention sources. Runtime-import copies may be replaced but cannot be the sole overwritable payload shared by multiple historical candidates. Use [Asset storage](asset-storage.md#review-retention-at-actual-boundaries) for batch-end or changed-use retention, source/recovery dependencies, and honest online/archive/retirement explanations; a candidate's registration or selection is not a disposal decision for its alternatives.
 
 After overwrites, migration, or loss, first inspect real files, old reports, and available history. If original bytes can be recovered, preserve original identities and digest relationships; if only historical locations or old observations remain and original payloads are insufficient, record the limitation rather than changing old manifests/digests to launder them into passes. Archive links or migration references can support human navigation; current native tools still reject junctions/symbolic links. Report successful location separately from content-digest revalidation.
 

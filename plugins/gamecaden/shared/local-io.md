@@ -112,6 +112,8 @@ This round's tests validated both rejection of fabricated attribution and explic
 
 Project-local `.game-workflow-io/` stores locks and operation receipts, not a second Task state. Receipts contain original requests and recovery materials and should remain in the local operating environment. Exclude them from packaging/version control according to project conventions during distribution/onboarding. Tools themselves do not modify .gitignore or execute Git.
 
+Large settled receipts use a lossless, integrity-checked gzip/base64 JSON storage envelope when it is smaller. `Store.load/all` transparently recover the complete original request, guards, plans, results and allocations; operation responses and replay semantics are unchanged. Prepared/applying receipts keep their full original JSON representation. Existing plain receipts remain readable and are not rewritten by reads. The internal envelope requires a reader supporting `gamecaden.operation.gzip-base64.v1`; older package readers cannot consume it, so do not alternate old and new writers on the same operation store. This is storage compression, not deletion or automatic migration of project receipts.
+
 - Unknown request outcome: first operation.status; if continuation is needed and conditions still hold, resend the original request_id and payload.
 - Identical request arrives again: reuse original numbers and results. Same ID with changed payload: request_id_conflict; query original results separately.
 - Multi-file operation only partly completed: receipts explain each item; recovery checks actual files without recreating Tasks or clearing existing results.
