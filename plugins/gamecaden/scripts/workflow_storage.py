@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import base64
 import gzip
+from collections import OrderedDict
 from contextlib import contextmanager
 import hashlib
 import json
@@ -13,6 +14,7 @@ import os
 from pathlib import Path
 import stat
 import tempfile
+from threading import Lock
 import time
 import zlib
 
@@ -22,6 +24,11 @@ from workflow_formats import WorkflowError, json_load, require, revision
 STATE_NAME = ".game-workflow-io"
 RECEIPT_FORMAT = "gamecaden.operation.gzip-base64.v1"
 RECEIPT_COMPRESSION_MIN_BYTES = 64 * 1024
+SETTLED_RECEIPT_CACHE_LIMIT = 4096
+# Process-local, bounded metadata only. Actual bytes are read and hashed on every
+# pending scan; timestamps and persisted indexes never establish validity.
+_settled_receipts = OrderedDict()
+_settled_receipts_lock = Lock()
 
 
 def receipt_bytes(value):
@@ -207,8 +214,42 @@ class Store:
         atomic_write(path, data, file_revision(path), self.safe_state)
 
     def pending(self, except_id=None):
-        return [value for value in self.all() if value["receipt"]["phase"] != "settled"
-                and value["receipt"]["request_id"] != except_id]
+        folder = self.safe_state(self.state / "operations")
+        physical_folder = filesystem_path(folder)
+        if not physical_folder.exists():
+            return []
+        result = []
+        for physical in physical_folder.glob("*.json"):
+            path = self.safe_state(folder / physical.name)
+            try:
+                raw = physical.read_bytes()
+                digest = hashlib.sha256(raw).digest()
+                key = (self.scope, str(path))
+                with _settled_receipts_lock:
+                    cached = _settled_receipts.get(key)
+                    if cached is not None:
+                        _settled_receipts.move_to_end(key)
+                if cached is not None and cached[0] == digest:
+                    _, scope, request_id, phase = cached
+                    data = None
+                else:
+                    data = decode_receipt(json_load(raw.decode("utf-8")))
+                    scope = data["receipt"]["scope_id"]
+                    request_id = data["receipt"]["request_id"]
+                    phase = data["receipt"]["phase"]
+                require(scope == self.scope, "invalid_scope", "Foreign receipt scope")
+                require(self.path(request_id).name == path.name,
+                        "indeterminate", "Receipt identity mismatch")
+                if phase == "settled":
+                    with _settled_receipts_lock:
+                        _settled_receipts[key] = (digest, scope, request_id, phase)
+                        while len(_settled_receipts) > SETTLED_RECEIPT_CACHE_LIMIT:
+                            _settled_receipts.popitem(last=False)
+                elif request_id != except_id:
+                    result.append(data)
+            except (ValueError, KeyError, TypeError, OSError, EOFError, zlib.error) as exc:
+                raise WorkflowError("indeterminate", f"Invalid operational receipt: {path.name}") from exc
+        return result
 
     def prepare(self, request, digest, plans, allocations, guards, data):
         value = {"receipt": {"request_id": request["request_id"], "operation": request["operation"],

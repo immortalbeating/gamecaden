@@ -1,8 +1,8 @@
 # Installation, Updates, and Standalone Use
 
-Maintenance and public releases are unified at [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden). The current version is 0.3.0; published versions retain their original content. The former account address remains only as a GitHub compatibility redirect. See [repository migration](repository-migration.md) for switching existing installations.
+Maintenance and public releases are unified at [immortalbeating/gamecaden](https://github.com/immortalbeating/gamecaden). The current version is 0.3.1; published versions retain their original content. The former account address remains only as a GitHub compatibility redirect. See [repository migration](repository-migration.md) for switching existing installations.
 
-0.3.0 includes asset storage/retention, gameplay-data and UI family conventions, scoped continuation, and the unified environment entry point. Pinned older tags retain their corresponding contracts. The system needs Python 3.12+ with venv support; the first local-tool invocation automatically prepares independent dependencies.
+0.3.1 repairs source I/O, deep-path probes, large-source panel/governance reads and repeated settled-receipt decoding. It retains 0.3.0's asset storage/retention, gameplay-data and UI family conventions, scoped continuation, and unified environment entry point. Pinned older tags retain their corresponding contracts. The system needs Python 3.12+ with venv support; the first local-tool invocation automatically prepares independent dependencies.
 
 Upgrade tools used by all clients sharing a project's operation store together. Version 0.3.0 reads legacy receipts and may write losslessly compressed large settled receipts; older tools cannot read that format, and package rollback does not convert it. Project documents and schema v1 retain their existing identities and locations.
 
@@ -32,7 +32,7 @@ The first step refreshes the installation source, and the second installs the pl
 
 ### Pinned Versions and Switching Update Methods
 
-For reproducibility or stable pinned use, specify a tag, for example `codex plugin marketplace add immortalbeating/gamecaden --ref v0.3.0`. Refreshing a pinned tag still reads that tag rather than automatically moving to later released tags; deliberate upgrades require changing the target version.
+For reproducibility or stable pinned use, specify a tag, for example `codex plugin marketplace add immortalbeating/gamecaden --ref v0.3.1`. Refreshing a pinned tag still reads that tag rather than automatically moving to later released tags; deliberate upgrades require changing the target version.
 
 If previously registered with `--ref v0.1.0`, explicitly replace the old marketplace registration before switching to the default branch:
 

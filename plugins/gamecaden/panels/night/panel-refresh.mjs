@@ -15,6 +15,26 @@ export function changedSources(previous,next){
   const before=rows(previous),after=rows(next),paths=[...new Set([...before.keys(),...after.keys()])].filter(path=>before.get(path)!==after.get(path));
   return {paths,membershipChanged:[...before.keys()].some(path=>!after.has(path))||[...after.keys()].some(path=>!before.has(path))};
 }
+export async function loadSourceBatch({readGovernance,readPage}){
+  let governanceError;
+  try{
+    const governance=await readGovernance();
+    if(!Array.isArray(governance?.records))throw new Error('Governance response did not include source records');
+    return {records:governance.records,diagnostics:governance.record_diagnostics||[],complete:governance.records_complete===true,governance,governanceError:null};
+  }catch(error){governanceError=error;}
+  const records=[],diagnostics=[],seen=new Set();let cursor=null,complete=true;
+  do{
+    const page=await readPage(cursor);
+    records.push(...(page.records||[]));diagnostics.push(...(page.diagnostics||[]));
+    complete=complete&&page.complete===true;
+    cursor=page.next_cursor;
+    if(cursor){
+      if(seen.has(cursor))throw new Error('Source pagination repeated a cursor');
+      seen.add(cursor);
+    }
+  }while(cursor);
+  return {records,diagnostics,complete,governance:null,governanceError};
+}
 export function createRefreshCoordinator({context,readVersions,loadChanges,blocked,status=()=>{}}){
   const baselines=new Map(),dirty=new Map();let running=null,serial=0;
   const keyOf=bound=>JSON.stringify([bound.id,bound.binding]);

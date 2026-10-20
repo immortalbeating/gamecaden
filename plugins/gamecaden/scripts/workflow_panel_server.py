@@ -152,10 +152,36 @@ class Binding:
         self.identity_source = config.get("identity_source", "local-launch" if self.actor else "read-only")
         self.signer = signer
         self.lock = threading.RLock()
+        self.probe_lock = threading.Lock()
+        self.probe = None
         self.active_digest = None
         self.workflow = Workflow(self.data.root, actor=self.actor, decision_authorizer=self.authorize)
         identity = {**config, "root": str(self.data.root)}
         self.binding_id = hashlib.sha256(canonical(identity).encode("utf-8")).hexdigest()
+
+    def revisions(self):
+        # Source probes have their own Project and never mutate record/media keys.
+        # Share only an in-flight observation; every later probe reads real bytes.
+        with self.probe_lock:
+            flight = self.probe
+            owner = flight is None
+            if owner:
+                flight = {"event": threading.Event()}
+                self.probe = flight
+        if owner:
+            try:
+                flight["result"] = self.data.revisions()
+            except Exception as exc:
+                flight["error"] = exc
+            finally:
+                with self.probe_lock:
+                    self.probe = None
+                    flight["event"].set()
+        else:
+            flight["event"].wait()
+        if "error" in flight:
+            raise flight["error"]
+        return flight["result"]
 
     def info(self):
         return {"id": self.id, "name": self.data.name or self.data.root.name, "root": str(self.data.root),
@@ -445,16 +471,18 @@ class Handler(BaseHTTPRequestHandler):
         action = "/".join(parts[4:])
         if method == "POST":
             return self.send(200, binding.post(action, body))
+        if action == "revisions":
+            if url.query:
+                fail("invalid_request", "Version checks do not accept query parameters")
+            return self.send(200, binding.revisions())
         with binding.lock:
-            if action == "revisions":
-                if url.query:
-                    fail("invalid_request", "Version checks do not accept query parameters")
-                return self.send(200, binding.data.revisions())
             if action == "governance":
-                query = parse_qs(url.query)
-                if query.keys() - {"focus"}:
+                query = parse_qs(url.query, keep_blank_values=True)
+                if query.keys() - {"focus", "include_records"}:
                     fail("invalid_request", "Unknown governance view parameter")
-                return self.send(200, Governance(binding.data).build(query.get("focus", [None])[0]))
+                if "include_records" in query and query["include_records"] != ["1"]:
+                    fail("invalid_request", "include_records must be 1")
+                return self.send(200, Governance(binding.data).build(query.get("focus", [None])[0], "include_records" in query))
             if action == "snapshot":
                 query = parse_qs(url.query)
                 if query.keys() - {"cursor", "limit"}:

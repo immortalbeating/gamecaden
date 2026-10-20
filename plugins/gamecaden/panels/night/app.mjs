@@ -1,6 +1,6 @@
 import {renderRelations,layoutRelations,relationViewIdentity} from './relations.mjs';
 import {domainOf,sourceRange} from './relation-layout.mjs';
-import {captureView,applyView,createRefreshCoordinator} from './panel-refresh.mjs';
+import {captureView,applyView,createRefreshCoordinator,loadSourceBatch} from './panel-refresh.mjs';
 const app = document.querySelector('#app');
 const dialog = document.querySelector('#confirm');
 const state = {session:null, csrf:null, projectId:null, page:'overview', records:[], diagnostics:[],
@@ -154,21 +154,22 @@ async function reload({automatic=false,expected=null,affectedKeys=[]}={}) {
   if(!automatic){state.gallery={};state.reviewPreview=null;}
   state.busy = true; render();
   try {
-    let cursor = null, pages = 0, records = [], diagnostics = [], complete = true;
-    do {
-      const url = new URL(`${boundBase(bound)}/snapshot`, location.origin);
-      if (cursor) url.searchParams.set('cursor', cursor);
-      const data = await api(url.pathname + url.search);
-      records.push(...(data.records || [])); diagnostics.push(...(data.diagnostics || []));
-      complete = complete && data.complete !== false;
-      cursor = data.next_cursor; pages += 1;
-      if (pages > 10000) throw new Error('分页超过安全上限，请缩小项目范围');
-    } while (cursor);
+    const url = new URL(`${boundBase(bound)}/governance`, location.origin);
+    url.searchParams.set('include_records', '1');
+    const focusRef=state.initialRoute?.task || state.taskRef;
+    if(focusRef)url.searchParams.set('focus',focusRef);
+    const batch=await loadSourceBatch({readGovernance:()=>api(url.pathname + url.search),readPage:cursor=>{
+      const pageURL=new URL(`${boundBase(bound)}/snapshot`,location.origin);
+      if(cursor)pageURL.searchParams.set('cursor',cursor);
+      return api(pageURL.pathname + pageURL.search);
+    }});
+    const {records,diagnostics,complete}=batch;
     if (!same(bound)) return;
     state.records = records; state.diagnostics = diagnostics; state.complete = complete;
     const changed=new Set([...affectedKeys,...records.filter(row=>oldRecords.get(row.key)?.revision!==row.revision).map(row=>row.key),...oldRecords.keys()].filter(key=>affectedKeys.includes(key)||!records.some(row=>row.key===key)||records.find(row=>row.key===key)?.revision!==oldRecords.get(key)?.revision));
     for(const key of Object.keys(state.gallery))if([...changed].some(recordKey=>key.startsWith(recordKey+':')))delete state.gallery[key];
-    await refreshGovernance(state.initialRoute?.task || state.taskRef);
+    if(batch.governance)await refreshGovernance(focusRef,batch.governance);
+    else{state.governanceError=issue(batch.governanceError);state.governanceStale=true;}
     if (!same(bound)) return;
     state.error = '';if(!automatic)state.message = `已读取 ${records.length} 条来源记录${complete ? '' : '；来源扫描不完整'}`;
     const preferred = records.find(row => row.record_type === 'task' && row.metadata?.status === 'active') || records.find(row => row.record_type === 'task') || records[0];
@@ -189,8 +190,8 @@ async function reload({automatic=false,expected=null,affectedKeys=[]}={}) {
     if (state.page === 'assets') void loadGalleryBatch();
     const reviewMember=state.queue.find(item=>queueId(item)===state.reviewFocus)||state.queue[0];
     if (state.page === 'review'&&(!state.reviewPreview||changed.has(reviewMember?.key)))void loadReviewFocus();
-    try{const after=await api(`${boundBase(bound)}/revisions`);if(before?.complete===true&&after.complete===true&&before.digest===after.digest&&!state.governanceError){confirmed=after;if(!automatic)refreshCoordinator.prime(bound,after,true);state.refreshMessage='已更新来源；阅读位置已保留';}else{state.refreshMessage='来源在读取期间变化或尚未完整核对；请重新读取。';state.governanceStale=true;}}catch{state.refreshMessage='版本检查暂不可用；本次原文读取不作为最新版本确认。';}
-  } catch (error) {if (same(bound)) {state.error = issue(error); state.message = '';}}
+    try{const after=await api(`${boundBase(bound)}/revisions`);if(before?.complete===true&&after.complete===true&&before.digest===after.digest&&!state.governanceError){confirmed=after;if(!automatic)refreshCoordinator.prime(bound,after,true);state.refreshMessage='已更新来源；阅读位置已保留';}else{state.refreshMessage='来源在读取期间变化或尚未完整核对；请重新读取。';state.governanceStale=true;}}catch{state.refreshMessage='版本检查暂不可用；本次原文读取不作为最新版本确认。';state.governanceStale=true;}
+  } catch (error) {if (same(bound)) {state.error = issue(error); state.message = '';state.governanceStale=true;state.governanceError=state.governanceError||state.error;}}
   finally {state.busy=oldBusy;render();restoreReadingDOM(reading);state.readingRestore=null;}
   return confirmed;
 }
@@ -207,12 +208,12 @@ async function loadDomainReader(nodeKey=null,fragment=null,force=false){
   if(same(bound)&&request===state.readerSelection){state.relationReader.loading=false;render();}
 }
 
-async function refreshGovernance(focusRef=state.taskRef) {
+async function refreshGovernance(focusRef=state.taskRef, batch=null) {
   const bound = context();
   try {
     const url = new URL(`${boundBase(bound)}/governance`, location.origin);
     if (focusRef) url.searchParams.set('focus',focusRef);
-    const next = await api(url.pathname + url.search);
+    const next = batch || await api(url.pathname + url.search);
     if (!same(bound)) return;
     const prior = state.focusKey;
     state.governance = next; state.governanceError = ''; state.governanceStale = false;

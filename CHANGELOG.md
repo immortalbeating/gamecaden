@@ -2,7 +2,14 @@
 
 Windows physical I/O uses extended paths for deep operation-receipt writes, reads, and replay, retaining logical paths, scope, guards, and CAS. Packages include the full MIT license and retain third-party EPL notices. Earlier release notes below remain in their original Chinese wording.
 
-## Unreleased
+## v0.3.1 — 2026-10-20
+
+- Resolve located path reads and known panel record details without scanning unrelated collections, retaining workspace/file revisions, source boundaries, object identity, forwards and unfinished-write checks. ID-only lookup, full listings and numbering retain complete identity discovery.
+- Preserve empty JSON producer outputs and explicitly named stdout/stderr JSON captures as read-only raw attachments in numbered collections, while main records and other malformed structured records remain strict.
+- Limit located record updates/transitions to actual dependencies while retaining ID discovery where needed; complete reads also detect registered-source membership changes.
+- Apply Windows extended-path handling to version probes and preserve logical source references and content-based race checks.
+- Reuse a checked in-process source model across panel pages and governance, return optional same-batch records, replace the provenance-page ceiling with explicit reader resource bounds, and isolate/coalesce version probes from record reads.
+- Reuse bounded, byte-hash-validated settled-receipt metadata for hot pending queries without rewriting historical receipts or changing cold validation and full receipt reads.
 
 ## v0.3.0 — 2026-10-20
 

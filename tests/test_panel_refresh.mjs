@@ -1,10 +1,33 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {captureView,applyView,changedSources,createRefreshCoordinator} from '../plugins/gamecaden/panels/night/panel-refresh.mjs';
+import {captureView,applyView,changedSources,createRefreshCoordinator,loadSourceBatch} from '../plugins/gamecaden/panels/night/panel-refresh.mjs';
 import {domainTree,focusSourceData,chapterText} from '../plugins/gamecaden/panels/night/domain-reader.mjs';
 import {relationViewIdentity} from '../plugins/gamecaden/panels/night/relations.mjs';
 
 const version=(digest='a',rows=[['spec/a.md','1']])=>({complete:true,digest,source_revisions:rows.map(([path,revision])=>({ref:{path},revision}))});
+test('combined source read uses one governance batch without requesting pages',async()=>{
+  const governance={records:[{key:'task'}],record_diagnostics:[{code:'source-note'}],records_complete:true};let calls=0;
+  const result=await loadSourceBatch({readGovernance:async()=>{calls++;return governance;},readPage:()=>assert.fail('Successful batch requested another source page')});
+  assert.equal(calls,1);assert.equal(result.governance,governance);assert.equal(result.records,governance.records);assert.deepEqual(result.diagnostics,governance.record_diagnostics);assert.equal(result.complete,true);assert.equal(result.governanceError,null);
+});
+test('failed governance retains readable sources and drains diagnostic-only pages',async()=>{
+  const failure=new Error('Governance output exceeds the request limit'),cursors=[];let calls=0;
+  const result=await loadSourceBatch({readGovernance:async()=>{calls++;throw failure;},readPage:async cursor=>{
+    cursors.push(cursor);
+    return cursor===null?{records:[{key:'original'}],diagnostics:[],complete:true,next_cursor:'tail'}:{records:[],diagnostics:[{code:'read_failed'}],complete:false,next_cursor:null};
+  }});
+  assert.equal(calls,1);assert.deepEqual(cursors,[null,'tail']);assert.deepEqual(result.records,[{key:'original'}]);assert.deepEqual(result.diagnostics,[{code:'read_failed'}]);assert.equal(result.complete,false);assert.equal(result.governance,null);assert.equal(result.governanceError,failure);
+});
+test('missing batch records falls back without retrying governance',async()=>{
+  let governanceCalls=0,pageCalls=0;
+  const result=await loadSourceBatch({readGovernance:async()=>{governanceCalls++;return {nodes:[]};},readPage:async()=>{pageCalls++;return {records:[{key:'original'}],diagnostics:[],complete:true,next_cursor:null};}});
+  assert.equal(governanceCalls,1);assert.equal(pageCalls,1);assert.equal(result.governance,null);assert.match(result.governanceError.message,/did not include source records/);assert.equal(result.records[0].key,'original');assert.equal(result.complete,true);
+});
+test('failed source fallback propagates its error instead of claiming usable sources',async()=>{
+  const failure=new Error('Source read failed');let pages=0;
+  await assert.rejects(loadSourceBatch({readGovernance:async()=>{throw new Error('Governance failed');},readPage:async()=>{pages++;throw failure;}}),error=>error===failure);
+  assert.equal(pages,1);
+});
 const setup=()=>{
   let bound={id:'A',binding:'root-a'},next=version(),blocked=false;
   const calls=[],statuses=[];

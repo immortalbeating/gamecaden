@@ -43,14 +43,16 @@ Example request:
 ```json
 {
   "protocol_version": 1,
-  "request_id": "read-current-task",
+  "request_id": "read-located-task",
   "operation": "record.read",
   "context": {"project_root": "C:/Games/MyGame"},
-  "payload": {"target": {"id": "T-002"}}
+  "payload": {"target": {"path": "game-workflow/tasks/T-002-example/task.md"}}
 }
 ```
 
-Replace example roots and IDs with actual values from the located project. C:/ExampleGame in examples/v1/io is a format example, not a local execution target. Invalid JSON syntax, non-object top levels, or unrecognized request envelopes return concise invalid_request/error results rather than masquerading as successful responses from valid operations.
+Replace example roots and paths with actual values from the located project. C:/ExampleGame in examples/v1/io is a format example, not a local execution target. Invalid JSON syntax, non-object top levels, or unrecognized request envelopes return concise invalid_request/error results rather than masquerading as successful responses from valid operations.
+
+Use the known carrier path for a located read; ID-only lookup and full discovery have different scan scopes under the [read contract](io-v1.md#1-one-source-different-reading-surfaces).
 
 <a id="2-实际能力"></a>
 ## 2. Actual capabilities

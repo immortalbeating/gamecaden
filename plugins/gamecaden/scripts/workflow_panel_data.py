@@ -1,14 +1,17 @@
 """Read-only, host-bound data adapter for the local workflow panel."""
 from __future__ import annotations
 
+import base64
+import copy
 import hashlib
 import json
 from pathlib import Path
 import uuid
 
-from workflow_formats import WorkflowError, json_load, revision
+from workflow_formats import WorkflowError, canonical, json_load, revision
 from workflow_io import Workflow
 from workflow_project import Project
+from workflow_storage import Store
 
 
 MEDIA_TYPES = {
@@ -18,6 +21,8 @@ MEDIA_TYPES = {
     ".webm": "video/webm",
 }
 MAX_MEDIA = 32 * 1024 * 1024
+MAX_RECORDS = 50000
+MAX_SNAPSHOT_BYTES = 64 * 1024 * 1024
 
 
 class PanelDataError(Exception):
@@ -46,6 +51,8 @@ class PanelData:
         self.workflow = Workflow(self.root)
         self._records = {}
         self._media = {}
+        self._snapshot_model = None
+        self._snapshot_guard = None
 
     def _context(self):
         value = {"project_root": str(self.root), "base_dir": str(self.root)}
@@ -70,9 +77,10 @@ class PanelData:
         except WorkflowError as exc:
             raise PanelDataError(exc.code, str(exc)) from exc
 
-    def _as_raw(self, data):
-        path = self._project().path(data["path"])
-        content = path.read_bytes()
+    def _as_raw(self, data, guard=None):
+        guard = guard or self._project()
+        path = guard.path(data["path"])
+        content = guard.read_bytes(path)
         if revision(content) != data["revision"]:
             raise PanelDataError("revision_conflict", "Original source changed while reading", 409)
         try:
@@ -109,63 +117,160 @@ class PanelData:
         from workflow_panel_revisions import source_revisions
         return source_revisions(self)
 
-    def snapshot(self, cursor=None, limit=100):
-        if not isinstance(limit, int) or isinstance(limit, bool) or not 1 <= limit <= 1000:
-            raise PanelDataError("invalid_request", "limit must be between 1 and 1000")
-        inspect = self._call("workspace.inspect", {})
-        mapping = inspect.get("mapping") or {}
-        identity = mapping.get("project") or {}
-        project = {"id": self.project_id or identity.get("id") or self.root.name,
-                   "name": self.name or identity.get("name") or self.root.name,
-                   "root": str(self.root), "workspace": inspect.get("workspace"),
-                   "configured": inspect.get("configured", False),
-                   "kind": "external" if self.external_sources else "native"}
+    def _pending_signature(self, guard):
+        return revision(canonical(Store(self.root, guard.path).pending()).encode("utf-8"))
+
+    def _check_model(self, model):
+        model["guard"].check_snapshot()
+        for path in model.get("unread", ()):
+            try:
+                model["guard"].read_bytes(Path(path))
+            except (WorkflowError, OSError):
+                continue  # Keep the explicit failed-source diagnostic while it persists.
+            raise WorkflowError("revision_conflict", "A previously unreadable source is now available", {"path": path})
+        if self._pending_signature(model["guard"]) != model["pending"]:
+            raise WorkflowError("revision_conflict", "Operational state changed while reading")
+
+    def _project_info(self, guard):
+        identity = (guard.mapping or {}).get("project") or {}
+        return {"id": self.project_id or identity.get("id") or self.root.name,
+                "name": self.name or identity.get("name") or self.root.name,
+                "root": str(self.root), "workspace": str(guard.workspace),
+                "configured": guard.mapping is not None,
+                "kind": "external" if self.external_sources else "native"}
+
+    def _build_snapshot(self):
+        guard = self._project()
+        pending = self._pending_signature(guard)
+        records = guard.scan(retain_payloads=False)
+        if len(records) > MAX_RECORDS:
+            raise PanelDataError("too_many_records", "Sources exceed the record limit for this request", 413)
+        rows = [self._row(guard.read_record(record, False), record.kind)
+                for record in sorted(records, key=lambda record: (str(record.path), record.id or ""))]
+        diagnostics = copy.deepcopy(guard.diagnostics)
+        if Store(self.root, guard.path).pending():
+            diagnostics.append({"code": "operation_pending", "message": "Some records have unfinished operations"})
+        data = {"project": self._project_info(guard), "records": rows, "next_cursor": None,
+                "complete": guard.scan_complete, "diagnostics": diagnostics,
+                "source_revisions": [{"ref": {"path": path}, "revision": value}
+                                     for path, value in sorted(guard.observed.items())]}
+        encoded = canonical(data).encode("utf-8")
+        if len(encoded) > MAX_SNAPSHOT_BYTES:
+            raise PanelDataError("output_too_large", "Source metadata exceeds the snapshot output limit", 413)
+        unread = [path for source in guard.inventory if not source.get("error")
+                  for path in source["files"] if path not in guard.observed]
+        model = {"guard": guard, "pending": pending, "data": data, "digest": revision(encoded), "unread": unread}
+        self._check_model(model)
+        self._records = {row["key"]: self._records[row["key"]] for row in rows}
+        return model
+
+    def _model(self, cursor=None):
+        model = self._snapshot_model
+        if model is not None:
+            try:
+                self._check_model(model)
+            except (WorkflowError, OSError) as exc:
+                self._snapshot_model = None
+                if cursor:
+                    raise PanelDataError("stale_cursor", "Sources or operational state changed; start a new listing", 409) from exc
+                model = None
+        if model is None:
+            if cursor:
+                raise PanelDataError("stale_cursor", "Snapshot is no longer retained; start a new listing", 409)
+            model = self._build_snapshot()
+            self._snapshot_model = model
+        self._snapshot_guard = model["guard"]
+        return model
+
+    def check_snapshot(self):
+        """Recheck both source bytes/membership and operational diagnostics."""
+        try:
+            if self._snapshot_model is not None:
+                self._check_model(self._snapshot_model)
+            elif self._snapshot_guard is not None:
+                self._snapshot_guard.check_snapshot()
+        except (WorkflowError, OSError) as exc:
+            raise PanelDataError(getattr(exc, "code", "read_failed"), str(exc), 409) from exc
+
+    def _external_snapshot(self, cursor=None):
+        guard = self._project()
+        project = self._project_info(guard)
         if self.external_sources:
             if cursor:
                 raise PanelDataError("stale_cursor", "External sources do not use a cursor", 409)
             rows, diagnostics, revisions = [], [], []
-            guard = self._project()
             for source in self.external_sources:
                 try:
                     path = guard.path(source["path"], self.root)
                     raw = self._call("record.read", {"target": {"path": str(path)}})
-                    self._as_raw(raw)
+                    self._as_raw(raw, guard)
                     rows.append(self._row(raw, "external", source["id"],
                                           {"source_id": source["id"], "role": source["role"], "label": source["label"]}))
                     revisions.append({"ref": {"path": str(path)}, "revision": raw["revision"]})
                 except (PanelDataError, WorkflowError) as exc:
                     diagnostics.append({"code": exc.code, "message": str(exc), "source_id": source["id"]})
+            try:
+                guard.check_snapshot()
+            except (WorkflowError, OSError) as exc:
+                raise PanelDataError(getattr(exc, "code", "read_failed"), str(exc), 409) from exc
+            self._snapshot_guard = guard
             return {"project": project, "records": rows, "next_cursor": None,
                     "complete": not diagnostics, "diagnostics": diagnostics,
                     "source_revisions": revisions}
-        listed = self._call("record.list", {"cursor": cursor, "limit": limit} if cursor else {"limit": limit})
-        rows = []
-        # One shared read model for this page avoids re-scanning the entire project per row.
-        detail_project = self._project()
-        for item in listed["items"]:
-            try:
-                detail = detail_project.read_record(detail_project.resolve(item["ref"]), False)
-            except WorkflowError as exc:
-                raise PanelDataError(exc.code, str(exc), 409 if exc.code == "revision_conflict" else 400) from exc
-            if detail["revision"] != item["revision"] or detail["path"] != item["path"]:
-                raise PanelDataError("revision_conflict", "Source changed while collecting panel records", 409)
-            rows.append(self._row(detail, item["record_type"]))
-        # Compare full-scan fingerprints using the same query, not page-local
-        # revisions. The cursor does not affect the listing fingerprint.
-        observed = self._call("record.list", {"limit": limit})
-        if observed["summary"]["snapshot"] != listed["summary"]["snapshot"]:
-            raise PanelDataError("revision_conflict", "Source list changed while collecting panel records", 409)
-        return {"project": project, "records": rows, "next_cursor": listed["next_cursor"],
-                "complete": listed["complete"], "diagnostics": listed["diagnostics"],
-                "source_revisions": listed["source_revisions"]}
+
+    def snapshot_all(self):
+        """Return one complete, process-local source model for derived consumers."""
+        if self.external_sources:
+            return self._external_snapshot()
+        try:
+            model = self._model()
+            data = copy.deepcopy(model["data"])
+            self._check_model(model)
+            return data
+        except (WorkflowError, OSError) as exc:
+            raise PanelDataError(getattr(exc, "code", "read_failed"), str(exc), 409) from exc
+
+    def snapshot(self, cursor=None, limit=100):
+        if not isinstance(limit, int) or isinstance(limit, bool) or not 1 <= limit <= 1000:
+            raise PanelDataError("invalid_request", "limit must be between 1 and 1000")
+        if self.external_sources:
+            return self._external_snapshot(cursor)
+        try:
+            model = self._model(cursor)
+            fingerprint = revision(canonical([model["digest"], limit]).encode("utf-8"))
+            offset = 0
+            if cursor:
+                try:
+                    value = json_load(base64.urlsafe_b64decode(cursor).decode("utf-8"))
+                    if (value["snapshot"] != fingerprint or type(value["offset"]) is not int or value["offset"] < 0):
+                        raise ValueError("Cursor does not match this source model")
+                    offset = value["offset"]
+                except (ValueError, KeyError, TypeError, UnicodeError) as exc:
+                    raise PanelDataError("stale_cursor", "Invalid or changed listing cursor", 409) from exc
+            data = model["data"]
+            page = {key: copy.deepcopy(value) for key, value in data.items()
+                    if key not in ("records", "diagnostics", "source_revisions", "next_cursor")}
+            for key in ("records", "diagnostics", "source_revisions"):
+                page[key] = copy.deepcopy(data[key][offset:offset + limit])
+            next_offset = offset + limit
+            page["next_cursor"] = (base64.urlsafe_b64encode(canonical({"snapshot": fingerprint, "offset": next_offset}).encode()).decode()
+                                   if next_offset < max(len(data[key]) for key in ("records", "diagnostics", "source_revisions")) else None)
+            self._check_model(model)
+            return page
+        except (WorkflowError, OSError) as exc:
+            raise PanelDataError(getattr(exc, "code", "read_failed"), str(exc), 409) from exc
 
     def read(self, key):
         try:
             row, ref = self._records[key]
         except (KeyError, TypeError):
             raise PanelDataError("not_found", "Unknown record key", 404) from None
-        data = self._call("record.read", {"target": ref})
-        if data["path"] != row["path"]:
+        target = {name: value for name, value in ref.items() if name not in ("id", "path")}
+        target["path"] = row["path"]
+        if "id" in ref:
+            target["fragment"] = ref["id"]
+        data = self._call("record.read", {"target": target})
+        if data["path"] != row["path"] or "id" in ref and data["ref"].get("id") != ref["id"]:
             raise PanelDataError("revision_conflict", "Record reference moved", 409)
         if row["record_type"] == "external":
             self._as_raw(data)

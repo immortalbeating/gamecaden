@@ -1,8 +1,8 @@
 {
-  "digest": "15dd4c946c1a484b9e812739dc6710aa7ef6f55b0ef5d9a7747fafdff2cefedd",
+  "digest": "d4d4369e7ff31b412404286dd84f399ec17e64b6e05d6fd9bd1fa8880c0aad7a",
   "files": {
     ".claude-plugin/plugin.json": {
-      "sha256": "3a30a66baff345ac4f7e932bf354daec743817e7cddabb9128e6156821b7f694",
+      "sha256": "e19b0706f9b7744cbeda1e41d16a89530e79a62ac2edb1218856efe3b3da85fd",
       "size": 328
     },
     ".codex-plugin/assets/gamecaden-icon.png": {
@@ -10,12 +10,12 @@
       "size": 1392298
     },
     ".codex-plugin/plugin.json": {
-      "sha256": "9a6beb657c252e309f1ca1060dc50a724d1398d901ff04cb99f180c9cb2f5e7d",
+      "sha256": "a7bfd2d32b0a4b651945092f33b64c5530b3ca1d8aa3808569d25535af7795be",
       "size": 542
     },
     "INSTALL.md": {
-      "sha256": "8570bf16f97d42f56ac0675cdc37fa0add1c640fa5ea9cf0cf4caafe3648cac0",
-      "size": 9648
+      "sha256": "5c4f7928fdc602aee75812bf8486f54b6c6bfc5052f8ac438c58985ea3e93df7",
+      "size": 9779
     },
     "LICENSE": {
       "sha256": "487a41972c5305e2a9c34cc0f70f706c50269952b80c2a05e88b58892eed22df",
@@ -198,8 +198,8 @@
       "size": 102
     },
     "panels/README.md": {
-      "sha256": "701d1526b222d77e881f9324610d35afdbe47b9dde9a9736a385339dc71dcf4d",
-      "size": 12876
+      "sha256": "4b39bddda0d1ac540d9b9a4aba1f9045b45fc2f73dd43309d6439a5591a56fa1",
+      "size": 13361
     },
     "panels/host-config.example.json": {
       "sha256": "9c24fdaf9c2d55097ac3083d6ed84347925175cb9ab6592c42fe601b8a650478",
@@ -210,8 +210,8 @@
       "size": 21863
     },
     "panels/night/app.mjs": {
-      "sha256": "f096fdd4e76fdbcfb28b56ecf827a23c26deffc39349e60b00795b5c4a4be09c",
-      "size": 105821
+      "sha256": "dc6c5af620f56e06abf506726539b331f0e0ef7c0e620be8eef1b0c63597b3fc",
+      "size": 106056
     },
     "panels/night/domain-reader.mjs": {
       "sha256": "60ec7fe33b3fee8b9044852571f1d5c29b7f8fb2badcc4448f06fd373b9d6691",
@@ -222,8 +222,8 @@
       "size": 587
     },
     "panels/night/panel-refresh.mjs": {
-      "sha256": "61c67926366347aabb34aa0a4c5a090298930ca6264c81a08a2bed985f5757d4",
-      "size": 3849
+      "sha256": "600e48883342d31900d0b56ef0f8552680c8c3170b48fbd482ecb4b7978fc978",
+      "size": 4812
     },
     "panels/night/relation-layout.mjs": {
       "sha256": "b56c96bbf9b6772731aa8bbad1994f4baf32b059ab5fcbd4ee75e44e18c61206",
@@ -250,7 +250,7 @@
       "size": 1609707
     },
     "plugin.json": {
-      "sha256": "0768319639de068ae075f7b064d22054acd05ab751bc4d7f1042a214e7b4f578",
+      "sha256": "49e4b6feac0b618449b5378e05b3254c6c3c6701860fc4c47024414bf76728fc",
       "size": 340
     },
     "profiles/README.md": {
@@ -342,44 +342,44 @@
       "size": 59
     },
     "scripts/workflow_formats.py": {
-      "sha256": "ff556962919e967777cddcf97ed8840e92a2e3f3755c654c1f03d8d76dd0bbd4",
-      "size": 14117
+      "sha256": "28929bd233e808caaeb3bb79e1c5499284cf5e2f83cf26e8689452a1cba17b3d",
+      "size": 14642
     },
     "scripts/workflow_governance.py": {
-      "sha256": "986b786a4c25b53b38c2b601c43b63a442ff65aba050e5b2e91ca5a60197a920",
-      "size": 23653
+      "sha256": "f879107f86bd304bb3344fda4b203d68d8842e0bcf771bd9ed07b639a409c657",
+      "size": 23619
     },
     "scripts/workflow_io.py": {
-      "sha256": "8c404536fa22e6e272f8aa8dc5afbf9072880ed6acd2cc505798ff3dd4fa77d0",
-      "size": 51560
+      "sha256": "2d224a64eac4559512ca6ff80933cf7bbbcbd5b3eae10a0802970fa421dceedd",
+      "size": 51671
     },
     "scripts/workflow_navigation.py": {
       "sha256": "5e158304f036b582fb9ca65f82e09f13f96612752da0e5928ed81c56a55e35de",
       "size": 5442
     },
     "scripts/workflow_panel_data.py": {
-      "sha256": "c21d10197c20a280d3509e8cebb0f00d7517f5ca8e9215d8d9d6f484c80e608d",
-      "size": 13274
+      "sha256": "8db31f8242931589cbc1c28f495f66eb6f4b7cbddf246c4566bc392f4cde85e0",
+      "size": 18366
     },
     "scripts/workflow_panel_revisions.py": {
-      "sha256": "adb3c92382b281549378cf397ae04f3d5c44363777f3faf9478e75c79d7212da",
-      "size": 5369
+      "sha256": "25bbc0d9d2daa9efa69fd5e52db58d1790890f74bbd67a12bed9288f2665d189",
+      "size": 5901
     },
     "scripts/workflow_panel_server.py": {
-      "sha256": "93d231581bf864b3af61128140c976c95146820e6135ba2b851672a258b797d9",
-      "size": 28960
+      "sha256": "ac9f9be4e57c63ee57bef42e707230ae6a5c464da6f99882c64ea93cbfb328cf",
+      "size": 30089
     },
     "scripts/workflow_project.py": {
-      "sha256": "965fdcdd759e91c2e1861f3cbe315d8ca3d86750ee25f330c6864b4684e47c3b",
-      "size": 22181
+      "sha256": "2ef8d5220503788724ea88df770f14cba7c12ab3c239533b769db92b199121fb",
+      "size": 25205
     },
     "scripts/workflow_relations.py": {
       "sha256": "f38d235ea785b9d39bd30c3208b344fdbf952ba6a4a2f45899514a3fd018692c",
       "size": 9969
     },
     "scripts/workflow_storage.py": {
-      "sha256": "6fbb2b256eab0d5680e6abe830df649eeb1090eb1325a5843ffedcd26b914c50",
-      "size": 15671
+      "sha256": "e8522b020d5dd474c4e04a90c02281392aa09ebeef9b828be9419eca215fbef9",
+      "size": 17782
     },
     "shared/asset-handoff.md": {
       "sha256": "c95eb428cd578abaac53053f2aef6a34334e475830517e63069b57e6563b2a3e",
@@ -394,8 +394,8 @@
       "size": 5794
     },
     "shared/formats-v1.md": {
-      "sha256": "a907c6b753f4317d1a62fc8ef48fee555c2f6a707b575b7d1ea21f1bd0d120c0",
-      "size": 21199
+      "sha256": "7b79799dfec27c0726bd7bdccab1dd9565d348e60bdde6bb32e84c8b167c4445",
+      "size": 21698
     },
     "shared/git-policy.md": {
       "sha256": "fcb014dae11a986977623efba9e3b2384306bda55e748e0b9e84a1e8180f7b55",
@@ -406,24 +406,24 @@
       "size": 8806
     },
     "shared/io-v1.md": {
-      "sha256": "5a3ac0165985ba2b835ccae78ff5d9516ae6fe5a00b361fb6305ba5f7c2a6b3d",
-      "size": 23008
+      "sha256": "e442affb8558469842984f6df505a7b7e936ee7ca9df93cb38b1189fc3ce7fa3",
+      "size": 23953
     },
     "shared/local-io.md": {
-      "sha256": "c7586b31400ac05c0412686bd7ddfb495726c6b1767fcec2877a4128457d2b0a",
-      "size": 21294
+      "sha256": "29dfafd95120c8957e5da3d605e634b6cab8d95a2e7d54e8b1a8bf2b00b00650",
+      "size": 21522
     },
     "shared/material-requirements.md": {
       "sha256": "580c83b96af5c7a4e6ccc76ca82cdaba54d95ed890d7c66be686a5266f87ef7e",
       "size": 10884
     },
     "shared/panel-bridge-v1.md": {
-      "sha256": "7408cd92ad270fb97fd9855cb807656f0833806aa85c875d34f721714ee4eb24",
-      "size": 6004
+      "sha256": "d5d92b21f1c3460f8c1ac1b04315a12d4b272ee364c8d573819acf40c772d58a",
+      "size": 7617
     },
     "shared/panel-workflow.md": {
-      "sha256": "9e0482c60b200cc2e1477758360a9b9a51de4b6aa222946688f0b52a6242dccf",
-      "size": 6773
+      "sha256": "849a84751791bc680a75da751f52ce4c1076f78f341360f31ce56a924e1fdb77",
+      "size": 6772
     },
     "shared/phased-development.md": {
       "sha256": "2bd98e35f1047b88452f215413782bfa3c6811d5ee916f03e7d2915ce972432d",
@@ -624,5 +624,5 @@
   },
   "format_version": 1,
   "name": "gamecaden",
-  "version": "0.3.0"
+  "version": "0.3.1"
 }

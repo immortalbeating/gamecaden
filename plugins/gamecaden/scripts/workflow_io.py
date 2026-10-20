@@ -117,7 +117,8 @@ class Workflow:
                     data = self.read_operation(op, request["payload"])
                     self.check_read_snapshot()
                     return self.response(request, data=data)
-                self.project.scan()
+                if op not in ("record.update", "record.transition"):
+                    self.project.scan()
                 for condition in request["preconditions"]:
                     path = self.ref_path(condition["target"])
                     require(path not in self.preconditions, "invalid_record", "Duplicate precondition target")
@@ -148,8 +149,7 @@ class Workflow:
         return self.project.resolve(ref).path
 
     def check_read_snapshot(self):
-        for name, expected in self.project.observed.items():
-            require(file_revision(self.project.path(name)) == expected, "revision_conflict", "Source changed during planning/read", {"path": name})
+        self.project.check_snapshot()
 
     def pending_for(self, record):
         for value in self.store.pending():
@@ -293,7 +293,10 @@ class Workflow:
                     "sources": [{**s, "resolved_path": str(self.project.source_path(s))} for s in self.project.sources],
                     "diagnostics": self.project.diagnostics, "runtime_verified": False}
         if operation in ("record.read", "record.resolve"):
-            self.project.scan()
+            # A located carrier resolves directly; ID-only refs still need the
+            # complete identity set, including embedded records and forwards.
+            if "path" not in payload["target"]:
+                self.project.scan()
             record = self.project.resolve(payload["target"])
             self.pending_for(record)
             return self.project.read_record(record, payload.get("include_body", True))

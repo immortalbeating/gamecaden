@@ -1,8 +1,9 @@
 """Content-based change probes for registered sources, without record parsing or caches."""
 from __future__ import annotations
 import os
+from pathlib import Path
 from workflow_formats import WorkflowError, canonical, revision
-from workflow_storage import STATE_NAME
+from workflow_storage import STATE_NAME, filesystem_path
 
 
 def _sample(panel):
@@ -12,9 +13,8 @@ def _sample(panel):
     def diagnostic(code,message,path,source):
         diagnostics.append({'code':code,'message':message,'ref':{'path':str(path)},'source_id':source})
     def add(path,source):
-        path=guard.path(path)
-        if not path.is_file():
-            diagnostic('not_found','Registered source file is missing',path,source); return
+        # Only collect locators here. read_bytes below applies the complete path
+        # and file guard immediately before accessing every source's real bytes.
         files.setdefault(str(path),set()).add(source)
     sources=panel.external_sources if panel.external_sources else guard.sources
     for source in sources:
@@ -22,21 +22,29 @@ def _sample(panel):
         try:
             path=guard.path(source['path'],panel.root) if panel.external_sources else guard.source_path(source)
             kind='file' if panel.external_sources else source['kind']
-            if not path.exists() and not panel.external_sources and guard.mapping is None:
+            physical=filesystem_path(path)
+            exists=physical.exists()
+            if not exists and not panel.external_sources and guard.mapping is None:
                 inventory.append({'id':source_id,'path':str(path),'kind':kind,'exists':False});continue
-            inventory.append({'id':source_id,'path':str(path),'kind':kind,'exists':path.exists()})
+            inventory.append({'id':source_id,'path':str(path),'kind':kind,'exists':exists})
             if kind=='file':add(path,source_id)
-            elif not path.is_dir():diagnostic('not_found','Registered source collection is missing',path,source_id)
+            elif not exists:continue  # Collections may be registered before their first record is created.
+            elif not physical.is_dir():diagnostic('invalid_scope','Registered collection is not a directory',path,source_id)
             else:
                 def walk_error(exc):
-                    diagnostic('read_failed','Registered collection could not be scanned',exc.filename or path,source_id)
-                for directory,folders,names in os.walk(path,followlinks=False,onerror=walk_error):
+                    failed=path
+                    if exc.filename:
+                        try:failed=path/Path(exc.filename).relative_to(physical)
+                        except ValueError:pass  # Preserve the registered logical boundary in diagnostics.
+                    diagnostic('read_failed','Registered collection could not be scanned',failed,source_id)
+                for directory,folders,names in os.walk(physical,followlinks=False,onerror=walk_error):
+                    logical=path/Path(directory).relative_to(physical)
                     folders[:]=[name for name in folders if name not in ('.git',STATE_NAME)
-                                and not (guard.path(directory)/name).is_symlink()
-                                and not (guard.path(directory)/name).is_junction()]
+                                and not (Path(directory)/name).is_symlink()
+                                and not (Path(directory)/name).is_junction()]
                     for name in sorted(names):
                         if os.path.splitext(name)[1].lower() in ('.md','.json','.yaml','.yml'):
-                            add(guard.path(directory)/name,source_id)
+                            add(logical/name,source_id)
         except (WorkflowError,OSError) as exc:
             diagnostic(getattr(exc,'code','read_failed'),str(exc) if isinstance(exc,WorkflowError) else 'Registered source could not be read',source.get('path',''),source_id)
     # Rule files are explicitly registered too. Runtime roots are deliberately not scanned.
@@ -47,12 +55,12 @@ def _sample(panel):
     versions=[]
     for path,owners in sorted(files.items()):
         try:
-            content=guard.read_bytes(guard.path(path))
-            versions.append({'ref':{'path':path},'revision':revision(content),'source_ids':sorted(owners)})
+            guard.read_bytes(Path(path))
+            versions.append({'ref':{'path':path},'revision':guard.observed[path],'source_ids':sorted(owners)})
         except (WorkflowError,OSError) as exc:
             diagnostic(getattr(exc,'code','read_failed'),str(exc) if isinstance(exc,WorkflowError) else 'Registered source could not be read',path,','.join(sorted(owners)))
     # The mapping itself is also observed after all source bytes have been read.
-    if guard.workspace.exists():
+    if filesystem_path(guard.workspace).exists():
         try:
             guard.read_bytes(guard.workspace)
             if mapping_revision is None:diagnostic('revision_conflict','Source mapping appeared during reading',guard.workspace,None)

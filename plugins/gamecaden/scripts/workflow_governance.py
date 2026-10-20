@@ -85,7 +85,7 @@ def source_excerpt(body):
 class Governance:
     def __init__(self, panel):
         self.panel = panel
-        self.guard = panel._project()
+        self.guard = None
         self.nodes, self.edges, self.conditions, self.materials, self.diagnostics = {}, [], [], [], []
         self.by_ref, self.locals, self.bodies, self.entries = {}, {}, {}, []
         self.rows = []
@@ -225,18 +225,12 @@ class Governance:
         state=values[0]
         return state,{"satisfied":"Original records match the declared check scope; execution still requires checking all applicable agreements","unsatisfied":"Original records for the matching scope report failure or require revision","unknown":"Existing grounds do not establish satisfaction"}[state],used
 
-    def build(self, focus=None):
-        cursor=None
-        for _ in range(100):
-            page=self.panel.snapshot(cursor=cursor)
-            self.rows.extend(page["records"])
-            self.complete=self.complete and page["complete"]
-            self.diagnostics.extend(page["diagnostics"])
-            cursor=page["next_cursor"]
-            if cursor is None:
-                break
-        else:
-            raise PanelDataError("too_many_records","Sources exceed the read limit for this request",413)
+    def build(self, focus=None, include_records=False):
+        page=self.panel.snapshot_all()
+        self.guard=self.panel._snapshot_guard
+        self.rows=page["records"]
+        self.complete=page["complete"]
+        self.diagnostics.extend(page["diagnostics"])
         root_key="project:"+page["project"]["id"]
         self.add({"key":root_key,"kind":"project","title":page["project"]["name"],"ref":None,
                   "path":str(self.panel.root),"revision":None})
@@ -384,17 +378,21 @@ class Governance:
         if not self.entries and not flows and not relationships:
             self.diagnostic("governance_unmapped","Material responsibilities and progression conditions are unmapped; readable sources do not establish specification completeness",root_key)
         # Caller sees snapshot provenance, never a mutable gate status ledger.
-        for path,expected in self.guard.observed.items():
-            if revision(self.guard.path(path).read_bytes())!=expected:
-                raise PanelDataError("revision_conflict","Sources changed during the governance read; refresh the view",409)
         focused=next((n["key"] for n in self.nodes.values() if n.get("ref",{}) and n["ref"].get("id")==focus),None) if focus else None
-        return {"generated_at":datetime.now(timezone.utc).isoformat(),"project":page["project"],
+        result = {"generated_at":datetime.now(timezone.utc).isoformat(),"project":page["project"],
                 "nodes":list(self.nodes.values()),"edges":self.edges,"materials":self.materials,"conditions":self.conditions,
                 "flows":flows,"relationships":relationships,
                 "diagnostics":self.diagnostics,"coverage":{"structured":bool(self.entries or flows or relationships),"records_complete":self.complete,
                     "materials_mapped":bool(self.materials),"conditions_mapped":bool(self.conditions)},
                 "source_revisions":[{"ref":{"path":p},"revision":r} for p,r in sorted(self.guard.observed.items())],
                 "focus":focused}
+        if include_records:
+            result.update(records=page["records"], record_diagnostics=page["diagnostics"], records_complete=page["complete"])
+        # Bound derived output separately from the number of registered source files.
+        if len(canonical(result).encode("utf-8")) > 64 * 1024 * 1024:
+            raise PanelDataError("output_too_large", "Governance output exceeds the request limit", 413)
+        self.panel.check_snapshot()
+        return result
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)

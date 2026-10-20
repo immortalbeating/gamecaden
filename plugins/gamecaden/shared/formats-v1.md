@@ -25,6 +25,8 @@ Syntax source: [JSON Schema](../schemas/workflow-v1.schema.json); writing bluepr
 
 Ordinary attachments in subdirectories of native numbered collections do not require work-record frontmatter. Filenames or content declaring formal records are still validated against the corresponding schema; attachment types cannot conceal missing fields, malformed native blocks, or duplicate formal IDs. See the [local tool documentation](local-io.md#3-normal-writes) for supported attachment reading and creation.
 
+Within these attachment locations, empty JSON outputs and files ending in `.stdout.json` or `.stderr.json` are read-only raw command/producer captures, not formal records. Preserve their original bytes, including failed or empty output; new stdout/stderr captures should use log filenames, with JSON result files reserved for actual serialized results. Explicit native file sources and reserved main-record filenames retain strict parsing; other malformed structured records still report errors.
+
 Read the corresponding schema and template only when creating/modifying that native record type; do not load the entire format library for every Task. Template headings are writing prompts. Remove optional sections with no content; filling every section or generating an entire directory tree at once is not required.
 
 YAML uses values expressible in JSON and prohibits executable tags. Quote ID, version, and date strings. When time is genuinely unknown, retain null and explain it rather than inventing dates. Preserve the original file's free prose, unrelated content, and extension data; formatting must not erase user material.

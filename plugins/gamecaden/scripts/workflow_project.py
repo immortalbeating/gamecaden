@@ -31,8 +31,12 @@ class Project:
         self.observed = {}
         self.documents, self.records, self.forwards, self.diagnostics = {}, [], [], []
         self.sources, self.mapping = [], None
+        self.workspace_revision = None
+        self.inventory = None
+        self._source_locations = {}
         if filesystem_path(self.workspace).exists():
             self.mapping = yaml_load(self.read_bytes(self.workspace).decode("utf-8-sig"))
+            self.workspace_revision = self.observed[str(self.workspace)]
             self.validate_workspace(self.mapping, check_files=False)
             self.sources = plain(self.mapping["sources"])
         else:
@@ -95,8 +99,16 @@ class Project:
     def source_path(self, source):
         return self.path(source["path"], self.home)
 
+    def mapped_location(self, source):
+        # Registration interpretation is immutable within this observed mapping.
+        # Actual file access and source traversal still run the physical guard.
+        key = (source["id"], source["kind"], source["path"])
+        if key not in self._source_locations:
+            self._source_locations[key] = self.source_path(source)
+        return self._source_locations[key]
+
     def collection_root(self, source):
-        return self.source_path(source) if source and source["kind"] == "collection" else None
+        return self.mapped_location(source) if source and source["kind"] == "collection" else None
 
     def work_directory(self, record):
         require(record.kind in ("task", "epic") and record.id, "invalid_scope", "Attachment owner must be a real Task or Epic")
@@ -117,7 +129,7 @@ class Project:
         for source in self.sources:
             if source_id and source["id"] != source_id:
                 continue
-            location = self.source_path(source)
+            location = self.mapped_location(source)
             if path == location or source["kind"] == "collection" and path.is_relative_to(location):
                 matches.append(source)
         if not matches and (source_id is None or source_id == "support") and (path == self.home / "index.md" or path.is_relative_to(self.home / "rules")
@@ -161,33 +173,72 @@ class Project:
                                             source["id"] if source else None, self.collection_root(source))
         return self.documents[path]
 
-    def scan(self):
-        self.records, self.forwards, self.diagnostics = [], [], []
-        self.scan_complete = True
-        seen = set()
+    def source_inventory(self):
+        """Observe registered membership without parsing record bodies."""
+        result = []
         for source in self.sources:
+            entry = {"source_id": source["id"], "files": []}
             try:
                 path = self.source_path(source)
-                if self.mapping is None and not filesystem_path(path).exists():
-                    continue  # Defaults are optional locations, not missing authoritative records.
+                physical = filesystem_path(path)
+                entry.update(path=str(path), kind=source["kind"], exists=physical.exists(),
+                             directory=physical.is_dir())
                 if source["kind"] == "collection":
-                    files = []
-                    if filesystem_path(path).exists():
-                        for directory, folders, names in os.walk(filesystem_path(path), followlinks=False):
+                    require(not physical.exists() or physical.is_dir(), "invalid_scope",
+                            "Registered collection is not a directory", {"path": str(path)})
+                    if physical.exists():
+                        def walk_error(error):
+                            raise WorkflowError("read_failed", "Registered collection could not be scanned",
+                                                {"path": str(path)}) from error
+                        for directory, folders, names in os.walk(physical, followlinks=False, onerror=walk_error):
                             folders[:] = [name for name in folders if name not in (".git", STATE_NAME)
                                           and not (Path(directory) / name).is_symlink()
                                           and not (Path(directory) / name).is_junction()]
-                            relative = Path(directory).relative_to(filesystem_path(path))
-                            files.extend(path / relative / name for name in names if Path(name).suffix.lower() in (".md", ".json", ".yaml", ".yml"))
-                else:
-                    files = [path]
-                for file in sorted(files):
+                            relative = Path(directory).relative_to(physical)
+                            entry["files"].extend(str(path / relative / name) for name in names
+                                                  if Path(name).suffix.lower() in (".md", ".json", ".yaml", ".yml"))
+                elif self.mapping is not None or physical.exists():
+                    entry["files"] = [str(path)]
+                entry["files"].sort()
+            except (WorkflowError, OSError) as error:
+                entry["error"] = error.item() if isinstance(error, WorkflowError) else {
+                    "code": "read_failed", "message": "Registered source could not be scanned"}
+            result.append(entry)
+        return result
+
+    def check_snapshot(self):
+        require(file_revision(self.path(self.workspace)) == self.workspace_revision, "revision_conflict",
+                "Source mapping changed during reading", {"path": str(self.workspace)})
+        for name, expected in self.observed.items():
+            require(file_revision(self.path(name)) == expected, "revision_conflict",
+                    "Source changed during planning/read", {"path": name})
+        if self.inventory is not None:
+            require(self.source_inventory() == self.inventory, "revision_conflict",
+                    "Registered source membership changed during reading")
+
+    def scan(self, *, retain_payloads=True):
+        self.records, self.forwards, self.diagnostics = [], [], []
+        self.scan_complete = True
+        seen = set()
+        self.inventory = self.source_inventory()
+        for source, entry in zip(self.sources, self.inventory):
+            try:
+                if entry.get("error"):
+                    self.scan_complete = False
+                    self.diagnostics.append(entry["error"])
+                    continue
+                for name in entry["files"]:
+                    file = Path(name)
                     if file in seen:
                         self.diagnostics.append({"code": "ambiguous_ref", "message": "File belongs to overlapping sources", "target": {"path": str(file)}})
                         continue
                     seen.add(file)
                     try:
                         doc = self.document(file, source["id"])
+                        if not retain_payloads and doc.main.kind == "attachment" and file.suffix.lower() != ".md":
+                            # Read models keep identity/metadata, not producer payload copies.
+                            # Direct reads use a fresh Project and retain the complete source.
+                            doc.data, doc.text, doc.main.body = b"", "", None
                         self.records.extend(doc.records if doc.native else [doc.main])
                         self.forwards.extend(doc.forwards)
                         if not doc.native:

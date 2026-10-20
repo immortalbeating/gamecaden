@@ -169,6 +169,17 @@ class Document:
             self.main = Record(path, role, None, self.text, "external", source)
             return
         suffix = path.suffix.lower()
+        stem = path.stem.lower()
+        in_attachment_directory = collection_root is not None and path.parent != collection_root
+        attachment = role == "attachment" or role in PREFIXES and not primary_record_path(path) and (
+            in_attachment_directory or stem in ATTACHMENT_STEMS)
+        if attachment and collection_root is not None and not primary_record_path(path) and suffix == ".json" and (
+                not self.text.strip() or path.name.lower().endswith((".stdout.json", ".stderr.json"))):
+            # Empty producer output and explicitly named command captures are
+            # raw bytes, even if their filename ends in JSON. Main records stay strict.
+            self.native = False
+            self.main = Record(path, "attachment", None, self.text, "external", source)
+            return
         metadata, body = None, self.text
         if suffix in (".yaml", ".yml", ".json"):
             metadata = json_load(self.text) if suffix == ".json" else yaml_load(self.text)
@@ -181,10 +192,6 @@ class Document:
         else:
             raise WorkflowError("unsupported_format", f"Unsupported native extension: {suffix}")
         kind = identity_kind(metadata) or ("asset-ledger" if role == "asset-ledger" else role)
-        stem = path.stem.lower()
-        in_attachment_directory = collection_root is not None and path.parent != collection_root
-        attachment = role == "attachment" or role in PREFIXES and not primary_record_path(path) and (
-            in_attachment_directory or stem in ATTACHMENT_STEMS)
         if attachment and not record_metadata(metadata):
             kind = stem if stem in ATTACHMENT_STEMS and not (isinstance(metadata, dict) and "id" in metadata) else "attachment"
             if suffix != ".md" or metadata is not None and not isinstance(metadata, dict):

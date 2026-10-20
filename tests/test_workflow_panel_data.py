@@ -77,6 +77,26 @@ class PanelDataTests(unittest.TestCase):
         self.assertEqual(error.exception.code, "revision_conflict")
         self.assertEqual(self.panel.candidate(asset["key"], "C-001")["check"]["status"], "invalid")
 
+    def test_known_panel_rows_use_located_carriers_including_embedded_records(self):
+        rows = self.panel.snapshot(limit=100)["records"]
+        selected = [row for row in rows if row["ref"].get("id") in ("T-002", "EV-002", "A-001")]
+        self.assertEqual(len(selected), 3)
+        with patch.object(Project, "scan", side_effect=AssertionError("Known row triggered full scan")):
+            for row in selected:
+                with self.subTest(identity=row["ref"]):
+                    read = self.panel.read(row["key"])
+                    self.assertEqual(read["ref"], row["ref"])
+                    self.assertEqual(read["path"], row["path"])
+
+    def test_located_panel_row_still_rejects_changed_identity(self):
+        row = next(row for row in self.panel.snapshot(limit=100)["records"] if row["ref"].get("id") == "T-002")
+        path = Path(row["path"])
+        text = path.read_text(encoding="utf-8").replace("id: T-002", "id: T-777", 1)
+        path.write_text(text + '\n<a id="T-002"></a>\n', encoding="utf-8")
+        with self.assertRaises(PanelDataError) as error:
+            self.panel.read(row["key"])
+        self.assertEqual(error.exception.code, "revision_conflict")
+
     def test_external_raw_only_and_path_guard(self):
         source = self.root / "legacy/task.json"
         source.parent.mkdir(exist_ok=True)

@@ -17,12 +17,17 @@ Bind only to 127.0.0.1. A one-time startup secret is passed to the page in the U
 
 - GET /api/session: current session, host-bound identity, projects, and capabilities.
 - GET /api/projects/<id>/snapshot: pagination of native records or an explicit list of legacy-format sources.
+- GET /api/projects/<id>/revisions: two content-based observations of registered sources and mappings; returns completeness and diagnostics without parsing records. Physical Windows operations use extended paths while returned references remain logical paths. A not-yet-created collection is an observed empty location; creation/removal changes its fingerprint. Missing registered files, wrong source types and failed reads retain diagnostics; this probe does not assess referenced-record validity.
 - GET /api/projects/<id>/governance?focus=T-003: derive read-only outcome relationships, material responsibilities, and conditions from registered sources; focus only locates the current object and does not reduce the original graph. See the [governance contract](governance.md) for semantics.
 - GET /api/projects/<id>/records/<key>: original text, metadata, revision, format, and capabilities.
 - GET /api/projects/<id>/candidates/<key>/<candidate>: manifest technical validation, candidate-level uses, and previewable media.
 - GET /api/projects/<id>/media/<key>: registered safe media, checked against current bytes and the registered digest.
 
 key is a server-derived identifier for known records/files, not an arbitrary browser path. Legacy formats are read-only; this does not create a copy of Task state. Free-form bodies are displayed as written, without inferring acceptance or overall progress from the word “passed.”
+
+Snapshot pages and governance reuse one reconstructible in-process model for the current source version. Reuse rechecks actual content, registered membership and pending operations; changed sources invalidate old cursors. Governance consumes the complete model directly, without a page-count limit on provenance. Add `include_records=1` to the governance query to receive `records`, `record_diagnostics` and `records_complete` from that same checked model; omitting it retains the ordinary response. The browser uses this batch instead of separately enumerating all pages. Current limits are 50,000 record rows and 64 MiB of serialized snapshot metadata or governance output; exceeding a limit returns 413 with a diagnostic. These are reader resource bounds, not Task, asset-production or retention quotas.
+
+Version probes use independent read guards and share only simultaneously running observations for the same binding. They do not hold the record/media state lock; later probes read actual bytes again. Source checks retain content and race detection rather than treating unchanged timestamps as proof.
 
 The same derived model can also be obtained read-only through `scripts/workflow_governance.py --project-root ... [--workspace ...] --focus T-003`. The overview displays the current Task, outcome tree, [material responsibilities](material-requirements.md), condition nature/status/proof, and one-hop relationships; source documents remain on separate pages. See [panel coordination](panel-workflow.md) for deep-link positioning and copying continuation summaries. These do not save new authoritative state or wake an Agent.
 
